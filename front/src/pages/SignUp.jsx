@@ -52,7 +52,6 @@ const Center = styled.div`
 `;
 
 const FirstTitle = styled(Title)`
-  font-weight: ${({ theme }) => theme.fontWeights.blac};
   display: flex;
   justify-content: flex-start;
 `;
