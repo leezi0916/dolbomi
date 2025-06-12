@@ -22,5 +22,4 @@ const Content = styled.main`
   margin: 0 auto;
   padding: ${({ theme }) => theme.spacing[8]} 0;
 `;
-
 export default Layout;

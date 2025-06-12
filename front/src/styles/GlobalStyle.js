@@ -10,7 +10,7 @@ const GlobalStyle = createGlobalStyle`
 
   /* 기본 폰트 설정 */
   body {
-    font-family: "Noto Sans KR", sans-serif;
+    font-family: "Noto Sans KR ", sans-serif;
     font-optical-sizing: auto;
     /* font-weight: 400; */
     font-style: normal;
