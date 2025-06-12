@@ -15,4 +15,8 @@ export const API_ENDPOINTS = {
   PRODUCTS: {
     BASE: '/products',
   },
+  REVIEWS: {
+    BASE: '/reviews',
+    DETAIL: (userNo) => `/reviews?userNo=${userNo}`,
+  },
 };
