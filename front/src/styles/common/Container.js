@@ -31,7 +31,7 @@ export const Container = styled.div`
     max-width: 992px;
   `}
 
-  ${media.lg`
+  ${media.xl`
      max-width: 1200px;
   `}
 
