@@ -36,15 +36,15 @@ const Footer = () => {
 };
 
 const FooterContainer = styled.footer`
-  background-color: ${({ theme }) => theme.colors.gray[100]};
+  background-color: ${({ theme }) => theme.colors.third};
   padding: ${({ theme }) => theme.spacing[8]} 0;
 `;
 
 const FooterWrapper = styled.div`
-  max-width: 1200px;
+  max-width: 1280px;
   margin: 0 auto;
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
 `;
 
 const FooterSection = styled.div`

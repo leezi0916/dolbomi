@@ -1,5 +1,13 @@
 import React from 'react';
+import { styled } from 'styled-components';
 
 const Home = () => {
-  return <div>홈 머지 테스트</div>;
+  return <Content>Home</Content>;
 };
+
+const Content = styled.div`
+  width: 100%;
+  background-color: aqua;
+`;
+
+export default Home;
