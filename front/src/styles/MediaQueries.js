@@ -30,6 +30,11 @@ export const media = {
       ${css(...args)}
     }
   `,
+  xl: (...args) => css`
+    @media (min-width: ${breakpoints.xl}) {
+      ${css(...args)}
+    }
+  `,
   '2xl': (...args) => css`
     @media (min-width: ${breakpoints['2xl']}) {
       ${css(...args)}
