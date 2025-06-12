@@ -13,6 +13,6 @@ import org.springframework.web.bind.annotation.RestController;
 public class MemberController {
 
     public void aaa() {
-        
+
     }
 }
