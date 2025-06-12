@@ -2,9 +2,10 @@ import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 
 export const AuthContainer = styled.div`
-  max-width: 400px;
+  max-width: 1200px;
   width: 100%;
   padding: 0 ${({ theme }) => theme.spacing[4]};
+  margin: 0 auto;
 `;
 
 export const Title = styled.h1`
