@@ -1,7 +1,39 @@
-import { styled } from 'styled-components';
+import styled from "styled-components";
 
-// 예시 코드입니다 지우고 새롭게 만들어주세요
-// 단 기본적으로 맨위의 틀을가지고 가서 변경하는것을 추천하나, 많이 바뀔거같으면 아래와 같이 새로 하나 만들어서 사용하세요
-// 절대 다른 사람이 만든 컴포넌트 말없이 수정 ㄴㄴ 당신 책임
+export const ModalContainer = styled.div`
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 0 auto;
+    padding: ${({theme}) => theme.spacing[8]};
+    border: 1px solid ${({theme})=>theme.colors.gray[5]};
+    box-shadow: ${({theme})=>theme.shadows.xl};
+    width: 650px;
+    height: 500px;
+    gap: 10px;
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+`
 
-export const Modal = styled.div``;
+export const ModalCloseButton = styled.button`
+    top: 30px;
+    right: 40px;
+    position: absolute;
+    border: 1px solid ${({theme})=>theme.colors.gray[4]};
+    border-radius: ${({theme})=>theme.borderRadius.lg};
+`
+
+export const ModalText = styled.p`
+    margin: 30px;
+    font-size: ${({theme}) => theme.fontSizes.lg};;
+    font-weight: ${({theme}) => theme.fontWeights.black};
+
+`
+
+export const ModalInput = styled.input`
+    border: 1px solid ${({theme})=>theme.colors.gray[5]};
+    padding: ${({theme}) => theme.spacing[4]};;
+    width: 60%;
+`
