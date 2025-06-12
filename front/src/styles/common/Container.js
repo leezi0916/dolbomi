@@ -14,6 +14,71 @@ export const Section = styled.section`
   `}
 `;
 
+// @@@@@ 여기부터 메인 페이지 배너 영역입니다 @@@@@
+export const BennerSection = styled(Section)`
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+`;
+
+export const MainBenner = styled.img`
+  width: 100%;
+  height: auto;
+  display: block;
+`;
+
+export const SubBenner = styled.div`
+  width: 100%;
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  border-radius: ${({ theme }) => theme.borderRadius.base};
+  overflow: hidden;
+
+  ${media.md`
+    flex-direction: row;
+    aspect-ratio: 5.5 / 1; // 높이 비율
+  `}
+`;
+
+export const LeftBennerSection = styled.div`
+  width: 100%;
+  background-color: ${({ theme }) => theme.colors.gray[5]};
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 20px;
+  padding: ${({ theme }) => theme.spacing[4]};
+
+  ${media.md`
+    width: 75%; 
+    padding-left: ${({ theme }) => theme.spacing[10]};
+    
+  `}
+`;
+
+export const RightBennerSection = styled.div`
+  width: 100%;
+  background-color: ${({ theme }) => theme.colors.primary};
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 20px;
+  padding: ${({ theme }) => theme.spacing[4]};
+
+  ${media.md`
+    width: 25%; 
+    padding-left: ${({ theme }) => theme.spacing[6]};
+  `}
+
+  ${media.lg`
+    width: 25%; 
+    padding-left: ${({ theme }) => theme.spacing[10]};
+  `}
+`;
+
+// @@@@@ 여기까지 메인 페이지 배너 영역입니다 @@@@@
+
 export const Container = styled.div`
   width: 100%;
   padding: 0 ${({ theme }) => theme.spacing[4]};
