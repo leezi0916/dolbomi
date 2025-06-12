@@ -2,7 +2,7 @@ const theme = {
   colors: {
     primary: '#EF7A46', // 로고색상
     secondary: '#FFA101', // 버튼류
-    third: 'FEEEE4', // 푸터
+    third: '#FEEEE4', // 푸터
     info: '#2F80ED',
     success: '#27AE60',
     warning: '#E2B93B',

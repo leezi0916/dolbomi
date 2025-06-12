@@ -18,6 +18,7 @@ const GlobalStyle = createGlobalStyle`
     -moz-osx-font-smoothing: grayscale;
     color: #333;
     line-height: 1.5; */
+    
   }
 
   /* 링크 스타일 초기화 */

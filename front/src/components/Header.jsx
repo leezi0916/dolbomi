@@ -9,6 +9,7 @@ const Header = () => {
   return (
     <HeaderContainer>
       <HeaderWrapper>
+        <img src="/public/logo.png" />
         <Logo to="/">{SITE_CONFIG.name}</Logo>
 
         {/* 모바일환경에서의 nav */}
@@ -60,7 +61,8 @@ const UserName = styled.span`
 
 const HeaderContainer = styled.header`
   background: ${({ theme }) => theme.colors.white};
-  box-shadow: ${({ theme }) => theme.shadows.sm};
+  border-bottom: 1px solid ${({ theme }) => theme.colors.gray[5]};
+  box-shadow: ${({ theme }) => theme.shadows.base};
   position: sticky;
   top: 0;
   z-index: ${({ theme }) => theme.zIndices.sticky};
@@ -71,6 +73,9 @@ const HeaderWrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
+  max-width: 1280px;
+  margin: 0 auto;
+  height: 80px;
 `;
 
 const Logo = styled(Link)`
