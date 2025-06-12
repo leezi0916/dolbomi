@@ -1,7 +1,5 @@
 import React from 'react';
 
 const Home = () => {
-  return <div>홈 바꿨음</div>;
+  return <div>홈 머지 테스트</div>;
 };
-
-export default Home;
