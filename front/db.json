@@ -1,1 +1,26 @@
-{}
+{
+  "users": [
+    {
+      "id": "d340",
+      "userid": "leezi0916",
+      "userpwd": "wlanr1506!",
+      "username": "이지묵",
+      "age": 26,
+      "gender": "male",
+      "phone": "01083281182",
+      "address": "경기도 남양주시 별내동",
+      "email": "leezi0916@naver.com"
+    },
+    {
+      "id": "646d",
+      "userid": "dadsfdasfaa",
+      "userpwd": "dsfadsfsafsafsa",
+      "username": "김",
+      "age": 21,
+      "gender": "female",
+      "phone": "01032132113",
+      "address": "2112312ㄹㄴㅇㅁㄹㄴㅇㅁ",
+      "email": "admin@diamelo.com"
+    }
+  ]
+}

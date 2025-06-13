@@ -11,7 +11,7 @@ const useUserStore = create(
       login: (userData) => {
         set({
           user: {
-            email: userData.email,
+            userid: userData.userid,
             username: userData.username,
             role: userData.role,
           },
