@@ -5,11 +5,11 @@ import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
 import Home from './pages/Home';
 import theme from './styles/theme';
 import Layout from './components/Layout';
+import CommunityBoard from './pages/CommunityBoard';
 
 import ReviewModal from './pages/ReviewModal';
 
 import SignUp from './pages/SignUp';
-
 
 function App() {
   return (
@@ -20,7 +20,8 @@ function App() {
           <Layout>
             <Routes>
               <Route path="/" element={<Home />} />
-              <Route path="/review" element={<ReviewModal />} /> 
+              <Route path="/CommunityBoard" element={<CommunityBoard />} />
+              <Route path="/review" element={<ReviewModal />} />
               <Route path="/signup" element={<SignUp />} />
             </Routes>
           </Layout>

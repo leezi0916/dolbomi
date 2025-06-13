@@ -1,9 +1,6 @@
 import axios from 'axios';
 import { API_CONFIG } from './config';
-<<<<<<< HEAD
-=======
 
->>>>>>> 7b4d07bee1103a7595a4332b4501f2e7d2bb1a4a
 // 예시입니다. 저희 프로젝트에 맞게 변경해야 합니다.
 const api = axios.create({
   baseURL: API_CONFIG.BASE_URL,

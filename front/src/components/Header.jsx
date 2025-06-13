@@ -9,12 +9,10 @@ import useUserStore from '../store/userStore';
 
 const Header = () => {
   const { user, isAuthenticated, userStatus, setUserStatus } = useUserStore();
-    // userStatus => true :간병인 false : 돌봄대상자(보호자)
-    // const [status, setStatus] = useState(false);
-  
-  const [isHovering, setIsHovering] = useState(false);
-  
+  // userStatus => true :간병인 false : 돌봄대상자(보호자)
+  // const [status, setStatus] = useState(false);
 
+  const [isHovering, setIsHovering] = useState(false);
 
   return (
     <>
@@ -26,8 +24,10 @@ const Header = () => {
       >
         <HeaderContainer>
           <HeaderWrapper>
-            
-            <Logo to="/"><img src="/public/logo.png" />{SITE_CONFIG.name}</Logo>
+            <Logo to="/">
+              <img src="/public/logo.png" />
+              {SITE_CONFIG.name}
+            </Logo>
 
             {/* 모바일환경에서의 nav */}
             {/* <MenuButton />
@@ -51,7 +51,7 @@ const Header = () => {
             {/* pc환경에서의 nav */}
             <DesktopNav>
               <NavItem to="/products">돌봄대상자 모집</NavItem>
-              <NavItem to="/question">소통</NavItem>
+              <NavItem to="/CommunityBoard">소통</NavItem>
             </DesktopNav>
 
             <DesktopUserMenu>
@@ -145,9 +145,11 @@ const Logo = styled(Link)`
   font-size: ${({ theme }) => theme.fontSizes.xl};
   font-weight: ${({ theme }) => theme.fontWeights.bold};
   color: ${({ theme }) => theme.colors.primary};
- 
-  img{margin-right: ${({ theme }) => theme.spacing[8]};}
-  
+
+  img {
+    margin-right: ${({ theme }) => theme.spacing[8]};
+  }
+
   ${media.md`
    font-size: ${({ theme }) => theme.fontSizes['2xl']}; 
   `}
@@ -162,7 +164,6 @@ const DesktopNav = styled.nav`
         display: flex;
     `}
 `;
-
 
 const DesktopUserMenu = styled.nav`
   display: none;
@@ -179,7 +180,6 @@ const DesktopUserMenuWrap = styled.div`
   gap: ${({ theme }) => theme.spacing[10]};
 
   align-items: center;
-  
 `;
 
 const NavItem = styled(Link)`
