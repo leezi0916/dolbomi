@@ -10,6 +10,17 @@
       "phone": "01083281182",
       "address": "경기도 남양주시 별내동",
       "email": "leezi0916@naver.com"
+    },
+    {
+      "id": "e851",
+      "userid": "lee1234",
+      "userpwd": "lee1234",
+      "username": "이인혜",
+      "age": 20,
+      "gender": "female",
+      "phone": "01022222222",
+      "address": "서울 강남구 강남역",
+      "email": "user0@naver.com"
     }
   ],
   "reviews": []

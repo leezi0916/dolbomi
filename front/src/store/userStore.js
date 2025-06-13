@@ -9,6 +9,7 @@ const useUserStore = create(
     (set) => ({
 
       user: null,
+      // 간병인= false/ 돌봄대상자 = true
       userStatus : false,
       isAuthenticated: false,
 
