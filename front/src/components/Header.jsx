@@ -48,12 +48,6 @@ const Header = () => {
   );
 };
 
-const UserProfile = styled.div`
-  display: flex;
-  align-items: center;
-  padding: ${({ theme }) => theme.spacing[4]};
-`;
-
 const UserName = styled.span`
   font-weight: ${({ theme }) => theme.fontWeights.bold};
   color: ${({ theme }) => theme.colors.gray[800]};
