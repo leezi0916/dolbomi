@@ -5,6 +5,7 @@ import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
 import Home from './pages/Home';
 import theme from './styles/theme';
 import Layout from './components/Layout';
+import CommunityBoard from './pages/CommunityBoard';
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
           <Layout>
             <Routes>
               <Route path="/" element={<Home />} />
+              <Route path="/CommunityBoard" element={<CommunityBoard />} />
             </Routes>
           </Layout>
         </Router>
