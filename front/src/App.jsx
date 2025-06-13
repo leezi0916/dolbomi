@@ -6,10 +6,11 @@ import Home from './pages/Home';
 import theme from './styles/theme';
 import Layout from './components/Layout';
 import CommunityBoard from './pages/CommunityBoard';
-
 import ReviewModal from './pages/ReviewModal';
-
 import SignUp from './pages/SignUp';
+
+import Patient from './pages/Patient';
+import PatientRegisteration from './pages/PatientRegistration';
 
 function App() {
   return (
@@ -20,6 +21,9 @@ function App() {
           <Layout>
             <Routes>
               <Route path="/" element={<Home />} />
+
+              <Route path="/patient" element={<Patient />} />
+              <Route path="/patient" element={<PatientRegisteration />} />
               <Route path="/CommunityBoard" element={<CommunityBoard />} />
               <Route path="/review" element={<ReviewModal />} />
               <Route path="/signup" element={<SignUp />} />
