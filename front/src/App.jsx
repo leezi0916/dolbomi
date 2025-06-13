@@ -7,6 +7,11 @@ import theme from './styles/theme';
 import Layout from './components/Layout';
 import CommunityBoard from './pages/CommunityBoard';
 
+import ReviewModal from './pages/ReviewModal';
+
+import SignUp from './pages/SignUp';
+
+
 function App() {
   return (
     <>
@@ -16,7 +21,12 @@ function App() {
           <Layout>
             <Routes>
               <Route path="/" element={<Home />} />
+<<<<<<< HEAD
               <Route path="/CommunityBoard" element={<CommunityBoard />} />
+=======
+              <Route path="/review" element={<ReviewModal />} /> 
+              <Route path="/signup" element={<SignUp />} />
+>>>>>>> 02104005cb25cb511b4f99e9e1bf938a88cb4814
             </Routes>
           </Layout>
         </Router>
