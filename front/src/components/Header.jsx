@@ -51,7 +51,7 @@ const Header = () => {
             {/* pc환경에서의 nav */}
             <DesktopNav>
               <NavItem to="/products">돌봄대상자 모집</NavItem>
-              <NavItem to="/question">소통</NavItem>
+              <NavItem to="/CommunityBoard">소통</NavItem>
             </DesktopNav>
 
             <DesktopUserMenu>
