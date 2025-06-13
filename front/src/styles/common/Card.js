@@ -5,5 +5,3 @@ import { styled } from 'styled-components';
 // 절대 다른 사람이 만든 컴포넌트 말없이 수정 ㄴㄴ 당신 책임
 
 export const card = styled.div``;
-
-export const myPageCard = styled.div``;
