@@ -40,7 +40,8 @@ export const Label = styled.label`
 
 export const Input = styled.input`
   padding: ${({ theme }) => theme.spacing[3]};
-  border: 1px solid ${({ theme, $error }) => ($error ? theme.colors.error : theme.colors.gray[300])};
+  //인혜 : 보더 색상 수정
+  border: 1px solid ${({ theme, $error }) => ($error ? theme.colors.error : theme.colors.gray[5])};
   border-radius: ${({ theme }) => theme.borderRadius.md};
   font-size: ${({ theme }) => theme.fontSizes.base};
 

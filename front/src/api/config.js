@@ -23,11 +23,19 @@ USERS: {
     BASE: '/users',
     // LOGIN: '/users/login' //실제에는 이렇게 해야함 아래는 JsonServer 사용시
     LOGIN: (userid, userpwd) => `/users?userid=${userid}&userpwd=${userpwd}`,
-
   },
   REVIEWS: {
     BASE: '/reviews',
     DETAIL: (userNo) => `/reviews?userNo=${userNo}`,
-
   },
+  // 인혜 만듬(중복되면 주석도 함께 지워주기)
+  PATIENT: {
+    BASE: '/patients',
+    DETAIL: (guardianNo) => `/patients?guardiaNo=${guardianNo}`,
+  },
+    // 인혜 만듬(중복되면 주석도 함께 지워주기)
+    DISEASE: {
+      BASE: '/disease',
+      DETAIL: (disNo) => `/patients?disNo=${disNo}`,
+    },
 };
