@@ -30,7 +30,7 @@
       "email": "leezi0916@naver.com"
     },
     {
-      "id": "e851",
+      "id": "1",
       "userid": "lee1234",
       "userpwd": "lee1234",
       "username": "이인혜",
@@ -42,7 +42,7 @@
     }
   ],
   "reviews": [],
-  "hires": [
+"hires": [
     {
       "id": "1",
       "hiring_no": "1",
@@ -183,5 +183,85 @@
       "care_status": true,
       "profile_image": "/src/assets/images/pat.png"
     }
+  ],
+
+  "patients": [
+    {
+      "guardianNo": "1",
+      "profileImage": "/src/assets/profileImg/img_환자소.png",
+      "patName": "김건희",
+      "patAddress": "서울시 강남구",
+      "patAge": 60,
+      "patGender": "F",
+      "patHeight": 162.5,
+      "patWeight": 52.5,
+      "patContent": "당뇨합병증",
+      "status": "Y"
+    },
+    {
+      "guardianNo": "1",
+      "profileImage": "/src/assets/profileImg/img_환자소.png",
+      "patName": "김겅강",
+      "patAddress": "서울시 강남구",
+      "patAge": 70,
+      "patGender": "F",
+      "patHeight": 162.5,
+      "patWeight": 52.5,
+      "patContent": "당뇨합병증",
+      "status": "Y"
+    },
+    {
+      "guardianNo": "1",
+      "profileImage": "/src/assets/profileImg/img_환자소.png",
+      "patName": "이건강",
+      "patAddress": "서울시 강남구",
+      "patAge": 80,
+      "patGender": "F",
+      "patHeight": 162.5,
+      "patWeight": 52.5,
+      "patContent": "당뇨합병증",
+      "phone": "",
+      "status": "Y"
+    },
+    {
+      "id": "836d",
+      "guardianNo": "1",
+      "patName": "이환자",
+      "patAge": 60,
+      "patAddress": "서울시 강남구",
+      "patGender": "M",
+      "patHeight": "155",
+      "patWeight": "55",
+      "patContent": "치매환자입니다.",
+      "phone": "01011111111"
+    }
+  ],
+  "disease": [
+    {
+      "disNo": "1",
+      "disName": "치매"
+    },
+    {
+      "id": "cec1",
+      "disName": [
+        "ㅊ"
+      ]
+    },
+    {
+      "id": "22c4",
+      "disName": [
+        "치매",
+        "장애2등급"
+      ]
+    }
+  ],
+  "diseaseTag": [
+    {
+      "disNo": "1",
+      "patNo": "1"
+    }
   ]
 }
+=======
+  
+

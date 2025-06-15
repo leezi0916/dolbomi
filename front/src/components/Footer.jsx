@@ -1,11 +1,21 @@
 import React from 'react';
 import styled from 'styled-components';
-import { SITE_CONFIG } from '../config/site';
+import { SITE_CONFIG } from '../config/site'
+import { media } from '../styles/MediaQueries';
+import { Link } from 'react-router-dom';
 
 const Footer = () => {
   return (
     <FooterContainer>
       <FooterWrapper>
+        <FooterSection>
+        <Logo to="/">
+          <img src="/public/logo.png" />
+          {SITE_CONFIG.name}
+        </Logo>
+        </FooterSection>
+
+
         <FooterSection>
           <FooterTitle>고객센터</FooterTitle>
           <FooterContent>
@@ -14,6 +24,7 @@ const Footer = () => {
             <p>운영시간: {SITE_CONFIG.contact.runtime}</p>
           </FooterContent>
         </FooterSection>
+        
         <FooterSection>
           <FooterTitle>회사정보</FooterTitle>
           <FooterContent>
@@ -22,6 +33,7 @@ const Footer = () => {
             <p>사업자등록번호: {SITE_CONFIG.info.company_number}</p>
           </FooterContent>
         </FooterSection>
+        
         <FooterSection>
           <FooterTitle>이용약관</FooterTitle>
           <FooterContent>
@@ -66,4 +78,18 @@ const FooterContent = styled.div`
   color: ${({ theme }) => theme.colors.gray[600]};
   font-size: ${({ theme }) => theme.fontSizes.sm};
 `;
+const Logo = styled(Link)`
+  font-size: ${({ theme }) => theme.fontSizes.xl};
+  font-weight: ${({ theme }) => theme.fontWeights.bold};
+  color: ${({ theme }) => theme.colors.primary};
+
+  img {
+    margin-right: ${({ theme }) => theme.spacing[8]};
+  }
+
+  ${media.md`
+   font-size: ${({ theme }) => theme.fontSizes['2xl']}; 
+  `}
+`;
+
 export default Footer;
