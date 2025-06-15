@@ -1,4 +1,22 @@
 {
+  "community": [
+    {
+      "no": "1",
+      "id": "extramin2",
+      "name": "김유인",
+      "title": "게임 추천합니다.",
+      "createDate": "2025-11-08",
+      "count": "5"
+    },
+    {
+      "no": "2",
+      "id": "extramin1",
+      "name": "김유하",
+      "title": "테스트테스트.",
+      "createDate": "2025-11-09",
+      "count": "4"
+    }
+  ],
   "users": [
     {
       "id": "d340",
@@ -10,6 +28,17 @@
       "phone": "01083281182",
       "address": "경기도 남양주시 별내동",
       "email": "leezi0916@naver.com"
+    },
+    {
+      "id": "e851",
+      "userid": "lee1234",
+      "userpwd": "lee1234",
+      "username": "이인혜",
+      "age": 20,
+      "gender": "female",
+      "phone": "01022222222",
+      "address": "서울 강남구 강남역",
+      "email": "user0@naver.com"
     }
   ],
   "reviews": [],

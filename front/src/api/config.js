@@ -12,8 +12,12 @@ export const API_CONFIG = {
 };
 
 export const API_ENDPOINTS = {
-  PRODUCTS: {
-    BASE: '/products',
+  // PRODUCTS: {
+  //   BASE: '/products',
+  // },
+  COMMUNITY: {
+    BASE: '/community', // 게시판 리스트 등
+    DETAIL: (id) => `/community/${id}`, // 특정 게시글 상세
   },
 
   USERS: {

@@ -55,7 +55,8 @@ const Header = () => {
               ) : (
                 <NavItem to="/caregiverlist">간병사 모집</NavItem>
               )}
-              <NavItem to="/question">소통</NavItem>
+
+              <NavItem to="/CommunityBoard">소통</NavItem>
             </DesktopNav>
 
             <DesktopUserMenu>

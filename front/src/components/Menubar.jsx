@@ -17,8 +17,9 @@ export default function Menubar() {
         <NavItem to="/">
           <Icon src="/src/assets/icons/icon_개인정보홈.png" alt="" /> 개인정보홈
         </NavItem>
+
         {userStatus ? (
-          <NavItem to="/">
+          <NavItem to="/patient">
             <Icon src="/src/assets/icons/icon_돌봄대상자관리.png" alt="" />
             돌봄대상자 관리
           </NavItem>
@@ -49,10 +50,12 @@ export default function Menubar() {
           <Icon src="/src/assets/icons/icon_리뷰페이지.png" alt="" />
           리뷰페이지
         </NavItem>
+
         <NavItem to="/">
           <Icon src="/src/assets/icons/icon_매칭관리.png" alt="" />
           매칭관리
         </NavItem>
+
         <NavItem onClick={handleLogout}>
           <Icon src="/src/assets/icons/icon_로그아웃.png" alt="" />
           로그아웃
