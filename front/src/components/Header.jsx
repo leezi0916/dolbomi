@@ -83,6 +83,7 @@ const Header = () => {
                   <NavItem to="/patient">
                     <Icon src="/src/assets/icons/icon_돌봄대상자관리.png" alt="" />
                     돌봄대상자 관리
+
                   </NavItem>
                 ) : (
                   <NavItem to="/">
