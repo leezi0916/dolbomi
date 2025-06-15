@@ -4,33 +4,23 @@ import styled from 'styled-components';
 import { SITE_CONFIG } from '../config/site';
 import { media } from '../styles/MediaQueries';
 import { GiHamburgerMenu } from 'react-icons/gi';
-import Menubar from './menubar';
 import useUserStore from '../store/userStore';
 
 const Header = () => {
   const { user, isAuthenticated, userStatus, setUserStatus } = useUserStore();
-  // userStatus => true :간병인 false : 돌봄대상자(보호자)
-  // const [status, setStatus] = useState(false);
 
   const [isHovering, setIsHovering] = useState(false);
 
   return (
-    <>
-      <div
-        style={{
-          position: 'relative', // 기준이 되는 부모
-          zIndex: 10,
-        }}
-      >
-        <HeaderContainer>
-          <HeaderWrapper>
-            <Logo to="/">
-              <img src="/public/logo.png" />
-              {SITE_CONFIG.name}
-            </Logo>
+    <HeaderContainer>
+      <HeaderWrapper>
+        <Logo to="/">
+          <img src="/public/logo.png" />
+          {SITE_CONFIG.name}
+        </Logo>
 
-            {/* 모바일환경에서의 nav */}
-            {/* <MenuButton />
+        {/* 모바일환경에서의 nav */}
+        {/* <MenuButton />
 
         <MobileMenu>
           <UserProfile>
@@ -48,59 +38,100 @@ const Header = () => {
           </UserMenu>
         </MobileMenu> */}
 
-            {/* pc환경에서의 nav */}
-            <DesktopNav>
-              {userStatus ? (
-                <NavItem to="/hirelist">돌봄대상자 모집</NavItem>
-              ) : (
-                <NavItem to="/caregiverlist">간병사 모집</NavItem>
-              )}
+        {/* pc환경에서의 nav */}
+        <DesktopNav>
+          <NavItem to="/products">돌봄대상자 모집</NavItem>
+          <NavItem to="/CommunityBoard">소통</NavItem>
+        </DesktopNav>
 
-              <NavItem to="/CommunityBoard">소통</NavItem>
-            </DesktopNav>
+        <DesktopUserMenu>
+          <img src="/src/assets/icons/icon_알림.png" alt="" />
+          <img src="/src/assets/icons/icon_채팅알림.png" alt="" />
+          <ToggleWrap onClick={() => setUserStatus(!userStatus)}>
+            <ToggleItem userStatus={!userStatus}>간병인</ToggleItem>
+            <ToggleItem userStatus={userStatus}>보호자</ToggleItem>
+          </ToggleWrap>
 
-            <DesktopUserMenu>
-              {isAuthenticated ? (
-                <DesktopUserMenuWrap>
-                  <img src="/public/icons/icon_알림.png" alt="" />
-                  <img src="/public/icons/icon_채팅알림.png" alt="" />
-                  <ToggleWrap onClick={() => setUserStatus(!userStatus)}>
-                    <ToggleItem userStatus={!userStatus}>간병인</ToggleItem>
-                    <ToggleItem userStatus={userStatus}>보호자</ToggleItem>
-                  </ToggleWrap>
+          {!isAuthenticated ? (
+            <NavItem onMouseEnter={() => setIsHovering(true)} style={{ cursor: 'pointer' }}>
+              {user?.username}000님
+            </NavItem>
+          ) : (
+            <>
+              <NavItem to="/login">로그인</NavItem>
+              <NavItem to="/signup">회원가입</NavItem>
+            </>
+          )}
 
-                  <NavItem to="/profile" onMouseEnter={() => setIsHovering(true)} style={{ cursor: 'pointer' }}>
-                    {user?.username}님
+          {isHovering && (
+            <div
+              style={{
+                position: 'absolute',
+                top:  'calc(100% + 22px)',
+                right: '0',
+                bottom: '16px',
+              }}
+              onMouseEnter={() => setIsHovering(true)}
+              onMouseLeave={() => setIsHovering(false)}
+            >
+              <Wrap>
+                <NavItem to="/">
+                  <Icon src="/src/assets/icons/icon_개인정보홈.png" alt="" /> 개인정보홈
+                </NavItem>
+
+                {userStatus ? (
+                  <NavItem to="/patient">
+                    <Icon src="/src/assets/icons/icon_돌봄대상자관리.png" alt="" />
+                    돌봄대상자 관리
+
                   </NavItem>
-                </DesktopUserMenuWrap>
-              ) : (
-                <>
-                  <NavItem to="/login">로그인</NavItem>
-                  <NavItem to="/signup">회원가입</NavItem>
-                </>
-              )}
-            </DesktopUserMenu>
-          </HeaderWrapper>
-        </HeaderContainer>
-        {isHovering && (
-          <div
-            style={{
-              position: 'absolute',
-              top: '100%',
-              right: 0,
-            }}
-            onMouseEnter={() => setIsHovering(true)}
-            onMouseLeave={() => setIsHovering(false)}
-          >
-            <Menubar />
-          </div>
-        )}
-      </div>
-    </>
+                ) : (
+                  <NavItem to="/">
+                    <Icon src="/src/assets/icons/icon_이력서등록.png" alt="" />
+                    이력서 등록
+                  </NavItem>
+                )}
+
+                {userStatus ? (
+                  <NavItem to="/">
+                    <Icon src="/src/assets/icons/icon_이력서등록.png" alt="" />
+                    돌봄대상자 신청
+                  </NavItem>
+                ) : (
+                  <NavItem to="/">
+                    <Icon src="/src/assets/icons/icon_간병사신청.png" alt="" />
+                    간병사 신청
+                  </NavItem>
+                )}
+
+                <NavItem to="/">
+                  <Icon src="/src/assets/icons/icon_내역관리.png" alt="" />
+                  내역관리
+                </NavItem>
+                <NavItem to="/">
+                  <Icon src="/src/assets/icons/icon_리뷰페이지.png" alt="" />
+                  리뷰페이지
+                </NavItem>
+
+                <NavItem to="/">
+                  <Icon src="/src/assets/icons/icon_매칭관리.png" alt="" />
+                  매칭관리
+                </NavItem>
+
+                <NavItem to="/">
+                  <Icon src="/src/assets/icons/icon_로그아웃.png" alt="" />
+                  로그아웃
+                </NavItem>
+              </Wrap>
+            </div>
+          )}
+        </DesktopUserMenu>
+      </HeaderWrapper>
+    </HeaderContainer>
   );
 };
 
-// 간병 <-> 도우미
+// toggle 간병 <-> 도우미
 const ToggleWrap = styled.div`
   display: flex;
   justify-content: space-between;
@@ -114,8 +145,9 @@ const ToggleItem = styled.div`
   background: ${({ userStatus, theme }) => (userStatus ? theme.colors.primary : 'transparent')};
   cursor: pointer;
 `;
+
 const NavIt = styled.img``;
-//
+
 const UserProfile = styled.div`
   display: flex;
   align-items: center;
@@ -139,11 +171,14 @@ const HeaderContainer = styled.header`
 const HeaderWrapper = styled.div`
   padding: ${({ theme }) => theme.spacing[4]};
   display: flex;
-  align-items: center;
   justify-content: space-between;
+  align-items: center;
   max-width: 1280px;
   margin: 0 auto;
   height: 80px;
+  gap: ${({ theme }) => theme.spacing[4]};
+
+  position: relative;
 `;
 
 const Logo = styled(Link)`
@@ -155,16 +190,18 @@ const Logo = styled(Link)`
     margin-right: ${({ theme }) => theme.spacing[8]};
   }
 
+
   ${media.md`
    font-size: ${({ theme }) => theme.fontSizes['2xl']}; 
   `}
+
+
 `;
 
 const DesktopNav = styled.nav`
   display: none;
-
   gap: ${({ theme }) => theme.spacing[8]};
-
+  width: 50%;
   ${media.md`
         display: flex;
     `}
@@ -172,6 +209,8 @@ const DesktopNav = styled.nav`
 
 const DesktopUserMenu = styled.nav`
   display: none;
+  position: relative;
+  align-items: center;
   gap: ${({ theme }) => theme.spacing[8]};
 
   ${media.md`
@@ -179,11 +218,9 @@ const DesktopUserMenu = styled.nav`
     `}
 `;
 
-// 수정
 const DesktopUserMenuWrap = styled.div`
   display: flex;
   gap: ${({ theme }) => theme.spacing[10]};
-
   align-items: center;
 `;
 
@@ -243,5 +280,26 @@ const UserMenu = styled.div`
   gap: ${({ theme }) => theme.spacing[4]};
   border-top: 1px solid ${({ theme }) => theme.colors.gray[200]};
   padding-top: ${({ theme }) => theme.spacing[8]};
+`;
+
+//menuNav dropdown
+const Wrap = styled.div`
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+  gap: 5px;
+  width: 180px;
+  padding: ${({ theme }) => theme.spacing[2]} 0;
+
+  float: right;
+  background-color: white;
+  border: 1px solid ${({ theme }) => theme.colors.primary};
+  border-radius: ${({ theme }) => theme.borderRadius.base} 0;
+`;
+
+const Icon = styled.img`
+  width: 24px;
+  height: 24px;
+  margin: 0px ${({ theme }) => theme.spacing[4]} 0;
 `;
 export default Header;
