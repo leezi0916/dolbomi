@@ -40,7 +40,14 @@ const Header = () => {
 
         {/* pc환경에서의 nav */}
         <DesktopNav>
-          <NavItem to="/products">돌봄대상자 모집</NavItem>
+          {userStatus ? (
+            <>
+              <NavItem to="/hirelist">간병인 모집</NavItem>
+            
+            </>
+          ) : (
+            <NavItem to="/">돌봄대상자 모집</NavItem>
+          )}
           <NavItem to="/CommunityBoard">소통</NavItem>
         </DesktopNav>
 
@@ -67,7 +74,7 @@ const Header = () => {
             <div
               style={{
                 position: 'absolute',
-                top:  'calc(100% + 22px)',
+                top: 'calc(100% + 22px)',
                 right: '0',
                 bottom: '16px',
               }}
@@ -83,7 +90,6 @@ const Header = () => {
                   <NavItem to="/patient">
                     <Icon src="/src/assets/icons/icon_돌봄대상자관리.png" alt="" />
                     돌봄대상자 관리
-
                   </NavItem>
                 ) : (
                   <NavItem to="/">
@@ -190,12 +196,9 @@ const Logo = styled(Link)`
     margin-right: ${({ theme }) => theme.spacing[8]};
   }
 
-
   ${media.md`
    font-size: ${({ theme }) => theme.fontSizes['2xl']}; 
   `}
-
-
 `;
 
 const DesktopNav = styled.nav`

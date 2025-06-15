@@ -42,7 +42,7 @@
     }
   ],
   "reviews": [],
-"hires": [
+  "hires": [
     {
       "id": "1",
       "hiringno": "1",
@@ -234,6 +234,18 @@
       "patWeight": "55",
       "patContent": "치매환자입니다.",
       "phone": "01011111111"
+    },
+    {
+      "id": "f411",
+      "guardianNo": "1",
+      "patName": "이환자",
+      "patAge": 60,
+      "patAddress": "서울시 강남구",
+      "patGender": "M",
+      "patHeight": "155",
+      "patWeight": "55",
+      "patContent": "장애 등급 2등급입니다.",
+      "phone": "01011111111"
     }
   ],
   "disease": [
@@ -253,6 +265,12 @@
         "치매",
         "장애2등급"
       ]
+    },
+    {
+      "id": "1016",
+      "disName": [
+        "장애2등급"
+      ]
     }
   ],
   "diseaseTag": [
@@ -262,6 +280,3 @@
     }
   ]
 }
-=======
-  
-
