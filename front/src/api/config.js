@@ -19,15 +19,18 @@ export const API_ENDPOINTS = {
     BASE: '/community', // 게시판 리스트 등
     DETAIL: (id) => `/community/${id}`, // 특정 게시글 상세
   },
-USERS: {
+
+  USERS: {
     BASE: '/users',
     // LOGIN: '/users/login' //실제에는 이렇게 해야함 아래는 JsonServer 사용시
     LOGIN: (userid, userpwd) => `/users?userid=${userid}&userpwd=${userpwd}`,
-
   },
   REVIEWS: {
     BASE: '/reviews',
     DETAIL: (userNo) => `/reviews?userNo=${userNo}`,
+  },
 
+  HIRES: {
+    BASE: '/hires',
   },
 };

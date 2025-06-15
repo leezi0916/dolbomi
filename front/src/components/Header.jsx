@@ -50,12 +50,17 @@ const Header = () => {
 
             {/* pc환경에서의 nav */}
             <DesktopNav>
-              <NavItem to="/products">돌봄대상자 모집</NavItem>
+              {userStatus ? (
+                <NavItem to="/hirelist">돌봄대상자 모집</NavItem>
+              ) : (
+                <NavItem to="/caregiverlist">간병사 모집</NavItem>
+              )}
+
               <NavItem to="/CommunityBoard">소통</NavItem>
             </DesktopNav>
 
             <DesktopUserMenu>
-              {!isAuthenticated ? (
+              {isAuthenticated ? (
                 <DesktopUserMenuWrap>
                   <img src="/public/icons/icon_알림.png" alt="" />
                   <img src="/public/icons/icon_채팅알림.png" alt="" />
@@ -65,7 +70,7 @@ const Header = () => {
                   </ToggleWrap>
 
                   <NavItem to="/profile" onMouseEnter={() => setIsHovering(true)} style={{ cursor: 'pointer' }}>
-                    {user?.username}000님
+                    {user?.username}님
                   </NavItem>
                 </DesktopUserMenuWrap>
               ) : (

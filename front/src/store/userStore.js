@@ -2,15 +2,13 @@ import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
 const useUserStore = create(
-  
-
-
   persist(
     (set) => ({
-
       user: null,
+
       // 간병인= false/ 돌봄대상자 = true
-      userStatus : false,
+      userStatus: false,
+
       isAuthenticated: false,
 
       // 간병인= false/ 돌봄대상자 = true
@@ -25,7 +23,6 @@ const useUserStore = create(
           user: {
             userid: userData.userid,
             username: userData.username,
-            role: userData.role,
           },
           isAuthenticated: true,
         });

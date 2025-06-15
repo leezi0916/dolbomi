@@ -1,11 +1,16 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import useUserStore from '../store/userStore';
 
 export default function Menubar() {
-  const { userStatus } = useUserStore();
-
+  const { userStatus, logout } = useUserStore();
+  const navigate = useNavigate();
+  const handleLogout = () => {
+    logout();
+    alert('로그아웃 되었습니다.');
+    navigate('/');
+  };
   return (
     <>
       <Wrap>
@@ -45,17 +50,16 @@ export default function Menubar() {
           <Icon src="/src/assets/icons/icon_리뷰페이지.png" alt="" />
           리뷰페이지
         </NavItem>
-        
+
         <NavItem to="/">
           <Icon src="/src/assets/icons/icon_매칭관리.png" alt="" />
           매칭관리
         </NavItem>
-       
-        <NavItem to="/">
+
+        <NavItem onClick={handleLogout}>
           <Icon src="/src/assets/icons/icon_로그아웃.png" alt="" />
           로그아웃
         </NavItem>
-      
       </Wrap>
     </>
   );
