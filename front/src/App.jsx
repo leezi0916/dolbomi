@@ -18,6 +18,9 @@ import HireList from './pages/HireList';
 
 import Patient from './pages/Patient';
 import PatientRegisteration from './pages/PatientRegistration';
+import Report from './pages/Report';
+import ReportDetail from './pages/ReportDetail';
+import ReportForm from './pages/ReportForm';
 
 function App() {
   return (
@@ -36,6 +39,9 @@ function App() {
               <Route path="/signup" element={<SignUp />} />
               <Route path="/login" element={<Login />} />
               <Route path="/hirelist" element={<HireList />} />
+              <Route path="/report" element={<Report />} />
+              <Route path="/reportdetail" element={<ReportDetail />} />
+              <Route path="/reportform" element={<ReportForm />} />
             </Routes>
           </Layout>
         </Router>
