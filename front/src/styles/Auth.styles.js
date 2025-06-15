@@ -30,6 +30,12 @@ export const InputGroup = styled.div`
   gap: ${({ theme }) => theme.spacing[1]};
 `;
 
+export const InputContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  max-width: 600px;
+  margin: 0 auto;
+`;
 export const Label = styled.label`
   font-size: ${({ theme }) => theme.fontSizes.sm};
   font-weight: ${({ theme }) => theme.fontWeights.medium};
