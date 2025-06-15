@@ -19,6 +19,8 @@ import HireList from './pages/HireList';
 import Patient from './pages/Patient';
 import PatientRegisteration from './pages/PatientRegistration';
 
+import CaregiverList from './pages/CaregiverList';
+
 function App() {
   return (
     <>
@@ -36,6 +38,7 @@ function App() {
               <Route path="/signup" element={<SignUp />} />
               <Route path="/login" element={<Login />} />
               <Route path="/hirelist" element={<HireList />} />
+              <Route path="/caregiverlist" element={<CaregiverList />} />
             </Routes>
           </Layout>
         </Router>
