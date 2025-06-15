@@ -1,13 +1,16 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Title, AuthContainer } from '../styles/Auth.styles';
 import { SubmitButton, ButtonText } from '../styles/common/Button';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import useUserStore from '../store/userStore';
 import { useEffect } from 'react';
+import { ProfileImg } from '../styles/common/Profile';
+import { patientService } from '../api/patient';
 
 const Patient = () => {
   const { user, isAuthenticated } = useUserStore();
+  const [userPatients, setUserpatients] = useState();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -16,6 +19,19 @@ const Patient = () => {
       alert('로그인 후 이용해주세요');
       navigate('/');
     }
+    const getPatients = async () => {
+      try {
+        const patientsList = await patientService.getPatients("1");
+        console.log(patientsList);
+        setUserpatients(patientsList);
+      } catch (error) {
+        console.log(error);
+        // const errorMessage = '목록을 불러오는데 실패했습니다.';
+        // setError(errorMessage);
+        // toast.error(errorMessage);
+      }
+    };
+    getPatients();
   }, [user]);
   return (
     <>
@@ -23,109 +39,41 @@ const Patient = () => {
         <Head>
           <Title>돌봄 대상자 목록</Title>
           <RegistrationButton>
-            <ButtonText onClick={() => navigate('/PatientRegistration')}>등록</ButtonText>
+            <ButtonText onClick={() => navigate('/patientRegisteration')}>등록</ButtonText>
           </RegistrationButton>
         </Head>
 
         <CardWrap>
-          <Card>
-            <ProfileDiv>
-              <Img src="../assets/profileImg/img_환자소.png" alt="" />
-              <div>
-                <p>김건희 님</p>
-                <p>나이 80세 (여) </p>
-              </div>
-            </ProfileDiv>
 
-            <ButtonDiv>
-              <SubmitButton>
-                <ButtonText>관리</ButtonText>
-              </SubmitButton>
+          {userPatients?.map((pat) => (
+            <Card>
+              <ProfileDiv>
+                <Img src={pat.profileImage} alt="" />
+                <div>
+                  <ProfileTextGray>
+                    <ProfileTextStrong>{pat.patName}</ProfileTextStrong> 님
+                  </ProfileTextGray>
+                 
+                  <ProfileTextGray>
+                    나이
+                    <ProfileTextStrong>
+                      {pat.patAge}세 ({pat.patGender === "F" ? "여" : "남"})
+                    </ProfileTextStrong>
+                  </ProfileTextGray>
+                </div>
+              </ProfileDiv>
 
-              <SubmitButton>
-                <ButtonText>일지</ButtonText>
-              </SubmitButton>
-            </ButtonDiv>
-          </Card>
+              <ButtonDiv>
+                <SubmitButton1>
+                  <ButtonText>관리</ButtonText>
+                </SubmitButton1>
 
-          <Card>
-            <ProfileDiv>
-              <Img src="../assets/profileImg/img_환자소.png" alt="" />
-              <div>
-                <p>김건희 님</p>
-                <p>나이 80세 (여) </p>
-              </div>
-            </ProfileDiv>
-
-            <ButtonDiv>
-              <SubmitButton>
-                <ButtonText>관리</ButtonText>
-              </SubmitButton>
-
-              <SubmitButton>
-                <ButtonText>일지</ButtonText>
-              </SubmitButton>
-            </ButtonDiv>
-          </Card>
-
-          <Card>
-            <ProfileDiv>
-              <Img src="../assets/profileImg/img_환자소.png" alt="" />
-              <div>
-                <p>김건희 님</p>
-                <p>나이 80세 (여) </p>
-              </div>
-            </ProfileDiv>
-
-            <ButtonDiv>
-              <SubmitButton>
-                <ButtonText>관리</ButtonText>
-              </SubmitButton>
-
-              <SubmitButton>
-                <ButtonText>일지</ButtonText>
-              </SubmitButton>
-            </ButtonDiv>
-          </Card>
-          <Card>
-            <ProfileDiv>
-              <Img src="../assets/profileImg/img_환자소.png" alt="" />
-              <div>
-                <p>김건희 님</p>
-                <p>나이 80세 (여) </p>
-              </div>
-            </ProfileDiv>
-
-            <ButtonDiv>
-              <SubmitButton>
-                <ButtonText>관리</ButtonText>
-              </SubmitButton>
-
-              <SubmitButton>
-                <ButtonText>일지</ButtonText>
-              </SubmitButton>
-            </ButtonDiv>
-          </Card>
-
-          <Card>
-            <ProfileDiv>
-              <Img src="../assets/profileImg/img_환자소.png" alt="" />
-              <div>
-                <p>김건희 님</p>
-                <p>나이 80세 (여) </p>
-              </div>
-            </ProfileDiv>
-
-            <ButtonDiv>
-              <SubmitButton>
-                <ButtonText>관리</ButtonText>
-              </SubmitButton>
-
-              <SubmitButton>
-                <ButtonText>일지</ButtonText>
-              </SubmitButton>
-            </ButtonDiv>
-          </Card>
+                <SubmitButton1>
+                  <ButtonText>일지</ButtonText>
+                </SubmitButton1>
+              </ButtonDiv>
+            </Card>
+          ))}
         </CardWrap>
       </AuthContainer>
     </>
@@ -153,11 +101,12 @@ const Head = styled.div`
 
 const RegistrationButton = styled(SubmitButton)`
   height: fit-content;
+  width: 120px;
 `;
 
-const Img = styled.img`
-  width: 50px;
-  height: 50px;
+const Card = styled.div`
+  max-height: fit-content;
+  box-shadow: ${({ theme }) => theme.shadows.base};
 `;
 
 const ProfileDiv = styled.div`
@@ -166,6 +115,20 @@ const ProfileDiv = styled.div`
   align-items: center;
   margin: ${({ theme }) => theme.spacing[5]};
 `;
+const Img = styled(ProfileImg)`
+  width: 50px;
+  height: 50px;
+  margin-right: ${({ theme }) => theme.spacing[4]};
+`;
+
+const ProfileTextGray = styled.p`
+  color: ${({ theme }) => theme.colors.gray[3]};
+`;
+
+const ProfileTextStrong = styled.strong`
+  color: ${({ theme }) => theme.colors.black1};
+  font-weight: ${({ theme }) => theme.fontWeights.semibold};
+`;
 
 const ButtonDiv = styled.div`
   display: flex;
@@ -173,8 +136,6 @@ const ButtonDiv = styled.div`
   margin: ${({ theme }) => theme.spacing[5]};
   gap: ${({ theme }) => theme.spacing[4]};
 `;
-
-const Card = styled.div`
-  max-height: fit-content;
-  box-shadow: ${({ theme }) => theme.shadows.base};
+const SubmitButton1 = styled(SubmitButton)`
+  width: 120px;
 `;

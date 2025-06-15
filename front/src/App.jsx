@@ -9,13 +9,10 @@ import Layout from './components/Layout';
 import { ToastContainer } from 'react-toastify';
 
 import CommunityBoard from './pages/CommunityBoard';
-
 import ReviewModal from './pages/ReviewModal';
 import SignUp from './pages/SignUp';
-
 import Login from './pages/Login';
 import HireList from './pages/HireList';
-
 import Patient from './pages/Patient';
 import PatientRegisteration from './pages/PatientRegistration';
 import Report from './pages/Report';
@@ -31,9 +28,8 @@ function App() {
           <Layout>
             <Routes>
               <Route path="/" element={<Home />} />
-
               <Route path="/patient" element={<Patient />} />
-              <Route path="/patient" element={<PatientRegisteration />} />
+              <Route path="/patientRegisteration" element={<PatientRegisteration />} />
               <Route path="/CommunityBoard" element={<CommunityBoard />} />
               <Route path="/review" element={<ReviewModal />} />
               <Route path="/signup" element={<SignUp />} />
