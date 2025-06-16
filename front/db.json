@@ -1,4 +1,96 @@
 {
+  "hiring": [
+    {
+      "job_opening_no": 1,
+      "pat_no": 1,
+      "user_name": "김길동",
+      "gender": "F",
+      "age": 65,
+      "pay": 15000,
+      "address": "강원도",
+      "image": "https://i.pinimg.com/736x/ba/ca/a0/bacaa0c3434602bc8e7d6a99db91b372.jpg",
+      "care_status": "O"
+    },
+    {
+      "job_opening_no": 2,
+      "pat_no": 2,
+      "user_name": "이순자",
+      "gender": "F",
+      "age": 82,
+      "pay": 16000,
+      "address": "서울특별시",
+      "image": "https://i.pinimg.com/736x/ba/ca/a0/bacaa0c3434602bc8e7d6a99db91b372.jpg",
+      "care_status": "O"
+    },
+    {
+      "job_opening_no": 3,
+      "pat_no": 3,
+      "user_name": "박철수",
+      "gender": "M",
+      "age": 78,
+      "pay": 14000,
+      "address": "부산광역시",
+      "image": "https://i.pinimg.com/736x/ba/ca/a0/bacaa0c3434602bc8e7d6a99db91b372.jpg",
+      "care_status": "X"
+    },
+    {
+      "job_opening_no": 4,
+      "pat_no": 4,
+      "user_name": "최민자",
+      "gender": "F",
+      "age": 85,
+      "pay": 17000,
+      "address": "대구광역시",
+      "image": "https://i.pinimg.com/736x/ba/ca/a0/bacaa0c3434602bc8e7d6a99db91b372.jpg",
+      "care_status": "O"
+    },
+    {
+      "job_opening_no": 5,
+      "pat_no": 5,
+      "user_name": "장영수",
+      "gender": "M",
+      "age": 75,
+      "pay": 14500,
+      "address": "인천광역시",
+      "image": "https://i.pinimg.com/736x/ba/ca/a0/bacaa0c3434602bc8e7d6a99db91b372.jpg",
+      "care_status": "X"
+    },
+    {
+      "job_opening_no": 6,
+      "pat_no": 1,
+      "user_name": "김길동",
+      "gender": "F",
+      "age": 65,
+      "pay": 15000,
+      "address": "강원도",
+      "image": "https://i.pinimg.com/736x/ba/ca/a0/bacaa0c3434602bc8e7d6a99db91b372.jpg",
+      "care_status": "O"
+    },
+
+    {
+      "job_opening_no": 8,
+      "pat_no": 7,
+      "user_name": "나동훈",
+      "gender": "M",
+      "age": 81,
+      "pay": 15800,
+      "address": "경기도",
+      "image": "https://i.pinimg.com/736x/ba/ca/a0/bacaa0c3434602bc8e7d6a99db91b372.jpg",
+      "care_status": "X"
+    },
+
+    {
+      "job_opening_no": 10,
+      "pat_no": 2,
+      "user_name": "이순자",
+      "gender": "F",
+      "age": 82,
+      "pay": 16000,
+      "address": "서울특별시",
+      "image": "https://i.pinimg.com/736x/ba/ca/a0/bacaa0c3434602bc8e7d6a99db91b372.jpg",
+      "care_status": "O"
+    }
+  ],
   "community": [
     {
       "no": "1",
@@ -28,7 +120,232 @@
       "phone": "01083281182",
       "address": "경기도 남양주시 별내동",
       "email": "leezi0916@naver.com"
+    },
+    {
+      "id": "1",
+      "userid": "lee1234",
+      "userpwd": "lee1234",
+      "username": "이인혜",
+      "age": 20,
+      "gender": "female",
+      "phone": "01022222222",
+      "address": "서울 강남구 강남역",
+      "email": "user0@naver.com"
     }
   ],
-  "reviews": []
+  "reviews": [],
+  "hires": [
+    {
+      "id": "1",
+      "hiringno": "1",
+      "pat_name": "김영희",
+      "pat_age": "85세",
+      "pat_gender": "여",
+      "title": "치매 어머님 돌봄 구합니다. (주간)",
+      "startdate": "2025-07-01",
+      "enddate": "2025-07-31",
+      "pat_address": "서울 강남구 역삼동",
+      "account": "13000",
+      "care_status": true,
+      "profile_image": "/src/assets/images/pat.png"
+    },
+    {
+      "id": "2",
+      "hiringno": "2",
+      "pat_name": "김영희",
+      "pat_age": "85세",
+      "pat_gender": "여",
+      "title": "치매 어머님 돌봄 구합니다. (주간)",
+      "startdate": "2025-07-01",
+      "enddate": "2025-07-31",
+      "pat_address": "서울 강남구 역삼동",
+      "account": "13000",
+      "care_status": true,
+      "profile_image": "/src/assets/images/pat.png"
+    },
+    {
+      "id": "3",
+      "hiringno": "3",
+      "pat_name": "김영희",
+      "pat_age": "85세",
+      "pat_gender": "여",
+      "title": "치매 어머님 돌봄 구합니다. (주간)",
+      "startdate": "2025-07-01",
+      "enddate": "2025-07-31",
+      "pat_address": "서울 강남구 역삼동",
+      "account": "13000",
+      "care_status": true,
+      "profile_image": "/src/assets/images/pat.png"
+    },
+    {
+      "id": "4",
+      "hiringno": "4",
+      "pat_name": "김영희",
+      "pat_age": "85세",
+      "pat_gender": "여",
+      "title": "치매 어머님 돌봄 구합니다. (주간)",
+      "startdate": "2025-07-01",
+      "enddate": "2025-07-31",
+      "pat_address": "서울 강남구 역삼동",
+      "account": "13000",
+      "care_status": true,
+      "profile_image": "/src/assets/images/pat.png"
+    },
+    {
+      "id": "5",
+      "hiringno": "5",
+      "pat_name": "김영희",
+      "pat_age": "85세",
+      "pat_gender": "여",
+      "title": "치매 어머님 돌봄 구합니다. (주간)",
+      "startdate": "2025-07-01",
+      "enddate": "2025-07-31",
+      "pat_address": "서울 강남구 역삼동",
+      "account": "13000",
+      "care_status": true,
+      "profile_image": "/src/assets/images/pat.png"
+    },
+    {
+      "id": "6",
+      "hiringno": "6",
+      "pat_name": "김영희",
+      "pat_age": "85세",
+      "pat_gender": "여",
+      "title": "치매 어머님 돌봄 구합니다. (주간)",
+      "startdate": "2025-07-01",
+      "enddate": "2025-07-31",
+      "pat_address": "서울 강남구 역삼동",
+      "account": "13000",
+      "care_status": true,
+      "profile_image": "/src/assets/images/pat.png"
+    },
+    {
+      "id": "7",
+      "hiringno": "7",
+      "pat_name": "김영희",
+      "pat_age": "85세",
+      "pat_gender": "여",
+      "title": "치매 어머님 돌봄 구합니다. (주간)",
+      "startdate": "2025-07-01",
+      "enddate": "2025-07-31",
+      "pat_address": "서울 강남구 역삼동",
+      "account": "13000",
+      "care_status": true,
+      "profile_image": "/src/assets/images/pat.png"
+    },
+    {
+      "id": "8",
+      "hiringno": "8",
+      "pat_name": "김영희",
+      "pat_age": "85세",
+      "pat_gender": "여",
+      "title": "치매 어머님 돌봄 구합니다. (주간)",
+      "startdate": "2025-07-01",
+      "enddate": "2025-07-31",
+      "pat_address": "서울 강남구 역삼동",
+      "account": "13000",
+      "care_status": true,
+      "profile_image": "/src/assets/images/pat.png"
+    },
+    {
+      "id": "9",
+      "hiringno": "9",
+      "pat_name": "김영희",
+      "pat_age": "85세",
+      "pat_gender": "여",
+      "title": "치매 어머님 돌봄 구합니다. (주간)",
+      "startdate": "2025-07-01",
+      "enddate": "2025-07-31",
+      "pat_address": "서울 강남구 역삼동",
+      "account": "13000",
+      "care_status": true,
+      "profile_image": "/src/assets/images/pat.png"
+    },
+    {
+      "id": "10",
+      "hiringno": "10",
+      "pat_name": "김영희",
+      "pat_age": "85세",
+      "pat_gender": "여",
+      "title": "치매 어머님 돌봄 구합니다. (주간)",
+      "startdate": "2025-07-01",
+      "enddate": "2025-07-31",
+      "pat_address": "서울 강남구 역삼동",
+      "account": "13000",
+      "care_status": true,
+      "profile_image": "/src/assets/images/pat.png"
+    }
+  ],
+
+  "patients": [
+    {
+      "guardianNo": "1",
+      "profileImage": "/src/assets/profileImg/img_환자소.png",
+      "patName": "김건희",
+      "patAddress": "서울시 강남구",
+      "patAge": 60,
+      "patGender": "F",
+      "patHeight": 162.5,
+      "patWeight": 52.5,
+      "patContent": "당뇨합병증",
+      "status": "Y"
+    },
+    {
+      "guardianNo": "1",
+      "profileImage": "/src/assets/profileImg/img_환자소.png",
+      "patName": "김겅강",
+      "patAddress": "서울시 강남구",
+      "patAge": 70,
+      "patGender": "F",
+      "patHeight": 162.5,
+      "patWeight": 52.5,
+      "patContent": "당뇨합병증",
+      "status": "Y"
+    },
+    {
+      "guardianNo": "1",
+      "profileImage": "/src/assets/profileImg/img_환자소.png",
+      "patName": "이건강",
+      "patAddress": "서울시 강남구",
+      "patAge": 80,
+      "patGender": "F",
+      "patHeight": 162.5,
+      "patWeight": 52.5,
+      "patContent": "당뇨합병증",
+      "phone": "",
+      "status": "Y"
+    },
+    {
+      "id": "836d",
+      "guardianNo": "1",
+      "patName": "이환자",
+      "patAge": 60,
+      "patAddress": "서울시 강남구",
+      "patGender": "M",
+      "patHeight": "155",
+      "patWeight": "55",
+      "patContent": "치매환자입니다.",
+      "phone": "01011111111"
+    }
+  ],
+  "disease": [
+    {
+      "disNo": "1",
+      "disName": "치매"
+    },
+    {
+      "id": "cec1",
+      "disName": ["ㅊ"]
+    },
+    {
+      "id": "22c4",
+      "disName": ["치매", "장애2등급"]
+    }
+  ],
+  "diseaseTag": [
+    {
+      "disNo": "1",
+      "patNo": "1"
+    }
+  ]
 }

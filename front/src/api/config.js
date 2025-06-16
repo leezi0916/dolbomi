@@ -19,6 +19,7 @@ export const API_ENDPOINTS = {
     BASE: '/community', // 게시판 리스트 등
     DETAIL: (id) => `/community/${id}`, // 특정 게시글 상세
   },
+
   USERS: {
     BASE: '/users',
     PROFILE: (userid) => `/users?profile=${userid}`,
@@ -28,5 +29,22 @@ export const API_ENDPOINTS = {
   REVIEWS: {
     BASE: '/reviews',
     DETAIL: (userNo) => `/reviews?userNo=${userNo}`,
+  },
+  HIRING: {
+    BASE: '/hiring',
+  },
+
+  HIRES: {
+    BASE: '/hires',
+  },
+
+  PATIENT: {
+    BASE: '/patients',
+    DETAIL: (guardianNo) => `/patients?guardiaNo=${guardianNo}`,
+  },
+
+  DISEASE: {
+    BASE: '/disease',
+    DETAIL: (disNo) => `/patients?disNo=${disNo}`,
   },
 };

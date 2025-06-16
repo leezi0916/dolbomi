@@ -20,7 +20,6 @@ const useUserStore = create(
           user: {
             userid: userData.userid,
             username: userData.username,
-            role: userData.role,
           },
           isAuthenticated: true,
         });
