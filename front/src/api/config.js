@@ -17,12 +17,12 @@ export const API_ENDPOINTS = {
   // },
   COMMUNITY: {
     BASE: '/community', // 게시판 리스트 등
-    DETAIL: (id) => `/community/${id}`, // 특정 게시글 상세
+    DETAIL: (no) => `/community/${no}`, // 특정 게시글 상세
   },
 
   USERS: {
     BASE: '/users',
-    PROFILE: (userid) => `/users?profile=${userid}`,
+    PROFILE: (userid) => `/users?userid=${userid}`,
     // LOGIN: '/users/login' //실제에는 이렇게 해야함 아래는 JsonServer 사용시
     LOGIN: (userid, userpwd) => `/users?userid=${userid}&userpwd=${userpwd}`,
   },

@@ -3,9 +3,11 @@ import { API_ENDPOINTS } from './config';
 
 export const userService = {
   //유저정보 불러오기(마이페이지 수정)
-  getUserProfile: async (userid) => {
+  getUserProfile: async (userId) => {
     try {
-      const { data } = await api.get(API_ENDPOINTS.USERS.PROFILE(userid));
+      const { data } = await api.get(API_ENDPOINTS.USERS.PROFILE(userId));
+      console.log('요청 URL:', API_ENDPOINTS.USERS.PROFILE(userId));
+
       return data;
     } catch (error) {
       console.error('프로필 조회 실패:', error.response?.data?.message || error.message);
