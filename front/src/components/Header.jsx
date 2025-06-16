@@ -5,13 +5,22 @@ import { SITE_CONFIG } from '../config/site';
 import { media } from '../styles/MediaQueries';
 import { GiHamburgerMenu } from 'react-icons/gi';
 import useUserStore from '../store/userStore';
+import { useNavigate } from 'react-router-dom';
 const Header = () => {
   const { user, isAuthenticated, userStatus, setUserStatus } = useUserStore();
   // userStatus => true :간병인 false : 돌봄대상자(보호자)
   // const [status, setStatus] = useState(false);
 
   const [isHovering, setIsHovering] = useState(false);
+  const logout = useUserStore((state) => state.logout);
+  const navigate = useNavigate();
 
+  const handleLogout = () => {
+    logout(); // Zustand에서 사용자 상태 초기화
+    localStorage.removeItem('user-storage'); // persist 저장소 삭제
+    alert('로그아웃 되었습니다.');
+    navigate('/'); // 홈으로 이동
+  };
   return (
     <HeaderContainer>
       <HeaderWrapper>
@@ -123,7 +132,7 @@ const Header = () => {
                   매칭관리
                 </NavItem>
 
-                <NavItem to="/">
+                <NavItem to="/" onClick={handleLogout}>
                   <Icon src="/src/assets/icons/icon_로그아웃.png" alt="" />
                   로그아웃
                 </NavItem>

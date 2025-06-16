@@ -39,8 +39,8 @@ const Login = () => {
                   {...register('user_id')}
                   $error={errors.user_id}
                 />
-                {errors.user_id && <ErrorMessage>{errors.user_id.message}</ErrorMessage>}
               </InputWrapper>
+              {errors.user_id && <ErrorMessage>{errors.user_id.message}</ErrorMessage>}
             </InputGroup>
             <InputGroup>
               <LoginLabel htmlFor="user_pwd">비밀번호</LoginLabel>
