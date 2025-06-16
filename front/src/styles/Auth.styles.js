@@ -30,6 +30,12 @@ export const InputGroup = styled.div`
   gap: ${({ theme }) => theme.spacing[1]};
 `;
 
+export const InputContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  max-width: 600px;
+  margin: 0 auto;
+`;
 export const Label = styled.label`
   font-size: ${({ theme }) => theme.fontSizes.sm};
   font-weight: ${({ theme }) => theme.fontWeights.medium};
@@ -40,7 +46,8 @@ export const Label = styled.label`
 
 export const Input = styled.input`
   padding: ${({ theme }) => theme.spacing[3]};
-  border: 1px solid ${({ theme, $error }) => ($error ? theme.colors.error : theme.colors.gray[300])};
+  //인혜 : 보더 색상 수정
+  border: 1px solid ${({ theme, $error }) => ($error ? theme.colors.error : theme.colors.gray[5])};
   border-radius: ${({ theme }) => theme.borderRadius.md};
   font-size: ${({ theme }) => theme.fontSizes.base};
 

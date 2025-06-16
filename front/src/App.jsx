@@ -5,11 +5,17 @@ import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
 import Home from './pages/Home';
 import theme from './styles/theme';
 import Layout from './components/Layout';
-
-import ReviewModal from './pages/ReviewModal';
-
-import SignUp from './pages/SignUp';
 import { ToastContainer } from 'react-toastify';
+import CommunityBoard from './pages/CommunityBoard';
+import ReviewModal from './pages/ReviewModal';
+import SignUp from './pages/SignUp';
+import Login from './pages/Login';
+import HireList from './pages/HireList';
+import Patient from './pages/Patient';
+import PatientRegisteration from './pages/PatientRegistration';
+import Report from './pages/Report';
+import ReportDetail from './pages/ReportDetail';
+import ReportForm from './pages/ReportForm';
 
 function App() {
   return (
@@ -20,8 +26,16 @@ function App() {
           <Layout>
             <Routes>
               <Route path="/" element={<Home />} />
+              <Route path="/patient" element={<Patient />} />
+              <Route path="/patientRegisteration" element={<PatientRegisteration />} />
+              <Route path="/CommunityBoard" element={<CommunityBoard />} />
               <Route path="/review" element={<ReviewModal />} />
               <Route path="/signup" element={<SignUp />} />
+              <Route path="/login" element={<Login />} />
+              <Route path="/hirelist" element={<HireList />} />
+              <Route path="/report" element={<Report />} />
+              <Route path="/reportdetail" element={<ReportDetail />} />
+              <Route path="/reportform" element={<ReportForm />} />
             </Routes>
           </Layout>
         </Router>

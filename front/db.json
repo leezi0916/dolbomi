@@ -91,6 +91,24 @@
       "care_status": "O"
     }
   ],
+  "community": [
+    {
+      "no": "1",
+      "id": "extramin2",
+      "name": "김유인",
+      "title": "게임 추천합니다.",
+      "createDate": "2025-11-08",
+      "count": "5"
+    },
+    {
+      "no": "2",
+      "id": "extramin1",
+      "name": "김유하",
+      "title": "테스트테스트.",
+      "createDate": "2025-11-09",
+      "count": "4"
+    }
+  ],
   "users": [
     {
       "id": "d340",
@@ -102,7 +120,232 @@
       "phone": "01083281182",
       "address": "경기도 남양주시 별내동",
       "email": "leezi0916@naver.com"
+    },
+    {
+      "id": "1",
+      "userid": "lee1234",
+      "userpwd": "lee1234",
+      "username": "이인혜",
+      "age": 20,
+      "gender": "female",
+      "phone": "01022222222",
+      "address": "서울 강남구 강남역",
+      "email": "user0@naver.com"
     }
   ],
-  "reviews": []
+  "reviews": [],
+  "hires": [
+    {
+      "id": "1",
+      "hiringno": "1",
+      "pat_name": "김영희",
+      "pat_age": "85세",
+      "pat_gender": "여",
+      "title": "치매 어머님 돌봄 구합니다. (주간)",
+      "startdate": "2025-07-01",
+      "enddate": "2025-07-31",
+      "pat_address": "서울 강남구 역삼동",
+      "account": "13000",
+      "care_status": true,
+      "profile_image": "/src/assets/images/pat.png"
+    },
+    {
+      "id": "2",
+      "hiringno": "2",
+      "pat_name": "김영희",
+      "pat_age": "85세",
+      "pat_gender": "여",
+      "title": "치매 어머님 돌봄 구합니다. (주간)",
+      "startdate": "2025-07-01",
+      "enddate": "2025-07-31",
+      "pat_address": "서울 강남구 역삼동",
+      "account": "13000",
+      "care_status": true,
+      "profile_image": "/src/assets/images/pat.png"
+    },
+    {
+      "id": "3",
+      "hiringno": "3",
+      "pat_name": "김영희",
+      "pat_age": "85세",
+      "pat_gender": "여",
+      "title": "치매 어머님 돌봄 구합니다. (주간)",
+      "startdate": "2025-07-01",
+      "enddate": "2025-07-31",
+      "pat_address": "서울 강남구 역삼동",
+      "account": "13000",
+      "care_status": true,
+      "profile_image": "/src/assets/images/pat.png"
+    },
+    {
+      "id": "4",
+      "hiringno": "4",
+      "pat_name": "김영희",
+      "pat_age": "85세",
+      "pat_gender": "여",
+      "title": "치매 어머님 돌봄 구합니다. (주간)",
+      "startdate": "2025-07-01",
+      "enddate": "2025-07-31",
+      "pat_address": "서울 강남구 역삼동",
+      "account": "13000",
+      "care_status": true,
+      "profile_image": "/src/assets/images/pat.png"
+    },
+    {
+      "id": "5",
+      "hiringno": "5",
+      "pat_name": "김영희",
+      "pat_age": "85세",
+      "pat_gender": "여",
+      "title": "치매 어머님 돌봄 구합니다. (주간)",
+      "startdate": "2025-07-01",
+      "enddate": "2025-07-31",
+      "pat_address": "서울 강남구 역삼동",
+      "account": "13000",
+      "care_status": true,
+      "profile_image": "/src/assets/images/pat.png"
+    },
+    {
+      "id": "6",
+      "hiringno": "6",
+      "pat_name": "김영희",
+      "pat_age": "85세",
+      "pat_gender": "여",
+      "title": "치매 어머님 돌봄 구합니다. (주간)",
+      "startdate": "2025-07-01",
+      "enddate": "2025-07-31",
+      "pat_address": "서울 강남구 역삼동",
+      "account": "13000",
+      "care_status": true,
+      "profile_image": "/src/assets/images/pat.png"
+    },
+    {
+      "id": "7",
+      "hiringno": "7",
+      "pat_name": "김영희",
+      "pat_age": "85세",
+      "pat_gender": "여",
+      "title": "치매 어머님 돌봄 구합니다. (주간)",
+      "startdate": "2025-07-01",
+      "enddate": "2025-07-31",
+      "pat_address": "서울 강남구 역삼동",
+      "account": "13000",
+      "care_status": true,
+      "profile_image": "/src/assets/images/pat.png"
+    },
+    {
+      "id": "8",
+      "hiringno": "8",
+      "pat_name": "김영희",
+      "pat_age": "85세",
+      "pat_gender": "여",
+      "title": "치매 어머님 돌봄 구합니다. (주간)",
+      "startdate": "2025-07-01",
+      "enddate": "2025-07-31",
+      "pat_address": "서울 강남구 역삼동",
+      "account": "13000",
+      "care_status": true,
+      "profile_image": "/src/assets/images/pat.png"
+    },
+    {
+      "id": "9",
+      "hiringno": "9",
+      "pat_name": "김영희",
+      "pat_age": "85세",
+      "pat_gender": "여",
+      "title": "치매 어머님 돌봄 구합니다. (주간)",
+      "startdate": "2025-07-01",
+      "enddate": "2025-07-31",
+      "pat_address": "서울 강남구 역삼동",
+      "account": "13000",
+      "care_status": true,
+      "profile_image": "/src/assets/images/pat.png"
+    },
+    {
+      "id": "10",
+      "hiringno": "10",
+      "pat_name": "김영희",
+      "pat_age": "85세",
+      "pat_gender": "여",
+      "title": "치매 어머님 돌봄 구합니다. (주간)",
+      "startdate": "2025-07-01",
+      "enddate": "2025-07-31",
+      "pat_address": "서울 강남구 역삼동",
+      "account": "13000",
+      "care_status": true,
+      "profile_image": "/src/assets/images/pat.png"
+    }
+  ],
+
+  "patients": [
+    {
+      "guardianNo": "1",
+      "profileImage": "/src/assets/profileImg/img_환자소.png",
+      "patName": "김건희",
+      "patAddress": "서울시 강남구",
+      "patAge": 60,
+      "patGender": "F",
+      "patHeight": 162.5,
+      "patWeight": 52.5,
+      "patContent": "당뇨합병증",
+      "status": "Y"
+    },
+    {
+      "guardianNo": "1",
+      "profileImage": "/src/assets/profileImg/img_환자소.png",
+      "patName": "김겅강",
+      "patAddress": "서울시 강남구",
+      "patAge": 70,
+      "patGender": "F",
+      "patHeight": 162.5,
+      "patWeight": 52.5,
+      "patContent": "당뇨합병증",
+      "status": "Y"
+    },
+    {
+      "guardianNo": "1",
+      "profileImage": "/src/assets/profileImg/img_환자소.png",
+      "patName": "이건강",
+      "patAddress": "서울시 강남구",
+      "patAge": 80,
+      "patGender": "F",
+      "patHeight": 162.5,
+      "patWeight": 52.5,
+      "patContent": "당뇨합병증",
+      "phone": "",
+      "status": "Y"
+    },
+    {
+      "id": "836d",
+      "guardianNo": "1",
+      "patName": "이환자",
+      "patAge": 60,
+      "patAddress": "서울시 강남구",
+      "patGender": "M",
+      "patHeight": "155",
+      "patWeight": "55",
+      "patContent": "치매환자입니다.",
+      "phone": "01011111111"
+    }
+  ],
+  "disease": [
+    {
+      "disNo": "1",
+      "disName": "치매"
+    },
+    {
+      "id": "cec1",
+      "disName": ["ㅊ"]
+    },
+    {
+      "id": "22c4",
+      "disName": ["치매", "장애2등급"]
+    }
+  ],
+  "diseaseTag": [
+    {
+      "disNo": "1",
+      "patNo": "1"
+    }
+  ]
 }

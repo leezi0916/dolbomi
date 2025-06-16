@@ -4,18 +4,21 @@ import { styled } from 'styled-components';
 // 단 기본적으로 맨위의 틀을가지고 가서 변경하는것을 추천하나, 많이 바뀔거같으면 아래와 같이 새로 하나 만들어서 사용하세요
 // 절대 다른 사람이 만든 컴포넌트 말없이 수정 ㄴㄴ 당신 책임
 
-export const Button = styled.button``;
+export const Button = styled.button`
+  border-radius: ${({ theme }) => theme.borderRadius.sm};
+  background: ${({ theme }) => theme.colors.primary};
+`;
 
 export const AddButton = styled.button``;
 
 export const DeleteButton = styled.button``;
 
 export const SubmitButton = styled.button`
-    border-radius: ${({theme}) => theme.borderRadius.sm};
-    background: ${({theme}) => theme.colors.primary};
+  border-radius: ${({ theme }) => theme.borderRadius.sm};
+  background: ${({ theme }) => theme.colors.primary};
 `;
 
 export const ButtonText = styled.p`
-    color: ${({theme}) => theme.colors.white};
-    font-size: ${({theme})=>theme.fontSizes.sm};
+  color: ${({ theme }) => theme.colors.white};
+  font-size: ${({ theme }) => theme.fontSizes.sm};
 `;

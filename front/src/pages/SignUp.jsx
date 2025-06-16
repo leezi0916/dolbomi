@@ -9,6 +9,7 @@ import {
   Form,
   AuthLink,
   ErrorMessage,
+  InputContainer,
 } from '../styles/Auth.styles';
 import styled from 'styled-components';
 import { FcGoogle } from 'react-icons/fc';
@@ -395,13 +396,6 @@ const CheckDuplicateButton = styled(Button)`
   min-width: 100px; /* 최소 너비 지정 */
   font-size: ${({ theme }) => theme.fontSizes.sm};
   white-space: nowrap; /* 텍스트 줄바꿈 방지 */
-`;
-
-const InputContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  max-width: 600px;
-  margin: 0 auto;
 `;
 
 const Inputs = styled(Input)`

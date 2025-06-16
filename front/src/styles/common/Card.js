@@ -10,4 +10,8 @@ export const card = styled.div``;
 export const Card = styled.div``;
 
 export const myPageCard = styled.div``;
+<<<<<<< HEAD
 >>>>>>> 02104005cb25cb511b4f99e9e1bf938a88cb4814
+=======
+
+>>>>>>> 549072f72722e1993068d13d3ec707c357c7a917
