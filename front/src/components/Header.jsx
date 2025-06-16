@@ -5,7 +5,6 @@ import { SITE_CONFIG } from '../config/site';
 import { media } from '../styles/MediaQueries';
 import { GiHamburgerMenu } from 'react-icons/gi';
 import useUserStore from '../store/userStore';
-
 const Header = () => {
   const { user, isAuthenticated, userStatus, setUserStatus } = useUserStore();
 
@@ -47,13 +46,13 @@ const Header = () => {
             <NavItem to="/caregiverlist">간병사 모집</NavItem>
           )}
 
-
           <NavItem to="/CommunityBoard">소통</NavItem>
         </DesktopNav>
 
         <DesktopUserMenu>
           <img src="/src/assets/icons/icon_알림.png" alt="" />
           <img src="/src/assets/icons/icon_채팅알림.png" alt="" />
+
           <ToggleWrap onClick={() => setUserStatus()}>
             <ToggleItem userStatus={!userStatus}>간병인</ToggleItem>
             <ToggleItem userStatus={userStatus}>보호자</ToggleItem>
@@ -61,8 +60,7 @@ const Header = () => {
 
           {isAuthenticated ? (
             <NavItem onMouseEnter={() => setIsHovering(true)} style={{ cursor: 'pointer' }}>
-              {user?.user_name}
-              
+              {user?.user_name}님
             </NavItem>
           ) : (
             <>

@@ -56,9 +56,9 @@ const MyProfile = () => {
             <div>주소</div>
           </ProfilerTitles>
           {profile.map((user) => (
-            <Infos key={user.userid}>
-              <div>{user.userid}</div>
-              <div>{user.username}</div>
+            <Infos key={user.user_id}>
+              <div>{user.user_id}</div>
+              <div>{user.user_name}</div>
               <div>{user.age}</div>
               <div>{user.gender}</div>
               <div>{user.phone}</div>
