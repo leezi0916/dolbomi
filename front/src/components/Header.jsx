@@ -5,7 +5,6 @@ import { SITE_CONFIG } from '../config/site';
 import { media } from '../styles/MediaQueries';
 import { GiHamburgerMenu } from 'react-icons/gi';
 import useUserStore from '../store/userStore';
-
 const Header = () => {
   const { user, isAuthenticated, userStatus, setUserStatus } = useUserStore();
   // userStatus => true :간병인 false : 돌봄대상자(보호자)
@@ -42,21 +41,27 @@ const Header = () => {
 
         {/* pc환경에서의 nav */}
         <DesktopNav>
-          <NavItem to="/products">돌봄대상자 모집</NavItem>
+          {userStatus ? (
+            <NavItem to="/hirelist">돌봄대상자 모집</NavItem>
+          ) : (
+            <NavItem to="/caregiverlist">간병사 모집</NavItem>
+          )}
+
           <NavItem to="/CommunityBoard">소통</NavItem>
         </DesktopNav>
 
         <DesktopUserMenu>
           <img src="/src/assets/icons/icon_알림.png" alt="" />
           <img src="/src/assets/icons/icon_채팅알림.png" alt="" />
-          <ToggleWrap onClick={() => setUserStatus(!userStatus)}>
+
+          <ToggleWrap onClick={() => setUserStatus()}>
             <ToggleItem userStatus={!userStatus}>간병인</ToggleItem>
             <ToggleItem userStatus={userStatus}>보호자</ToggleItem>
           </ToggleWrap>
 
-          {!isAuthenticated ? (
+          {isAuthenticated ? (
             <NavItem onMouseEnter={() => setIsHovering(true)} style={{ cursor: 'pointer' }}>
-              {user?.username}000님
+              {user?.user_name}님
             </NavItem>
           ) : (
             <>
@@ -94,7 +99,7 @@ const Header = () => {
                 )}
 
                 {userStatus ? (
-                  <NavItem to="/">
+                  <NavItem to="/hireRegistration">
                     <Icon src="/src/assets/icons/icon_이력서등록.png" alt="" />
                     돌봄대상자 신청
                   </NavItem>

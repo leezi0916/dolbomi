@@ -12,6 +12,7 @@ export default function Menubar() {
     navigate('/');
   };
   return (
+    // 삭제예정
     <>
       <Wrap>
         <NavItem to="/MyProfile">
@@ -56,7 +57,7 @@ export default function Menubar() {
           매칭관리
         </NavItem>
 
-        <NavItem to="/" onClick={handleLogout}>
+        <NavItem onClick={handleLogout}>
           <Icon src="/src/assets/icons/icon_로그아웃.png" alt="" />
           로그아웃
         </NavItem>

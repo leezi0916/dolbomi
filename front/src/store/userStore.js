@@ -16,10 +16,11 @@ const useUserStore = create(
 
       //로그인
       login: (userData) => {
+        console.log('로그인 시 전달된 userData:', userData); //
         set({
           user: {
-            userid: userData.userid,
-            username: userData.username,
+            user_id: userData.user_id,
+            user_name: userData.user_name,
           },
           isAuthenticated: true,
         });

@@ -17,7 +17,7 @@ const ReportDetail = () => {
           </Btn>
         </Buttons>
       </Head>
-
+      <br />
       <Container>
         <Title>1. 신체활동 수준:</Title>
         <p>( ) 거의 없음 ( ) 보통 ( ) 활발함</p>
@@ -44,14 +44,13 @@ const ReportDetail = () => {
         <Title>7. 특이사항:</Title>
         <SubTitle>오늘 아침 혈압이 다소 높음.</SubTitle>
       </Container>
-
-      {/* 진단 일지 목록 게시판 */}
     </Wrap>
   );
 };
 
 const Wrap = styled.div`
   padding: ${({ theme }) => theme.spacing[4]};
+  margin-top: 20px;
 `;
 
 const Head = styled.div`

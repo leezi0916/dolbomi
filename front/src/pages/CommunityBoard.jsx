@@ -85,7 +85,6 @@ export const Page = styled.div`
 export const CommuBoard = styled.div`
   width: 80%;
   padding-top: 80px;
-
   > div {
     display: flex;
     justify-content: center;
