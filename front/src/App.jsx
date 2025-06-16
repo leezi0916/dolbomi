@@ -23,6 +23,8 @@ import ReportForm from './pages/ReportForm';
 import CaregiverList from './pages/CaregiverList';
 import HireRegistration from './pages/HireRegistration';
 import HireDetail from './pages/HireDetail';
+import ResumeRegistration from './pages/ResumeRegistration';
+import ResumeDetail from './pages/ResumeDetail';
 
 function App() {
   return (
@@ -41,11 +43,13 @@ function App() {
               <Route path="/signup" element={<SignUp />} />
               <Route path="/MyProfile" element={<MyProfile />} />
               <Route path="/login" element={<Login />} />
-              <Route path="/hirelist" element={<HireList />} />
 
+              <Route path="/hirelist" element={<HireList />} />
               <Route path="/caregiverlist" element={<CaregiverList />} />
               <Route path="/hireRegistration" element={<HireRegistration />} />
               <Route path="/hireDetail" element={<HireDetail />} />
+              <Route path="/resumeRegistration" element={<ResumeRegistration />} />
+              <Route path="/resumeDetail" element={<ResumeDetail />} />
 
               <Route path="/report" element={<Report />} />
               <Route path="/reportdetail" element={<ReportDetail />} />

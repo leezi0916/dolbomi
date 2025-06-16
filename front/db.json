@@ -111,41 +111,6 @@
   ],
   "users": [
     {
-      "id": "cc1c",
-      "age": 24,
-      "gender": "male",
-      "phone": "01083281182",
-      "address": "경기도 남양주시 별내동",
-      "email": "leezi0916@naver.com"
-    },
-    {
-      "id": "b9ed",
-      "age": 21,
-      "gender": "male",
-      "phone": "01012341234",
-      "address": "sdafdsafdasfdsaf",
-      "email": "sdafsadfsadfs@adsfads"
-    },
-    {
-      "id": "77a7",
-      "age": 12,
-      "gender": "male",
-      "phone": "01083281182",
-      "address": "별내동sadfsdafdasf",
-      "email": "dsafads@asdfads"
-    },
-    {
-      "id": "b5d6",
-      "user_id": "leezi0916",
-      "user_pwd": "wlanr1506!",
-      "user_name": "이지묵",
-      "age": 21,
-      "gender": "male",
-      "phone": "01083281182",
-      "address": "123fdsafsa",
-      "email": "dlwlanr0916@kbu.ac.kr"
-    },
-    {
       "id": "ac77",
       "user_id": "admin",
       "user_pwd": "a1234",
