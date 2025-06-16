@@ -42,7 +42,12 @@ const Header = () => {
 
         {/* pc환경에서의 nav */}
         <DesktopNav>
-          <NavItem to="/products">돌봄대상자 모집</NavItem>
+          {userStatus ? (
+            <NavItem to="/hirelist">돌봄대상자 모집</NavItem>
+          ) : (
+            <NavItem to="/caregiverlist">간병사 모집</NavItem>
+          )}
+
           <NavItem to="/CommunityBoard">소통</NavItem>
         </DesktopNav>
 
@@ -77,7 +82,7 @@ const Header = () => {
               onMouseLeave={() => setIsHovering(false)}
             >
               <Wrap>
-                <NavItem to="/">
+                <NavItem to="/MyProfile">
                   <Icon src="/src/assets/icons/icon_개인정보홈.png" alt="" /> 개인정보홈
                 </NavItem>
 
@@ -94,7 +99,7 @@ const Header = () => {
                 )}
 
                 {userStatus ? (
-                  <NavItem to="/">
+                  <NavItem to="/hireRegistration">
                     <Icon src="/src/assets/icons/icon_이력서등록.png" alt="" />
                     돌봄대상자 신청
                   </NavItem>
