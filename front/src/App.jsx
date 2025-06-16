@@ -5,9 +5,7 @@ import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
 import Home from './pages/Home';
 import theme from './styles/theme';
 import Layout from './components/Layout';
-
 import { ToastContainer } from 'react-toastify';
-
 import CommunityBoard from './pages/CommunityBoard';
 import ReviewModal from './pages/ReviewModal';
 import SignUp from './pages/SignUp';

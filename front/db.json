@@ -1,4 +1,96 @@
 {
+  "hiring": [
+    {
+      "job_opening_no": 1,
+      "pat_no": 1,
+      "user_name": "김길동",
+      "gender": "F",
+      "age": 65,
+      "pay": 15000,
+      "address": "강원도",
+      "image": "https://i.pinimg.com/736x/ba/ca/a0/bacaa0c3434602bc8e7d6a99db91b372.jpg",
+      "care_status": "O"
+    },
+    {
+      "job_opening_no": 2,
+      "pat_no": 2,
+      "user_name": "이순자",
+      "gender": "F",
+      "age": 82,
+      "pay": 16000,
+      "address": "서울특별시",
+      "image": "https://i.pinimg.com/736x/ba/ca/a0/bacaa0c3434602bc8e7d6a99db91b372.jpg",
+      "care_status": "O"
+    },
+    {
+      "job_opening_no": 3,
+      "pat_no": 3,
+      "user_name": "박철수",
+      "gender": "M",
+      "age": 78,
+      "pay": 14000,
+      "address": "부산광역시",
+      "image": "https://i.pinimg.com/736x/ba/ca/a0/bacaa0c3434602bc8e7d6a99db91b372.jpg",
+      "care_status": "X"
+    },
+    {
+      "job_opening_no": 4,
+      "pat_no": 4,
+      "user_name": "최민자",
+      "gender": "F",
+      "age": 85,
+      "pay": 17000,
+      "address": "대구광역시",
+      "image": "https://i.pinimg.com/736x/ba/ca/a0/bacaa0c3434602bc8e7d6a99db91b372.jpg",
+      "care_status": "O"
+    },
+    {
+      "job_opening_no": 5,
+      "pat_no": 5,
+      "user_name": "장영수",
+      "gender": "M",
+      "age": 75,
+      "pay": 14500,
+      "address": "인천광역시",
+      "image": "https://i.pinimg.com/736x/ba/ca/a0/bacaa0c3434602bc8e7d6a99db91b372.jpg",
+      "care_status": "X"
+    },
+    {
+      "job_opening_no": 6,
+      "pat_no": 1,
+      "user_name": "김길동",
+      "gender": "F",
+      "age": 65,
+      "pay": 15000,
+      "address": "강원도",
+      "image": "https://i.pinimg.com/736x/ba/ca/a0/bacaa0c3434602bc8e7d6a99db91b372.jpg",
+      "care_status": "O"
+    },
+
+    {
+      "job_opening_no": 8,
+      "pat_no": 7,
+      "user_name": "나동훈",
+      "gender": "M",
+      "age": 81,
+      "pay": 15800,
+      "address": "경기도",
+      "image": "https://i.pinimg.com/736x/ba/ca/a0/bacaa0c3434602bc8e7d6a99db91b372.jpg",
+      "care_status": "X"
+    },
+
+    {
+      "job_opening_no": 10,
+      "pat_no": 2,
+      "user_name": "이순자",
+      "gender": "F",
+      "age": 82,
+      "pay": 16000,
+      "address": "서울특별시",
+      "image": "https://i.pinimg.com/736x/ba/ca/a0/bacaa0c3434602bc8e7d6a99db91b372.jpg",
+      "care_status": "O"
+    }
+  ],
   "community": [
     {
       "no": "1",
@@ -42,7 +134,7 @@
     }
   ],
   "reviews": [],
-"hires": [
+  "hires": [
     {
       "id": "1",
       "hiringno": "1",
@@ -243,16 +335,11 @@
     },
     {
       "id": "cec1",
-      "disName": [
-        "ㅊ"
-      ]
+      "disName": ["ㅊ"]
     },
     {
       "id": "22c4",
-      "disName": [
-        "치매",
-        "장애2등급"
-      ]
+      "disName": ["치매", "장애2등급"]
     }
   ],
   "diseaseTag": [
@@ -262,6 +349,3 @@
     }
   ]
 }
-=======
-  
-

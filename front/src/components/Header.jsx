@@ -8,6 +8,8 @@ import useUserStore from '../store/userStore';
 
 const Header = () => {
   const { user, isAuthenticated, userStatus, setUserStatus } = useUserStore();
+  // userStatus => true :간병인 false : 돌봄대상자(보호자)
+  // const [status, setStatus] = useState(false);
 
   const [isHovering, setIsHovering] = useState(false);
 
@@ -67,7 +69,7 @@ const Header = () => {
             <div
               style={{
                 position: 'absolute',
-                top:  'calc(100% + 22px)',
+                top: 'calc(100% + 22px)',
                 right: '0',
                 bottom: '16px',
               }}
@@ -83,7 +85,6 @@ const Header = () => {
                   <NavItem to="/patient">
                     <Icon src="/src/assets/icons/icon_돌봄대상자관리.png" alt="" />
                     돌봄대상자 관리
-
                   </NavItem>
                 ) : (
                   <NavItem to="/">
@@ -190,12 +191,9 @@ const Logo = styled(Link)`
     margin-right: ${({ theme }) => theme.spacing[8]};
   }
 
-
   ${media.md`
    font-size: ${({ theme }) => theme.fontSizes['2xl']}; 
   `}
-
-
 `;
 
 const DesktopNav = styled.nav`

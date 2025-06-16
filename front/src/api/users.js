@@ -1,4 +1,3 @@
-import { MdEmail } from 'react-icons/md';
 import api from './axios';
 import { API_ENDPOINTS } from './config';
 

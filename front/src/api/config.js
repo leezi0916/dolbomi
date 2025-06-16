@@ -28,20 +28,22 @@ export const API_ENDPOINTS = {
   REVIEWS: {
     BASE: '/reviews',
     DETAIL: (userNo) => `/reviews?userNo=${userNo}`,
-
+  },
+  HIRING: {
+    BASE: '/hiring',
   },
 
   HIRES: {
     BASE: '/hires',
   },
- 
+
   PATIENT: {
     BASE: '/patients',
     DETAIL: (guardianNo) => `/patients?guardiaNo=${guardianNo}`,
   },
-  
-    DISEASE: {
-      BASE: '/disease',
-      DETAIL: (disNo) => `/patients?disNo=${disNo}`,
-    },
+
+  DISEASE: {
+    BASE: '/disease',
+    DETAIL: (disNo) => `/patients?disNo=${disNo}`,
+  },
 };
