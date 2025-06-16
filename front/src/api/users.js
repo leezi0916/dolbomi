@@ -3,6 +3,16 @@ import api from './axios';
 import { API_ENDPOINTS } from './config';
 
 export const userService = {
+  //유저정보 불러오기(마이페이지 수정)
+  getUserProfile: async (userid) => {
+    try {
+      const { data } = await api.get(API_ENDPOINTS.USERS.PROFILE(userid));
+      return data;
+    } catch (error) {
+      console.error('프로필 조회 실패:', error.response?.data?.message || error.message);
+      throw error;
+    }
+  },
   //회원가입
   signUp: async (userData) => {
     console.log('????');

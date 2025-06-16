@@ -6,10 +6,9 @@ import Home from './pages/Home';
 import theme from './styles/theme';
 import Layout from './components/Layout';
 import CommunityBoard from './pages/CommunityBoard';
-
 import ReviewModal from './pages/ReviewModal';
-
 import SignUp from './pages/SignUp';
+import MyProfile from './pages/MyProfile';
 
 function App() {
   return (
@@ -23,6 +22,7 @@ function App() {
               <Route path="/CommunityBoard" element={<CommunityBoard />} />
               <Route path="/review" element={<ReviewModal />} />
               <Route path="/signup" element={<SignUp />} />
+              <Route path="/MyProfile" element={<MyProfile />} />
             </Routes>
           </Layout>
         </Router>

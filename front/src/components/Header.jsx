@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { SITE_CONFIG } from '../config/site';
 import { media } from '../styles/MediaQueries';
 import { GiHamburgerMenu } from 'react-icons/gi';
-import Menubar from './menubar';
+import Menubar from './Menubar';
 import useUserStore from '../store/userStore';
 
 const Header = () => {
