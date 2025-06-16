@@ -87,10 +87,10 @@ const GlobalStyle = createGlobalStyle`
   }
 
   /* 기본 포커스 스타일 */
-  :focus {
+  /* :focus {
     outline: 2px solid #007bff;
     outline-offset: 2px;
-  }
+  } */
 
   /* 기본 애니메이션 */
   * {

@@ -10,9 +10,7 @@ import { hireService } from '../api/hires';
 import SearchBar from '../components/SearchBar';
 import { IoCheckmarkOutline } from 'react-icons/io5';
 import { ClipLoader } from 'react-spinners';
-import { Link } from 'react-router-dom';
-
-const HireList = () => {
+const CaregiverList = () => {
   const [hireLists, setHireLists] = useState([]);
   const [loading, setLoading] = useState(false); // 초기 false
   const [error, setError] = useState(null);
@@ -23,7 +21,9 @@ const HireList = () => {
   const [account, setAccount] = useState('');
   const [searchKeyword, setSearchKeyword] = useState('');
   const [careStatus, setCareStatus] = useState(false);
-
+  //   const [hasCertificate, setHasCertificate] = useState(false); // 관련 자격증
+  //   const [isResidentCaregiver, setIsResidentCaregiver] = useState(false); // 상주 간병인
+  //   const [sortByRating, setSortByRating] = useState(false); // 높은 평점 순
   // 1. 컴포넌트가 처음 마운트될 때 전체 리스트를 불러옵니다.
   useEffect(() => {
     loadHireLists(false); // 초기 로딩 시에는 필터 없이 전체 데이터 요청
@@ -89,7 +89,7 @@ const HireList = () => {
   return (
     <>
       <SearchSection>
-        <Title>돌봄대상자 모집</Title>
+        <Title>간병사 모집</Title>
         <SearchContainer>
           <SearchDivder>
             <Section1>
@@ -168,7 +168,21 @@ const HireList = () => {
                   <StyledCheckbox checked={careStatus}>
                     {handleCheckChange && <IoCheckmarkOutline size="20px" color="white" />}
                   </StyledCheckbox>
-                  숙식 제공
+                  관련 자격증 소지
+                </AccommodationCheckboxLabel>
+                <AccommodationCheckboxLabel>
+                  <HiddenCheckbox type="checkbox" checked={careStatus} onChange={handleCheckChange} />
+                  <StyledCheckbox checked={careStatus}>
+                    {handleCheckChange && <IoCheckmarkOutline size="20px" color="white" />}
+                  </StyledCheckbox>
+                  상주 간병인
+                </AccommodationCheckboxLabel>
+                <AccommodationCheckboxLabel>
+                  <HiddenCheckbox type="checkbox" checked={careStatus} onChange={handleCheckChange} />
+                  <StyledCheckbox checked={careStatus}>
+                    {handleCheckChange && <IoCheckmarkOutline size="20px" color="white" />}
+                  </StyledCheckbox>
+                  높은 평점 순
                 </AccommodationCheckboxLabel>
               </SearchDivder2>
             </Section3>
@@ -176,7 +190,7 @@ const HireList = () => {
         </SearchContainer>
       </SearchSection>
 
-      {/* 여기부턴 돌봄 대상자 리스트 */}
+      {/* 여기부턴 간병인 리스트 */}
 
       {loading ? (
         <LoaderWrapper>
@@ -187,37 +201,43 @@ const HireList = () => {
       ) : (
         <HireListSection>
           {hireLists.map((hire) => (
-            <HireListCard key={hire.hiring_no} to={'/hireDetail'}>
+            <HireListCard key={hire.hiring_no}>
               <CardHeader>
                 <ProfileImage src={hire.profile_image || profileImage} alt="프로필" />
                 <HeaderContent>
                   <Divder>
                     <UserInfo>
-                      <UserName>{hire.pat_name}</UserName>
+                      <UserName>
+                        {hire.pat_name} <GrayText>님</GrayText>
+                      </UserName>
                       <UserAge>
-                        나이 {hire.pat_age}세(
+                        <GrayText>나이</GrayText> {hire.pat_age}세(
                         {hire.pat_gender === 'male' ? '남' : hire.pat_gender === 'female' ? '여' : ''})
                       </UserAge>
                     </UserInfo>
                     <CareContent>{hire.title}</CareContent>
                     <div></div>
                   </Divder>
-                  <DateInfo>
-                    {hire.start_date} ~ {hire.end_date}
-                  </DateInfo>
+                  {hire.care_status && <AccommodationInfo>평점 4.0</AccommodationInfo>}
                 </HeaderContent>
               </CardHeader>
               <CardFooter>
                 <LocationWage>
                   <LocationText>
-                    <GrayText>지역 </GrayText>
-                    {hire.pat_address}
+                    <GrayText>지역</GrayText> {hire.pat_address}
                   </LocationText>
                   <AccuontText>
                     <GrayText>시급</GrayText> <BoldAccount>{hire.account}원</BoldAccount>
                   </AccuontText>
                 </LocationWage>
-                {hire.care_status && <AccommodationInfo>숙식 제공 가능</AccommodationInfo>}
+                <USERINFO1>
+                  {hire.care_status && <AccommodationInfo>자격증 보유</AccommodationInfo>}
+                  {hire.care_status ? (
+                    <AccommodationInfo>상주 간병 O</AccommodationInfo>
+                  ) : (
+                    <AccommodationInfo>상주 간병 X</AccommodationInfo>
+                  )}
+                </USERINFO1>
               </CardFooter>
             </HireListCard>
           ))}
@@ -259,7 +279,9 @@ const SearchDivder2 = styled.div`
   justify-content: center;
   align-items: flex-start;
   padding: 0 ${({ theme }) => theme.spacing[3]};
+  gap: ${({ theme }) => theme.spacing[2]};
 `;
+
 const SearchDivder = styled.div`
   display: flex;
   height: 100%;
@@ -381,7 +403,7 @@ const AccommodationCheckboxLabel = styled.label`
   white-space: nowrap; /* 텍스트가 줄바꿈되지 않도록 */
   color: ${({ theme }) => theme.colors.gray[800]}; /* 텍스트 색상 */
   font-size: ${({ theme }) => theme.fontSizes.base};
-  gap: ${({ theme }) => theme.spacing[3]};
+  gap: ${({ theme }) => theme.spacing[2]};
 `;
 
 const HiddenCheckbox = styled.input.attrs({ type: 'checkbox' })`
@@ -417,7 +439,7 @@ const HireListSection = styled(Section)`
   gap: ${({ theme }) => theme.spacing[6]};
 `;
 
-const HireListCard = styled(Link)`
+const HireListCard = styled.div`
   width: 100%;
   margin: 0 auto; /* 중앙 정렬 */
   background-color: white;
@@ -547,6 +569,7 @@ const LocationWage = styled.div`
 `;
 
 const LocationText = styled.span``;
+
 const GrayText = styled.span`
   font-weight: ${({ theme }) => theme.fontWeights.medium};
   color: ${({ theme }) => theme.colors.gray[4]};
@@ -580,6 +603,11 @@ const AccommodationInfo = styled.span`
   `}
 `;
 
+const USERINFO1 = styled.div`
+  display: flex;
+  gap: ${({ theme }) => theme.spacing[8]};
+`;
+
 const Divder = styled.div`
   display: flex;
   align-items: center;
@@ -605,5 +633,4 @@ const ErrorMessage = styled.p`
   font-size: ${({ theme }) => theme.fontSizes.lg};
   margin-top: ${({ theme }) => theme.spacing[5]};
 `;
-
-export default HireList;
+export default CaregiverList;

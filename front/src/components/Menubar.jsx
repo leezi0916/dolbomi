@@ -15,7 +15,7 @@ export default function Menubar() {
     // 삭제예정
     <>
       <Wrap>
-        <NavItem to="/">
+        <NavItem to="/MyProfile">
           <Icon src="/src/assets/icons/icon_개인정보홈.png" alt="" /> 개인정보홈
         </NavItem>
 
@@ -57,7 +57,7 @@ export default function Menubar() {
           매칭관리
         </NavItem>
 
-        <NavItem onClick={handleLogout}>
+        <NavItem to="/" onClick={handleLogout}>
           <Icon src="/src/assets/icons/icon_로그아웃.png" alt="" />
           로그아웃
         </NavItem>

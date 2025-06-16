@@ -90,44 +90,44 @@ const SignUp = () => {
           </Head>
           <Center>
             <Title>회원가입</Title>
-            <InputContainer>
+            <InputContainer1>
               <InputGroup>
-                <Label htmlFor="userid">아이디</Label>
+                <Label htmlFor="user_id">아이디</Label>
                 <Row>
                   <Inputs
                     type="text"
-                    id="userid"
+                    id="user_id"
                     placeholder="아이디를 입력해주세요"
-                    {...register('userid')}
-                    $error={errors.userid}
+                    {...register('user_id')}
+                    $error={errors.user_id}
                   />
 
                   <CheckDuplicateButton onClick={handleClick}>중복확인</CheckDuplicateButton>
                 </Row>
-                {errors.userid && <ErrorMessage>{errors.userid.message}</ErrorMessage>}
+                {errors.user_id && <ErrorMessage>{errors.user_id.message}</ErrorMessage>}
               </InputGroup>
 
               <InputGroup>
-                <Label htmlFor="userpwd">비밀번호</Label>
+                <Label htmlFor="user_pwd">비밀번호</Label>
                 <Input
-                  id="userpwd"
+                  id="user_pwd"
                   type="password"
                   placeholder="비밀번호를 입력해주세요"
-                  {...register('userpwd')}
-                  $error={errors.userpwd}
+                  {...register('user_pwd')}
+                  $error={errors.user_pwd}
                 />
-                {errors.userpwd && <ErrorMessage>{errors.userpwd.message}</ErrorMessage>}
+                {errors.user_pwd && <ErrorMessage>{errors.user_pwd.message}</ErrorMessage>}
               </InputGroup>
               <InputGroup>
-                <Label htmlFor="username">이름</Label>
+                <Label htmlFor="user_name">이름</Label>
                 <Input
-                  id="username"
+                  id="user_name"
                   type="text"
                   placeholder="이름을 입력해주세요"
-                  {...register('username')}
-                  $error={errors.username}
+                  {...register('user_name')}
+                  $error={errors.user_name}
                 />
-                {errors.username && <ErrorMessage>{errors.username.message}</ErrorMessage>}
+                {errors.user_name && <ErrorMessage>{errors.user_name.message}</ErrorMessage>}
               </InputGroup>
               <InputGroup>
                 <Label htmlFor="age">나이</Label>
@@ -201,7 +201,7 @@ const SignUp = () => {
                 />
                 {errors.email && <ErrorMessage>{errors.email.message}</ErrorMessage>}
               </InputGroup>
-            </InputContainer>
+            </InputContainer1>
           </Center>
 
           <Bottom>
@@ -564,4 +564,12 @@ const StyledCheckbox = styled.div`
   cursor: pointer;
   transition: all 0.2s ease-in-out;
 `;
+export const InputContainer1 = styled.div`
+  display: flex;
+  flex-direction: column;
+  max-width: 600px;
+  margin: 0 auto;
+  gap: ${({ theme }) => theme.spacing[2]};
+`;
+
 export default SignUp;
