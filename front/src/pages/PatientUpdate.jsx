@@ -1,5 +1,6 @@
-import React, { useEffect,useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { AuthContainer } from '../styles/Auth.styles';
+import { Title } from '../styles/Auth.styles';
 import {
   GridForm,
   GridInerContainer,
@@ -9,73 +10,101 @@ import {
   FromWrap,
   NotesTexttarea,
   SubmitBtn,
-  Img, NewTitle
+  Img,
+  TagsUl,
 } from '../styles/PatientRegistration';
-import { Label, Input, InputGroup } from '../styles/Auth.styles';
+import { Label, Input, InputGroup, Button } from '../styles/Auth.styles';
 import { usepatientRegistrationForm } from '../hooks/usePatientRegistrationForm';
+import { useNavigate, useParams } from 'react-router-dom';
 import useUserStore from '../store/userStore';
-import { useNavigate } from 'react-router-dom';
-import { patientService
- } from '../api/patient';
+import { patientService } from '../api/patient';
 import { toast } from 'react-toastify';
 import Tags from '../components/Tags';
 
-const PatientRegistration = () => {
+const PatientUpdate = () => {
   const { user, userStatus } = useUserStore();
-  const navigate = useNavigate();
+  const { id } = useParams();
+  const [patient, setPatinet] = useState();
+
   const { register, handleSubmit, errors, isSubmitting, watch, setValue } = usepatientRegistrationForm();
+  const currentGender = watch('patGender');
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     // 일단 접근가능하게 로그인 구현 되면 user -> !user 바꿀것
+
     if (user) {
       alert('로그인 후 이용해주세요');
       navigate('/');
+    } else {
+      const getPatient = async () => {
+        try {
+          const onePatient = await patientService.getPatientId(id);
+          setPatinet(onePatient);
+        } catch (error) {
+          console.log(error);
+        }
+      };
+      getPatient();
     }
+
     if (!userStatus) {
       console.log(userStatus);
       navigate('/');
     }
-   
-  }, [user, userStatus]);
+  }, [user, userStatus, id]);
 
-  // 'gender' 필드의 현재 값을 watch하여 라디오 버튼의 checked 상태를 제어합니다.
-  const currentGender = watch('patGender');
+  useEffect(() => {
+    if (patient) {
+      setValue('patName', patient.patName || '');
+      setValue('patAge', patient.patAge || '');
+      setValue('patGender', patient.patGender || '');
+      setValue('patAddress', patient.patAddress || '');
+      setValue('patHeight', patient.patHeight || '');
+      setValue('patWeight', patient.patWeight || '');
+      setValue('patContent', patient.patContent || '');
+      setValue('phone', patient.phone || '');
+      setValue('tags', patient.tags || '');
+      setTags(patient.tags ? patient.tags : []);
+      console.log(patient.tags);
+    }
+  }, [patient, setValue]);
 
+  // tag 관련
+  const [tags, setTags] = useState([]);
 
- const [tags, setTags] = useState([]);
-useEffect(() => {
-  setValue('tags',tags);
-}, [tags, setValue]);
+  // 이게 있어야 tag가 변경됌
+  useEffect(() => {
+    setValue('tags', tags);
+  }, [tags]);
 
+  const onSubmit = async (data) => {
+    try {
+      await patientService.updatePatinet({ ...patient, ...data });
+      toast.success('돌봄대상자 수정완료!');
+      navigate('/patient');
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
-const onSubmit = async (data) => {
-  try {
-    //환자등록 API호출
-    await patientService.postNewPatient({
-    // 수정필요
-      guardianNo: user ? user.userid : '1',
-      patName: data.patName,
-      patAge: data.patAge,
-      patAddress: data.patAddress,
-      patGender: data.patGender,
-      patHeight: data.patHeight,
-      patWeight: data.patWeight,
-      patContent: data.patContent,
-      phone: data.phone,
-      tags : data.tags
-    });
-    toast.success('돌봄대상자 등록 완료!');
-    navigate('/patient');
-  } catch (error) {
-    toast.error('돌봄대상자 등록 중 문제가 발생하였습니다.');
-    console.error('돌본대상자 등록 에러 : ', error);
+  const deletePatient = async (id) => {
+    try{
+      await patientService.deletPatient(id);
+      toast.success('돌봄대상자 삭제완료!');
+      navigate('/patient');
+    }catch(error){
+      console.log(error);
+    }
+
   }
-};
+
   return (
     <>
       <AuthContainer>
         <FromWrap>
-          <NewTitle>돌봄 대상자 등록</NewTitle>
+          <Title>돌봄 대상자 목록</Title>
           <Img src="/src/assets/profileImg/img_환자소.png"></Img>
           <GridForm onSubmit={handleSubmit(onSubmit)}>
             <GridInerContainer>
@@ -125,8 +154,8 @@ const onSubmit = async (data) => {
             </InputGroup>
 
             <GridInerContainer>
-              <Label htmlFor="height">키</Label>
-              <Label htmlFor="weight">몸무게</Label>
+              <Label htmlFor="patHeight">키</Label>
+              <Label htmlFor="patWeight">몸무게</Label>
               <HeightWegithDiv>
                 <Input type="number" id="patHeight" {...register('patHeight')} />
                 <span>cm</span>
@@ -139,15 +168,17 @@ const onSubmit = async (data) => {
             </GridInerContainer>
 
             <InputGroup>
-            <Tags tags={tags} setTags={setTags} {...register('tags')} />
+              <Tags tags={tags} setTags={setTags} {...register('tags')} />
             </InputGroup>
 
             <InputGroup>
               <Label htmlFor="patContent">환자 특이사항</Label>
               <NotesTexttarea id="notes" className="textarea-field" rows="5" {...register('patContent')} />
             </InputGroup>
-
-            <SubmitBtn type="submit">등록</SubmitBtn>
+            <GridInerContainer>
+              <SubmitBtn type="submit">수정</SubmitBtn>
+              <SubmitBtn type="button" onClick={() => deletePatient(id)}>삭제</SubmitBtn>
+            </GridInerContainer>
           </GridForm>
         </FromWrap>
       </AuthContainer>
@@ -155,4 +186,4 @@ const onSubmit = async (data) => {
   );
 };
 
-export default PatientRegistration;
+export default PatientUpdate;

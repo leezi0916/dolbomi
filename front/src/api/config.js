@@ -28,7 +28,6 @@ export const API_ENDPOINTS = {
   REVIEWS: {
     BASE: '/reviews',
     DETAIL: (userNo) => `/reviews?userNo=${userNo}`,
-
   },
 
   HIRES: {
@@ -38,6 +37,9 @@ export const API_ENDPOINTS = {
   PATIENT: {
     BASE: '/patients',
     DETAIL: (guardianNo) => `/patients?guardiaNo=${guardianNo}`,
+    PATDETAIL :  (patNo) => `/patients?id=${patNo}`,
+    PUT: (patNo) => `/patients/${patNo}`,
+    DELETE : (patNo) => `/patients/${patNo}`
   },
   
     DISEASE: {

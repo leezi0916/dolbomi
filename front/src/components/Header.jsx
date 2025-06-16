@@ -54,7 +54,7 @@ const Header = () => {
         <DesktopUserMenu>
           <img src="/src/assets/icons/icon_알림.png" alt="" />
           <img src="/src/assets/icons/icon_채팅알림.png" alt="" />
-          <ToggleWrap onClick={() => setUserStatus(!userStatus)}>
+          <ToggleWrap onClick={() => setUserStatus()}>
             <ToggleItem userStatus={!userStatus}>간병인</ToggleItem>
             <ToggleItem userStatus={userStatus}>보호자</ToggleItem>
           </ToggleWrap>

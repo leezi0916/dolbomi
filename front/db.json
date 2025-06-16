@@ -184,9 +184,9 @@
       "profile_image": "/src/assets/images/pat.png"
     }
   ],
-
   "patients": [
     {
+      "id": "1",
       "guardianNo": "1",
       "profileImage": "/src/assets/profileImg/img_환자소.png",
       "patName": "김건희",
@@ -199,6 +199,7 @@
       "status": "Y"
     },
     {
+      "id": "2",
       "guardianNo": "1",
       "profileImage": "/src/assets/profileImg/img_환자소.png",
       "patName": "김겅강",
@@ -211,6 +212,7 @@
       "status": "Y"
     },
     {
+      "id": "3",
       "guardianNo": "1",
       "profileImage": "/src/assets/profileImg/img_환자소.png",
       "patName": "이건강",
@@ -224,7 +226,7 @@
       "status": "Y"
     },
     {
-      "id": "836d",
+      "id": "4",
       "guardianNo": "1",
       "patName": "이환자",
       "patAge": 60,
@@ -233,50 +235,23 @@
       "patHeight": "155",
       "patWeight": "55",
       "patContent": "치매환자입니다.",
-      "phone": "01011111111"
+      "phone": "01011111111",
+      "tags": ""
     },
     {
-      "id": "f411",
+      "id": "9050",
       "guardianNo": "1",
       "patName": "이환자",
-      "patAge": 60,
-      "patAddress": "서울시 강남구",
-      "patGender": "M",
-      "patHeight": "155",
-      "patWeight": "55",
-      "patContent": "장애 등급 2등급입니다.",
-      "phone": "01011111111"
-    }
-  ],
-  "disease": [
-    {
-      "disNo": "1",
-      "disName": "치매"
-    },
-    {
-      "id": "cec1",
-      "disName": [
-        "ㅊ"
+      "patAge": 70,
+      "patAddress": "서울시 강남구 역삼",
+      "patGender": "F",
+      "patHeight": "160",
+      "patWeight": "65",
+      "patContent": "거동이 불편함",
+      "phone": "01011111111",
+      "tags": [
+        "골절"
       ]
-    },
-    {
-      "id": "22c4",
-      "disName": [
-        "치매",
-        "장애2등급"
-      ]
-    },
-    {
-      "id": "1016",
-      "disName": [
-        "장애2등급"
-      ]
-    }
-  ],
-  "diseaseTag": [
-    {
-      "disNo": "1",
-      "patNo": "1"
     }
   ]
 }
