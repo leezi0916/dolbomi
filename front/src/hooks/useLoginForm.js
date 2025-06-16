@@ -9,9 +9,9 @@ import useUserStore from '../store/userStore';
 
 //회원가입 폼의 유효성 검사 스키마
 const loginSchema = yup.object().shape({
-  userid: yup.string().required('아이디를 입력해주세요!'),
+  user_id: yup.string().required('아이디를 입력해주세요!'),
 
-  userpwd: yup.string().required('비밀번호를 입력해주세요!'),
+  user_pwd: yup.string().required('비밀번호를 입력해주세요!'),
 });
 
 export const useLoginForm = () => {
@@ -33,15 +33,16 @@ export const useLoginForm = () => {
     try {
       setIsLoading(true);
       //로그인API호출
-      const user = await userService.login(data.userid, data.userpwd);
+      const user = await userService.login(data.user_id, data.user_pwd);
       if (!user) {
         throw new Error('아이디 또는 비밀번호 불일치');
       }
 
+      console.log('로그인 API 반환값:', user); // 이걸로 구조 확인
       //로그인 성공시 store에 로그인 정보를 저장
       login({
-        userid: user.userid,
-        username: user.username,
+        user_id: user.user_id,
+        user_name: user.user_name,
       });
 
       toast.success('로그인 성공!');

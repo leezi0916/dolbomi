@@ -5,10 +5,7 @@ const useUserStore = create(
   persist(
     (set) => ({
       user: null,
-
-      // 간병인= false/ 돌봄대상자 = true
       userStatus: false,
-
       isAuthenticated: false,
 
       // 간병인= false/ 돌봄대상자 = true
@@ -19,10 +16,11 @@ const useUserStore = create(
 
       //로그인
       login: (userData) => {
+        console.log('로그인 시 전달된 userData:', userData); //
         set({
           user: {
-            userid: userData.userid,
-            username: userData.username,
+            user_id: userData.user_id,
+            user_name: userData.user_name,
           },
           isAuthenticated: true,
         });

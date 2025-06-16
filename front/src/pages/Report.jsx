@@ -1,11 +1,23 @@
 import React from 'react';
 import { Section } from '../styles/common/Container';
 import styled from 'styled-components';
+import {
+  BoardItem,
+  BoardItemTop,
+  BoardTop,
+  BorderDiv,
+  Button,
+  CommuBoard,
+  Input,
+  Left,
+  Right,
+} from '../styles/common/Board';
 
 const Report = () => {
   return (
     <Wrap>
       <MainTitle>돌봄 대상자 정보</MainTitle>
+      <br />
       <Container>
         <Title>돌봄 대상자 :</Title>
         <p>홍길동 / 600000 / 남</p>
@@ -21,8 +33,42 @@ const Report = () => {
         <SubTitle>특이사항:</SubTitle>
         <p>의사소통 어려움, 가족 인식 못함, 볼일 혼자 못봄</p>
       </Container>
-
-      {/* 진단 일지 목록 게시판 */}
+      <br />
+      <Board>
+        <BoardTop>
+          <ListTitle>진단 일지 목록</ListTitle>
+          <Right>
+            <Fillter value="">
+              <option value="">
+                <p>날짜 : 2025 / 06</p>
+              </option>
+            </Fillter>
+            <Fillter value="">
+              <option value="">
+                <p>작성자 : 백승환</p>
+              </option>
+            </Fillter>
+            <Button>글쓰기</Button>
+          </Right>
+        </BoardTop>
+        <BoardItemTop>
+          <div>No</div>
+          <div>제목</div>
+          <div>작성자</div>
+          <div>작성 일자</div>
+          <div>조회수</div>
+        </BoardItemTop>
+        {/* {reportList.map((report) => ( */}
+        <BoardItem key="">
+          <div>1</div>
+          <div>2</div>
+          <div>3</div>
+          <div>4</div>
+          <div>5</div>
+        </BoardItem>
+        {/* ))} */}
+        <BorderDiv></BorderDiv>
+      </Board>
     </Wrap>
   );
 };
@@ -51,6 +97,28 @@ const Title = styled.p`
 const SubTitle = styled.p`
   font-size: ${({ theme }) => theme.fontSizes.base};
   font-weight: ${({ theme }) => theme.fontWeights.medium};
+`;
+
+const Board = styled.div`
+  width: 100%;
+  > div {
+    display: flex;
+    justify-content: space-between;
+  }
+`;
+
+const ListTitle = styled(Left)`
+  font-size: ${({ theme }) => theme.fontSizes.xl};
+  font-weight: ${({ theme }) => theme.fontWeights.bold};
+`;
+
+const Fillter = styled.select`
+  width: 160px;
+  border: 1px solid ${({ theme }) => theme.colors.gray[5]};
+  border-radius: 4px;
+  padding: 10px;
+  font-size: ${({ theme }) => theme.fontSizes.base};
+  color: ${({ theme }) => theme.colors.gray[3]};
 `;
 
 export default Report;

@@ -29,32 +29,32 @@ const Login = () => {
         <LoginInputContainer>
           <form onSubmit={handleSubmit(onSubmit)}>
             <InputGroup>
-              <LoginLabel htmlFor="userid">아이디</LoginLabel>
+              <LoginLabel htmlFor="user_id">아이디</LoginLabel>
               <InputWrapper>
                 <Icon src="/src/assets/icons/icon_아이디.png" alt="" />
                 <LoginInput
-                  id="userid"
+                  id="user_id"
                   type="text"
                   placeholder="아이디를 입력해주세요"
-                  {...register('userid')}
-                  $error={errors.userid}
+                  {...register('user_id')}
+                  $error={errors.user_id}
                 />
-                {errors.userid && <ErrorMessage>{errors.userid.message}</ErrorMessage>}
+                {errors.user_id && <ErrorMessage>{errors.user_id.message}</ErrorMessage>}
               </InputWrapper>
             </InputGroup>
             <InputGroup>
-              <LoginLabel htmlFor="userpwd">비밀번호</LoginLabel>
+              <LoginLabel htmlFor="user_pwd">비밀번호</LoginLabel>
               <InputWrapper>
                 <Icon src="/src/assets/icons/icon_비밀번호.png" alt="" />
                 <LoginInput
-                  id="userpwd"
+                  id="user_pwd"
                   type="password"
                   placeholder="비밀번호를 입력해주세요"
-                  {...register('userpwd')}
-                  $error={errors.userpwd}
+                  {...register('user_pwd')}
+                  $error={errors.user_pwd}
                 />
               </InputWrapper>
-              {errors.userpwd && <ErrorMessage>{errors.userpwd.message}</ErrorMessage>}
+              {errors.user_pwd && <ErrorMessage>{errors.user_pwd.message}</ErrorMessage>}
             </InputGroup>
             <LoginButtonGroup>
               <Button type="submit" disabled={isLoading}>
@@ -162,9 +162,8 @@ const SnsText = styled.span`
 `;
 
 const Icon = styled.img`
-  width: 24px;
+  width: 20px;
   height: 24px;
-  margin: 0px ${({ theme }) => theme.spacing[4]} 0;
 `;
 
 const LoginInput = styled.input`
@@ -183,7 +182,7 @@ const InputWrapper = styled.div`
   width: 100%;
   height: 55px;
   padding: ${({ theme }) => theme.spacing[3]};
-  border: 1px solid ${({ theme, $error }) => ($error ? theme.colors.error : theme.colors.gray[300])};
+  border: 1px solid ${({ theme, $error }) => ($error ? theme.colors.error : theme.colors.gray[5])};
   border-radius: ${({ theme }) => theme.borderRadius.md};
   font-size: ${({ theme }) => theme.fontSizes.base};
 

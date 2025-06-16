@@ -9,30 +9,38 @@ import { ProfileImg } from '../styles/common/Profile';
 import { patientService } from '../api/patient';
 
 const Patient = () => {
-  const { user, isAuthenticated } = useUserStore();
+  const { user, isAuthenticated, userStatus,setUserStatus } = useUserStore();
   const [userPatients, setUserpatients] = useState();
   const navigate = useNavigate();
+
+
 
   useEffect(() => {
     // 일단 접근가능하게 로그인 구현 되면 user -> !user 바꿀것
     if (user) {
       alert('로그인 후 이용해주세요');
       navigate('/');
+    } 
+    if(!userStatus){
+    console.log(userStatus)
+      navigate('/');
     }
-    const getPatients = async () => {
+
+    const getPatientList = async () => {
       try {
-        const patientsList = await patientService.getPatients("1");
-        console.log(patientsList);
-        setUserpatients(patientsList);
+        const patientsList = await patientService.getPatients("1"); 
+        setUserpatients(patientsList)
+        console.log(patientsList); 
       } catch (error) {
-        console.log(error);
-        // const errorMessage = '목록을 불러오는데 실패했습니다.';
-        // setError(errorMessage);
-        // toast.error(errorMessage);
+        console.error(error);
       }
     };
-    getPatients();
-  }, [user]);
+
+    getPatientList();
+      
+    
+
+  }, [user,userStatus]);
   return (
     <>
       <AuthContainer>
@@ -46,7 +54,7 @@ const Patient = () => {
         <CardWrap>
 
           {userPatients?.map((pat) => (
-            <Card>
+            <Card key={pat.id}>
               <ProfileDiv>
                 <Img src={pat.profileImage} alt="" />
                 <div>
@@ -65,9 +73,8 @@ const Patient = () => {
 
               <ButtonDiv>
                 <SubmitButton1>
-                  <ButtonText>관리</ButtonText>
+                  <ButtonText onClick={() => navigate(`/patients/${pat.id}`) } >관리</ButtonText>
                 </SubmitButton1>
-
                 <SubmitButton1>
                   <ButtonText>일지</ButtonText>
                 </SubmitButton1>
