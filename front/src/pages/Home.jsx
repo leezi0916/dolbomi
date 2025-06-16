@@ -10,12 +10,16 @@ import { toast } from 'react-toastify';
 
 const Home = () => {
   const [hiringList, setHiringList] = useState([]);
+  const [RoomAndBoardAvailable, setRoomAndBoardAvailable] = useState([]);
 
   useEffect(() => {
     const loadHiringList = async () => {
       try {
         const list = await hiringService.getHiringList();
         setHiringList(list);
+
+        // 숙식 제공자
+        setRoomAndBoardAvailable(hiringList.filter((h) => h.care_status === 'O'));
       } catch (error) {
         console.error(error);
         const errorMessage = '구인 목록을 불러오는데 실패했습니다.';
@@ -24,7 +28,7 @@ const Home = () => {
     };
 
     loadHiringList();
-  }, []);
+  }, [RoomAndBoardAvailable]);
 
   // 이름 첫글자 O 처리하기
   const maskName = (name) => {
@@ -68,19 +72,58 @@ const Home = () => {
           <GridContainer>
             {hiringList.map((user) => (
               <Card key={user.job_opening_no}>
-                <CardImage src={user.image} />
-                <CardContent>
-                  <CardTitle>{maskName(user.user_name)} 님</CardTitle>
-                  <CardText>나이: {user.age}세</CardText>
-                  <CardText>시급: {user.pay}원</CardText>
-                  <CardText>상주 가능 · 지역: {user.address}</CardText>
+                <CardTopContent>
+                  <CardImage src={user.image} />
+                  <CardTextGroup>
+                    <CardTitle>
+                      {maskName(user.user_name)} 님({user.gender == 'M' ? '남' : '여'})
+                    </CardTitle>
+                    <CardText>나이: {user.age}세</CardText>
+                    <CardText>시급: {user.pay}원</CardText>
+                  </CardTextGroup>
+                </CardTopContent>
+                <CardBottomContent>
+                  <CardRegion>
+                    <span>지역</span> {user.address}
+                  </CardRegion>
                   <CardButton>상세보기</CardButton>
-                </CardContent>
+                </CardBottomContent>
               </Card>
             ))}
           </GridContainer>
         </HiringCardSection>
       </HiringSection>
+
+      <RoomAndBoardSection>
+        <RoomAndBoardTextSection>
+          <RoomAndBoardTextSectionTitle>숙식 제공 돌봄 대상자</RoomAndBoardTextSectionTitle>
+        </RoomAndBoardTextSection>
+
+        <RoomAndBoardCardSection>
+          <GridContainer>
+            {RoomAndBoardAvailable.map((user) => (
+              <Card key={user.job_opening_no}>
+                <CardTopContent>
+                  <CardImage src={user.image} />
+                  <CardTextGroup>
+                    <CardTitle>
+                      {maskName(user.user_name)} 님({user.gender === 'M' ? '남' : '여'})
+                    </CardTitle>
+                    <CardText>나이: {user.age}세</CardText>
+                    <CardText>시급: {user.pay}원</CardText>
+                  </CardTextGroup>
+                </CardTopContent>
+                <CardBottomContent>
+                  <CardRegion>
+                    <span>지역</span> {user.address}
+                  </CardRegion>
+                  <CardButton>상세보기</CardButton>
+                </CardBottomContent>
+              </Card>
+            ))}
+          </GridContainer>
+        </RoomAndBoardCardSection>
+      </RoomAndBoardSection>
     </>
   );
 };
@@ -91,7 +134,7 @@ export default Home;
 export const HomeBannerSection = styled(Section)`
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: ${({ theme }) => theme.spacing[5]};
 `;
 
 // 상단 메인 배너 이미지
@@ -123,7 +166,7 @@ export const BannerMessage = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  gap: 16px;
+  gap: ${({ theme }) => theme.spacing[4]};
   padding: ${({ theme }) => theme.spacing[4]};
 
   ${media.md`
@@ -139,7 +182,7 @@ export const BannerContact = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  gap: 12px;
+  gap: ${({ theme }) => theme.spacing[3]};
   padding: ${({ theme }) => theme.spacing[4]};
 
   ${media.md`
@@ -154,9 +197,13 @@ export const BannerContact = styled.div`
 
 // 아이콘 (전화)
 export const PhoneIcon = styled(BiSolidPhoneCall)`
-  margin-right: 8px;
+  margin-right: ${({ theme }) => theme.spacing[2]};
   vertical-align: middle;
-  font-size: 1.2em;
+  font-size: ${({ theme }) => theme.fontSizes.xl};
+
+  ${media.lg`
+  font-size: ${({ theme }) => theme.fontSizes['2xl']};
+  `}
 `;
 
 // 메시지 라인 (왼쪽 텍스트 라인)
@@ -196,7 +243,7 @@ export const ContactLine = styled(MessageLine)`
 
 //  구인 관련 섹션
 export const HiringSection = styled(HomeBannerSection)`
-  padding-top: 0px;
+  padding-top: ${({ theme }) => theme.spacing[0]};
 `;
 
 // 구인글 텍스트 섹션
@@ -213,7 +260,9 @@ export const HiringTextSectionTitle = styled(MessageLine)`
 `;
 
 // 유저 카드 섹션
-export const HiringCardSection = styled(Section)``;
+export const HiringCardSection = styled(Section)`
+  padding: ${({ theme }) => theme.spacing[0]};
+`;
 
 // 각 카드
 export const Card = styled.div`
@@ -233,50 +282,101 @@ export const Card = styled.div`
   }
 `;
 
+// 카드 상단 내부 내용
+export const CardTopContent = styled.div`
+  padding: ${({ theme }) => theme.spacing[4]};
+  display: flex;
+  gap: ${({ theme }) => theme.spacing[5]};
+`;
+
 // 이미지
 export const CardImage = styled.div`
-  width: 100%;
-  height: 180px;
-  background-color: ${({ theme }) => theme.colors.gray[200]};
+  width: 120px;
+  height: 120px;
+  border-radius: 50%; // 원형 처리
   background-image: ${({ src }) => (src ? `url(${src})` : 'none')};
   background-size: cover;
   background-position: center;
+  flex-shrink: 0; // 축소 방지
+
+  ${media.sm`
+    width: 80px;
+    height: 80px;
+  `}
+
+  ${media.xl`
+    width: 100px;
+    height: 100px;
+  `}
 `;
 
-// 카드 내부 내용
-export const CardContent = styled.div`
-  padding: ${({ theme }) => theme.spacing[4]};
+// 카드 상단 내용 제목 + 텍스트 묶는 영역
+export const CardTextGroup = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  justify-content: center;
+  align-items: flex-start;
+  gap: ${({ theme }) => theme.spacing[2]};
 `;
 
-// 제목
+// 제목 (이름)
 export const CardTitle = styled.h3`
-  font-size: ${({ theme }) => theme.fontSizes.base};
+  font-size: ${({ theme }) => theme.fontSizes.sm};
   font-weight: ${({ theme }) => theme.fontWeights.bold};
-  color: ${({ theme }) => theme.colors.gray[900]};
+  color: ${({ theme }) => theme.colors.gray[1]};
 `;
 
-// 텍스트 라벨
+// 텍스트 라벨 (나이, 시급)
 export const CardText = styled.p`
   font-size: ${({ theme }) => theme.fontSizes.sm};
-  color: ${({ theme }) => theme.colors.gray[700]};
+  color: ${({ theme }) => theme.colors.gray[2]};
+  font-weight: ${({ theme }) => theme.fontWeights.medium};
+`;
+
+// 구분선 + 지역 + 버튼 감싸는 하단 영역
+export const CardBottomContent = styled.div`
+  margin-top: ${({ theme }) => theme.spacing[2]};
+  padding: ${({ theme }) => theme.spacing[3]} ${({ theme }) => theme.spacing[4]};
+  border-top: 1px solid ${({ theme }) => theme.colors.gray[4]};
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+`;
+
+// 지역 텍스트
+export const CardRegion = styled.span`
+  font-size: ${({ theme }) => theme.fontSizes.sm};
+  color: ${({ theme }) => theme.colors.gray[1]};
+  font-weight: ${({ theme }) => theme.fontWeights.bold};
+
+  span {
+    color: ${({ theme }) => theme.colors.gray[3]};
+    font-weight: ${({ theme }) => theme.fontWeights.medium};
+  }
 `;
 
 // 버튼
 export const CardButton = styled.button`
-  margin-top: 10px;
   align-self: flex-end;
-  padding: 8px 16px;
+  padding: ${({ theme }) => theme.spacing[2]} ${({ theme }) => theme.spacing[4]};
   background-color: ${({ theme }) => theme.colors.secondary};
-  color: #fff;
+  color: ${({ theme }) => theme.colors.white};
   font-weight: ${({ theme }) => theme.fontWeights.medium};
-  border: none;
-  border-radius: ${({ theme }) => theme.borderRadius.sm};
+  border-radius: ${({ theme }) => theme.borderRadius.md};
   cursor: pointer;
-
-  &:hover {
-    background-color: ${({ theme }) => theme.colors.secondaryDark};
-  }
 `;
+
+export const RoomAndBoardSection = styled(HiringSection)``;
+
+export const RoomAndBoardTextSection = styled(BannerMessage)`
+  width: 100%;
+  height: 60px;
+  background-color: ${({ theme }) => theme.colors.third};
+  border-radius: ${({ theme }) => theme.borderRadius.base};
+`;
+
+export const RoomAndBoardTextSectionTitle = styled(MessageLine)`
+  color: ${({ theme }) => theme.colors.black2};
+`;
+
+export const RoomAndBoardCardSection = styled(HiringCardSection)``;
