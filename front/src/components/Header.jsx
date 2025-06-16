@@ -10,7 +10,7 @@ const Header = () => {
 
   const [isHovering, setIsHovering] = useState(false);
 
-  console.log(user)
+ 
   return (
     <HeaderContainer>
       <HeaderWrapper>

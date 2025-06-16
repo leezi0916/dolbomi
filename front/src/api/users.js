@@ -40,6 +40,7 @@ export const userService = {
   login: async (user_id, user_pwd) => {
     try {
       const { data } = await api.get(API_ENDPOINTS.USERS.LOGIN(user_id, user_pwd));
+      console.log(data[0])
       return data[0]; //
     } catch (error) {
       if (error.response) {
