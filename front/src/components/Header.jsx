@@ -8,6 +8,8 @@ import useUserStore from '../store/userStore';
 
 const Header = () => {
   const { user, isAuthenticated, userStatus, setUserStatus } = useUserStore();
+  // userStatus => true :간병인 false : 돌봄대상자(보호자)
+  // const [status, setStatus] = useState(false);
 
   const [isHovering, setIsHovering] = useState(false);
 
@@ -80,7 +82,7 @@ const Header = () => {
               onMouseLeave={() => setIsHovering(false)}
             >
               <Wrap>
-                <NavItem to="/">
+                <NavItem to="/MyProfile">
                   <Icon src="/src/assets/icons/icon_개인정보홈.png" alt="" /> 개인정보홈
                 </NavItem>
 
