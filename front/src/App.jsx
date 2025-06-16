@@ -19,6 +19,9 @@ import PatientUpdate from './pages/PatientUpdate';
 import Report from './pages/Report';
 import ReportDetail from './pages/ReportDetail';
 import ReportForm from './pages/ReportForm';
+import CommunityDetail from './pages/CommunityDetail';
+import CommunityQuestion from './pages/CommunityQuestion';
+import NoticeBoard from './pages/NoticeBoard';
 
 import CaregiverList from './pages/CaregiverList';
 import HireRegistration from './pages/HireRegistration';
@@ -39,6 +42,9 @@ function App() {
               <Route path="/patients/:id" element={<PatientUpdate />} />
               <Route path="/patientRegisteration" element={<PatientRegisteration />} />
               <Route path="/CommunityBoard" element={<CommunityBoard />} />
+              <Route path="/CommunityBoard/:no" element={<CommunityDetail />} />
+              <Route path="/CommunityQuestion" element={<CommunityQuestion />} />
+              <Route path="/NoticeBoard" element={<NoticeBoard />} />
               <Route path="/review" element={<ReviewModal />} />
               <Route path="/signup" element={<SignUp />} />
               <Route path="/MyProfile" element={<MyProfile />} />
@@ -56,6 +62,7 @@ function App() {
               <Route path="/reportform" element={<ReportForm />} />
             </Routes>
           </Layout>
+          NoticeBoard
         </Router>
         <ToastContainer
           position="top-right"

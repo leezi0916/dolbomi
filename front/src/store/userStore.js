@@ -37,7 +37,7 @@ const useUserStore = create(
     }),
     {
       name: 'user-storage',
-      // storage: window.localStorage, //기본값
+      // storage: localStorage, //기본값
       partialize: (state) => ({
         user: state.user,
         isAuthenticated: state.isAuthenticated,
