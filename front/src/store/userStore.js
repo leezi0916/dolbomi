@@ -16,6 +16,7 @@ const useUserStore = create(
 
       //로그인
       login: (userData) => {
+        console.log(userData)
         set({
           user: {
             user_id: userData.user_id,

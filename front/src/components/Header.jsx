@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {  useState } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { SITE_CONFIG } from '../config/site';
@@ -8,11 +8,10 @@ import useUserStore from '../store/userStore';
 
 const Header = () => {
   const { user, isAuthenticated, userStatus, setUserStatus } = useUserStore();
-  // userStatus => true :간병인 false : 돌봄대상자(보호자)
-  // const [status, setStatus] = useState(false);
 
   const [isHovering, setIsHovering] = useState(false);
 
+  console.log(user)
   return (
     <HeaderContainer>
       <HeaderWrapper>
@@ -60,9 +59,10 @@ const Header = () => {
             <ToggleItem userStatus={userStatus}>보호자</ToggleItem>
           </ToggleWrap>
 
-          {!isAuthenticated ? (
+          {isAuthenticated ? (
             <NavItem onMouseEnter={() => setIsHovering(true)} style={{ cursor: 'pointer' }}>
-              {user?.username}000님
+              {user?.user_name}
+              
             </NavItem>
           ) : (
             <>
