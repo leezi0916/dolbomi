@@ -1,11 +1,11 @@
 import { styled } from 'styled-components';
 import { Button } from './Auth.styles';
-
+import { Title } from './Auth.styles';
 
 export const FromWrap = styled.div`
   background-color: white;
   box-shadow: ${({ theme }) => theme.shadows.base};
-`
+`;
 export const GridForm = styled.form`
   display: grid;
   width: 80%;
@@ -15,11 +15,16 @@ export const GridForm = styled.form`
   margin: auto;
 `;
 
-export const Img =styled.img`
+export const NewTitle = styled(Title)`
+ text-align: left;
+ padding: ${({ theme }) => theme.spacing[8]};
+`;
+
+export const Img = styled.img`
   width: 200px;
   height: 200px;
-  margin: ${({ theme }) => theme.spacing[4]};
-`
+  margin-bottom: ${({ theme }) => theme.spacing[8]};
+`;
 
 export const GridInerContainer = styled.div`
   display: grid;
@@ -75,37 +80,59 @@ export const RadioWrapper = styled.div`
 
   label {
     font-size: ${({ theme }) => theme.fontSizes.base};
-    color: ${({ theme }) => theme.colors.gray[700]};
+    color: ${({ theme }) => theme.colors.gray[3]};
     cursor: pointer;
   }
 `;
 
-export const HeightWegithDiv =styled.div`
-display: grid;
-grid-template-columns: auto 30px;
-align-items: center;
-gap:${({ theme }) => theme.spacing[3]};
-
-`
+export const HeightWegithDiv = styled.div`
+  display: grid;
+  grid-template-columns: auto 30px;
+  align-items: center;
+  gap: ${({ theme }) => theme.spacing[3]};
+`;
 
 export const DiseaseDiv = styled.div`
-display: grid;
-grid-template-columns: 4fr 1fr;
+  display: grid;
+  grid-template-columns: 4fr 1fr;
 
-input{
-  border-radius: 4px 0px 4px 0px;
-}
-`
+  input {
+    border-radius: 4px 0px 4px 0px;
+  }
+`;
 
 export const DiseaseBtn = styled(Button)`
-border-radius: 0 4px 4px 0;
-`
+  border-radius: 0 4px 4px 0;
+`;
 export const NotesTexttarea = styled.textarea`
-width: 100%;
-border: 1px solid #cccccc;
-border-radius: 4px;
-`
+  width: 100%;
+  border: 1px solid ${({ theme }) => theme.colors.gray[5]};
+  border-radius: 4px;
+`;
 
 export const SubmitBtn = styled(Button)`
-margin-bottom: 50px;
-`
+  margin-bottom: 50px;
+`;
+export const TagsUl = styled.ul`
+  display: flex;
+  flex-wrap: wrap;
+  padding: 0;
+  margin: 8px 0 0 0;
+  
+  li {
+    width: auto;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: ${({ theme }) => theme.colors.primary};
+    padding: 0 ${({ theme }) => theme.spacing[3]};
+    font-size:  ${({ theme }) => theme.fontSizes.base};
+    list-style: none;
+    border-radius: 12px;
+    margin: 0 8px 8px 0;
+    background: ${({ theme }) => theme.colors.gray[5]};
+    gap:${({ theme }) => theme.spacing[2]} ;
+
+  }
+`;

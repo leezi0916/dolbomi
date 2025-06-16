@@ -14,6 +14,8 @@ import Login from './pages/Login';
 import HireList from './pages/HireList';
 import Patient from './pages/Patient';
 import PatientRegisteration from './pages/PatientRegistration';
+import PatientUpdate from './pages/PatientUpdate';
+
 import Report from './pages/Report';
 import ReportDetail from './pages/ReportDetail';
 import ReportForm from './pages/ReportForm';
@@ -34,6 +36,7 @@ function App() {
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/patient" element={<Patient />} />
+              <Route path="/patients/:id" element={<PatientUpdate />} />
               <Route path="/patientRegisteration" element={<PatientRegisteration />} />
               <Route path="/CommunityBoard" element={<CommunityBoard />} />
               <Route path="/review" element={<ReviewModal />} />

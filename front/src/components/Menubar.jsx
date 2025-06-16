@@ -12,6 +12,7 @@ export default function Menubar() {
     navigate('/');
   };
   return (
+    // 삭제예정
     <>
       <Wrap>
         <NavItem to="/MyProfile">
