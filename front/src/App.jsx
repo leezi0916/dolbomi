@@ -18,6 +18,10 @@ import Report from './pages/Report';
 import ReportDetail from './pages/ReportDetail';
 import ReportForm from './pages/ReportForm';
 
+import CaregiverList from './pages/CaregiverList';
+import HireRegistration from './pages/HireRegistration';
+import HireDetail from './pages/HireDetail';
+
 function App() {
   return (
     <>
@@ -35,6 +39,11 @@ function App() {
               <Route path="/MyProfile" element={<MyProfile />} />
               <Route path="/login" element={<Login />} />
               <Route path="/hirelist" element={<HireList />} />
+
+              <Route path="/caregiverlist" element={<CaregiverList />} />
+              <Route path="/hireRegistration" element={<HireRegistration />} />
+              <Route path="/hireDetail" element={<HireDetail />} />
+
               <Route path="/report" element={<Report />} />
               <Route path="/reportdetail" element={<ReportDetail />} />
               <Route path="/reportform" element={<ReportForm />} />

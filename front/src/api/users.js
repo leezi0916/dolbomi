@@ -14,12 +14,12 @@ export const userService = {
   },
   //회원가입
   signUp: async (userData) => {
-    console.log('????');
+    console.log(userData);
     try {
       const { data } = await api.post(API_ENDPOINTS.USERS.BASE, {
-        userid: userData.userid,
-        userpwd: userData.userpwd,
-        username: userData.username,
+        user_id: userData.user_id,
+        user_pwd: userData.user_pwd,
+        user_name: userData.user_name,
         age: userData.age,
         gender: userData.gender,
         phone: userData.phone,
@@ -37,9 +37,9 @@ export const userService = {
       throw new Error('서버 통신 불량');
     }
   },
-  login: async (userid, userpwd) => {
+  login: async (user_id, user_pwd) => {
     try {
-      const { data } = await api.get(API_ENDPOINTS.USERS.LOGIN(userid, userpwd));
+      const { data } = await api.get(API_ENDPOINTS.USERS.LOGIN(user_id, user_pwd));
       return data[0]; //
     } catch (error) {
       if (error.response) {
