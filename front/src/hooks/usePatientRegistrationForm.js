@@ -5,10 +5,10 @@ import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 import { patientService } from '../api/patient';
 import useUserStore from '../store/userStore';
-import { diseaseService } from '../api/disease';
 
 
-//회원가입 폼의 유효성 검사 스키마
+
+//환자등록 폼의 유효성 검사 스키마
 const patientsSchema = yup.object().shape({
   patName: yup
     .string()
@@ -41,14 +41,14 @@ const patientsSchema = yup.object().shape({
 export const usepatientRegistrationForm = () => {
   const navigate = useNavigate();
   const { user } = useUserStore();
-// import할시 구조분해할당으로 가져와야 함수로 적용됌!
-  const {postDisease} = diseaseService();
+
 
 
   //react-hook-form으로 폼 상태 초기화및 유효성 검사
   const {
     register,
     handleSubmit,
+    setValue,
     formState: { errors, isSubmitting }, //유효성 에러및 제출중 상태
     watch, // watch 함수를 추가로 가져옵니다.
   } = useForm({
@@ -61,42 +61,17 @@ export const usepatientRegistrationForm = () => {
     },
   });
 
-  const onSubmit = async (data) => {
-    try {
-      //환자등록 API호출
-      await patientService.postNewPatient({
-        // guardianNo userid가 되어야함
-        guardianNo: user ? user.userid : '1',
-        patName: data.patName,
-        patAge: data.patAge,
-        patAddress: data.patAddress,
-        patGender: data.patGender,
-        patHeight: data.patHeight,
-        patWeight: data.patWeight,
-        patContent: data.patContent,
-        phone: data.phone,
-      });
 
-      // 리스트로 저장
-      await postDisease(
-      );
 
-      console.log('질병 등록종료')
 
-      toast.success('돌봄대상자 등록 완료!');
-      navigate('/patient');
-    } catch (error) {
-      toast.error('돌봄대상자 등록 중 문제가 발생하였습니다.');
-      console.error('돌본대상자 등록 에러 : ', error);
-    }
-  };
 
   //컴포넌트에서 사용할 값들 반환
   return {
     register,
-    handleSubmit: handleSubmit(onSubmit),
+    handleSubmit,
     errors,
     isSubmitting,
+    setValue,
     watch, // watch 함수를 반환합니다.
   };
 };
