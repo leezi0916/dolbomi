@@ -10,6 +10,7 @@ import { hireService } from '../api/hires';
 import SearchBar from '../components/SearchBar';
 import { IoCheckmarkOutline } from 'react-icons/io5';
 import { ClipLoader } from 'react-spinners';
+import { Link } from 'react-router-dom';
 
 const HireList = () => {
   const [hireLists, setHireLists] = useState([]);
@@ -186,7 +187,7 @@ const HireList = () => {
       ) : (
         <HireListSection>
           {hireLists.map((hire) => (
-            <HireListCard key={hire.hiring_no}>
+            <HireListCard key={hire.hiring_no} to={'/hireDetail'}>
               <CardHeader>
                 <ProfileImage src={hire.profile_image || profileImage} alt="프로필" />
                 <HeaderContent>
@@ -208,9 +209,12 @@ const HireList = () => {
               </CardHeader>
               <CardFooter>
                 <LocationWage>
-                  <LocationText>지역 {hire.pat_address}</LocationText>
+                  <LocationText>
+                    <GrayText>지역 </GrayText>
+                    {hire.pat_address}
+                  </LocationText>
                   <AccuontText>
-                    시급 <BoldAccount>{hire.account}원</BoldAccount>
+                    <GrayText>시급</GrayText> <BoldAccount>{hire.account}원</BoldAccount>
                   </AccuontText>
                 </LocationWage>
                 {hire.care_status && <AccommodationInfo>숙식 제공 가능</AccommodationInfo>}
@@ -413,7 +417,7 @@ const HireListSection = styled(Section)`
   gap: ${({ theme }) => theme.spacing[6]};
 `;
 
-const HireListCard = styled.div`
+const HireListCard = styled(Link)`
   width: 100%;
   margin: 0 auto; /* 중앙 정렬 */
   background-color: white;
@@ -543,7 +547,10 @@ const LocationWage = styled.div`
 `;
 
 const LocationText = styled.span``;
-
+const GrayText = styled.span`
+  font-weight: ${({ theme }) => theme.fontWeights.medium};
+  color: ${({ theme }) => theme.colors.gray[4]};
+`;
 const AccuontText = styled.span`
   strong {
     font-size: ${({ theme }) => theme.fontSizes.base}; /* 작은 화면 시급 강조 */

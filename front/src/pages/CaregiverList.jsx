@@ -207,28 +207,37 @@ const CaregiverList = () => {
                 <HeaderContent>
                   <Divder>
                     <UserInfo>
-                      <UserName>{hire.pat_name}</UserName>
+                      <UserName>
+                        {hire.pat_name} <GrayText>님</GrayText>
+                      </UserName>
                       <UserAge>
-                        나이 {hire.pat_age}세(
+                        <GrayText>나이</GrayText> {hire.pat_age}세(
                         {hire.pat_gender === 'male' ? '남' : hire.pat_gender === 'female' ? '여' : ''})
                       </UserAge>
                     </UserInfo>
                     <CareContent>{hire.title}</CareContent>
                     <div></div>
                   </Divder>
-                  <DateInfo>
-                    {hire.start_date} ~ {hire.end_date}
-                  </DateInfo>
+                  {hire.care_status && <AccommodationInfo>평점 4.0</AccommodationInfo>}
                 </HeaderContent>
               </CardHeader>
               <CardFooter>
                 <LocationWage>
-                  <LocationText>지역 {hire.pat_address}</LocationText>
+                  <LocationText>
+                    <GrayText>지역</GrayText> {hire.pat_address}
+                  </LocationText>
                   <AccuontText>
-                    시급 <BoldAccount>{hire.account}원</BoldAccount>
+                    <GrayText>시급</GrayText> <BoldAccount>{hire.account}원</BoldAccount>
                   </AccuontText>
                 </LocationWage>
-                {hire.care_status && <AccommodationInfo>평점 4.0</AccommodationInfo>}
+                <USERINFO1>
+                  {hire.care_status && <AccommodationInfo>자격증 보유</AccommodationInfo>}
+                  {hire.care_status ? (
+                    <AccommodationInfo>상주 간병 O</AccommodationInfo>
+                  ) : (
+                    <AccommodationInfo>상주 간병 X</AccommodationInfo>
+                  )}
+                </USERINFO1>
               </CardFooter>
             </HireListCard>
           ))}
@@ -561,6 +570,10 @@ const LocationWage = styled.div`
 
 const LocationText = styled.span``;
 
+const GrayText = styled.span`
+  font-weight: ${({ theme }) => theme.fontWeights.medium};
+  color: ${({ theme }) => theme.colors.gray[4]};
+`;
 const AccuontText = styled.span`
   strong {
     font-size: ${({ theme }) => theme.fontSizes.base}; /* 작은 화면 시급 강조 */
@@ -588,6 +601,11 @@ const AccommodationInfo = styled.span`
   ${media.sm`
     font-size: ${({ theme }) => theme.fontSizes.xl}; /* sm 이상 폰트 크기 */
   `}
+`;
+
+const USERINFO1 = styled.div`
+  display: flex;
+  gap: ${({ theme }) => theme.spacing[8]};
 `;
 
 const Divder = styled.div`

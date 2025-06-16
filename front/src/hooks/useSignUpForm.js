@@ -7,7 +7,7 @@ import { useNavigate } from 'react-router-dom';
 
 //회원가입 폼의 유효성 검사 스키마
 const signUpSchema = yup.object().shape({
-  userid: yup
+  user_id: yup
     .string()
     .required('아이디를 입력하세요.')
     .min(5, '아이디는 최소 5자 이상이어야 합니다.')
@@ -16,13 +16,13 @@ const signUpSchema = yup.object().shape({
       '아이디에 특수문자가 포함되면 안되고 숫자로 시작하면 안됩니다!'
     ),
 
-  username: yup
+  user_name: yup
     .string()
     .required('이름을 입력하세요.')
     .matches(/^[가-힣]+$/, '이름은 한글만 입력 가능합니다.')
     .max(4, '이름은 최대 4자까지만 입력 가능합니다.'),
 
-  userpwd: yup
+  user_pwd: yup
     .string()
     .required('비밀번호를 입력하세요.')
     .matches(/^(?=.*[a-zA-Z]).{5,}$/, '비밀번호는 영문자를 포함해 5자 이상이어야 합니다.'),
@@ -77,9 +77,9 @@ export const useSignUpForm = () => {
 
       //회원가입API호출
       await userService.signUp({
-        userid: data.userid,
-        userpwd: data.userpwd,
-        username: data.username,
+        user_id: data.user_id,
+        user_pwd: data.user_pwd,
+        user_name: data.user_name,
         age: data.age,
         gender: data.gender,
         phone: data.phone,

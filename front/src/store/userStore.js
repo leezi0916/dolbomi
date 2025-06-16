@@ -21,8 +21,8 @@ const useUserStore = create(
       login: (userData) => {
         set({
           user: {
-            userid: userData.userid,
-            username: userData.username,
+            user_id: userData.user_id,
+            user_name: userData.user_name,
           },
           isAuthenticated: true,
         });
