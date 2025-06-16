@@ -2,16 +2,27 @@ import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
 const useUserStore = create(
+  
+
+
   persist(
     (set) => ({
+
       user: null,
+      userStatus : false,
       isAuthenticated: false,
+
+      // 간병인= false/ 돌봄대상자 = true
+      setUserStatus: () =>
+        set((state) => ({
+          userStatus: !state.userStatus,
+        })),
 
       //로그인
       login: (userData) => {
         set({
           user: {
-            email: userData.email,
+            userid: userData.userid,
             username: userData.username,
             role: userData.role,
           },

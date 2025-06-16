@@ -1,5 +1,5 @@
 {
-  "jobOpening": [
+  "hiring": [
     {
       "job_opening_no": 1,
       "pat_no": 1,
@@ -66,17 +66,7 @@
       "image": "https://i.pinimg.com/736x/ba/ca/a0/bacaa0c3434602bc8e7d6a99db91b372.jpg",
       "care_status": "O"
     },
-    {
-      "job_opening_no": 7,
-      "pat_no": 6,
-      "user_name": "유정화",
-      "gender": "F",
-      "age": 88,
-      "pay": 15500,
-      "address": "전라북도",
-      "image": "https://i.pinimg.com/736x/ba/ca/a0/bacaa0c3434602bc8e7d6a99db91b372.jpg",
-      "care_status": "O"
-    },
+
     {
       "job_opening_no": 8,
       "pat_no": 7,
@@ -88,17 +78,7 @@
       "image": "https://i.pinimg.com/736x/ba/ca/a0/bacaa0c3434602bc8e7d6a99db91b372.jpg",
       "care_status": "X"
     },
-    {
-      "job_opening_no": 9,
-      "pat_no": 8,
-      "user_name": "정희자",
-      "gender": "F",
-      "age": 79,
-      "pay": 16500,
-      "address": "충청남도",
-      "image": "https://i.pinimg.com/736x/ba/ca/a0/bacaa0c3434602bc8e7d6a99db91b372.jpg",
-      "care_status": "O"
-    },
+
     {
       "job_opening_no": 10,
       "pat_no": 2,
@@ -110,5 +90,19 @@
       "image": "https://i.pinimg.com/736x/ba/ca/a0/bacaa0c3434602bc8e7d6a99db91b372.jpg",
       "care_status": "O"
     }
-  ]
+  ],
+  "users": [
+    {
+      "id": "d340",
+      "userid": "leezi0916",
+      "userpwd": "wlanr1506!",
+      "username": "이지묵",
+      "age": 26,
+      "gender": "male",
+      "phone": "01083281182",
+      "address": "경기도 남양주시 별내동",
+      "email": "leezi0916@naver.com"
+    }
+  ],
+  "reviews": []
 }

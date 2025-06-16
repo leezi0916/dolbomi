@@ -15,4 +15,16 @@ export const API_ENDPOINTS = {
   PRODUCTS: {
     BASE: '/products',
   },
+  USERS: {
+    BASE: '/users',
+    // LOGIN: '/users/login' //실제에는 이렇게 해야함 아래는 JsonServer 사용시
+    LOGIN: (userid, userpwd) => `/users?userid=${userid}&userpwd=${userpwd}`,
+  },
+  REVIEWS: {
+    BASE: '/reviews',
+    DETAIL: (userNo) => `/reviews?userNo=${userNo}`,
+  },
+  HIRING: {
+    BASE: '/hiring',
+  },
 };

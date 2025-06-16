@@ -1,13 +1,41 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import mainBennerImg from '../assets/mainImg/MainBenner1.png';
 import { GridContainer } from '../styles/common/Container';
 import { styled } from 'styled-components';
 import { Section } from '../styles/common/Container';
 import { media } from '../styles/MediaQueries';
 import { BiSolidPhoneCall } from 'react-icons/bi';
+import { hiringService } from '../api/hiring';
+import { toast } from 'react-toastify';
 
 const Home = () => {
-  const [hiringUser, setHiringUser] = useState([]);
+  const [hiringList, setHiringList] = useState([]);
+
+  useEffect(() => {
+    const loadHiringList = async () => {
+      try {
+        const list = await hiringService.getHiringList();
+        setHiringList(list);
+      } catch (error) {
+        console.error(error);
+        const errorMessage = '구인 목록을 불러오는데 실패했습니다.';
+        toast.error(errorMessage);
+      }
+    };
+
+    loadHiringList();
+  }, []);
+
+  // 이름 첫글자 O 처리하기
+  const maskName = (name) => {
+    if (name.length === 2) {
+      return name[0] + '○';
+    } else if (name.length >= 3) {
+      return name[0] + '○' + name.slice(2);
+    }
+
+    return name;
+  };
 
   return (
     <>
@@ -38,15 +66,15 @@ const Home = () => {
 
         <HiringCardSection>
           <GridContainer>
-            {hiringUser.map((user) => (
-              <Card key={user.id}>
+            {hiringList.map((user) => (
+              <Card key={user.job_opening_no}>
                 <CardImage src={user.image} />
                 <CardContent>
-                  <CardTitle>{user.name} 님</CardTitle>
+                  <CardTitle>{maskName(user.user_name)} 님</CardTitle>
                   <CardText>나이: {user.age}세</CardText>
                   <CardText>시급: {user.pay}원</CardText>
-                  <CardText>상주 가능 · 지역: {user.location}</CardText>
-                  <button>상세보기</button>
+                  <CardText>상주 가능 · 지역: {user.address}</CardText>
+                  <CardButton>상세보기</CardButton>
                 </CardContent>
               </Card>
             ))}
@@ -185,64 +213,70 @@ export const HiringTextSectionTitle = styled(MessageLine)`
 `;
 
 // 유저 카드 섹션
-export const HiringCardSection = styled(Section)`
-  background-color: red;
-`;
+export const HiringCardSection = styled(Section)``;
 
+// 각 카드
 export const Card = styled.div`
+  background: #fff;
+  border-radius: ${({ theme }) => theme.borderRadius.lg};
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
   transition:
     transform 0.2s ease,
     box-shadow 0.2s ease;
 
-  ${media.md`
-    border-radius: ${({ theme }) => theme.borderRadius.lg};
-  `}
-
   &:hover {
-    transform: translateY(-4px);
+    transform: translateY(-6px);
     box-shadow: ${({ theme }) => theme.shadows.md};
   }
 `;
 
+// 이미지
 export const CardImage = styled.div`
   width: 100%;
-  height: 160px;
+  height: 180px;
   background-color: ${({ theme }) => theme.colors.gray[200]};
   background-image: ${({ src }) => (src ? `url(${src})` : 'none')};
   background-size: cover;
   background-position: center;
-
-  ${media.md`
-    height: 200px;
-  `}
 `;
 
+// 카드 내부 내용
 export const CardContent = styled.div`
-  padding: ${({ theme }) => theme.spacing[3]};
-
-  ${media.md`
-    padding: ${({ theme }) => theme.spacing[4]};
-  `}
+  padding: ${({ theme }) => theme.spacing[4]};
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 `;
 
+// 제목
 export const CardTitle = styled.h3`
   font-size: ${({ theme }) => theme.fontSizes.base};
-  font-weight: ${({ theme }) => theme.fontWeights.medium};
-  margin-bottom: ${({ theme }) => theme.spacing[2]};
+  font-weight: ${({ theme }) => theme.fontWeights.bold};
   color: ${({ theme }) => theme.colors.gray[900]};
-
-  ${media.md`
-    font-size: ${({ theme }) => theme.fontSizes.lg};
-  `}
 `;
 
+// 텍스트 라벨
 export const CardText = styled.p`
   font-size: ${({ theme }) => theme.fontSizes.sm};
-  color: ${({ theme }) => theme.colors.gray[600]};
-  margin-bottom: ${({ theme }) => theme.spacing[3]};
+  color: ${({ theme }) => theme.colors.gray[700]};
+`;
 
-  ${media.md`
-    font-size: ${({ theme }) => theme.fontSizes.base};
-    margin-bottom: ${({ theme }) => theme.spacing[4]};
-  `}
+// 버튼
+export const CardButton = styled.button`
+  margin-top: 10px;
+  align-self: flex-end;
+  padding: 8px 16px;
+  background-color: ${({ theme }) => theme.colors.secondary};
+  color: #fff;
+  font-weight: ${({ theme }) => theme.fontWeights.medium};
+  border: none;
+  border-radius: ${({ theme }) => theme.borderRadius.sm};
+  cursor: pointer;
+
+  &:hover {
+    background-color: ${({ theme }) => theme.colors.secondaryDark};
+  }
 `;

@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { API_CONFIG } from './config';
 
 // 예시입니다. 저희 프로젝트에 맞게 변경해야 합니다.
 const api = axios.create({

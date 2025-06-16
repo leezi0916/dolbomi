@@ -1,6 +1,7 @@
 import { createGlobalStyle } from 'styled-components';
 
 const GlobalStyle = createGlobalStyle`
+
   /* CSS Reset */
   * {
     margin: 0;
@@ -10,7 +11,7 @@ const GlobalStyle = createGlobalStyle`
 
   /* 기본 폰트 설정 */
   body {
-    font-family: "Noto Sans KR ", sans-serif;
+    font-family: "Noto Sans KR", sans-serif;
     font-optical-sizing: auto;
     /* font-weight: 400; */
     font-style: normal;
@@ -86,10 +87,10 @@ const GlobalStyle = createGlobalStyle`
   }
 
   /* 기본 포커스 스타일 */
-  :focus {
+  /* :focus {
     outline: 2px solid #007bff;
     outline-offset: 2px;
-  }
+  } */
 
   /* 기본 애니메이션 */
   * {
