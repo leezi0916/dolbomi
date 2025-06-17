@@ -60,9 +60,13 @@ const Header = () => {
         <DesktopUserMenu>
           <img src="/src/assets/icons/icon_알림.png" alt="" />
           <img src="/src/assets/icons/icon_채팅알림.png" alt="" />
-          <ToggleWrap >
-            <ToggleItem userStatus ={!userStatus} onClick={() => setUserStatus(userStatus)}>간병인</ToggleItem>
-            <ToggleItem userStatus={userStatus} onClick={() => setUserStatus(!userStatus)}>보호자</ToggleItem>
+          <ToggleWrap>
+            <ToggleItem userStatus={!userStatus} onClick={() => setUserStatus(false)}>
+              간병인
+            </ToggleItem>
+            <ToggleItem userStatus={userStatus} onClick={() => setUserStatus(true)}>
+              보호자
+            </ToggleItem>
           </ToggleWrap>
 
           {isAuthenticated ? (
@@ -202,13 +206,12 @@ const HeaderWrapper = styled.div`
 `;
 
 const Logo = styled(Link)`
-display: flex;
-justify-content: center;
-align-items: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   font-size: ${({ theme }) => theme.fontSizes.sm};
   font-weight: ${({ theme }) => theme.fontWeights.bold};
   color: ${({ theme }) => theme.colors.primary};
-
 
   img {
     width: 60px;
@@ -219,8 +222,6 @@ align-items: center;
   ${media.md`
     font-size: ${({ theme }) => theme.fontSizes.xl};;
   `}
-
-
 `;
 
 const DesktopNav = styled.nav`
