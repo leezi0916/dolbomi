@@ -8,7 +8,7 @@ const useUserStore = create(
       userStatus: false,
       isAuthenticated: false,
 
-      // 간병인= false/ 돌봄대상자 = true
+      //상태변화
       setUserStatus: () =>
         set((state) => ({
           userStatus: !state.userStatus,
@@ -16,7 +16,8 @@ const useUserStore = create(
 
       //로그인
       login: (userData) => {
-        console.log('로그인 시 전달된 userData:', userData); //
+        console.log(userData)
+
         set({
           user: {
             user_id: userData.user_id,
