@@ -22,9 +22,12 @@ export const API_ENDPOINTS = {
 
   USERS: {
     BASE: '/users',
-    PROFILE: (userid) => `/users?user_id=${userid}`,
+
+    PROFILE: (user_id) => `/users?user_id=${user_id}`,
+
     // LOGIN: '/users/login' //실제에는 이렇게 해야함 아래는 JsonServer 사용시
     LOGIN: (user_id, user_pwd) => `/users?user_id=${user_id}&user_pwd=${user_pwd}`,
+    DETAIL: (user_id) => `/users?user_id=${user_id}`,
   },
   REVIEWS: {
     BASE: '/reviews',
@@ -53,6 +56,10 @@ export const API_ENDPOINTS = {
   DISEASE: {
     BASE: '/disease',
     DETAIL: (disNo) => `/patients?disNo=${disNo}`,
+  },
+
+  RESUME: {
+    BASE: '/resume',
   },
   REPORT: {
     BASE: '/report',

@@ -57,7 +57,7 @@ function AppRoutes() {
           {/* 보호자 */}
           <Route path="/guardian" element={<GuardianMainPage />} />
           <Route path="/guardian/caregiverlist" element={<CaregiverList />} />
-          <Route path="/guardian/hireRegistration" element={<HireRegistration />} />
+          <Route path="/guardian/hire-registration" element={<HireRegistration />} />
           <Route path="/guardian/patient" element={<Patient />} />
           <Route path="/guardian/patient/:id" element={<PatientUpdate />} />
           <Route path="/guardian/patientregisteration" element={<PatientRegisteration />} />
@@ -70,7 +70,7 @@ function AppRoutes() {
           <Route path="/CommunityQuestion" element={<CommunityQuestion />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<SignUp />} />
-          <Route path="/MyProfile" element={<MyProfile />} />
+          <Route path="/myprofile" element={<MyProfile />} />
           <Route path="/hireDetail" element={<HireDetail />} />
           <Route path="/resumeDetail" element={<ResumeDetail />} />
           <Route path="/report" element={<Report />} />
@@ -83,22 +83,24 @@ function AppRoutes() {
 
 function App() {
   return (
-    <ThemeProvider theme={theme}>
-      <GlobalStyle />
-      <Router>
-        <AppRoutes />
-        <ToastContainer
-          position="top-right"
-          autoClose={3000}
-          closeOnClick
-          draggable
-          hideProgressBar={false}
-          newestOnTop
-          theme="light"
-          pauseOnHover
-        />
-      </Router>
-    </ThemeProvider>
+    <>
+      <ThemeProvider theme={theme}>
+        <GlobalStyle />
+        <Router>
+          <AppRoutes />
+          <ToastContainer
+            position="top-right"
+            autoClose={3000}
+            closeOnClick
+            draggable
+            hideProgressBar={false}
+            newestOnTop
+            theme="light"
+            pauseOnHover
+          />
+        </Router>
+      </ThemeProvider>
+    </>
   );
 }
 

@@ -19,6 +19,7 @@ const useUserStore = create(
 
         set({
           user: {
+            user_no: userData.user_no,
             user_id: userData.user_id,
             user_name: userData.user_name,
           },

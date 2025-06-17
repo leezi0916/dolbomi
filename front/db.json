@@ -203,14 +203,42 @@
   "users": [
     {
       "user_no": 1,
+
+      "id": "ac77",
+
       "user_id": "admin",
       "user_pwd": "a1234",
       "user_name": "이지묵",
       "age": 19,
-      "gender": "male",
+      "gender": "M",
       "phone": "01012345678",
       "address": "별내동dsafsdafas",
       "email": "admin@diamelo.com"
+    },
+
+    {
+      "user_no": 1,
+      "id": "5b3b",
+      "user_id": "user01",
+      "user_pwd": "pass01",
+      "user_name": "관리자",
+      "age": 18,
+      "gender": "F",
+      "phone": "01010101010",
+      "address": "ㅁㄴㅇㄹㅁㄴㅇㄹㄹㅇㄴㅁㄹㄴㅁ",
+      "email": "user100@kh.com",
+      "licenses": [
+        {
+          "license_name": "기사 자격증",
+          "license_publisher": "경찰청",
+          "license_date": "2025-05-10"
+        },
+        {
+          "license_name": "기사 자격증",
+          "license_publisher": "경찰청",
+          "license_date": "2025-05-10"
+        }
+      ]
     },
     {
       "id": "2170",
