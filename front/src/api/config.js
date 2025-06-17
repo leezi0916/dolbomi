@@ -62,6 +62,6 @@ export const API_ENDPOINTS = {
     BASE: '/resume',
   },
   REPORT: {
-    BASE: '/report',
+    BASE: (patNo) => `/report?patNo=${patNo}`,
   },
 };

@@ -8,7 +8,6 @@ export const userService = {
       const { data } = await api.get(API_ENDPOINTS.USERS.PROFILE(userId));
 
       console.log('요청 URL:', API_ENDPOINTS.USERS.PROFILE(userId));
-
       return data;
     } catch (error) {
       console.error('프로필 조회 실패:', error.response?.data?.message || error.message);

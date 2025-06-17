@@ -8,7 +8,6 @@ export const patientService = {
     try {
       const { data } = await api.get(API_ENDPOINTS.PATIENT.DETAIL(guardianNo));
       return data;
-
     } catch (error) {
       if (error.response) {
         const message = error.response?.data?.message || '환자목록을 불러오는데 실패했습니다.';
@@ -33,7 +32,6 @@ export const patientService = {
     try {
       const { data } = await api.get(API_ENDPOINTS.PATIENT.PATDETAIL(id));
       return data[0];
-      
     } catch (error) {
       if (error.response) {
         const message = error.response?.data?.message || '환자목록을 불러오는데 실패했습니다.';

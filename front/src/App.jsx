@@ -11,28 +11,24 @@ import SignUp from './pages/SignUp';
 import MyProfile from './pages/MyProfile';
 import Login from './pages/Login';
 import HireList from './pages/HireList';
-
 import Patient from './pages/Patient';
 import PatientRegisteration from './pages/PatientRegistration';
 import PatientUpdate from './pages/PatientUpdate';
-
-import Report from './pages/ReportMain';
 import ReportDetail from './pages/ReportDetail';
 import ReportForm from './pages/ReportForm';
-
 import CommunityDetail from './pages/CommunityDetail';
 import CommunityQuestion from './pages/CommunityQuestion';
 import NoticeBoard from './pages/NoticeBoard';
-
 import CaregiverList from './pages/CaregiverList';
 import HireRegistration from './pages/HireRegistration';
 import HireDetail from './pages/HireDetail';
 import ResumeRegistration from './pages/ResumeRegistration';
 import ResumeDetail from './pages/ResumeDetail';
-
 import GuardianMainPage from './pages/GuardianMainPage';
 import CareGiverMainPage from './pages/CareGiverMainPage';
 import { useEffect } from 'react';
+import useUserStore from './store/userStore';
+import ReportMain from './pages/ReportMain';
 
 function AppRoutes() {
   const navigate = useNavigate();
@@ -71,10 +67,10 @@ function AppRoutes() {
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<SignUp />} />
           <Route path="/myprofile" element={<MyProfile />} />
-          <Route path="/hireDetail" element={<HireDetail />} />
+          <Route path="/hireDetail/hiringNo" element={<HireDetail />} />
           <Route path="/resumeDetail" element={<ResumeDetail />} />
-          <Route path="/report" element={<Report />} />
-          <Route path="/reportdetail" element={<ReportDetail />} />
+          <Route path="/report/:patNo" element={<ReportMain />} />
+          <Route path="/report/:patNo/detail/:reportNo" element={<ReportDetail />} />
         </Routes>
       </Layout>
     </>
@@ -82,6 +78,8 @@ function AppRoutes() {
 }
 
 function App() {
+  const { userStatus } = useUserStore();
+
   return (
     <>
       <ThemeProvider theme={theme}>
