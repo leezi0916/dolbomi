@@ -8,18 +8,18 @@ import { BiSolidPhoneCall } from 'react-icons/bi';
 import { hiringService } from '../api/hiring';
 import { toast } from 'react-toastify';
 
-const Guardian = () => {
-  const [hiringList, setHiringList] = useState([]);
-  const [RoomAndBoardAvailable, setRoomAndBoardAvailable] = useState([]);
+const CareGiverMainPage = () => {
+  const [jobOpeningList, setJobOpeningList] = useState([]);
+  const [RoomAndBoardAvailabler, setRoomAndBoardAvailabler] = useState([]);
 
   useEffect(() => {
-    const loadHiringList = async () => {
+    const loadJobOpeningList = async () => {
       try {
-        const list = await hiringService.getHiringList();
-        setHiringList(list);
+        const list = await hiringService.getJobOpeningList();
+        setJobOpeningList(list);
 
         // 숙식 제공자
-        setRoomAndBoardAvailable(hiringList.filter((h) => h.care_status === 'O'));
+        setRoomAndBoardAvailabler(jobOpeningList.filter((h) => h.care_status === 'O'));
       } catch (error) {
         console.error(error);
         const errorMessage = '구인 목록을 불러오는데 실패했습니다.';
@@ -27,8 +27,8 @@ const Guardian = () => {
       }
     };
 
-    loadHiringList();
-  }, [RoomAndBoardAvailable]);
+    loadJobOpeningList();
+  }, [RoomAndBoardAvailabler]);
 
   // 이름 첫글자 O 처리하기
   const maskName = (name) => {
@@ -70,15 +70,15 @@ const Guardian = () => {
 
         <HiringCardSection>
           <GridContainer>
-            {hiringList.map((user) => (
+            {jobOpeningList.map((user) => (
               <Card key={user.job_opening_no}>
                 <CardTopContent>
-                  <CardImage src={user.image} />
+                  <CardImage src={user.profile_image} />
                   <CardTextGroup>
-                    <CardTitle>
-                      {maskName(user.user_name)} 님({user.gender == 'M' ? '남' : '여'})
-                    </CardTitle>
-                    <CardText>나이: {user.age}세</CardText>
+                    <CardTitle>{maskName(user.user_name)} 님</CardTitle>
+                    <CardText>
+                      나이: {user.age}세({user.gender == 'M' ? '남' : '여'})
+                    </CardText>
                     <CardText>시급: {user.pay}원</CardText>
                   </CardTextGroup>
                 </CardTopContent>
@@ -101,15 +101,15 @@ const Guardian = () => {
 
         <RoomAndBoardCardSection>
           <GridContainer>
-            {RoomAndBoardAvailable.map((user) => (
+            {RoomAndBoardAvailabler.map((user) => (
               <Card key={user.job_opening_no}>
                 <CardTopContent>
-                  <CardImage src={user.image} />
+                  <CardImage src={user.profile_image} />
                   <CardTextGroup>
-                    <CardTitle>
-                      {maskName(user.user_name)} 님({user.gender === 'M' ? '남' : '여'})
-                    </CardTitle>
-                    <CardText>나이: {user.age}세</CardText>
+                    <CardTitle>{maskName(user.user_name)} 님</CardTitle>
+                    <CardText>
+                      나이: {user.age}세({user.gender == 'M' ? '남' : '여'})
+                    </CardText>
                     <CardText>시급: {user.pay}원</CardText>
                   </CardTextGroup>
                 </CardTopContent>
@@ -128,7 +128,7 @@ const Guardian = () => {
   );
 };
 
-export default Guardian;
+export default CareGiverMainPage;
 
 // 홈 배너 섹션 전체 컨테이너
 export const HomeBannerSection = styled(Section)`

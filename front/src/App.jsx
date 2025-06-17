@@ -1,7 +1,7 @@
 import { ThemeProvider } from 'styled-components';
 import './App.css';
 import GlobalStyle from './styles/GlobalStyle';
-import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
+import { Route, BrowserRouter as Router, Routes, useLocation, useNavigate } from 'react-router-dom';
 import theme from './styles/theme';
 import Layout from './components/Layout';
 import { ToastContainer } from 'react-toastify';
@@ -27,45 +27,64 @@ import HireRegistration from './pages/HireRegistration';
 import HireDetail from './pages/HireDetail';
 import ResumeRegistration from './pages/ResumeRegistration';
 import ResumeDetail from './pages/ResumeDetail';
-import CareGiver from './pages/CareGiver';
-import Guardian from './pages/Guardian';
+import GuardianMainPage from './pages/GuardianMainPage';
+import CareGiverMainPage from './pages/CareGiverMainPage';
+import { useEffect } from 'react';
+
+function AppRoutes() {
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  useEffect(() => {
+    if (location.pathname === '/') {
+      navigate('/caregiver');
+    }
+  }, [location, navigate]);
+
+  return (
+    <>
+      <Layout>
+        <Routes>
+          {/* 간병인 */}
+
+          <Route path="/caregiver" element={<CareGiverMainPage />} />
+          <Route path="/caregiver/hirelist" element={<HireList />} />
+          <Route path="/caregiver/resumeRegistration" element={<ResumeRegistration />} />
+          <Route path="/caregiver/reportform" element={<ReportForm />} />
+
+          {/* 보호자 */}
+          <Route path="/guardian" element={<GuardianMainPage />} />
+          <Route path="/guardian/caregiverlist" element={<CaregiverList />} />
+          <Route path="/guardian/hireRegistration" element={<HireRegistration />} />
+          <Route path="/guardian/patient" element={<Patient />} />
+          <Route path="/guardian/patient/:id" element={<PatientUpdate />} />
+          <Route path="/guardian/patientregisteration" element={<PatientRegisteration />} />
+          <Route path="/review" element={<ReviewModal />} />
+
+          {/* 공용 */}
+          <Route path="/NoticeBoard" element={<NoticeBoard />} />
+          <Route path="/CommunityBoard" element={<CommunityBoard />} />
+          <Route path="/CommunityBoard/:no" element={<CommunityDetail />} />
+          <Route path="/CommunityQuestion" element={<CommunityQuestion />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<SignUp />} />
+          <Route path="/MyProfile" element={<MyProfile />} />
+          <Route path="/hireDetail" element={<HireDetail />} />
+          <Route path="/resumeDetail" element={<ResumeDetail />} />
+          <Route path="/report" element={<Report />} />
+          <Route path="/reportdetail" element={<ReportDetail />} />
+        </Routes>
+      </Layout>
+    </>
+  );
+}
 
 function App() {
   return (
-    <>
-      <ThemeProvider theme={theme}>
-        <GlobalStyle />
-        <Router>
-          <Layout>
-            <Routes>
-              <Route path="/" element={<CareGiver />} />
-              <Route path="/guardianMainPage" element={<Guardian />} />
-              <Route path="/patient" element={<Patient />} />
-              <Route path="/patients/:id" element={<PatientUpdate />} />
-              <Route path="/patientRegisteration" element={<PatientRegisteration />} />
-              <Route path="/CommunityBoard" element={<CommunityBoard />} />
-              <Route path="/CommunityBoard/:no" element={<CommunityDetail />} />
-              <Route path="/CommunityQuestion" element={<CommunityQuestion />} />
-              <Route path="/NoticeBoard" element={<NoticeBoard />} />
-              <Route path="/review" element={<ReviewModal />} />
-              <Route path="/signup" element={<SignUp />} />
-              <Route path="/MyProfile" element={<MyProfile />} />
-              <Route path="/login" element={<Login />} />
-
-              <Route path="/hirelist" element={<HireList />} />
-              <Route path="/caregiverlist" element={<CaregiverList />} />
-              <Route path="/hireRegistration" element={<HireRegistration />} />
-              <Route path="/hireDetail" element={<HireDetail />} />
-              <Route path="/resumeRegistration" element={<ResumeRegistration />} />
-              <Route path="/resumeDetail" element={<ResumeDetail />} />
-
-              <Route path="/report" element={<Report />} />
-              <Route path="/reportdetail" element={<ReportDetail />} />
-              <Route path="/reportform" element={<ReportForm />} />
-            </Routes>
-          </Layout>
-          NoticeBoard
-        </Router>
+    <ThemeProvider theme={theme}>
+      <GlobalStyle />
+      <Router>
+        <AppRoutes />
         <ToastContainer
           position="top-right"
           autoClose={3000}
@@ -76,8 +95,8 @@ function App() {
           theme="light"
           pauseOnHover
         />
-      </ThemeProvider>
-    </>
+      </Router>
+    </ThemeProvider>
   );
 }
 

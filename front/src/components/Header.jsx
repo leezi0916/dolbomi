@@ -61,10 +61,22 @@ const Header = () => {
           <img src="/src/assets/icons/icon_알림.png" alt="" />
           <img src="/src/assets/icons/icon_채팅알림.png" alt="" />
           <ToggleWrap>
-            <ToggleItem userStatus={!userStatus} onClick={() => setUserStatus(false)}>
+            <ToggleItem
+              userStatus={!userStatus}
+              onClick={() => {
+                setUserStatus(false); // 상태 설정
+                navigate('/caregiver'); // 페이지 이동
+              }}
+            >
               간병인
             </ToggleItem>
-            <ToggleItem userStatus={userStatus} onClick={() => setUserStatus(true)}>
+            <ToggleItem
+              userStatus={userStatus}
+              onClick={() => {
+                setUserStatus(true); // 상태 설정
+                navigate('/guardian'); // 페이지 이동
+              }}
+            >
               보호자
             </ToggleItem>
           </ToggleWrap>

@@ -5,21 +5,17 @@ import { styled } from 'styled-components';
 import { Section } from '../styles/common/Container';
 import { media } from '../styles/MediaQueries';
 import { BiSolidPhoneCall } from 'react-icons/bi';
-import { hiringService } from '../api/hiring';
 import { toast } from 'react-toastify';
+import { jobSeekingService } from '../api/jobSeeking';
 
-const CareGiver = () => {
-  const [hiringList, setHiringList] = useState([]);
-  const [RoomAndBoardAvailable, setRoomAndBoardAvailable] = useState([]);
+const GuardianMainPage = () => {
+  const [jobSeekingList, setJobSeekingList] = useState([]);
 
   useEffect(() => {
-    const loadHiringList = async () => {
+    const loadResumeList = async () => {
       try {
-        const list = await hiringService.getHiringList();
-        setHiringList(list);
-
-        // 숙식 제공자
-        setRoomAndBoardAvailable(hiringList.filter((h) => h.care_status === 'O'));
+        const list = await jobSeekingService.getResumeList();
+        setJobSeekingList(list);
       } catch (error) {
         console.error(error);
         const errorMessage = '구인 목록을 불러오는데 실패했습니다.';
@@ -27,8 +23,8 @@ const CareGiver = () => {
       }
     };
 
-    loadHiringList();
-  }, [RoomAndBoardAvailable]);
+    loadResumeList();
+  }, []);
 
   // 이름 첫글자 O 처리하기
   const maskName = (name) => {
@@ -63,43 +59,50 @@ const CareGiver = () => {
         </InfoBanner>
       </HomeBannerSection>
 
-      <HiringSection>
-        <HiringTextSection>
-          <HiringTextSectionTitle>도움이 간절한 돌봄 대상자</HiringTextSectionTitle>
-        </HiringTextSection>
+      <JobSeekingSection>
+        <JobSeekingTextSection>
+          <JobSeekingTextSectionTitle>당신의 환자를 돌보고 싶은 간병인들</JobSeekingTextSectionTitle>
+        </JobSeekingTextSection>
 
-        <HiringCardSection>
+        <JobSeekingCardSection>
           <GridContainer>
-            {hiringList.map((user) => (
+            {jobSeekingList.map((user) => (
               <Card key={user.job_opening_no}>
                 <CardTopContent>
-                  <CardImage src={user.image} />
+                  <CardImage src={user.profile_image} />
                   <CardTextGroup>
                     <CardTitle>
-                      {maskName(user.user_name)} 님({user.gender == 'M' ? '남' : '여'})
+                      {maskName(user.user_name)} <span>간병사 </span>
                     </CardTitle>
-                    <CardText>나이: {user.age}세</CardText>
+                    <CardText>
+                      나이: {user.age}세({user.gender == 'M' ? '남' : '여'})
+                    </CardText>
                     <CardText>시급: {user.pay}원</CardText>
                   </CardTextGroup>
                 </CardTopContent>
                 <CardBottomContent>
-                  <CardRegion>
-                    <span>지역</span> {user.address}
-                  </CardRegion>
+                  <CardBottomTextSection>
+                    <CardRegionText>
+                      <span>자격증</span> {user.license === true ? 'O' : 'X'}
+                    </CardRegionText>
+                    <CardRegionText>
+                      <span>지역</span> {user.address}
+                    </CardRegionText>
+                  </CardBottomTextSection>
                   <CardButton>상세보기</CardButton>
                 </CardBottomContent>
               </Card>
             ))}
           </GridContainer>
-        </HiringCardSection>
-      </HiringSection>
+        </JobSeekingCardSection>
+      </JobSeekingSection>
 
       <RoomAndBoardSection>
         <RoomAndBoardTextSection>
-          <RoomAndBoardTextSectionTitle>숙식 제공 돌봄 대상자</RoomAndBoardTextSectionTitle>
+          <RoomAndBoardTextSectionTitle>최신 리뷰</RoomAndBoardTextSectionTitle>
         </RoomAndBoardTextSection>
 
-        <RoomAndBoardCardSection>
+        {/* <RoomAndBoardCardSection>
           <GridContainer>
             {RoomAndBoardAvailable.map((user) => (
               <Card key={user.job_opening_no}>
@@ -122,13 +125,13 @@ const CareGiver = () => {
               </Card>
             ))}
           </GridContainer>
-        </RoomAndBoardCardSection>
+        </RoomAndBoardCardSection> */}
       </RoomAndBoardSection>
     </>
   );
 };
 
-export default CareGiver;
+export default GuardianMainPage;
 
 // 홈 배너 섹션 전체 컨테이너
 export const HomeBannerSection = styled(Section)`
@@ -242,12 +245,12 @@ export const ContactLine = styled(MessageLine)`
 `;
 
 //  구인 관련 섹션
-export const HiringSection = styled(HomeBannerSection)`
+export const JobSeekingSection = styled(HomeBannerSection)`
   padding-top: ${({ theme }) => theme.spacing[0]};
 `;
 
 // 구인글 텍스트 섹션
-export const HiringTextSection = styled(BannerMessage)`
+export const JobSeekingTextSection = styled(BannerMessage)`
   width: 100%;
   height: 60px;
   background-color: ${({ theme }) => theme.colors.third};
@@ -255,12 +258,12 @@ export const HiringTextSection = styled(BannerMessage)`
 `;
 
 // 구인글 텍스트
-export const HiringTextSectionTitle = styled(MessageLine)`
+export const JobSeekingTextSectionTitle = styled(MessageLine)`
   color: ${({ theme }) => theme.colors.black2};
 `;
 
 // 유저 카드 섹션
-export const HiringCardSection = styled(Section)`
+export const JobSeekingCardSection = styled(Section)`
   padding: ${({ theme }) => theme.spacing[0]};
 `;
 
@@ -343,8 +346,15 @@ export const CardBottomContent = styled.div`
   align-items: center;
 `;
 
-// 지역 텍스트
-export const CardRegion = styled.span`
+export const CardBottomTextSection = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: ${({ theme }) => theme.spacing[1]};
+`;
+
+// 자격증 텍스트
+export const CardLicenseText = styled.span`
   font-size: ${({ theme }) => theme.fontSizes.sm};
   color: ${({ theme }) => theme.colors.gray[1]};
   font-weight: ${({ theme }) => theme.fontWeights.bold};
@@ -353,6 +363,33 @@ export const CardRegion = styled.span`
     color: ${({ theme }) => theme.colors.gray[3]};
     font-weight: ${({ theme }) => theme.fontWeights.medium};
   }
+`;
+// 지역 텍스트
+export const CardRegionText = styled.span`
+  font-size: ${({ theme }) => theme.fontSizes.sm};
+  color: ${({ theme }) => theme.colors.gray[1]};
+  font-weight: ${({ theme }) => theme.fontWeights.bold};
+
+  // 말줄임 처리
+  display: inline-block;
+  max-width: 120px;
+  white-space: nowrap; // 줄바꿈 방지
+  overflow: hidden; // 넘친 부분 숨김
+  text-overflow: ellipsis; // 넘친 텍스트를 ...으로 표시
+  vertical-align: middle;
+
+  span {
+    color: ${({ theme }) => theme.colors.gray[3]};
+    font-weight: ${({ theme }) => theme.fontWeights.medium};
+  }
+
+  ${media.sm`
+    max-width: 80px; 
+  `}
+
+  ${media.xl`
+    max-width: 120px; 
+  `}
 `;
 
 // 버튼
@@ -366,7 +403,7 @@ export const CardButton = styled.button`
   cursor: pointer;
 `;
 
-export const RoomAndBoardSection = styled(HiringSection)``;
+export const RoomAndBoardSection = styled(JobSeekingSection)``;
 
 export const RoomAndBoardTextSection = styled(BannerMessage)`
   width: 100%;
@@ -379,4 +416,4 @@ export const RoomAndBoardTextSectionTitle = styled(MessageLine)`
   color: ${({ theme }) => theme.colors.black2};
 `;
 
-export const RoomAndBoardCardSection = styled(HiringCardSection)``;
+export const RoomAndBoardCardSection = styled(JobSeekingCardSection)``;

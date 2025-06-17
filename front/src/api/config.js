@@ -32,7 +32,11 @@ export const API_ENDPOINTS = {
   },
   HIRING: {
     BASE: '/hiring',
-},
+  },
+
+  JOBSEEKING: {
+    BASE: '/jobseeking',
+  },
 
   HIRES: {
     BASE: '/hires',
@@ -41,9 +45,9 @@ export const API_ENDPOINTS = {
   PATIENT: {
     BASE: '/patients',
     DETAIL: (guardianNo) => `/patients?guardiaNo=${guardianNo}`,
-    PATDETAIL :  (patNo) => `/patients?id=${patNo}`,
+    PATDETAIL: (patNo) => `/patients?id=${patNo}`,
     PUT: (patNo) => `/patients/${patNo}`,
-    DELETE : (patNo) => `/patients/${patNo}`
+    DELETE: (patNo) => `/patients/${patNo}`,
   },
 
   DISEASE: {
