@@ -62,7 +62,6 @@ function App() {
               <Route path="/reportform" element={<ReportForm />} />
             </Routes>
           </Layout>
-          NoticeBoard
         </Router>
         <ToastContainer
           position="top-right"
