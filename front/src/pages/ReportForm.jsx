@@ -29,6 +29,17 @@ const ReportForm = () => {
         </Body>
       </Container>
       <br />
+      <Container>
+        <Header>
+          <Contents onClick={() => close()}>
+            <img src="Union.png" alt="" />
+          </Contents>
+        </Header>
+        <Body>
+          <Input placeholder="특이사항 : " />
+          <MainInput />
+        </Body>
+      </Container>
       <AddBtn>
         <ButtonText>추가</ButtonText>
       </AddBtn>

@@ -50,4 +50,7 @@ export const API_ENDPOINTS = {
     BASE: '/disease',
     DETAIL: (disNo) => `/patients?disNo=${disNo}`,
   },
+  REPORT: {
+    BASE: '/report',
+  },
 };
