@@ -8,7 +8,7 @@ import { BiSolidPhoneCall } from 'react-icons/bi';
 import { hiringService } from '../api/hiring';
 import { toast } from 'react-toastify';
 
-const Home = () => {
+const Guardian = () => {
   const [hiringList, setHiringList] = useState([]);
   const [RoomAndBoardAvailable, setRoomAndBoardAvailable] = useState([]);
 
@@ -128,7 +128,7 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default Guardian;
 
 // 홈 배너 섹션 전체 컨테이너
 export const HomeBannerSection = styled(Section)`

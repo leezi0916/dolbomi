@@ -2,7 +2,6 @@ import { ThemeProvider } from 'styled-components';
 import './App.css';
 import GlobalStyle from './styles/GlobalStyle';
 import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
-import Home from './pages/Home';
 import theme from './styles/theme';
 import Layout from './components/Layout';
 import { ToastContainer } from 'react-toastify';
@@ -28,6 +27,8 @@ import HireRegistration from './pages/HireRegistration';
 import HireDetail from './pages/HireDetail';
 import ResumeRegistration from './pages/ResumeRegistration';
 import ResumeDetail from './pages/ResumeDetail';
+import CareGiver from './pages/CareGiver';
+import Guardian from './pages/Guardian';
 
 function App() {
   return (
@@ -37,7 +38,8 @@ function App() {
         <Router>
           <Layout>
             <Routes>
-              <Route path="/" element={<Home />} />
+              <Route path="/" element={<CareGiver />} />
+              <Route path="/guardianMainPage" element={<Guardian />} />
               <Route path="/patient" element={<Patient />} />
               <Route path="/patients/:id" element={<PatientUpdate />} />
               <Route path="/patientRegisteration" element={<PatientRegisteration />} />
