@@ -3,14 +3,15 @@ import { toast } from 'react-toastify';
 import { userService } from '../api/users';
 import { ClipLoader } from 'react-spinners';
 import styled from 'styled-components';
+import useUserStore from '../store/userStore';
 
 const MyProfile = () => {
+  // const { user, isAuthenticated } = useUserStore();
   const [error, setError] = useState(null);
   const [profile, setProfile] = useState([]);
   const [loading, setLoading] = useState(true);
-
-  const userId = 'leezi0916';
-
+  const userId = useUserStore((state) => state.user?.user_id);
+  // const userId = isAuthenticated ? user.user_id : null;
   useEffect(() => {
     const loadProfile = async () => {
       try {

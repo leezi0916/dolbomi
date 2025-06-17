@@ -17,12 +17,16 @@ export const API_ENDPOINTS = {
   // },
   COMMUNITY: {
     BASE: '/community', // 게시판 리스트 등
-    DETAIL: (no) => `/community/${no}`, // 특정 게시글 상세
+    DETAIL: (no) => `/community?no=${no}`, // 특정 게시글 상세
   },
 
   USERS: {
     BASE: '/users',
+<<<<<<< HEAD
     PROFILE: (user_id) => `/users?user_id=${user_id}`,
+=======
+    PROFILE: (userid) => `/users?user_id=${userid}`,
+>>>>>>> 735a1e9b4a134fb7dc234e9d63e175045f0424f0
     // LOGIN: '/users/login' //실제에는 이렇게 해야함 아래는 JsonServer 사용시
     LOGIN: (user_id, user_pwd) => `/users?user_id=${user_id}&user_pwd=${user_pwd}`,
     DETAIL: (user_id) => `/users?user_id=${user_id}`,
@@ -51,8 +55,13 @@ export const API_ENDPOINTS = {
     BASE: '/disease',
     DETAIL: (disNo) => `/patients?disNo=${disNo}`,
   },
+<<<<<<< HEAD
 
   RESUME: {
     BASE: '/resume',
+=======
+  REPORT: {
+    BASE: '/report',
+>>>>>>> 735a1e9b4a134fb7dc234e9d63e175045f0424f0
   },
 };

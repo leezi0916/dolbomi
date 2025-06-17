@@ -16,7 +16,7 @@ import Patient from './pages/Patient';
 import PatientRegisteration from './pages/PatientRegistration';
 import PatientUpdate from './pages/PatientUpdate';
 
-import Report from './pages/Report';
+import Report from './pages/ReportMain';
 import ReportDetail from './pages/ReportDetail';
 import ReportForm from './pages/ReportForm';
 import CommunityDetail from './pages/CommunityDetail';
@@ -28,6 +28,8 @@ import HireRegistration from './pages/HireRegistration';
 import HireDetail from './pages/HireDetail';
 import ResumeRegistration from './pages/ResumeRegistration';
 import ResumeDetail from './pages/ResumeDetail';
+import ReportMain from './pages/ReportMain';
+import CreateCommuBoardForm from './pages/CreateCommuBoardForm';
 
 function App() {
   return (
@@ -41,10 +43,13 @@ function App() {
               <Route path="/patient" element={<Patient />} />
               <Route path="/patients/:id" element={<PatientUpdate />} />
               <Route path="/patientRegisteration" element={<PatientRegisteration />} />
+
+              <Route path="/CreateCommuBoardForm" element={<CreateCommuBoardForm />} />
               <Route path="/CommunityBoard" element={<CommunityBoard />} />
-              <Route path="/CommunityBoard/:no" element={<CommunityDetail />} />
+              <Route path="/CommunityDetail/:no" element={<CommunityDetail />} />
               <Route path="/CommunityQuestion" element={<CommunityQuestion />} />
               <Route path="/NoticeBoard" element={<NoticeBoard />} />
+
               <Route path="/review" element={<ReviewModal />} />
               <Route path="/signup" element={<SignUp />} />
               <Route path="/MyProfile" element={<MyProfile />} />
@@ -57,7 +62,7 @@ function App() {
               <Route path="/caregiver/resume-registration" element={<ResumeRegistration />} />
               <Route path="/resumeDetail" element={<ResumeDetail />} />
 
-              <Route path="/report" element={<Report />} />
+              <Route path="/report" element={<ReportMain />} />
               <Route path="/reportdetail" element={<ReportDetail />} />
               <Route path="/reportform" element={<ReportForm />} />
             </Routes>

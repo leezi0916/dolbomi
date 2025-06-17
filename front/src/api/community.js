@@ -11,4 +11,15 @@ export const commuService = {
       throw error;
     }
   },
+  getCommunityDetail: async (no) => {
+    try {
+      const { data } = await api.get(API_ENDPOINTS.COMMUNITY.DETAIL(no));
+      console.log('요청 URL:', API_ENDPOINTS.COMMUNITY.DETAIL(no));
+
+      return data;
+    } catch (error) {
+      console.error('프로필 조회 실패:', error.response?.data?.message || error.message);
+      throw error;
+    }
+  },
 };

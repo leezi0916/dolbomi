@@ -107,10 +107,22 @@
       "count": "4"
     }
   ],
+  "community_detail": [
+    {
+      "no": "1",
+      "board_detail": "낚엿쥬"
+    },
+    {
+      "no": "2",
+      "board_detail": "테스트 중입니당"
+    }
+  ],
   "users": [
     {
       "user_no": 1,
+
       "id": "ac77",
+
       "user_id": "admin",
       "user_pwd": "a1234",
       "user_name": "이지묵",
@@ -144,6 +156,28 @@
           "license_date": "2025-05-10"
         }
       ]
+    },
+    {
+      "id": "2170",
+      "user_id": "dbgk9311",
+      "user_pwd": "dbgk9311",
+      "user_name": "유하",
+      "age": 30,
+      "gender": "female",
+      "phone": "01029292929",
+      "address": "경기도 안산시 상록구",
+      "email": "383838383@naver.com"
+    },
+    {
+      "id": "1578",
+      "user_id": "lee111",
+      "user_pwd": "lee111",
+      "user_name": "이인혜",
+      "age": 20,
+      "gender": "female",
+      "phone": "01022222222",
+      "address": "서울 강남구 강남역",
+      "email": "user0@naver.com"
     }
   ],
   "reviews": [],
@@ -355,6 +389,28 @@
       "patContent": "거동이 불편함",
       "phone": "01011111111",
       "tags": ["골절"]
+    }
+  ],
+  "report": [
+    {
+      "reportNo": 1,
+      "careGiverNo": 1,
+      "patNo": 1,
+      "reportTitle": "아아아아아아아아아아아아",
+      "reportContent": "우우우우우우우우우우우우우우\n우우우우",
+      "createDate": "2025-07-01",
+      "updateDate": "2025-07-01",
+      "status": "Y"
+    },
+    {
+      "reportNo": 2,
+      "careGiverNo": 2,
+      "patNo": 1,
+      "reportTitle": "우우우우우우우우우우우우우",
+      "reportContent": "아아아아아아아아아아아아아아\n우우우우",
+      "createDate": "2025-07-01",
+      "updateDate": "2025-07-01",
+      "status": "Y"
     }
   ]
 }
