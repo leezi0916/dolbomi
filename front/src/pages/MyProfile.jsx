@@ -107,7 +107,7 @@ const Page = styled.div`
 const Form = styled.form`
   width: 60%;
 `;
-const PageTitle = styled.div`
+export const PageTitle = styled.div`
   float: left;
   padding-top: 50px;
   padding-left: 10px;

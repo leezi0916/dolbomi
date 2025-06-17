@@ -43,15 +43,15 @@ function App() {
               <Route path="/patients/:id" element={<PatientUpdate />} />
               <Route path="/patientRegisteration" element={<PatientRegisteration />} />
 
-              <Route path="/CreateCommuBoardForm" element={<CreateCommuBoardForm />} />
-              <Route path="/CommunityBoard" element={<CommunityBoard />} />
-              <Route path="/CommunityDetail/:no" element={<CommunityDetail />} />
-              <Route path="/CommunityQuestion" element={<CommunityQuestion />} />
-              <Route path="/NoticeBoard" element={<NoticeBoard />} />
+              <Route path="/community/free/create" element={<CreateCommuBoardForm />} />
+              <Route path="/community/free" element={<CommunityBoard />} />
+              <Route path="/community/free/detail/:no" element={<CommunityDetail />} />
+              <Route path="/community/question" element={<CommunityQuestion />} />
+              <Route path="/community/notice" element={<NoticeBoard />} />
 
               <Route path="/review" element={<ReviewModal />} />
               <Route path="/signup" element={<SignUp />} />
-              <Route path="/MyProfile" element={<MyProfile />} />
+              <Route path="/profile" element={<MyProfile />} />
               <Route path="/login" element={<Login />} />
 
               <Route path="/hirelist" element={<HireList />} />

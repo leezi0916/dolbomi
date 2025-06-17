@@ -54,15 +54,19 @@ const Header = () => {
             <NavItem to="/caregiverlist">간병사 모집</NavItem>
           )}
 
-          <NavItem to="/CommunityBoard">소통</NavItem>
+          <NavItem to="/community/free">소통</NavItem>
         </DesktopNav>
         <div></div>
         <DesktopUserMenu>
           <img src="/src/assets/icons/icon_알림.png" alt="" />
           <img src="/src/assets/icons/icon_채팅알림.png" alt="" />
-          <ToggleWrap >
-            <ToggleItem userStatus ={!userStatus} onClick={() => setUserStatus(userStatus)}>간병인</ToggleItem>
-            <ToggleItem userStatus={userStatus} onClick={() => setUserStatus(!userStatus)}>보호자</ToggleItem>
+          <ToggleWrap>
+            <ToggleItem userStatus={!userStatus} onClick={() => setUserStatus(userStatus)}>
+              간병인
+            </ToggleItem>
+            <ToggleItem userStatus={userStatus} onClick={() => setUserStatus(!userStatus)}>
+              보호자
+            </ToggleItem>
           </ToggleWrap>
 
           {isAuthenticated ? (
@@ -88,7 +92,7 @@ const Header = () => {
               onMouseLeave={() => setIsHovering(false)}
             >
               <Wrap>
-                <NavItem to="/MyProfile">
+                <NavItem to="/profile">
                   <Icon src="/src/assets/icons/icon_개인정보홈.png" alt="" /> 개인정보홈
                 </NavItem>
 
@@ -202,13 +206,12 @@ const HeaderWrapper = styled.div`
 `;
 
 const Logo = styled(Link)`
-display: flex;
-justify-content: center;
-align-items: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   font-size: ${({ theme }) => theme.fontSizes.sm};
   font-weight: ${({ theme }) => theme.fontWeights.bold};
   color: ${({ theme }) => theme.colors.primary};
-
 
   img {
     width: 60px;
@@ -219,8 +222,6 @@ align-items: center;
   ${media.md`
     font-size: ${({ theme }) => theme.fontSizes.xl};;
   `}
-
-
 `;
 
 const DesktopNav = styled.nav`
