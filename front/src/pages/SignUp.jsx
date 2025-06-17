@@ -141,31 +141,31 @@ const SignUp = () => {
                   />
 
                   <GenderRadioGroup>
-                    <RadioWrapper checked={currentGender === 'male'}>
+                    <RadioWrapper checked={currentGender === 'M'}>
                       {' '}
                       {/* checked prop 전달 */}
                       <input
                         type="radio"
-                        id="male"
+                        id="M"
                         name="gender"
-                        value="male"
-                        checked={currentGender === 'male'} // watch 값으로 제어
+                        value="M"
+                        checked={currentGender === 'M'} // watch 값으로 제어
                         {...register('gender')} // register만 남김
                       />
-                      <label htmlFor="male">남성</label>
+                      <label htmlFor="M">남성</label>
                     </RadioWrapper>
-                    <RadioWrapper checked={currentGender === 'female'}>
+                    <RadioWrapper checked={currentGender === 'F'}>
                       {' '}
                       {/* checked prop 전달 */}
                       <input
                         type="radio"
-                        id="female"
+                        id="F"
                         name="gender"
-                        value="female"
-                        checked={currentGender === 'female'} // watch 값으로 제어
+                        value="F"
+                        checked={currentGender === 'F'} // watch 값으로 제어
                         {...register('gender')} // register만 남김
                       />
-                      <label htmlFor="female">여성</label>
+                      <label htmlFor="F">여성</label>
                     </RadioWrapper>
                   </GenderRadioGroup>
                 </Row>

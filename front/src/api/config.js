@@ -22,9 +22,12 @@ export const API_ENDPOINTS = {
 
   USERS: {
     BASE: '/users',
-    PROFILE: (userid) => `/users?user_id=${userid}`,
+
+    PROFILE: (user_id) => `/users?user_id=${user_id}`,
+
     // LOGIN: '/users/login' //실제에는 이렇게 해야함 아래는 JsonServer 사용시
     LOGIN: (user_id, user_pwd) => `/users?user_id=${user_id}&user_pwd=${user_pwd}`,
+    DETAIL: (user_id) => `/users?user_id=${user_id}`,
   },
   REVIEWS: {
     BASE: '/reviews',
@@ -34,21 +37,29 @@ export const API_ENDPOINTS = {
     BASE: '/hiring',
   },
 
+  JOBSEEKING: {
+    BASE: '/jobseeking',
+  },
+
   HIRES: {
     BASE: '/hires',
   },
 
   PATIENT: {
-    BASE: '/patients',
-    DETAIL: (guardianNo) => `/patients?guardiaNo=${guardianNo}`,
-    PATDETAIL: (patNo) => `/patients?id=${patNo}`,
-    PUT: (patNo) => `/patients/${patNo}`,
-    DELETE: (patNo) => `/patients/${patNo}`,
+    BASE: '/patient',
+    DETAIL: (guardianNo) => `/patient?guardianNo=${guardianNo}`,
+    PATDETAIL: (patNo) => `/patient?id=${patNo}`,
+    PUT: (patNo) => `/patient/${patNo}`,
+    DELETE: (patNo) => `/patient/${patNo}`,
   },
 
   DISEASE: {
     BASE: '/disease',
     DETAIL: (disNo) => `/patients?disNo=${disNo}`,
+  },
+
+  RESUME: {
+    BASE: '/resume',
   },
   REPORT: {
     BASE: (patNo) => `/report?patNo=${patNo}`,

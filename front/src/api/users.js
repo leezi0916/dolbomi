@@ -6,6 +6,7 @@ export const userService = {
   getUserProfile: async (userId) => {
     try {
       const { data } = await api.get(API_ENDPOINTS.USERS.PROFILE(userId));
+
       console.log('요청 URL:', API_ENDPOINTS.USERS.PROFILE(userId));
       return data;
     } catch (error) {

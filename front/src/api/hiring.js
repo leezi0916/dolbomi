@@ -4,7 +4,7 @@ import { API_ENDPOINTS } from './config';
 
 export const hiringService = {
   // 구인 목록 가져오기
-  getHiringList: async () => {
+  getJobOpeningList: async () => {
     try {
       const { data } = await api.get(API_ENDPOINTS.HIRING.BASE);
       return data;

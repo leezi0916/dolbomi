@@ -11,9 +11,8 @@ import {
   NotesTexttarea,
   SubmitBtn,
   Img,
-  TagsUl,
 } from '../styles/PatientRegistration';
-import { Label, Input, InputGroup, Button } from '../styles/Auth.styles';
+import { Label, Input, InputGroup } from '../styles/Auth.styles';
 import { usepatientRegistrationForm } from '../hooks/usePatientRegistrationForm';
 import { useNavigate, useParams } from 'react-router-dom';
 import useUserStore from '../store/userStore';
@@ -34,12 +33,13 @@ const PatientUpdate = () => {
   useEffect(() => {
     // 일단 접근가능하게 로그인 구현 되면 user -> !user 바꿀것
 
-    if (user) {
+    if (!user) {
       alert('로그인 후 이용해주세요');
-      navigate('/');
+      // navigate('/guardian');
     } else {
       const getPatient = async () => {
         try {
+          console.log(id);
           const onePatient = await patientService.getPatientId(id);
           setPatinet(onePatient);
         } catch (error) {
@@ -49,10 +49,6 @@ const PatientUpdate = () => {
       getPatient();
     }
 
-    if (!userStatus) {
-      console.log(userStatus);
-      navigate('/');
-    }
   }, [user, userStatus, id]);
 
   useEffect(() => {
@@ -83,7 +79,7 @@ const PatientUpdate = () => {
     try {
       await patientService.updatePatinet({ ...patient, ...data });
       toast.success('돌봄대상자 수정완료!');
-      navigate('/patient');
+      navigate('/guardian/patient');
     } catch (error) {
       console.log(error);
     }
