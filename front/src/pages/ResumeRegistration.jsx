@@ -6,9 +6,14 @@ import { Input, InputGroup, Title } from '../styles/Auth.styles';
 import { media } from '../styles/MediaQueries';
 import { SubmitButton } from '../styles/common/Button';
 import { FaPlus } from 'react-icons/fa6';
+import { useForm } from 'react-hook-form';
 
 const ResumeRegistration = () => {
   const [licenseList, setLicenseList] = useState([{ license_name: '', license_publisher: '', license_date: '' }]);
+
+  const { register, handleSubmit } = useForm({
+    mode: 'onChange',
+  });
 
   const handleInputChange = (index, field, value) => {
     const updatedList = [...licenseList];
@@ -30,7 +35,7 @@ const ResumeRegistration = () => {
         <HireHead>
           <HireHeadTitle>이력서 작성</HireHeadTitle>
         </HireHead>
-        <form action="">
+        <form onSubmit={handleSubmit}>
           <ContentWrapper>
             <div>
               <ProfilImageWrapper>
@@ -79,9 +84,9 @@ const ResumeRegistration = () => {
               </InputRow>
             </Divider>
           </ContentWrapper>
-
+          <input type="hidden" {...register('licenseList')}></input>
           {licenseList.map((license, index) => (
-            <ContentWrapper2>
+            <GridWrapper>
               <LicenseGroup>
                 <Label>자격증 명</Label>
                 <LicenseInput
@@ -106,18 +111,28 @@ const ResumeRegistration = () => {
                   onChange={(e) => handleInputChange(index, 'license_date', e.target.value)}
                 />
               </LicenseGroup>
-              {index !== 0 && (
+
+              {index === 0 ? (
+                <Div></Div>
+              ) : (
                 <LicenseAdd type="button" onClick={() => removeLicenseGroup(index)}>
                   <span>삭제</span>
                   <FaPlus />
                 </LicenseAdd>
               )}
 
+              {/* {index !== 0 && (
+                <LicenseAdd type="button" onClick={() => removeLicenseGroup(index)}>
+                  <span>삭제</span>
+                  <FaPlus />
+                </LicenseAdd>
+              )} */}
+
               <LicenseAdd type="button" onClick={addLicenseGroup}>
                 <span>추가</span>
                 <FaPlus />
               </LicenseAdd>
-            </ContentWrapper2>
+            </GridWrapper>
           ))}
 
           <HireBottom>
@@ -370,6 +385,7 @@ const LicenseGroup = styled.div`
 
 const LicenseInput = styled(Input)``;
 
+//기존
 const ContentWrapper2 = styled.div`
   display: flex;
   flex-direction: column; /* 작은 화면에서 세로로 쌓이도록 */
@@ -381,6 +397,27 @@ const ContentWrapper2 = styled.div`
     gap: ${({ theme }) => theme.spacing[5]};
     padding : ${({ theme }) => theme.spacing[3]};
   `}
+`;
+
+//변경(contentWrapper2 -> gridWrapper)인혜작성
+const GridWrapper = styled.div`
+  width: 80%;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  padding-top: ${({ theme }) => theme.spacing[3]};
+ 
+  ${media.lg`
+  display: grid;
+  grid-template-columns: repeat(5,1fr);
+  justify-content: center;
+  gap: 4px;
+  `}
+`;
+
+//인혜작성 시간나면 고치자
+const Div = styled.div`
+  width: 66px;
 `;
 
 const AccountGroup = styled.div`
@@ -398,13 +435,24 @@ const RadioContainer = styled.div`
 
 const LicenseAdd = styled.button`
   display: flex;
-  gap: 10px;
+  border-radius: 4px;
   align-items: center;
+  margin-top: ${({ theme }) => theme.spacing[2]};
+  justify-content: center;
+  background-color: ${({ theme }) => theme.colors.gray[5]};
+
+  color: black;
+
+  // 인혜 작성(반응형)
+  ${media.lg`
+  with
   span {
     width: 50px;
   }
   padding: 0;
+  background-color:white; 
   margin-top: ${({ theme }) => theme.spacing[6]};
+  `}
 `;
 
 const LicenseDelete = styled.button`
