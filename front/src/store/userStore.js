@@ -8,7 +8,7 @@ const useUserStore = create(
       userStatus: false,
       isAuthenticated: false,
 
-      // 간병인= false/ 돌봄대상자 = true
+      //상태변화
       setUserStatus: () =>
         set((state) => ({
           userStatus: !state.userStatus,

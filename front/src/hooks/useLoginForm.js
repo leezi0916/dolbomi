@@ -10,7 +10,6 @@ import useUserStore from '../store/userStore';
 //회원가입 폼의 유효성 검사 스키마
 const loginSchema = yup.object().shape({
   user_id: yup.string().required('아이디를 입력해주세요!'),
-
   user_pwd: yup.string().required('비밀번호를 입력해주세요!'),
 });
 
