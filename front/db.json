@@ -111,7 +111,7 @@
   ],
   "users": [
     {
-      "id": "ac77",
+      "user_no": 1,
       "user_id": "admin",
       "user_pwd": "a1234",
       "user_name": "이지묵",
@@ -333,9 +333,29 @@
       "patWeight": "65",
       "patContent": "거동이 불편함",
       "phone": "01011111111",
-      "tags": [
-        "골절"
-      ]
+      "tags": ["골절"]
+    }
+  ],
+  "report": [
+    {
+      "reportNo": 1,
+      "careGiverNo": 1,
+      "patNo": 1,
+      "reportTitle": "아아아아아아아아아아아아",
+      "reportContent": "우우우우우우우우우우우우우우\n우우우우",
+      "createDate": "2025-07-01",
+      "updateDate": "2025-07-01",
+      "status": "Y"
+    },
+    {
+      "reportNo": 2,
+      "careGiverNo": 2,
+      "patNo": 1,
+      "reportTitle": "우우우우우우우우우우우우우",
+      "reportContent": "아아아아아아아아아아아아아아\n우우우우",
+      "createDate": "2025-07-01",
+      "updateDate": "2025-07-01",
+      "status": "Y"
     }
   ]
 }
