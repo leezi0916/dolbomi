@@ -8,8 +8,6 @@ import useUserStore from '../store/userStore';
 import { useNavigate } from 'react-router-dom';
 const Header = () => {
   const { user, isAuthenticated, userStatus, setUserStatus } = useUserStore();
-  // userStatus => true :간병인 false : 돌봄대상자(보호자)
-  // const [status, setStatus] = useState(false);
 
   const [isHovering, setIsHovering] = useState(false);
   const logout = useUserStore((state) => state.logout);
@@ -25,7 +23,7 @@ const Header = () => {
     <HeaderContainer>
       <HeaderWrapper>
         <Logo to="/">
-          <img src="/public/logo.png" />
+          <img src="/src/assets/mainImg/logo.png" />
           {SITE_CONFIG.name}
         </Logo>
 
@@ -58,13 +56,13 @@ const Header = () => {
 
           <NavItem to="/CommunityBoard">소통</NavItem>
         </DesktopNav>
-
+        <div></div>
         <DesktopUserMenu>
           <img src="/src/assets/icons/icon_알림.png" alt="" />
           <img src="/src/assets/icons/icon_채팅알림.png" alt="" />
-          <ToggleWrap onClick={() => setUserStatus()}>
-            <ToggleItem userStatus={!userStatus}>간병인</ToggleItem>
-            <ToggleItem userStatus={userStatus}>보호자</ToggleItem>
+          <ToggleWrap >
+            <ToggleItem userStatus ={!userStatus} onClick={() => setUserStatus(userStatus)}>간병인</ToggleItem>
+            <ToggleItem userStatus={userStatus} onClick={() => setUserStatus(!userStatus)}>보호자</ToggleItem>
           </ToggleWrap>
 
           {isAuthenticated ? (
@@ -82,7 +80,7 @@ const Header = () => {
             <div
               style={{
                 position: 'absolute',
-                top: 'calc(100% + 22px)',
+                top: '100%',
                 right: '0',
                 bottom: '16px',
               }}
@@ -153,14 +151,17 @@ const ToggleWrap = styled.div`
   border-radius: ${({ theme }) => theme.borderRadius.base};
 `;
 const ToggleItem = styled.div`
+  font-size: ${({ theme }) => theme.fontSizes.sm};
   padding: 5px ${({ theme }) => theme.spacing[4]};
   border-radius: ${({ theme }) => theme.borderRadius.base};
   color: ${({ userStatus, theme }) => (userStatus ? theme.colors.white : theme.colors.gray[3])};
   background: ${({ userStatus, theme }) => (userStatus ? theme.colors.primary : 'transparent')};
   cursor: pointer;
-`;
 
-const NavIt = styled.img``;
+  ${media.lg`
+    font-size:${({ theme }) => theme.fontSizes.base};
+  `}
+`;
 
 const UserProfile = styled.div`
   display: flex;
@@ -176,6 +177,7 @@ const UserName = styled.span`
 const HeaderContainer = styled.header`
   background: ${({ theme }) => theme.colors.white};
   border-bottom: 1px solid ${({ theme }) => theme.colors.gray[5]};
+
   box-shadow: ${({ theme }) => theme.shadows.base};
   position: sticky;
   top: 0;
@@ -183,66 +185,75 @@ const HeaderContainer = styled.header`
 `;
 
 const HeaderWrapper = styled.div`
-  padding: ${({ theme }) => theme.spacing[4]};
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  max-width: 1280px;
+  //최소크기
+  display: grid;
   margin: 0 auto;
+  max-width: 1245px;
   height: 80px;
-  gap: ${({ theme }) => theme.spacing[4]};
-
   position: relative;
+  grid-template-columns: 1fr 1fr 0.1fr 2fr;
+
+  ${media.md`
+    grid-template-columns: 1fr 1fr 1fr 2fr;
+  `}
+  ${media.lg`
+    grid-template-columns: 1fr 1fr 1.5fr 2fr;
+  `}
 `;
 
 const Logo = styled(Link)`
-  font-size: ${({ theme }) => theme.fontSizes.xl};
+display: flex;
+justify-content: center;
+align-items: center;
+  font-size: ${({ theme }) => theme.fontSizes.sm};
   font-weight: ${({ theme }) => theme.fontWeights.bold};
   color: ${({ theme }) => theme.colors.primary};
 
+
   img {
-    margin-right: ${({ theme }) => theme.spacing[8]};
+    width: 60px;
+    height: 60px;
+    margin-right: 20px;
   }
 
   ${media.md`
-   font-size: ${({ theme }) => theme.fontSizes['2xl']}; 
+    font-size: ${({ theme }) => theme.fontSizes.xl};;
   `}
+
+
 `;
 
 const DesktopNav = styled.nav`
   display: none;
-  gap: ${({ theme }) => theme.spacing[8]};
-  width: 50%;
   ${media.md`
-        display: flex;
-    `}
+    display: flex;
+ align-items: center;
+  gap: 10px;
+  `}
 `;
 
 const DesktopUserMenu = styled.nav`
   display: none;
-  position: relative;
-  align-items: center;
-  gap: ${({ theme }) => theme.spacing[8]};
 
   ${media.md`
-        display: flex;
-    `}
-`;
-
-const DesktopUserMenuWrap = styled.div`
-  display: flex;
-  gap: ${({ theme }) => theme.spacing[10]};
+    display: flex;
+  justify-content: space-between;
+  position: relative;
   align-items: center;
+  `}
 `;
 
 const NavItem = styled(Link)`
-  font-size: ${({ theme }) => theme.fontSizes.base};
+  font-size: ${({ theme }) => theme.fontSizes.sm};
   font-weight: ${({ theme }) => theme.fontWeights.medium};
-  color: ${({ theme }) => theme.colors.gray[700]};
 
   &:hover {
     color: ${({ theme }) => theme.colors.primary};
   }
+
+  ${media.lg`
+   font-size: ${({ theme }) => theme.fontSizes.base}; 
+  `}
 `;
 
 const MenuButton = styled(GiHamburgerMenu)`
