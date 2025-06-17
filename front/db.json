@@ -120,6 +120,17 @@
       "email": "admin@diamelo.com"
     },
     {
+      "id": "2170",
+      "user_id": "dbgk9311",
+      "user_pwd": "dbgk9311",
+      "user_name": "유하",
+      "age": 30,
+      "gender": "female",
+      "phone": "01029292929",
+      "address": "경기도 안산시 상록구",
+      "email": "383838383@naver.com"
+    },
+    {
       "id": "1578",
       "user_id": "lee111",
       "user_pwd": "lee111",
@@ -339,9 +350,7 @@
       "patWeight": "65",
       "patContent": "거동이 불편함",
       "phone": "01011111111",
-      "tags": [
-        "골절"
-      ]
+      "tags": ["골절"]
     }
   ]
 }

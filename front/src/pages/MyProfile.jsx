@@ -3,14 +3,14 @@ import { toast } from 'react-toastify';
 import { userService } from '../api/users';
 import { ClipLoader } from 'react-spinners';
 import styled from 'styled-components';
+import useUserStore from '../store/userStore';
 
 const MyProfile = () => {
+  const { user, isAuthenticated } = useUserStore();
   const [error, setError] = useState(null);
   const [profile, setProfile] = useState([]);
   const [loading, setLoading] = useState(true);
-
-  const userId = 'leezi0916';
-
+  const userId = isAuthenticated ? user.user_id : null;
   useEffect(() => {
     const loadProfile = async () => {
       try {
@@ -56,10 +56,10 @@ const MyProfile = () => {
             <div>주소</div>
           </ProfilerTitles>
           {profile.map((info) => (
-            <Infos key={info.userid}>
-              <div>{info.userid}</div>
+            <Infos key={info.user_id}>
+              <div>{info.user_id}</div>
               <div>
-                <Input type="text" defaultValue={info.username} />
+                <Input type="text" defaultValue={info.user_name} />
               </div>
               <div>
                 <Input type="text" defaultValue={info.age} />
