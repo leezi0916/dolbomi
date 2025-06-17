@@ -29,6 +29,7 @@ import HireDetail from './pages/HireDetail';
 import ResumeRegistration from './pages/ResumeRegistration';
 import ResumeDetail from './pages/ResumeDetail';
 import ReportMain from './pages/ReportMain';
+import CreateCommuBoardForm from './pages/CreateCommuBoardForm';
 
 function App() {
   return (
@@ -42,10 +43,13 @@ function App() {
               <Route path="/patient" element={<Patient />} />
               <Route path="/patients/:id" element={<PatientUpdate />} />
               <Route path="/patientRegisteration" element={<PatientRegisteration />} />
+
+              <Route path="/CreateCommuBoardForm" element={<CreateCommuBoardForm />} />
               <Route path="/CommunityBoard" element={<CommunityBoard />} />
-              <Route path="/CommunityBoard/:no" element={<CommunityDetail />} />
+              <Route path="/CommunityDetail/:no" element={<CommunityDetail />} />
               <Route path="/CommunityQuestion" element={<CommunityQuestion />} />
               <Route path="/NoticeBoard" element={<NoticeBoard />} />
+
               <Route path="/review" element={<ReviewModal />} />
               <Route path="/signup" element={<SignUp />} />
               <Route path="/MyProfile" element={<MyProfile />} />
