@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Container, Section } from '../styles/common/Container';
 import profileImage from '../assets/images/pat.png'; // 프로필 이미지 경로
 import styled from 'styled-components';
@@ -6,31 +6,28 @@ import { Input, InputGroup, Title } from '../styles/Auth.styles';
 import { media } from '../styles/MediaQueries';
 import { SubmitButton } from '../styles/common/Button';
 import { FaPlus } from 'react-icons/fa6';
+import { useResumeForm } from '../hooks/useResumeForm';
 
 const ResumeRegistration = () => {
-  const [licenseList, setLicenseList] = useState([{ license_name: '', license_publisher: '', license_date: '' }]);
+  const {
+    register,
+    handleSubmit,
+    onSubmit,
+    errors,
+    licenseList,
+    handleLicenseChange,
+    addLicense,
+    removeLicense,
+    user,
+  } = useResumeForm();
 
-  const handleInputChange = (index, field, value) => {
-    const updatedList = [...licenseList];
-    updatedList[index][field] = value;
-    setLicenseList(updatedList);
-  };
-
-  const addLicenseGroup = () => {
-    setLicenseList([...licenseList, { license_name: '', license_publisher: '', license_date: '' }]);
-  };
-
-  const removeLicenseGroup = (index) => {
-    const updatedList = licenseList.filter((_, i) => i !== index);
-    setLicenseList(updatedList);
-  };
   return (
     <HireRegistSection>
       <HireContainer>
         <HireHead>
           <HireHeadTitle>이력서 작성</HireHeadTitle>
         </HireHead>
-        <form action="">
+        <form onSubmit={handleSubmit(onSubmit)}>
           <ContentWrapper>
             <div>
               <ProfilImageWrapper>
@@ -41,42 +38,32 @@ const ResumeRegistration = () => {
               <InputRow>
                 <InputGroup>
                   <Label>이름</Label>
-                  <Input type="text" value={'김옥순'} />
+                  <Input type="text" value={user?.user_name || ''} readOnly />
                 </InputGroup>
                 <InputGroup>
                   <Label>나이</Label>
-                  <Input type="text" value={'85'} />
+                  <Input type="text" value={user?.age || ''} readOnly />
                 </InputGroup>
               </InputRow>
               <RadioGroup>
                 <Label>성별</Label>
                 <RadioWrapper>
-                  <input type="radio" id="male" name="gender" value="male" />
+                  <input type="radio" id="male" name="gender" value="M" checked={user?.gender === 'M'} readOnly />
                   <label htmlFor="male">남성</label>
                 </RadioWrapper>
                 <RadioWrapper>
-                  <input type="radio" id="female" name="gender" value="female" />
+                  <input type="radio" id="female" name="gender" value="F" checked={user?.gender === 'F'} readOnly />
                   <label htmlFor="female">여성</label>
                 </RadioWrapper>
               </RadioGroup>
               <InputGroup>
                 <Label>전화번호</Label>
-                <Input type="text" value={'010-1111-1111'} />
+                <Input type="text" value={user?.phone || ''} readOnly />
               </InputGroup>
               <InputGroup>
                 <Label>주소</Label>
-                <Input type="text" value={'서울시'} />
+                <Input type="text" value={user?.address || ''} readOnly />
               </InputGroup>
-              <InputRow>
-                <InputGroup>
-                  <Label>키</Label>
-                  <Input type="text" value={'160 cm'} />
-                </InputGroup>
-                <InputGroup>
-                  <Label>몸무게</Label>
-                  <Input type="text" value={'42 kg'} />
-                </InputGroup>
-              </InputRow>
             </Divider>
           </ContentWrapper>
 
@@ -87,7 +74,7 @@ const ResumeRegistration = () => {
                 <LicenseInput
                   type="text"
                   value={license.license_name}
-                  onChange={(e) => handleInputChange(index, 'license_name', e.target.value)}
+                  onChange={(e) => handleLicenseChange(index, 'license_name', e.target.value)}
                 />
               </LicenseGroup>
               <LicenseGroup>
@@ -95,7 +82,7 @@ const ResumeRegistration = () => {
                 <LicenseInput
                   type="text"
                   value={license.license_publisher}
-                  onChange={(e) => handleInputChange(index, 'license_publisher', e.target.value)}
+                  onChange={(e) => handleLicenseChange(index, 'license_publisher', e.target.value)}
                 />
               </LicenseGroup>
               <LicenseGroup>
@@ -103,20 +90,9 @@ const ResumeRegistration = () => {
                 <LicenseInput
                   type="date"
                   value={license.license_date}
-                  onChange={(e) => handleInputChange(index, 'license_date', e.target.value)}
+                  onChange={(e) => handleLicenseChange(index, 'license_date', e.target.value)}
                 />
               </LicenseGroup>
-              {index !== 0 && (
-                <LicenseAdd type="button" onClick={() => removeLicenseGroup(index)}>
-                  <span>삭제</span>
-                  <FaPlus />
-                </LicenseAdd>
-              )}
-
-              <LicenseAdd type="button" onClick={addLicenseGroup}>
-                <span>추가</span>
-                <FaPlus />
-              </LicenseAdd>
             </ContentWrapper2>
           ))}
 
@@ -126,31 +102,39 @@ const ResumeRegistration = () => {
           <ContentWrapper1>
             <HireContent>
               <Label>제목</Label>
-              <Input type="text" value={'제목입니다 '} />
+              <Input {...register('resume_title')} placeholder="제목" />
+              <p>{errors.resume_title?.message}</p>
               <Label>내용</Label>
-              <Content type="text" value={'제목입니다 '} />
+              <Content {...register('resume_content')} placeholder="내용" />
+              <p>{errors.resume_content?.message}</p>
               <RadioGroup>
                 <RadioContainer>
-                  <Label>숙식 희망</Label>
+                  <Label>숙식 가능</Label>
                   <RadioWrapper>
-                    <input type="radio" id="care_status" name="care_status" value="care_status" />
-                    <label htmlFor="care_status">0</label>
+                    <input type="radio" value="Y" {...register('provide_hope')} />
                   </RadioWrapper>
+                  <Label>숙식 불가</Label>
+                  <RadioWrapper>
+                    <input type="radio" value="N" {...register('provide_hope')} />
+                  </RadioWrapper>
+                  <p>{errors.provide_hope?.message}</p>
                 </RadioContainer>
                 <AccountGroup>
                   <InputGroup>
                     <Label>희망 금액</Label>
-                    <Input type="text" value={'15000'} />
+                    <Input {...register('desired_account')} placeholder="희망 금액" />
+                    <p>{errors.desired_account?.message}</p>
                   </InputGroup>
                 </AccountGroup>
               </RadioGroup>
             </HireContent>
           </ContentWrapper1>
+
+          <ButtonGroup>
+            <BackButton>이전</BackButton>
+            <SubmitButton1 type="submit">저장하기</SubmitButton1>
+          </ButtonGroup>
         </form>
-        <ButtonGroup>
-          <BackButton>이전</BackButton>
-          <SubmitButton1>신청하기</SubmitButton1>
-        </ButtonGroup>
       </HireContainer>
     </HireRegistSection>
   );
@@ -391,7 +375,7 @@ const AccountGroup = styled.div`
 
 const RadioContainer = styled.div`
   display: flex;
-  width: 200px;
+  width: 55%;
   gap: ${({ theme }) => theme.spacing[5]};
   align-items: center;
 `;

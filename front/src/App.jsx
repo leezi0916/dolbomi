@@ -50,11 +50,11 @@ function App() {
               <Route path="/MyProfile" element={<MyProfile />} />
               <Route path="/login" element={<Login />} />
 
-              <Route path="/hirelist" element={<HireList />} />
-              <Route path="/caregiverlist" element={<CaregiverList />} />
-              <Route path="/hireRegistration" element={<HireRegistration />} />
+              <Route path="/caregiver/hirelist" element={<HireList />} />
+              <Route path="/guardian/caregiverlist" element={<CaregiverList />} />
+              <Route path="/guardian/hire-registration" element={<HireRegistration />} />
               <Route path="/hireDetail" element={<HireDetail />} />
-              <Route path="/resumeRegistration" element={<ResumeRegistration />} />
+              <Route path="/caregiver/resume-registration" element={<ResumeRegistration />} />
               <Route path="/resumeDetail" element={<ResumeDetail />} />
 
               <Route path="/report" element={<Report />} />
@@ -62,7 +62,6 @@ function App() {
               <Route path="/reportform" element={<ReportForm />} />
             </Routes>
           </Layout>
-          NoticeBoard
         </Router>
         <ToastContainer
           position="top-right"

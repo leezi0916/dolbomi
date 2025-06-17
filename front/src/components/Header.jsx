@@ -51,9 +51,9 @@ const Header = () => {
         {/* pc환경에서의 nav */}
         <DesktopNav>
           {userStatus ? (
-            <NavItem to="/hirelist">돌봄대상자 모집</NavItem>
+            <NavItem to="guardian/caregiverlist">돌봄대상자 모집</NavItem>
           ) : (
-            <NavItem to="/caregiverlist">간병사 모집</NavItem>
+            <NavItem to="/caregiver/hirelist">간병사 모집</NavItem>
           )}
 
           <NavItem to="/CommunityBoard">소통</NavItem>

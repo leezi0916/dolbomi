@@ -56,22 +56,22 @@ const MyProfile = () => {
             <div>주소</div>
           </ProfilerTitles>
           {profile.map((info) => (
-            <Infos key={info.userid}>
-              <div>{info.userid}</div>
+            <Infos key={info.user_id}>
+              <div>{info.user_id}</div>
               <div>
-                <Input type="text" defaultValue={info.username} />
+                <Input type="text" defaultValue={info.user_name} />
               </div>
               <div>
                 <Input type="text" defaultValue={info.age} />
               </div>
               <div>
                 <label>
-                  <input type="radio" name="gender" value="male" defaultChecked={info.gender === 'male'} />
+                  <input type="radio" name="gender" value="M" defaultChecked={info.gender === 'M'} />
                   남성
                 </label>
 
                 <label>
-                  <input type="radio" name="gender" value="female" defaultChecked={info.gender === 'female'} />
+                  <input type="radio" name="gender" value="F" defaultChecked={info.gender === 'F'} />
                   여성
                 </label>
               </div>

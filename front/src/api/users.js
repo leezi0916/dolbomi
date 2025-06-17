@@ -3,10 +3,10 @@ import { API_ENDPOINTS } from './config';
 
 export const userService = {
   //유저정보 불러오기(마이페이지 수정)
-  getUserProfile: async (userId) => {
+  getUserProfile: async (user_id) => {
     try {
-      const { data } = await api.get(API_ENDPOINTS.USERS.PROFILE(userId));
-      console.log('요청 URL:', API_ENDPOINTS.USERS.PROFILE(userId));
+      const { data } = await api.get(API_ENDPOINTS.USERS.PROFILE(user_id));
+      console.log('요청 URL:', API_ENDPOINTS.USERS.PROFILE(user_id));
 
       return data;
     } catch (error) {

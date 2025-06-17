@@ -66,7 +66,6 @@
       "image": "https://i.pinimg.com/736x/ba/ca/a0/bacaa0c3434602bc8e7d6a99db91b372.jpg",
       "care_status": "O"
     },
-
     {
       "job_opening_no": 8,
       "pat_no": 7,
@@ -78,7 +77,6 @@
       "image": "https://i.pinimg.com/736x/ba/ca/a0/bacaa0c3434602bc8e7d6a99db91b372.jpg",
       "care_status": "X"
     },
-
     {
       "job_opening_no": 10,
       "pat_no": 2,
@@ -111,15 +109,41 @@
   ],
   "users": [
     {
+      "user_no": 1,
       "id": "ac77",
       "user_id": "admin",
       "user_pwd": "a1234",
       "user_name": "이지묵",
       "age": 19,
-      "gender": "male",
+      "gender": "M",
       "phone": "01012345678",
       "address": "별내동dsafsdafas",
       "email": "admin@diamelo.com"
+    },
+
+    {
+      "user_no": 1,
+      "id": "5b3b",
+      "user_id": "user01",
+      "user_pwd": "pass01",
+      "user_name": "관리자",
+      "age": 18,
+      "gender": "M",
+      "phone": "01010101010",
+      "address": "ㅁㄴㅇㄹㅁㄴㅇㄹㄹㅇㄴㅁㄹㄴㅁ",
+      "email": "user100@kh.com",
+      "licenses": [
+        {
+          "license_name": "기사 자격증",
+          "license_publisher": "경찰청",
+          "license_date": "2025-05-10"
+        },
+        {
+          "license_name": "기사 자격증",
+          "license_publisher": "경찰청",
+          "license_date": "2025-05-10"
+        }
+      ]
     }
   ],
   "reviews": [],
@@ -267,7 +291,7 @@
   ],
   "patients": [
     {
-      "id": "1",
+      "id": "de62",
       "guardianNo": "1",
       "profileImage": "/src/assets/profileImg/img_환자소.png",
       "patName": "김건희",
@@ -277,11 +301,10 @@
       "patHeight": 162.5,
       "patWeight": 52.5,
       "patContent": "당뇨합병증",
-      "status": "Y",
-      "id": "de62"
+      "status": "Y"
     },
     {
-      "id": "2",
+      "id": "74db",
       "guardianNo": "1",
       "profileImage": "/src/assets/profileImg/img_환자소.png",
       "patName": "김겅강",
@@ -291,11 +314,10 @@
       "patHeight": 162.5,
       "patWeight": 52.5,
       "patContent": "당뇨합병증",
-      "status": "Y",
-      "id": "74db"
+      "status": "Y"
     },
     {
-      "id": "3",
+      "id": "5021",
       "guardianNo": "1",
       "profileImage": "/src/assets/profileImg/img_환자소.png",
       "patName": "이건강",
@@ -306,8 +328,7 @@
       "patWeight": 52.5,
       "patContent": "당뇨합병증",
       "phone": "",
-      "status": "Y",
-      "id": "5021"
+      "status": "Y"
     },
     {
       "id": "4",
@@ -333,9 +354,7 @@
       "patWeight": "65",
       "patContent": "거동이 불편함",
       "phone": "01011111111",
-      "tags": [
-        "골절"
-      ]
+      "tags": ["골절"]
     }
   ]
 }
