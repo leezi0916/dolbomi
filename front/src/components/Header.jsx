@@ -61,12 +61,12 @@ const Header = () => {
           <img src="/src/assets/icons/icon_알림.png" alt="" />
           <img src="/src/assets/icons/icon_채팅알림.png" alt="" />
           <ToggleWrap >
-            <ToggleItem userStatus ={!userStatus} onClick={() => setUserStatus(userStatus)}>간병인</ToggleItem>
-            <ToggleItem userStatus={userStatus} onClick={() => setUserStatus(!userStatus)}>보호자</ToggleItem>
+            <ToggleItem userStatus ={!userStatus} onClick={() => setUserStatus(false)}>간병인</ToggleItem>
+            <ToggleItem userStatus={userStatus} onClick={() => setUserStatus(true)}>보호자</ToggleItem>
           </ToggleWrap>
 
           {isAuthenticated ? (
-            <NavItem onMouseEnter={() => setIsHovering(true)} style={{ cursor: 'pointer' }}>
+            <NavItem  onMouseEnter={() => setIsHovering(true)} style={{ cursor: 'pointer', padding: '5px' }}>
               {user?.user_name}님
             </NavItem>
           ) : (
@@ -83,6 +83,7 @@ const Header = () => {
                 top: '100%',
                 right: '0',
                 bottom: '16px',
+                
               }}
               onMouseEnter={() => setIsHovering(true)}
               onMouseLeave={() => setIsHovering(false)}
@@ -222,6 +223,9 @@ align-items: center;
 
 
 `;
+const NewWrap = styled(Wrap)`
+padding-right: 5px;
+`
 
 const DesktopNav = styled.nav`
   display: none;
