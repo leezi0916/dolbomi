@@ -11,13 +11,15 @@ import SignUp from './pages/SignUp';
 import MyProfile from './pages/MyProfile';
 import Login from './pages/Login';
 import HireList from './pages/HireList';
+
 import Patient from './pages/Patient';
 import PatientRegisteration from './pages/PatientRegistration';
 import PatientUpdate from './pages/PatientUpdate';
 
-import Report from './pages/Report';
+import Report from './pages/ReportMain';
 import ReportDetail from './pages/ReportDetail';
 import ReportForm from './pages/ReportForm';
+
 import CommunityDetail from './pages/CommunityDetail';
 import CommunityQuestion from './pages/CommunityQuestion';
 import NoticeBoard from './pages/NoticeBoard';
@@ -27,6 +29,7 @@ import HireRegistration from './pages/HireRegistration';
 import HireDetail from './pages/HireDetail';
 import ResumeRegistration from './pages/ResumeRegistration';
 import ResumeDetail from './pages/ResumeDetail';
+
 import GuardianMainPage from './pages/GuardianMainPage';
 import CareGiverMainPage from './pages/CareGiverMainPage';
 import { useEffect } from 'react';
@@ -46,7 +49,6 @@ function AppRoutes() {
       <Layout>
         <Routes>
           {/* 간병인 */}
-
           <Route path="/caregiver" element={<CareGiverMainPage />} />
           <Route path="/caregiver/hirelist" element={<HireList />} />
           <Route path="/caregiver/resumeRegistration" element={<ResumeRegistration />} />

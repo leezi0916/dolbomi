@@ -21,22 +21,18 @@ import { toast } from 'react-toastify';
 import Tags from '../components/Tags';
 
 const PatientRegistration = () => {
-  const { user, userStatus } = useUserStore();
+  const { user } = useUserStore();
   const navigate = useNavigate();
   const { register, handleSubmit, errors, isSubmitting, watch, setValue } = usepatientRegistrationForm();
 
   useEffect(() => {
     // 일단 접근가능하게 로그인 구현 되면 user -> !user 바꿀것
-    if (user) {
+    if (!user) {
       alert('로그인 후 이용해주세요');
-      navigate('/');
-    }
-    if (!userStatus) {
-      console.log(userStatus);
-      navigate('/');
+      // navigate('/guardian');
     }
    
-  }, [user, userStatus]);
+  }, [user]);
 
   // 'gender' 필드의 현재 값을 watch하여 라디오 버튼의 checked 상태를 제어합니다.
   const currentGender = watch('patGender');

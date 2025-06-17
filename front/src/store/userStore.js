@@ -5,7 +5,6 @@ const useUserStore = create(
   persist(
     (set) => ({
       user: null,
-      userStatus: false,
       isAuthenticated: false,
 
       //상태변화
