@@ -1,4 +1,87 @@
 {
+  "jobseeking": [
+    {
+      "resume_no": 1,
+      "user_name": "김길동",
+      "gender": "F",
+      "age": 65,
+      "pay": 15000,
+      "address": "강원, 속초",
+      "license": true,
+      "profile_image": "https://i.pinimg.com/736x/19/a1/33/19a133d18c3b0c8b83dea31b159074c1.jpg"
+    },
+    {
+      "resume_no": 2,
+      "user_name": "이순신",
+      "gender": "M",
+      "age": 70,
+      "pay": 16000,
+      "address": "서울, 강동구",
+      "license": false,
+      "profile_image": "https://i.pinimg.com/736x/19/a1/33/19a133d18c3b0c8b83dea31b159074c1.jpg"
+    },
+    {
+      "resume_no": 3,
+      "user_name": "박영희",
+      "gender": "F",
+      "age": 58,
+      "pay": 14000,
+      "address": "부산, 해운대구",
+      "license": false,
+      "profile_image": "https://i.pinimg.com/736x/19/a1/33/19a133d18c3b0c8b83dea31b159074c1.jpg"
+    },
+    {
+      "resume_no": 4,
+      "user_name": "최철수",
+      "gender": "M",
+      "age": 62,
+      "pay": 15500,
+      "address": "대전, 유성구",
+      "license": false,
+      "profile_image": "https://i.pinimg.com/736x/19/a1/33/19a133d18c3b0c8b83dea31b159074c1.jpg"
+    },
+    {
+      "resume_no": 5,
+      "user_name": "한지민",
+      "gender": "F",
+      "age": 60,
+      "pay": 17000,
+      "address": "경기, 수원시",
+      "license": true,
+      "profile_image": "https://i.pinimg.com/736x/19/a1/33/19a133d18c3b0c8b83dea31b159074c1.jpg"
+    },
+    {
+      "resume_no": 6,
+      "user_name": "정해인",
+      "gender": "M",
+      "age": 55,
+      "pay": 14500,
+      "address": "인천, 미추홀구",
+      "license": false,
+      "profile_image": "https://i.pinimg.com/736x/19/a1/33/19a133d18c3b0c8b83dea31b159074c1.jpg"
+    },
+    {
+      "resume_no": 7,
+      "user_name": "송가인",
+      "gender": "F",
+      "age": 63,
+      "pay": 15000,
+      "address": "전북, 전주시",
+      "license": true,
+      "profile_image": "https://i.pinimg.com/736x/19/a1/33/19a133d18c3b0c8b83dea31b159074c1.jpg"
+    },
+    {
+      "resume_no": 8,
+      "user_name": "장동건",
+      "gender": "M",
+      "age": 61,
+      "pay": 16500,
+      "address": "충남, 천안시",
+      "license": false,
+      "profile_image": "https://i.pinimg.com/736x/19/a1/33/19a133d18c3b0c8b83dea31b159074c1.jpg"
+    }
+  ],
+
   "hiring": [
     {
       "job_opening_no": 1,
@@ -8,7 +91,7 @@
       "age": 65,
       "pay": 15000,
       "address": "강원도",
-      "image": "https://i.pinimg.com/736x/ba/ca/a0/bacaa0c3434602bc8e7d6a99db91b372.jpg",
+      "profile_image": "https://i.pinimg.com/736x/ba/ca/a0/bacaa0c3434602bc8e7d6a99db91b372.jpg",
       "care_status": "X"
     },
     {
@@ -19,7 +102,7 @@
       "age": 82,
       "pay": 16000,
       "address": "서울특별시",
-      "image": "https://i.pinimg.com/736x/ba/ca/a0/bacaa0c3434602bc8e7d6a99db91b372.jpg",
+      "profile_image": "https://i.pinimg.com/736x/ba/ca/a0/bacaa0c3434602bc8e7d6a99db91b372.jpg",
       "care_status": "O"
     },
     {
@@ -30,7 +113,7 @@
       "age": 78,
       "pay": 14000,
       "address": "부산광역시",
-      "image": "https://i.pinimg.com/736x/ba/ca/a0/bacaa0c3434602bc8e7d6a99db91b372.jpg",
+      "profile_image": "https://i.pinimg.com/736x/ba/ca/a0/bacaa0c3434602bc8e7d6a99db91b372.jpg",
       "care_status": "X"
     },
     {
@@ -41,7 +124,7 @@
       "age": 85,
       "pay": 17000,
       "address": "대구광역시",
-      "image": "https://i.pinimg.com/736x/ba/ca/a0/bacaa0c3434602bc8e7d6a99db91b372.jpg",
+      "profile_image": "https://i.pinimg.com/736x/ba/ca/a0/bacaa0c3434602bc8e7d6a99db91b372.jpg",
       "care_status": "O"
     },
     {
@@ -52,7 +135,7 @@
       "age": 75,
       "pay": 14500,
       "address": "인천광역시",
-      "image": "https://i.pinimg.com/736x/ba/ca/a0/bacaa0c3434602bc8e7d6a99db91b372.jpg",
+      "profile_image": "https://i.pinimg.com/736x/ba/ca/a0/bacaa0c3434602bc8e7d6a99db91b372.jpg",
       "care_status": "X"
     },
     {
@@ -63,7 +146,7 @@
       "age": 65,
       "pay": 15000,
       "address": "강원도",
-      "image": "https://i.pinimg.com/736x/ba/ca/a0/bacaa0c3434602bc8e7d6a99db91b372.jpg",
+      "profile_image": "https://i.pinimg.com/736x/ba/ca/a0/bacaa0c3434602bc8e7d6a99db91b372.jpg",
       "care_status": "O"
     },
     {
@@ -74,7 +157,7 @@
       "age": 81,
       "pay": 15800,
       "address": "경기도",
-      "image": "https://i.pinimg.com/736x/ba/ca/a0/bacaa0c3434602bc8e7d6a99db91b372.jpg",
+      "profile_image": "https://i.pinimg.com/736x/ba/ca/a0/bacaa0c3434602bc8e7d6a99db91b372.jpg",
       "care_status": "X"
     },
     {
@@ -85,7 +168,7 @@
       "age": 82,
       "pay": 16000,
       "address": "서울특별시",
-      "image": "https://i.pinimg.com/736x/ba/ca/a0/bacaa0c3434602bc8e7d6a99db91b372.jpg",
+      "profile_image": "https://i.pinimg.com/736x/ba/ca/a0/bacaa0c3434602bc8e7d6a99db91b372.jpg",
       "care_status": "O"
     }
   ],
@@ -323,7 +406,7 @@
       "profile_image": "/src/assets/images/pat.png"
     }
   ],
-  "patients": [
+  "patient": [
     {
       "id": "de62",
       "guardianNo": "1",
@@ -345,10 +428,12 @@
       "patAddress": "서울시 강남구",
       "patAge": 70,
       "patGender": "F",
-      "patHeight": 162.5,
-      "patWeight": 52.5,
+      "patHeight": "162",
+      "patWeight": "52",
       "patContent": "당뇨합병증",
-      "status": "Y"
+      "status": "Y",
+      "phone": "01022222222",
+      "tags": ["당뇨"]
     },
     {
       "id": "5021",
