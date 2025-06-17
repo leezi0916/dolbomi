@@ -52,8 +52,9 @@ export const FlexContainer = styled(Container)`
   `}
 `;
 
-export const GridContainer = styled(Container)`
+export const GridContainer = styled(Section)`
   display: grid;
+  padding: 0px;
   grid-template-columns: repeat(1, 1fr); //한줄에 하나 , 넓이 동일하게
   gap: ${({ theme }) => theme.spacing[4]};
 

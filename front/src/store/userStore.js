@@ -16,6 +16,7 @@ const useUserStore = create(
 
       //로그인
       login: (userData) => {
+        console.log('로그인 시 전달된 userData:', userData); //
         set({
           user: {
             user_id: userData.user_id,
@@ -35,7 +36,7 @@ const useUserStore = create(
     }),
     {
       name: 'user-storage',
-      //storage: localStorage, //기본값
+      // storage: localStorage, //기본값
       partialize: (state) => ({
         user: state.user,
         isAuthenticated: state.isAuthenticated,

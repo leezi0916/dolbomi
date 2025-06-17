@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import { userService } from '../api/users';
-import useUserStore from '../store/userStore';
 import { ClipLoader } from 'react-spinners';
 import styled from 'styled-components';
 
@@ -9,7 +8,8 @@ const MyProfile = () => {
   const [error, setError] = useState(null);
   const [profile, setProfile] = useState([]);
   const [loading, setLoading] = useState(true);
-  const userId = useUserStore((state) => state.user?.userid);
+
+  const userId = 'leezi0916';
 
   useEffect(() => {
     const loadProfile = async () => {
@@ -26,7 +26,6 @@ const MyProfile = () => {
         setLoading(false);
       }
     };
-
     loadProfile();
   }, [userId]);
 
@@ -41,9 +40,10 @@ const MyProfile = () => {
   if (error) {
     return null;
   }
+
   return (
     <Page>
-      <div>
+      <Form>
         <PageTitle>회원정보 수정 / 탈퇴</PageTitle>
         <ProfilerArray>
           <ProfilerTitles>
@@ -55,26 +55,46 @@ const MyProfile = () => {
             <div>이메일</div>
             <div>주소</div>
           </ProfilerTitles>
-          {profile.map((user) => (
-            <Infos key={user.userid}>
-              <div>{user.userid}</div>
-              <div>{user.username}</div>
-              <div>{user.age}</div>
-              <div>{user.gender}</div>
-              <div>{user.phone}</div>
-              <div>{user.email}</div>
-              <div>{user.address}</div>
+          {profile.map((info) => (
+            <Infos key={info.userid}>
+              <div>{info.userid}</div>
+              <div>
+                <Input type="text" defaultValue={info.username} />
+              </div>
+              <div>
+                <Input type="text" defaultValue={info.age} />
+              </div>
+              <div>
+                <label>
+                  <input type="radio" name="gender" value="male" defaultChecked={info.gender === 'male'} />
+                  남성
+                </label>
+
+                <label>
+                  <input type="radio" name="gender" value="female" defaultChecked={info.gender === 'female'} />
+                  여성
+                </label>
+              </div>
+              <div>
+                <Input type="text" defaultValue={info.phone} />
+              </div>
+              <div>
+                <Input type="email" defaultValue={info.email} />
+              </div>
+              <div>
+                <Input type="text" style={{ width: '100%' }} defaultValue={info.address} />
+              </div>
             </Infos>
           ))}
         </ProfilerArray>
 
         <Buttons>
-          <button>뒤로가기</button>
-          <button>회원탈퇴</button>
-          <button>비밀번호 변경</button>
-          <button>수정하기</button>
+          <button type="button">뒤로가기</button>
+          <button type="button">회원탈퇴</button>
+          <button type="button">비밀번호 변경</button>
+          <button type="submit">수정하기</button>
         </Buttons>
-      </div>
+      </Form>
     </Page>
   );
 };
@@ -83,41 +103,66 @@ const Page = styled.div`
   display: flex;
   justify-content: center;
 `;
+const Form = styled.form`
+  width: 60%;
+`;
 const PageTitle = styled.div`
   float: left;
   padding-top: 50px;
   padding-left: 10px;
   padding-bottom: 20px;
+  font-size: ${({ theme }) => theme.fontSizes.lg};
   font-weight: ${({ theme }) => theme.fontWeights.bold};
 `;
+
 const ProfilerArray = styled.div`
   width: 100%;
   display: flex;
+  border-top: 1px solid ${({ theme }) => theme.colors.gray[3]};
   > div {
   }
 `;
 const ProfilerTitles = styled.div`
+  width: 20%;
   > div {
-    width: 100px;
     height: 50px;
-    margin: 4px;
     align-content: center;
     background-color: ${({ theme }) => theme.colors.gray[5]};
+    border-bottom: 1px solid ${({ theme }) => theme.colors.gray[3]};
   }
 `;
 const Infos = styled.div`
+  width: 80%;
   > div {
-    width: 100%;
+    text-align: left;
     height: 50px;
-    margin: 4px;
     align-content: center;
+    border-bottom: 1px solid ${({ theme }) => theme.colors.gray[3]};
+    padding: 0 20px;
+    > label {
+      float: left;
+      padding-right: 30px;
+    }
   }
 `;
-const Buttons = styled.button`
+
+const Input = styled.input`
+  float: left;
+  height: 80%;
+  border: 1px solid ${({ theme }) => theme.colors.gray[5]};
+  border-radius: 4px;
+
+  padding: 0 4px;
+`;
+const Buttons = styled.div`
+  width: 100%;
   display: flex;
+  justify-content: center;
+  padding: 20px 0;
+  gap: 10px;
   > button {
     border-radius: 4px;
-    background-color: ${({ theme }) => theme.colors.secondary};
+    background-color: ${({ theme }) => theme.colors.primary};
     color: ${({ theme }) => theme.colors.white};
   }
 `;
