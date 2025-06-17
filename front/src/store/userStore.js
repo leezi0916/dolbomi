@@ -5,15 +5,8 @@ const useUserStore = create(
   persist(
     (set) => ({
       user: null,
-      userStatus: false,
       isAuthenticated: false,
-
-      //상태변화
-      setUserStatus: () =>
-        set((state) => ({
-          userStatus: !state.userStatus,
-        })),
-
+      
       //로그인
       login: (userData) => {
         console.log(userData)

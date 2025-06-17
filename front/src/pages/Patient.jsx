@@ -7,52 +7,55 @@ import useUserStore from '../store/userStore';
 import { useEffect } from 'react';
 import { ProfileImg } from '../styles/common/Profile';
 import { patientService } from '../api/patient';
+import { userService } from '../api/users';
 
 const Patient = () => {
-  const { user, isAuthenticated, userStatus,setUserStatus } = useUserStore();
+  const { user } = useUserStore();
   const [userPatients, setUserpatients] = useState();
   const navigate = useNavigate();
-
-
+  const [loginUser, setUserInfo] = useState();
 
   useEffect(() => {
     // 일단 접근가능하게 로그인 구현 되면 user -> !user 바꿀것
-    if (user) {
+    if (!user) {
       alert('로그인 후 이용해주세요');
-      navigate('/');
-    } 
-    if(!userStatus){
-    console.log(userStatus)
-      navigate('/');
+      // navigate('/guardian');
     }
+      const getUserInfo = async () => {
+        const userInfo = await userService.getUserProfile(user.user_id);
+        setUserInfo(userInfo[1]);
+      };
+      getUserInfo();
 
+  }, [user]);
+  useEffect(() => {
+    if (!loginUser?.id) return;
+  
     const getPatientList = async () => {
       try {
-        const patientsList = await patientService.getPatients("1"); 
-        setUserpatients(patientsList)
-        console.log(patientsList); 
+        console.log('loginUserid', loginUser.id);
+        const patientsList = await patientService.getPatients(loginUser.id);
+        setUserpatients(patientsList);
+        console.log(patientsList);
       } catch (error) {
         console.error(error);
       }
     };
-
+  
     getPatientList();
-      
-    
-
-  }, [user,userStatus]);
+  }, [loginUser]);
+  
   return (
     <>
       <AuthContainer>
         <Head>
           <Title>돌봄 대상자 목록</Title>
           <RegistrationButton>
-            <ButtonText onClick={() => navigate('/patientRegisteration')}>등록</ButtonText>
+            <ButtonText onClick={() => navigate('/guardian/patientregisteration')}>등록</ButtonText>
           </RegistrationButton>
         </Head>
 
         <CardWrap>
-
           {userPatients?.map((pat) => (
             <Card key={pat.id}>
               <ProfileDiv>
@@ -61,11 +64,11 @@ const Patient = () => {
                   <ProfileTextGray>
                     <ProfileTextStrong>{pat.patName}</ProfileTextStrong> 님
                   </ProfileTextGray>
-                 
+
                   <ProfileTextGray>
                     나이
                     <ProfileTextStrong>
-                      {pat.patAge}세 ({pat.patGender === "F" ? "여" : "남"})
+                      {pat.patAge}세 ({pat.patGender === 'F' ? '여' : '남'})
                     </ProfileTextStrong>
                   </ProfileTextGray>
                 </div>
@@ -73,7 +76,7 @@ const Patient = () => {
 
               <ButtonDiv>
                 <SubmitButton1>
-                  <ButtonText onClick={() => navigate(`/patients/${pat.id}`) } >관리</ButtonText>
+                  <ButtonText onClick={() => navigate(`/guardian/patient/${pat.id}`)}>관리</ButtonText>
                 </SubmitButton1>
                 <SubmitButton1>
                   <ButtonText>일지</ButtonText>

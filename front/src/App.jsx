@@ -12,6 +12,7 @@ import SignUp from './pages/SignUp';
 import MyProfile from './pages/MyProfile';
 import Login from './pages/Login';
 import HireList from './pages/HireList';
+
 import Patient from './pages/Patient';
 import PatientRegisteration from './pages/PatientRegistration';
 import PatientUpdate from './pages/PatientUpdate';
@@ -19,6 +20,7 @@ import PatientUpdate from './pages/PatientUpdate';
 import Report from './pages/Report';
 import ReportDetail from './pages/ReportDetail';
 import ReportForm from './pages/ReportForm';
+
 import CommunityDetail from './pages/CommunityDetail';
 import CommunityQuestion from './pages/CommunityQuestion';
 import NoticeBoard from './pages/NoticeBoard';
@@ -38,9 +40,11 @@ function App() {
           <Layout>
             <Routes>
               <Route path="/" element={<Home />} />
-              <Route path="/patient" element={<Patient />} />
-              <Route path="/patients/:id" element={<PatientUpdate />} />
-              <Route path="/patientRegisteration" element={<PatientRegisteration />} />
+
+              <Route path="/guardian/patient" element={<Patient />} />
+              <Route path="/guardian/patient/:id" element={<PatientUpdate />} />
+              <Route path="/guardian/patientregisteration" element={<PatientRegisteration />} />
+
               <Route path="/CommunityBoard" element={<CommunityBoard />} />
               <Route path="/CommunityBoard/:no" element={<CommunityDetail />} />
               <Route path="/CommunityQuestion" element={<CommunityQuestion />} />
