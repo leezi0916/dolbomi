@@ -6,10 +6,16 @@ const useUserStore = create(
     (set) => ({
       user: null,
       isAuthenticated: false,
-      
+
+      //상태변화
+      setUserStatus: (status) =>
+        set(() => ({
+          userStatus: status,
+        })),
+
       //로그인
       login: (userData) => {
-        console.log(userData)
+        console.log(userData);
 
         set({
           user: {

@@ -34,6 +34,10 @@ export const API_ENDPOINTS = {
     BASE: '/hiring',
   },
 
+  JOBSEEKING: {
+    BASE: '/jobseeking',
+  },
+
   HIRES: {
     BASE: '/hires',
   },
