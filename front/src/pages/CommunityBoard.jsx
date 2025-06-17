@@ -54,7 +54,7 @@ const CommunityBoard = () => {
           <Right>
             <Input type="text" />
             <Input type="text" />
-            <Btn>글쓰기</Btn>
+            <Btn to="/CreateCommuBoardForm">글쓰기</Btn>
           </Right>
         </BoardTop>
         <BoardItemTop>
@@ -65,7 +65,7 @@ const CommunityBoard = () => {
           <div>조회수</div>
         </BoardItemTop>
         {communityList.map((community) => (
-          <BoardItem key={community.no} onClick={() => Navigate(`/communityBorad/${community.no}`)}>
+          <BoardItem key={community.no} to={`/CommunityDetail/${community.no}`}>
             <div>{community.no}</div>
             <div>{community.title}</div>
             <div>{community.name}</div>
@@ -104,9 +104,9 @@ export const NowBoard = styled.div`
 `;
 const BoardTop = styled.div`
   width: 100%;
+  height: 42px;
   display: flex;
-  padding-top: 5px;
-  padding-bottom: 5px;
+  padding: 5px 0;
   border-bottom: 1px solid ${({ theme }) => theme.colors.gray[3]};
 `;
 const Input = styled.input`
@@ -114,7 +114,9 @@ const Input = styled.input`
   border-radius: 4px;
   padding: 0 4px;
 `;
-const Btn = styled.button`
+const Btn = styled(Link)`
+  align-content: center;
+  width: 10%;
   background-color: ${({ theme }) => theme.colors.primary};
   color: ${({ theme }) => theme.colors.white};
   border-radius: 4px;
@@ -142,7 +144,7 @@ export const BoardItemTop = styled.div`
     flex: 1;
   }
 `;
-export const BoardItem = styled.div`
+export const BoardItem = styled(Link)`
   width: 100%;
   display: flex;
   padding-top: 2px;
