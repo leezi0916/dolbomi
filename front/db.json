@@ -152,7 +152,16 @@
       "email": "user0@naver.com"
     }
   ],
-  "reviews": [],
+  "reviews": [
+    {
+      "reviewNo": 1,
+      "reviewWriterNo": 1,
+      "score": 5,
+      "createDate": "2025-07-01",
+      "updateDate": "2025-07-01",
+      "status": "Y"
+    }
+  ],
   "hires": [
     {
       "id": "1",
@@ -297,7 +306,7 @@
   ],
   "patients": [
     {
-      "id": "de62",
+      "id": 1,
       "guardianNo": "1",
       "profileImage": "/src/assets/profileImg/img_환자소.png",
       "patName": "김건희",
@@ -307,10 +316,11 @@
       "patHeight": 162.5,
       "patWeight": 52.5,
       "patContent": "당뇨합병증",
+      "phone": "01022222222",
       "status": "Y"
     },
     {
-      "id": "74db",
+      "id": 2,
       "guardianNo": "1",
       "profileImage": "/src/assets/profileImg/img_환자소.png",
       "patName": "김겅강",
@@ -323,7 +333,7 @@
       "status": "Y"
     },
     {
-      "id": "5021",
+      "id": 3,
       "guardianNo": "1",
       "profileImage": "/src/assets/profileImg/img_환자소.png",
       "patName": "이건강",
@@ -337,7 +347,7 @@
       "status": "Y"
     },
     {
-      "id": "4",
+      "id": 4,
       "guardianNo": "1",
       "patName": "이환자",
       "patAge": 60,
@@ -350,7 +360,7 @@
       "tags": ""
     },
     {
-      "id": "9050",
+      "id": 5,
       "guardianNo": "1",
       "patName": "이환자",
       "patAge": 70,
@@ -369,7 +379,7 @@
       "careGiverNo": 1,
       "patNo": 1,
       "reportTitle": "아아아아아아아아아아아아",
-      "reportContent": "우우우우우우우우우우우우우우\n우우우우",
+      "reportContent": "특이사항:\n오늘 아침 혈압이 다소 높음.",
       "createDate": "2025-07-01",
       "updateDate": "2025-07-01",
       "status": "Y"
@@ -379,7 +389,7 @@
       "careGiverNo": 2,
       "patNo": 1,
       "reportTitle": "우우우우우우우우우우우우우",
-      "reportContent": "아아아아아아아아아아아아아아\n우우우우",
+      "reportContent": "특이사항:\n오늘 아침 혈압이 다소 높음.\n\n신체활동수준:\n거의 없음",
       "createDate": "2025-07-01",
       "updateDate": "2025-07-01",
       "status": "Y"

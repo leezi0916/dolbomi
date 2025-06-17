@@ -2,18 +2,20 @@ import React from 'react';
 import styled from 'styled-components';
 import { Section } from '../styles/common/Container';
 import { ButtonText, SubmitButton } from '../styles/common/Button';
+import { useParams } from 'react-router-dom';
 
 const ReportForm = () => {
+  const { patNo } = useParams();
+
   return (
     <Wrap>
       <MainTitle>진단 일지 등록 / 수정</MainTitle>
       <br />
       <TopContainer>
         <Top>
-          <Name>
-            <option>환자 명</option>
-          </Name>
           <Input placeholder="제목" />
+          <Name>환자명</Name>
+          <Name>{new Date().toISOString().slice(0, 10)}</Name>
         </Top>
       </TopContainer>
       <br />
@@ -24,7 +26,7 @@ const ReportForm = () => {
           </Contents>
         </Header>
         <Body>
-          <Input placeholder="특이사항 : " />
+          <Input placeholder="소제목 : " />
           <MainInput />
         </Body>
       </Container>
@@ -36,7 +38,7 @@ const ReportForm = () => {
           </Contents>
         </Header>
         <Body>
-          <Input placeholder="특이사항 : " />
+          <Input placeholder="소제목 : " />
           <MainInput />
         </Body>
       </Container>
@@ -63,6 +65,7 @@ const ReportForm = () => {
 
 const Wrap = styled.div`
   padding: ${({ theme }) => theme.spacing[4]};
+  margin: 0;
 `;
 
 const MainTitle = styled.p`
@@ -102,7 +105,7 @@ const Input = styled.input`
   margin: 10px 0;
 `;
 
-const Name = styled.select`
+const Name = styled.div`
   width: 20%;
   border: 1px solid ${({ theme }) => theme.colors.gray[5]};
   border-radius: 4px;
