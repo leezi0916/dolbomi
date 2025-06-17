@@ -107,6 +107,16 @@
       "count": "4"
     }
   ],
+  "community_detail": [
+    {
+      "no": "1",
+      "board_detail": "낚엿쥬"
+    },
+    {
+      "no": "2",
+      "board_detail": "테스트 중입니당"
+    }
+  ],
   "users": [
     {
       "id": "ac77",
