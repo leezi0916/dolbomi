@@ -31,10 +31,7 @@ import ReportMain from './pages/ReportMain';
 import CreateCommuBoardForm from './pages/CreateCommuBoardForm';
 import UpdateCommuBoardForm from './pages/UpdateCommuBoardForm';
 import ReviewModal from './components/ReviewModal';
-<<<<<<< HEAD
 import ResumeManagement from './pages/ResumeManagement';
-=======
->>>>>>> 4dc6bd8525c0a5ef0536bf77fe99ae6f3e046ecb
 import ScrollToTop from './utils/scrollToTop';
 
 function AppRoutes() {
@@ -51,10 +48,7 @@ function AppRoutes() {
     <>
       <Layout>
         <ScrollToTop />
-<<<<<<< HEAD
 
-=======
->>>>>>> 4dc6bd8525c0a5ef0536bf77fe99ae6f3e046ecb
         <Routes>
           {/* 간병인 */}
           <Route path="/caregiver" element={<CareGiverMainPage />} />
