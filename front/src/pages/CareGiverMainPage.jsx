@@ -10,7 +10,7 @@ import { toast } from 'react-toastify';
 
 const CareGiverMainPage = () => {
   const [jobOpeningList, setJobOpeningList] = useState([]);
-  const [RoomAndBoardAvailabler, setRoomAndBoardAvailabler] = useState([]);
+  const [RoomAndBoardList, setRoomAndBoardList] = useState([]);
 
   useEffect(() => {
     const loadJobOpeningList = async () => {
@@ -19,7 +19,7 @@ const CareGiverMainPage = () => {
         setJobOpeningList(list);
 
         // list를 기반으로 바로 필터링
-        setRoomAndBoardAvailabler(list.filter((h) => h.care_status === 'O'));
+        setRoomAndBoardList(list.filter((h) => h.careStatus === 'Y'));
       } catch (error) {
         toast.error('구인 목록을 불러오는데 실패했습니다.');
       }
@@ -69,20 +69,20 @@ const CareGiverMainPage = () => {
         <HiringCardSection>
           <GridContainer>
             {jobOpeningList.map((user) => (
-              <Card key={user.job_opening_no}>
+              <Card key={user.hiringNo}>
                 <CardTopContent>
-                  <CardImage src={user.profile_image} />
+                  <CardImage src={user.profileImage} />
                   <CardTextGroup>
-                    <CardTitle>{maskName(user.user_name)} 님</CardTitle>
+                    <CardTitle>{maskName(user.patName)} 님</CardTitle>
                     <CardText>
-                      나이: {user.age}세({user.gender == 'M' ? '남' : '여'})
+                      나이: {user.patAge}세({user.patGender == 'M' ? '남' : '여'})
                     </CardText>
-                    <CardText>시급: {user.pay}원</CardText>
+                    <CardText>시급: {user.account}원</CardText>
                   </CardTextGroup>
                 </CardTopContent>
                 <CardBottomContent>
                   <CardRegion>
-                    <span>지역</span> {user.address}
+                    <span>지역</span> {user.patAddress}
                   </CardRegion>
                   <CardButton>상세보기</CardButton>
                 </CardBottomContent>
@@ -99,21 +99,21 @@ const CareGiverMainPage = () => {
 
         <RoomAndBoardCardSection>
           <GridContainer>
-            {RoomAndBoardAvailabler.map((user) => (
-              <Card key={user.job_opening_no}>
+            {RoomAndBoardList.map((user) => (
+              <Card key={user.hiringNo}>
                 <CardTopContent>
-                  <CardImage src={user.profile_image} />
+                  <CardImage src={user.profileImage} />
                   <CardTextGroup>
-                    <CardTitle>{maskName(user.user_name)} 님</CardTitle>
+                    <CardTitle>{maskName(user.patName)} 님</CardTitle>
                     <CardText>
-                      나이: {user.age}세({user.gender == 'M' ? '남' : '여'})
+                      나이: {user.patAge}세({user.patGender == 'M' ? '남' : '여'})
                     </CardText>
-                    <CardText>시급: {user.pay}원</CardText>
+                    <CardText>시급: {user.account}원</CardText>
                   </CardTextGroup>
                 </CardTopContent>
                 <CardBottomContent>
                   <CardRegion>
-                    <span>지역</span> {user.address}
+                    <span>지역</span> {user.patAddress}
                   </CardRegion>
                   <CardButton>상세보기</CardButton>
                 </CardBottomContent>
