@@ -21,7 +21,7 @@ import {
 import useUserStore from '../store/userStore';
 import { hiringService } from '../api/hiring';
 import { useParams } from 'react-router-dom';
-
+import Supportstatus from '../components/Supportstatus';
 import {guardianHiringForm }from '../hooks/guardianHiringForm';
 
 const HireDetail = () => {
@@ -55,6 +55,8 @@ const HireDetail = () => {
 
   return (
     <HireRegistSection>
+      <Supportstatus>
+      </Supportstatus>
       <HireContainer>
         <HireHead>
           <HireHeadTitle>돌봄대상자 정보</HireHeadTitle>

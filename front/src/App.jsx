@@ -30,6 +30,7 @@ import { useEffect } from 'react';
 import ReportMain from './pages/ReportMain';
 import CreateCommuBoardForm from './pages/CreateCommuBoardForm';
 import ReviewModal from './components/ReviewModal';
+import HireDetailMine from './pages/HireDetailMine';
 
 function AppRoutes() {
   const navigate = useNavigate();
@@ -71,6 +72,7 @@ function AppRoutes() {
           <Route path="/signup" element={<SignUp />} />
           <Route path="/myprofile" element={<MyProfile />} />
           <Route path="/hireDetail/:hiringNo" element={<HireDetail />} />
+          <Route path="/hireDetail" element={<HireDetailMine />} />
           <Route path="/resumeDetail" element={<ResumeDetail />} />
           <Route path="/report/:patNo" element={<ReportMain />} />
           <Route path="/report/:patNo/detail/:reportNo" element={<ReportDetail />} />

@@ -55,10 +55,11 @@ const Wrapper = styled.div`
   align-items: center;
   padding: 20px;
   gap: 50px;
+  margin: 20px auto;
   margin-top: 30px;
   border: 1px solid ${({ theme }) => theme.colors.gray[5]};
-  box-shadow: ${({ theme }) => theme.shadows.base};
-  
+  border-radius: ${({ theme }) => theme.borderRadius.md};
+  box-shadow: ${({ theme }) => theme.shadows.md};
 
 `;
 
