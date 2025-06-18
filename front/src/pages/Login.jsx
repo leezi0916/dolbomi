@@ -93,7 +93,7 @@ const LoginSection = styled.div`
   padding: ${({ theme }) => theme.spacing[8]};
 `;
 
-const LoginForm = styled.div`
+const LoginForm = styled.form`
   display: flex;
   flex-direction: column;
   gap: ${({ theme }) => theme.spacing[5]};
