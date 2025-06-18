@@ -77,12 +77,14 @@ const GuardianMainPage = () => {
                   <CardImage src={resume.profileImage} />
                   <CardTextGroup>
                     <CardTitle>
-                      {maskName(resume.userName)} <span>간병사 </span>
+                      {maskName(resume.userName)} <span>간병사</span>
                     </CardTitle>
                     <CardText>
-                      나이: {resume.age}세({resume.gender == 'M' ? '남' : '여'})
+                      <span>나이</span> : {resume.age}세({resume.gender == 'M' ? '남' : '여'})
                     </CardText>
-                    <CardText>시급: {resume.account}원</CardText>
+                    <CardText>
+                      <span>시급</span> : {resume.account.toLocaleString()}원
+                    </CardText>
                   </CardTextGroup>
                 </CardTopContent>
                 <CardBottomContent>
@@ -110,27 +112,29 @@ const GuardianMainPage = () => {
         <GridContainer>
           {reviewList.map((review) => (
             <Card key={review.reviewNo}>
-              <ReviewerInfo>
-                <ReviewerImage />
-                <ReviewerTextGroup>
-                  <ReviewerName>{maskName(review.userName)} 간병사</ReviewerName>
-                  <ReviewerDetail>
-                    나이: {review.age}세({review.gender == 'M' ? '남' : '여'})
-                  </ReviewerDetail>
-                  <CardRegionText>
-                    <span>지역</span> {review.address}
-                  </CardRegionText>
-                </ReviewerTextGroup>
-              </ReviewerInfo>
-
-              <ReviewTextBox>{review.reviewContent}</ReviewTextBox>
-
-              <ReviewFooter>
-                <ReviewScore>
-                  평점 <strong>{review.score.toFixed(1)}</strong>
-                </ReviewScore>
-                <ReviewDate>작성일 {review.createDate}</ReviewDate>
-              </ReviewFooter>
+              <CardTopContent>
+                <CardImage src={review.profileImage} />
+                <CardTextGroup>
+                  <CardTitle>
+                    {maskName(review.userName)} <span>간병사 </span>
+                  </CardTitle>
+                  <CardText>
+                    <span>나이</span> : {review.age}세({review.gender == 'M' ? '남' : '여'})
+                  </CardText>
+                  <CardText>
+                    <span>지역</span> : {review.address}
+                  </CardText>
+                </CardTextGroup>
+              </CardTopContent>
+              <CardMidBottomContent>
+                <ReviewTextBox>{review.reviewContent}</ReviewTextBox>
+                <ReviewFooter>
+                  <ReviewScore>
+                    평점 <strong>{review.score.toFixed(1)}</strong>
+                  </ReviewScore>
+                  <ReviewDate>작성일 {review.createDate}</ReviewDate>
+                </ReviewFooter>
+              </CardMidBottomContent>
             </Card>
           ))}
         </GridContainer>
@@ -283,7 +287,7 @@ export const JobSeekingCardSection = styled(Section)`
 export const Card = styled.div`
   background: #fff;
   border-radius: ${({ theme }) => theme.borderRadius.lg};
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  box-shadow: ${({ theme }) => theme.shadows.base};
   overflow: hidden;
   display: flex;
   flex-direction: column;
@@ -344,8 +348,13 @@ export const CardTitle = styled.h3`
 // 텍스트 라벨 (나이, 시급)
 export const CardText = styled.p`
   font-size: ${({ theme }) => theme.fontSizes.sm};
-  color: ${({ theme }) => theme.colors.gray[2]};
-  font-weight: ${({ theme }) => theme.fontWeights.medium};
+  color: ${({ theme }) => theme.colors.gray[1]};
+  font-weight: ${({ theme }) => theme.fontWeights.bold};
+
+  span {
+    color: ${({ theme }) => theme.colors.gray[3]};
+    font-weight: ${({ theme }) => theme.fontWeights.medium};
+  }
 `;
 
 // 구분선 + 지역 + 버튼 감싸는 하단 영역
@@ -384,7 +393,7 @@ export const CardRegionText = styled.span`
 
   // 말줄임 처리
   display: inline-block;
-  max-width: 120px;
+  max-width: 150px;
   white-space: nowrap; // 줄바꿈 방지
   overflow: hidden; // 넘친 부분 숨김
   text-overflow: ellipsis; // 넘친 텍스트를 ...으로 표시
@@ -396,10 +405,6 @@ export const CardRegionText = styled.span`
   }
 
   ${media.sm`
-    max-width: 80px; 
-  `}
-
-  ${media.xl`
     max-width: 120px; 
   `}
 `;
@@ -413,6 +418,15 @@ export const CardButton = styled.button`
   font-weight: ${({ theme }) => theme.fontWeights.medium};
   border-radius: ${({ theme }) => theme.borderRadius.md};
   cursor: pointer;
+`;
+
+// ************* 중하단 패딩 섹션 *************
+export const CardMidBottomContent = styled.div`
+  width: 100%;
+  padding: 0 ${({ theme }) => theme.spacing[4]} ${({ theme }) => theme.spacing[5]} ${({ theme }) => theme.spacing[4]};
+  display: flex;
+  flex-direction: column;
+  gap: ${({ theme }) => theme.spacing[6]};
 `;
 
 // ************* 하단(최신 리뷰) 섹션 *************
@@ -436,55 +450,13 @@ export const ReviewCardTextSectionTitle = styled(MessageLine)`
 // 리뷰 카드 섹션
 export const ReviewCardSection = styled(JobSeekingCardSection)``;
 
-// 리뷰 카드
-export const ReviewCard = styled.div`
-  width: 100%;
-  padding: 16px;
-  border: 1px solid ${({ theme }) => theme.colors.gray[4]};
-  border-radius: ${({ theme }) => theme.borderRadius.base};
-  background-color: #fff;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-`;
-
-// 리뷰 카드
-export const ReviewerInfo = styled.div`
-  display: flex;
-  gap: 12px;
-  align-items: center;
-`;
-
-export const ReviewerImage = styled.div`
-  width: 48px;
-  height: 48px;
-  border-radius: 50%;
-  background-color: orange; // 실제 이미지 URL 사용 시 background-image: url(...)
-`;
-
-export const ReviewerTextGroup = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-`;
-
-export const ReviewerName = styled.h4`
-  font-size: ${({ theme }) => theme.fontSizes.sm};
-  font-weight: ${({ theme }) => theme.fontWeights.bold};
-`;
-
-export const ReviewerDetail = styled.span`
-  font-size: ${({ theme }) => theme.fontSizes.xs};
-  color: ${({ theme }) => theme.colors.gray[2]};
-`;
-
+// 리뷰 글
 export const ReviewTextBox = styled.div`
   background-color: ${({ theme }) => theme.colors.secondaryLight || '#FFF3EC'};
   color: ${({ theme }) => theme.colors.gray[1]};
   font-size: ${({ theme }) => theme.fontSizes.sm};
   padding: 10px;
   border-radius: 6px;
-  line-height: 1.4;
 `;
 
 export const ReviewFooter = styled.div`
@@ -504,11 +476,6 @@ export const ReviewScore = styled.div`
     font-size: ${({ theme }) => theme.fontSizes.base};
     color: ${({ theme }) => theme.colors.black};
   }
-`;
-
-export const HeartIcons = styled.span`
-  font-size: ${({ theme }) => theme.fontSizes.base};
-  color: red;
 `;
 
 export const ReviewDate = styled.span`
