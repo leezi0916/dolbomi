@@ -1,25 +1,46 @@
 import React, { useEffect, useState } from 'react';
 import { Section } from '../styles/common/Container';
 import styled from 'styled-components';
-import { BoardItem, BoardItemTop, BoardTop, BorderDiv, Button, Left, Right } from '../styles/common/Board';
+import { BoardItemTop, BoardTop, BorderDiv, Button, Left, Right } from '../styles/common/Board';
 import { reportService } from '../api/report';
 import { toast } from 'react-toastify';
+import { Link, useParams } from 'react-router-dom';
+import { ButtonText, SubmitButton } from '../styles/common/Button';
+import { patientService } from '../api/patient';
 
 const ReportMain = () => {
-  const [error, setError] = useState(null);
+  const { patNo } = useParams(); // URL의 :patNo 값 가져오기
+  const [pat, setpat] = useState({}); //환자들
   const [allReport, setAllReport] = useState([]); // 처음 가져온 전체 일지 목록
   const [dateFilter, setDateFilter] = useState(''); // 날짜 필터
   const [authorFilter, setAuthorFilter] = useState(''); // 작성자 필터
   const [reportList, setReportList] = useState([]); // 필터링 후 일지목록
+  const [error, setError] = useState(null);
 
   // 일지목록에서 가져온, 드롭다운박스에 넣을 날짜들과 작성자들
   const uniqueDates = [...new Set(allReport.map((report) => report.createDate.slice(0, 7)))];
   const uniqueAuthors = [...new Set(allReport.map((report) => report.careGiverNo))];
 
+  const formatPhoneNumber = (phone = '') => {
+    return phone.replace(/(\d{3})(\d{4})(\d{4})/, '$1-$2-$3');
+  };
+
   useEffect(() => {
+    const patient = async () => {
+      try {
+        const patient = await patientService.getPatientId(patNo);
+        setpat(patient);
+      } catch (error) {
+        console.error(error);
+        const errorMessage = '돌봄 대상자를 불러오는데 실패했습니다.';
+        setError(errorMessage);
+        toast.error(errorMessage);
+      }
+    };
+
     const loadReportList = async () => {
       try {
-        const reports = await reportService.getReports();
+        const reports = await reportService.getReports(patNo);
         setAllReport(reports);
 
         setReportList(
@@ -37,6 +58,7 @@ const ReportMain = () => {
       }
     };
 
+    patient();
     loadReportList();
   }, [dateFilter, authorFilter]);
 
@@ -49,19 +71,17 @@ const ReportMain = () => {
       <MainTitle>돌봄 대상자 정보</MainTitle>
       <br />
       <Container>
-        <Title>돌봄 대상자 :</Title>
-        <p>홍길동 / 600000 / 남</p>
-        <SubTitle>연락처: 000-0000-0000</SubTitle>
+        <Title>돌봄 대상자</Title>
+        <SubTitle>
+          {pat.patName} / {pat.patAge} / {pat.patGender === 'F' ? '여' : '남'}
+        </SubTitle>
+        <SubTitle>비상연락망 : {formatPhoneNumber(pat.phone)}</SubTitle>
+        <SubTitle>거주지 : {pat.patAddress}</SubTitle>
+        <SubTitle>키 : {pat.patHeight}</SubTitle>
+        <SubTitle>몸무게 : {pat.patWeight}</SubTitle>
         <br />
-        <Title>건강 상태:</Title>
-        <SubTitle>진단명: 알츠하이머(치매)</SubTitle>
-        <SubTitle>주요 증상: 기억력 저하, 혈당변화, 어지럼증</SubTitle>
-        <SubTitle>알레르기 정보: 땅콩, 해산물(갑각류)</SubTitle>
-        <SubTitle>복용중 약물:</SubTitle>
-        <p>도네페질 (Donepezil), 리바스티그민 (Rivastigmine), 갈란타민 (Galantamine), 메만틴 (Memantine)</p>
-        <SubTitle>병원: 서울OO병원 / 신경과</SubTitle>
-        <SubTitle>특이사항:</SubTitle>
-        <p>의사소통 어려움, 가족 인식 못함, 볼일 혼자 못봄</p>
+        <Title>건강 상태</Title>
+        <SubTitle>{pat.patContent}</SubTitle>
       </Container>
       <br />
       <Board>
@@ -86,7 +106,11 @@ const ReportMain = () => {
                 </option>
               ))}
             </Fillter>
-            <Button>글쓰기</Button>
+            <Link to={`/caregiver/reportform/${patNo}`}>
+              <SubmitButton>
+                <ButtonText>글쓰기</ButtonText>
+              </SubmitButton>
+            </Link>
           </Right>
         </BoardTop>
         <BoardItemTop>
@@ -96,7 +120,7 @@ const ReportMain = () => {
           <div>작성 일자</div>
         </BoardItemTop>
         {reportList.map((report) => (
-          <BoardItem key={report.reportNo}>
+          <BoardItem key={report.reportNo} to={`/report/${patNo}/detail/${report.reportNo}`} state={{ report }}>
             <div>{report.reportNo}</div>
             <div>{report.reportTitle}</div>
             <div>{report.careGiverNo}</div>
@@ -104,7 +128,7 @@ const ReportMain = () => {
           </BoardItem>
         ))}
 
-        <BorderDiv></BorderDiv>
+        <BorderDiv />
       </Board>
     </Wrap>
   );
@@ -130,11 +154,13 @@ const Container = styled(Section)`
 const Title = styled.p`
   font-size: ${({ theme }) => theme.fontSizes.xl};
   font-weight: ${({ theme }) => theme.fontWeights.bold};
+  padding-bottom: 10px;
 `;
 
 const SubTitle = styled.p`
   font-size: ${({ theme }) => theme.fontSizes.base};
   font-weight: ${({ theme }) => theme.fontWeights.medium};
+  margin-left: 20px;
 `;
 
 const Board = styled.div`
@@ -159,4 +185,14 @@ const Fillter = styled.select`
   color: ${({ theme }) => theme.colors.gray[3]};
 `;
 
+const BoardItem = styled(Link)`
+  width: 100%;
+  display: flex;
+  padding-top: 2px;
+  padding-bottom: 2px;
+  border-bottom: 1px solid ${({ theme }) => theme.colors.gray[5]};
+  > div {
+    flex: 1;
+  }
+`;
 export default ReportMain;

@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import { Container, Section } from '../styles/common/Container';
 import profileImage from '../assets/images/pat.png'; // 프로필 이미지 경로
 import styled from 'styled-components';
@@ -20,7 +20,7 @@ import { FaPlus } from 'react-icons/fa6';
 
 const HireRegistration = () => {
   const inputRef = useRef(null);
-
+  const [previewUrl, setPreviewUrl] = useState(null);
   const handleDivClick = () => {
     inputRef.current?.click(); // 파일 선택창 열기
   };
@@ -29,9 +29,14 @@ const HireRegistration = () => {
     const file = e.target.files?.[0];
     if (file) {
       console.log('선택된 파일:', file.name);
-      // 원하는 로직 처리 (예: 업로드)
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setPreviewUrl(reader.result); // base64 저장
+      };
+      reader.readAsDataURL(file); // base64 인코딩
     }
   };
+
   return (
     <HireRegistSection>
       <HireContainer>
@@ -53,7 +58,8 @@ const HireRegistration = () => {
               </ProfilImageWrapper>
             </div>
             <Divider>
-              <InputRow>
+           
+              <InputGroup>
                 <InputGroup>
                   <Label>이름</Label>
                   <Input type="text" value={'김옥순'} />
@@ -62,7 +68,7 @@ const HireRegistration = () => {
                   <Label>나이</Label>
                   <Input type="text" value={'85'} />
                 </InputGroup>
-              </InputRow>
+              </InputGroup>
               <RadioGroup>
                 <Label>성별</Label>
                 <RadioWrapper>
@@ -111,7 +117,7 @@ const HireRegistration = () => {
             <HireContent>
               <Label>제목</Label>
               <Input type="text" value={'제목입니다 '} />
-              <InputRow>
+              <InputGird>
                 <InputGroup>
                   <Label>지급 금액 (시급)</Label>
                   <Input type="text" value={'15000'} />
@@ -129,27 +135,41 @@ const HireRegistration = () => {
                   <Label>모집 인원수 설정</Label>
                   <Input type="number" value={'1'} />
                 </InputGroup>
-              </InputRow>
+              </InputGird>
               <Label>내용</Label>
               <Content type="text" value={'제목입니다 '} />
               <RadioGroup>
                 <Label>숙식 제공 여부</Label>
                 <RadioWrapper>
-                  <input type="radio" id="care_status" name="care_status" value="care_status" />
-                  <label htmlFor="care_status">0</label>
+                  <input type="radio" id="careStatus" name="careStatus" value="careStatus" />
+                  <label htmlFor="careStatus">0</label>
                 </RadioWrapper>
                 <RadioWrapper>
-                  <input type="radio" id="care_status" name="care_status" value="care_status" />
-                  <label htmlFor="care_status">X</label>
+                  <input type="radio" id="careStatus" name="careStatus" value="careStatus" />
+                  <label htmlFor="careStatus">X</label>
                 </RadioWrapper>
               </RadioGroup>
               <InputGroup>
                 <Label>숙소 정보</Label>
                 {/* 클릭 가능한 div */}
                 <RoomImage onClick={handleDivClick}>
-                  <Plus />
+                  {previewUrl ? (
+                    <img
+                      src={previewUrl}
+                      alt="미리보기"
+                      style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '4px' }}
+                    />
+                  ) : (
+                    <Plus />
+                  )}
                 </RoomImage>
-                <input type="file" ref={inputRef} onChange={handleFileChange} style={{ display: 'none' }} />
+                <input
+                  type="file"
+                  accept="image/*"
+                  ref={inputRef}
+                  onChange={handleFileChange}
+                  style={{ display: 'none' }}
+                />
               </InputGroup>
             </HireContent>
           </ContentWrapper1>
@@ -233,16 +253,29 @@ const ProfilImageWrapper = styled.div`
   `}
 `;
 
+
 const InputRow = styled.div`
   display: flex;
   flex-direction: column;
   gap: ${({ theme }) => theme.spacing[5]};
 
   ${media.md`
-    
     flex-direction: row;
   `}
 `;
+
+const InputGird = styled.div`
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  gap: ${({ theme }) => theme.spacing[5]};
+
+  ${media.md`
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(20%, auto));
+    
+  `}
+`
 
 const Label = styled.label`
   font-size: ${({ theme }) => theme.fontSizes.sm};
@@ -383,7 +416,6 @@ const Content = styled.textarea`
 `;
 
 const RoomImage = styled.div`
-  padding: ${({ theme }) => theme.spacing[3]};
   width: 50%;
   height: 200px;
   background-color: ${({ theme }) => theme.colors.gray[5]};

@@ -9,6 +9,7 @@ import { useNavigate } from 'react-router-dom';
 import useUserStatusStore from '../store/userStatusStore';
 const Header = () => {
   const { user, isAuthenticated } = useUserStore();
+  console.log('ㄹㅇㄴㅁㄹ:', user);
   const { userStatus, setUserStatus } = useUserStatusStore();
 
   const [isHovering, setIsHovering] = useState(false);
@@ -37,7 +38,7 @@ const Header = () => {
         <MobileMenu>
           {isAuthenticated ? (
             <UserProfile>
-              <UserName> {user?.user_name}님</UserName>
+              <UserName> {user?.userName}님</UserName>
             </UserProfile>
           ) : (
             <>
@@ -57,12 +58,12 @@ const Header = () => {
         {/* pc환경에서의 nav */}
         <DesktopNav>
           {userStatus ? (
-            <NavItem to="/caregiverlist">간병사 모집</NavItem>
+            <NavItem to="/caregiver/hirelist">간병사 모집</NavItem>
           ) : (
-            <NavItem to="/hirelist">돌봄대상자 모집</NavItem>
+            <NavItem to="guardian/caregiverlist">돌봄대상자 모집</NavItem>
           )}
 
-          <NavItem to="/CommunityBoard">소통</NavItem>
+          <NavItem to="/community/free">소통</NavItem>
         </DesktopNav>
         <GridEmptyDiv></GridEmptyDiv>
         <DesktopUserMenu>
@@ -92,7 +93,7 @@ const Header = () => {
 
           {isAuthenticated ? (
             <NavItem onMouseEnter={() => setIsHovering(true)} style={{ cursor: 'pointer', padding: '5px' }}>
-              {user?.user_name}님
+              {user?.userName} 님
             </NavItem>
           ) : (
             <>
@@ -113,7 +114,7 @@ const Header = () => {
               onMouseLeave={() => setIsHovering(false)}
             >
               <Wrap>
-                <NavItem to="/MyProfile">
+                <NavItem to="/myprofile">
                   <Icon src="/src/assets/icons/icon_개인정보홈.png" alt="" /> 개인정보홈
                 </NavItem>
 
@@ -130,7 +131,7 @@ const Header = () => {
                 )}
 
                 {userStatus ? (
-                  <NavItem to="/hireRegistration">
+                  <NavItem to="/hireDetail/hiringNo">
                     <Icon src="/src/assets/icons/icon_이력서등록.png" alt="" />
                     돌봄대상자 신청
                   </NavItem>

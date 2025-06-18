@@ -92,42 +92,42 @@ const SignUp = () => {
             <Title>회원가입</Title>
             <InputContainer1>
               <InputGroup>
-                <Label htmlFor="user_id">아이디</Label>
+                <Label htmlFor="userId">아이디</Label>
                 <Row>
                   <Inputs
                     type="text"
-                    id="user_id"
+                    id="userId"
                     placeholder="아이디를 입력해주세요"
-                    {...register('user_id')}
-                    $error={errors.user_id}
+                    {...register('userId')}
+                    $error={errors.userId}
                   />
 
                   <CheckDuplicateButton onClick={handleClick}>중복확인</CheckDuplicateButton>
                 </Row>
-                {errors.user_id && <ErrorMessage>{errors.user_id.message}</ErrorMessage>}
+                {errors.userId && <ErrorMessage>{errors.userId.message}</ErrorMessage>}
               </InputGroup>
 
               <InputGroup>
-                <Label htmlFor="user_pwd">비밀번호</Label>
+                <Label htmlFor="userPwd">비밀번호</Label>
                 <Input
-                  id="user_pwd"
+                  id="userPwd"
                   type="password"
                   placeholder="비밀번호를 입력해주세요"
-                  {...register('user_pwd')}
-                  $error={errors.user_pwd}
+                  {...register('userPwd')}
+                  $error={errors.userPwd}
                 />
-                {errors.user_pwd && <ErrorMessage>{errors.user_pwd.message}</ErrorMessage>}
+                {errors.userPwd && <ErrorMessage>{errors.userPwd.message}</ErrorMessage>}
               </InputGroup>
               <InputGroup>
-                <Label htmlFor="user_name">이름</Label>
+                <Label htmlFor="userName">이름</Label>
                 <Input
-                  id="user_name"
+                  id="userName"
                   type="text"
                   placeholder="이름을 입력해주세요"
-                  {...register('user_name')}
-                  $error={errors.user_name}
+                  {...register('userName')}
+                  $error={errors.userName}
                 />
-                {errors.user_name && <ErrorMessage>{errors.user_name.message}</ErrorMessage>}
+                {errors.userName && <ErrorMessage>{errors.userName.message}</ErrorMessage>}
               </InputGroup>
               <InputGroup>
                 <Label htmlFor="age">나이</Label>
@@ -141,31 +141,31 @@ const SignUp = () => {
                   />
 
                   <GenderRadioGroup>
-                    <RadioWrapper checked={currentGender === 'male'}>
+                    <RadioWrapper checked={currentGender === 'M'}>
                       {' '}
                       {/* checked prop 전달 */}
                       <input
                         type="radio"
-                        id="male"
+                        id="M"
                         name="gender"
-                        value="male"
-                        checked={currentGender === 'male'} // watch 값으로 제어
+                        value="M"
+                        checked={currentGender === 'M'} // watch 값으로 제어
                         {...register('gender')} // register만 남김
                       />
-                      <label htmlFor="male">남성</label>
+                      <label htmlFor="M">남성</label>
                     </RadioWrapper>
-                    <RadioWrapper checked={currentGender === 'female'}>
+                    <RadioWrapper checked={currentGender === 'F'}>
                       {' '}
                       {/* checked prop 전달 */}
                       <input
                         type="radio"
-                        id="female"
+                        id="F"
                         name="gender"
-                        value="female"
-                        checked={currentGender === 'female'} // watch 값으로 제어
+                        value="F"
+                        checked={currentGender === 'F'} // watch 값으로 제어
                         {...register('gender')} // register만 남김
                       />
-                      <label htmlFor="female">여성</label>
+                      <label htmlFor="F">여성</label>
                     </RadioWrapper>
                   </GenderRadioGroup>
                 </Row>

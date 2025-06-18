@@ -22,9 +22,13 @@ export const API_ENDPOINTS = {
 
   USERS: {
     BASE: '/users',
-    PROFILE: (userid) => `/users?user_id=${userid}`,
+
+    PROFILE: (userId) => `/users?user_id=${userId}`,
+
     // LOGIN: '/users/login' //실제에는 이렇게 해야함 아래는 JsonServer 사용시
     LOGIN: (userId, userPwd) => `/users?user_id=${userId}&user_pwd=${userPwd}`,
+    DETAIL: (userId) => `/users?user_id=${userId}`,
+    PROFILE_UPDATE: (userId) => `/users/${userId}`,
   },
   REVIEWS: {
     BASE: '/reviews',
@@ -32,20 +36,17 @@ export const API_ENDPOINTS = {
   },
   HIRING: {
     BASE: '/hiring',
+    DETAIL: (hiringNo) => `/hiring?hiring_no=${hiringNo}`,
   },
 
   RESUME: {
     BASE: '/resume',
   },
 
-  HIRES: {
-    BASE: '/hires',
-  },
-
   PATIENT: {
     BASE: '/patient',
-    DETAIL: (guardianNo) => `/patient?guardianNo=${guardianNo}`,
-    PATDETAIL: (patNo) => `/patient?id=${patNo}`,
+    DETAIL: (guardianNo) => `/patient?guardian_no=${guardianNo}`,
+    PATDETAIL: (patNo) => `/patient?pat_no=${patNo}`,
     PUT: (patNo) => `/patient/${patNo}`,
     DELETE: (patNo) => `/patient/${patNo}`,
   },
@@ -54,7 +55,20 @@ export const API_ENDPOINTS = {
     BASE: '/disease',
     DETAIL: (disNo) => `/patients?disNo=${disNo}`,
   },
+
+  RESUME: {
+    BASE: '/resume',
+  },
   REPORT: {
-    BASE: '/report',
+    BASE: (patNo) => `/report?pat_no=${patNo}`,
+  },
+
+  CAREGIVERPROPOSER: {
+    BASE: '/caregiverproposer',
+    LIST: (job_opening_no) => `/caregiverproposer?caregiverproposer=${job_opening_no}`,
+  },
+  PATERPROPOSER: {
+    BASE: '/resume',
+    LIST: (resume_no) => `/patproposer?patproposer=${resume_no}`,
   },
 };

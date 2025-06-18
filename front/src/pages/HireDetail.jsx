@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Container, Section } from '../styles/common/Container';
 import profileImage from '../assets/images/pat.png'; // 프로필 이미지 경로
 import chatImage from '../assets/icons/icon_채팅아이콘.png'; // 채팅 이미지 경로
@@ -18,128 +18,196 @@ import {
   ErrorMessage,
   InputContainer,
 } from '../styles/Auth.styles';
+import useUserStore from '../store/userStore';
+import { hiringService } from '../api/hiring';
+import { useParams } from 'react-router-dom';
+import Supportstatus from '../components/Supportstatus';
+import {guardianHiringForm }from '../hooks/guardianHiringForm';
 
 const HireDetail = () => {
   const navigate = useNavigate();
+  const { hiringNo } = useParams();
+  const { user } = useUserStore();
+  const [jobOpening, setJobOpening] = useState();
+
+  const { register, handleSubmit, errors, isSubmitting, watch, setValue } = guardianHiringForm();
+
+  const currentGender = watch('patGender');
+
+  useEffect(() => {
+    console.log(user)
+    
+    if (!user) {
+      alert('로그인 후 이용해주세요');
+      // navigate('/guardian');
+    }
+
+    const getJobOpening = async () => {
+      const getOneJobOpening = await hiringService.getHirngById(Number(hiringNo));
+      console.log(getOneJobOpening);
+      setJobOpening(getOneJobOpening);
+    };
+
+    getJobOpening();
+  }, [user]);
+
+
+  // useEffect(() => {
+  
+  //   if (jobOpening) {
+  //     setValue('patName', patient.patName || '');
+  //     setValue('patage', patient.patAge || '');
+  //     setValue('patgender', patient.patGender || '');
+  //     setValue('ddress', patient.patAddress || '');
+  //     setValue('patHeight', patient.patHeight || '');
+  //     setValue('patWeight', patient.patWeight || '');
+  //     setValue('patContent', patient.patContent || '');
+  //     setValue('phone', patient.phone || '');
+  //     setValue('tags', patient.tags || '');
+  //     setTags(patient.tags ? patient.tags : []);
+  //   }
+  // }, [patient, setValue]);
 
   return (
     <HireRegistSection>
+      {/* jobOpening에 들어있는 유저no = user no랑 같아야함 */}
+      {/* {user.user_id === jobOpening[0].job_opening_no}; */}
       <HireContainer>
         <HireHead>
           <HireHeadTitle>돌봄대상자 정보</HireHeadTitle>
         </HireHead>
-        <form action="">
-          <ContentWrapper>
-            <div>
-              <ProfilImageWrapper>
-                <img src={profileImage} alt="프로필 이미지" />
-              </ProfilImageWrapper>
-              <ChatButton>
-                <img src={chatImage} alt="프로필 이미지" />1 : 1 채팅하기
-              </ChatButton>
-            </div>
-            <Divider>
-              <InputRow>
-                <InputGroup>
-                  <Label>이름</Label>
-                  <Input type="text" value={'김옥순'} readOnly />
-                </InputGroup>
-                <InputGroup>
-                  <Label>나이</Label>
-                  <Input type="text" value={'85'} readOnly />
-                </InputGroup>
-              </InputRow>
-              <RadioGroup>
-                <Label>성별</Label>
-                <RadioWrapper>
-                  <input type="radio" id="male" name="gender" value="male" readOnly />
-                  <label htmlFor="male">남성</label>
-                </RadioWrapper>
-                <RadioWrapper>
-                  <input type="radio" id="female" name="gender" value="female" readOnly />
-                  <label htmlFor="female">여성</label>
-                </RadioWrapper>
-              </RadioGroup>
+        {/* <form > */}
+        <ContentWrapper>
+          <div>
+            <ProfilImageWrapper>
+              <img src={profileImage} alt="프로필 이미지" />
+            </ProfilImageWrapper>
+            <ChatButton>
+              <img src={chatImage} alt="프로필 이미지" />1 : 1 채팅하기
+            </ChatButton>
+          </div>
+          <Divider>
+            <InputRow>
               <InputGroup>
-                <Label>보호자 전화번호</Label>
-                <Input type="text" value={'010-1111-1111'} readOnly />
+                <Label>이름</Label>
+                <Input type="text" id="userName" value={jobOpening?.userName} readOnly />
               </InputGroup>
               <InputGroup>
-                <Label>주소</Label>
-                <Input type="text" value={'서울시'} readOnly />
+                <Label>나이</Label>
+                <Input type="text" id="age"  readOnly />
               </InputGroup>
-              <InputRow>
-                <InputGroup>
-                  <Label>키</Label>
-                  <Input type="text" value={'160 cm'} readOnly />
-                </InputGroup>
-                <InputGroup>
-                  <Label>몸무게</Label>
-                  <Input type="text" value={'42 kg'} readOnly />
-                </InputGroup>
-              </InputRow>
-            </Divider>
-          </ContentWrapper>
-          <ContentWrapper>
-            <DiseaseGroup>
-              <Label>보유한 질병</Label>
-              <DiseaseInputDiv>
-                <div>치매</div>
-                <div>고혈압</div>
-                <div>당뇨</div>
-              </DiseaseInputDiv>
-            </DiseaseGroup>
-          </ContentWrapper>
-          <HireBottom>
-            <HireBottomTitle>채용 정보</HireBottomTitle>
-          </HireBottom>
-          <ContentWrapper1>
-            <HireContent>
-              <Label>제목</Label>
-              <Input type="text" value={'제목입니다 '} />
-              <InputRow>
-                <InputGroup>
-                  <Label>지급 금액 (시급)</Label>
-                  <Input type="text" value={'15000'} />
-                </InputGroup>
-                <InputGroup>
-                  <Label>시작일</Label>
-                  <Input type="date" value={''} />
-                </InputGroup>
+            </InputRow>
+            <RadioGroup>
+            <Label>성별</Label>
+              <RadioWrapper checked={currentGender === 'M'}>
+                {' '}
+                {/* checked prop 전달 */}
+                <input
+                  type="radio"
+                  id="M"
+                  name="gender"
+                  value="M"
+                  checked={currentGender === 'M'} // watch 값으로 제어
+                  {...register('gender')} // register만 남김
+                  readOnly
+                />
+                <label htmlFor="M">남성</label>
+              </RadioWrapper>
+              <RadioWrapper checked={currentGender === 'F'}>
+                {/* checked prop 전달 */}
+                <input
+                  type="radio"
+                  id="F"
+                  name="gender"
+                  value="F"
+                  checked={currentGender === 'F'} // watch 값으로 제어
+                  {...register('gender')} // register만 남김
+                  readOnly
+                />
+                <label htmlFor="F">여성</label>
+              </RadioWrapper>
 
-                <InputGroup>
-                  <Label>종료일</Label>
-                  <Input type="date" value={''} />
-                </InputGroup>
-                <InputGroup>
-                  <Label>모집 인원수 설정</Label>
-                  <Input type="number" value={'1'} />
-                </InputGroup>
-              </InputRow>
-              <Label>내용</Label>
-              <Content type="text" value={'제목입니다 '} />
-              <RadioGroup>
-                <Label>숙식 제공 여부</Label>
-                <RadioWrapper>
-                  <input type="radio" id="care_status" name="care_status" value="care_status" />
-                  <label htmlFor="care_status">0</label>
-                </RadioWrapper>
-                <RadioWrapper>
-                  <input type="radio" id="care_status" name="care_status" value="care_status" />
-                  <label htmlFor="care_status">X</label>
-                </RadioWrapper>
-              </RadioGroup>
+            </RadioGroup>
+            <InputGroup>
+              <Label>보호자 전화번호</Label>
+              <Input type="text"  readOnly />
+            </InputGroup>
+            <InputGroup>
+              <Label>주소</Label>
+              <Input type="text" id='address'value={'address'}readOnly />
+            </InputGroup>
+            <InputRow>
               <InputGroup>
-                <Label>숙소 정보</Label>
-                {/* 클릭 가능한 div */}
-                <RoomImage>
-                  <Plus />
-                </RoomImage>
-                <input type="file" style={{ display: 'none' }} />
+                <Label>키</Label>
+                <Input type="text" value={'pat'} readOnly />
               </InputGroup>
-            </HireContent>
-          </ContentWrapper1>
-        </form>
+              <InputGroup>
+                <Label>몸무게</Label>
+                <Input type="text" value={''} readOnly />
+              </InputGroup>
+            </InputRow>
+          </Divider>
+        </ContentWrapper>
+        <ContentWrapper>
+          <DiseaseGroup>
+            <Label>보유한 질병</Label>
+            <DiseaseInputDiv>
+              <div>치매</div>
+              <div>고혈압</div>
+              <div>당뇨</div>
+            </DiseaseInputDiv>
+          </DiseaseGroup>
+        </ContentWrapper>
+        <HireBottom>
+          <HireBottomTitle>채용 정보</HireBottomTitle>
+        </HireBottom>
+        <ContentWrapper1>
+          <HireContent>
+            <Label>제목</Label>
+            <Input type="text" id="title" {...register('title')}/>
+            <InputRow>
+              <InputGroup>
+                <Label>지급 금액 (시급)</Label>
+                <Input type="text" id="account" {...register('account')} />
+              </InputGroup>
+              <InputGroup>
+                <Label>시작일</Label>
+                <Input type="date" id="startDate" {...register('startDate')}  />
+              </InputGroup>
+
+              <InputGroup>
+                <Label>종료일</Label>
+                <Input type="date" id="endDate" {...register('endDate')} />
+              </InputGroup>
+              <InputGroup>
+                <Label>모집 인원수 설정</Label>
+                <Input type="number" id="maxApplicants" {...register('maxApplicants')} />
+              </InputGroup>
+            </InputRow>
+            <Label>내용</Label>
+            <Content type="text" id="content" {...register('content')}/>
+            <RadioGroup>
+              <Label>숙식 제공 여부</Label>
+              <RadioWrapper>
+                <input type="radio" id="care_status" {...register('careStatus')} name="care_status"   />
+                <label htmlFor="care_status">0</label>
+              </RadioWrapper>
+              <RadioWrapper>
+                <input type="radio" id="care_status" {...register('careStatus')} name="care_status"  value="care_status" readOnly />
+                <label htmlFor="care_status">X</label>
+              </RadioWrapper>
+            </RadioGroup>
+            <InputGroup>
+              <Label>숙소 정보</Label>
+              {/* 클릭 가능한 div */}
+              <RoomImage>
+                <Plus />
+              </RoomImage>
+              <input type="file" style={{ display: 'none' }} />
+            </InputGroup>
+          </HireContent>
+        </ContentWrapper1>
+        {/* </form> */}
         <ButtonGroup>
           <BackButton onClick={() => navigate(-1)}>이전</BackButton>
           <SubmitButton1>신청하기</SubmitButton1>

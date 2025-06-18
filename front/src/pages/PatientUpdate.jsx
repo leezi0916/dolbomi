@@ -31,27 +31,26 @@ const PatientUpdate = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    // 일단 접근가능하게 로그인 구현 되면 user -> !user 바꿀것
-
     if (!user) {
       alert('로그인 후 이용해주세요');
       // navigate('/guardian');
     } else {
       const getPatient = async () => {
         try {
-          console.log(id);
+    
           const onePatient = await patientService.getPatientId(id);
           setPatinet(onePatient);
+
         } catch (error) {
           console.log(error);
         }
       };
       getPatient();
     }
-
   }, [user, userStatus, id]);
 
   useEffect(() => {
+  
     if (patient) {
       setValue('patName', patient.patName || '');
       setValue('patAge', patient.patAge || '');
@@ -63,7 +62,6 @@ const PatientUpdate = () => {
       setValue('phone', patient.phone || '');
       setValue('tags', patient.tags || '');
       setTags(patient.tags ? patient.tags : []);
-      console.log(patient.tags);
     }
   }, [patient, setValue]);
 
@@ -77,7 +75,8 @@ const PatientUpdate = () => {
 
   const onSubmit = async (data) => {
     try {
-      await patientService.updatePatinet({ ...patient, ...data });
+
+      await patientService.updatePatinet(patient.patNo,{ ...patient, ...data });
       toast.success('돌봄대상자 수정완료!');
       navigate('/guardian/patient');
     } catch (error) {
@@ -86,15 +85,14 @@ const PatientUpdate = () => {
   };
 
   const deletePatient = async (id) => {
-    try{
+    try {
       await patientService.deletPatient(id);
       toast.success('돌봄대상자 삭제완료!');
-      navigate('/patient');
-    }catch(error){
+      navigate('/guardian/patient');
+    } catch (error) {
       console.log(error);
     }
-
-  }
+  };
 
   return (
     <>
@@ -173,7 +171,9 @@ const PatientUpdate = () => {
             </InputGroup>
             <GridInerContainer>
               <SubmitBtn type="submit">수정</SubmitBtn>
-              <SubmitBtn type="button" onClick={() => deletePatient(id)}>삭제</SubmitBtn>
+              <SubmitBtn type="button" onClick={() => deletePatient(id)}>
+                삭제
+              </SubmitBtn>
             </GridInerContainer>
           </GridForm>
         </FromWrap>

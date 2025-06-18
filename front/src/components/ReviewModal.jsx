@@ -3,16 +3,36 @@ import styled from 'styled-components';
 import { ModalCloseButton, ModalContainer, ModalInput, ModalText } from '../styles/common/Modal';
 import { ButtonText, SubmitButton } from '../styles/common/Button';
 import { FaHeart } from 'react-icons/fa';
-import useReviewStore from '../store/reviewStore';
+import { reviewService } from '../api/reviews';
+import { toast } from 'react-toastify';
 
 const ReviewModal = ({ maxHearts = 5 }) => {
-  const { inputValue, setInputValue, rating, setRating, saveReview, reset } = useReviewStore();
+  const [inputValue, setInputValue] = useState(null);
+  const [rating, setRating] = useState('');
   const [hovered, setHovered] = useState(0); //마우스 호버된 별점
+  const [error, setError] = useState(null);
 
   const handleSubmit = async () => {
-    await saveReview();
-    reset();
+    try {
+      const review = await reviewService.saveReview({
+        rating,
+        inputValue,
+      });
+      console.log(review);
+    } catch (error) {
+      console.error(error);
+      const errorMessage = '리뷰를 불러오는데 실패했습니다.';
+      setError(errorMessage);
+      toast.error(errorMessage);
+    } finally {
+      setRating(0);
+      setInputValue('');
+    }
   };
+
+  if (error) {
+    return null;
+  }
 
   return (
     <ModalContainer>
