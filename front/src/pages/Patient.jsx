@@ -23,13 +23,13 @@ const Patient = () => {
       }
 
       try {
+       
         const userInfo = await userService.getUserProfile(user.user_id);
         setUserInfo(userInfo[0]);
 
-        const patientsList = await patientService.getPatients(userInfo[0].id);
+        const patientsList = await patientService.getPatients(userInfo[0].user_no);
 
         setUserpatients(patientsList);
-   
       } catch (err) {
         console.error(err);
       }
