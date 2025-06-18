@@ -20,7 +20,7 @@ const ResumeRegistration = () => {
 
     user,
   } = useResumeForm();
-
+  console.log(user);
   return (
     <HireRegistSection>
       <HireContainer>
@@ -39,7 +39,7 @@ const ResumeRegistration = () => {
               <InputRow>
                 <InputGroup>
                   <Label>이름</Label>
-                  <Input type="text" value={user?.user_name || ''} readOnly />
+                  <Input type="text" value={user?.userName || ''} readOnly />
                 </InputGroup>
                 <InputGroup>
                   <Label>나이</Label>
@@ -74,24 +74,24 @@ const ResumeRegistration = () => {
                 <Label>자격증 명</Label>
                 <LicenseInput
                   type="text"
-                  value={license.license_name}
-                  onChange={(e) => handleLicenseChange(index, 'license_name', e.target.value)}
+                  value={license.licenseName}
+                  onChange={(e) => handleLicenseChange(index, 'licenseName', e.target.value)}
                 />
               </LicenseGroup>
               <LicenseGroup>
                 <Label>발행처</Label>
                 <LicenseInput
                   type="text"
-                  value={license.license_publisher}
-                  onChange={(e) => handleLicenseChange(index, 'license_publisher', e.target.value)}
+                  value={license.licensePublisher}
+                  onChange={(e) => handleLicenseChange(index, 'licensePublisher', e.target.value)}
                 />
               </LicenseGroup>
               <LicenseGroup>
                 <Label>발행일</Label>
                 <LicenseInput
                   type="date"
-                  value={license.license_date}
-                  onChange={(e) => handleLicenseChange(index, 'license_date', e.target.value)}
+                  value={license.licenseDate}
+                  onChange={(e) => handleLicenseChange(index, 'licenseDate', e.target.value)}
                 />
               </LicenseGroup>
             </ContentWrapper2>
@@ -103,28 +103,28 @@ const ResumeRegistration = () => {
           <ContentWrapper1>
             <HireContent>
               <Label>제목</Label>
-              <Input {...register('resume_title')} placeholder="제목" />
-              <p>{errors.resume_title?.message}</p>
+              <Input {...register('resumeTitle')} placeholder="제목" />
+              <p>{errors.resumeTitle?.message}</p>
               <Label>내용</Label>
-              <Content {...register('resume_content')} placeholder="내용" />
-              <p>{errors.resume_content?.message}</p>
+              <Content {...register('resumeContent')} placeholder="내용" />
+              <p>{errors.resumeContent?.message}</p>
               <RadioGroup>
                 <RadioContainer>
                   <Label>숙식 가능</Label>
                   <RadioWrapper>
-                    <input type="radio" value="Y" {...register('provide_hope')} />
+                    <input type="radio" value="Y" {...register('provide_Hope')} />
                   </RadioWrapper>
                   <Label>숙식 불가</Label>
                   <RadioWrapper>
-                    <input type="radio" value="N" {...register('provide_hope')} />
+                    <input type="radio" value="N" {...register('provide_Hope')} />
                   </RadioWrapper>
                   <p>{errors.provide_hope?.message}</p>
                 </RadioContainer>
                 <AccountGroup>
                   <InputGroup>
                     <Label>희망 금액</Label>
-                    <Input {...register('desired_account')} placeholder="희망 금액" />
-                    <p>{errors.desired_account?.message}</p>
+                    <Input {...register('desiredAccount')} placeholder="희망 금액" />
+                    <p>{errors.desiredAccount?.message}</p>
                   </InputGroup>
                 </AccountGroup>
               </RadioGroup>

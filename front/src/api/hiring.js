@@ -1,4 +1,5 @@
 // 구인 API
+import { snakeToCamel } from '../../utils/formatData';
 import api from './axios';
 import { API_ENDPOINTS } from './config';
 import { snakeToCamel, camelToSnake } from '../utils/formatData';
@@ -9,7 +10,8 @@ export const hiringService = {
   getJobOpeningList: async () => {
     try {
       const { data } = await api.get(API_ENDPOINTS.HIRING.BASE);
-      return data;
+
+      return snakeToCamel(data);
     } catch (error) {
       if (error.response) {
         const message = error.response?.data?.message || '구인 리스트를 가져오는데에 실패했습니다.';
