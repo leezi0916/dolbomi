@@ -85,6 +85,7 @@ function App() {
       <ThemeProvider theme={theme}>
         <GlobalStyle />
         <Router>
+
           <AppRoutes />
           <ToastContainer
             position="top-right"
@@ -96,6 +97,7 @@ function App() {
             theme="light"
             pauseOnHover
           />
+
         </Router>
       </ThemeProvider>
     </>

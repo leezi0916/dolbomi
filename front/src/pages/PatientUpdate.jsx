@@ -31,8 +31,6 @@ const PatientUpdate = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    // 일단 접근가능하게 로그인 구현 되면 user -> !user 바꿀것
-
     if (!user) {
       alert('로그인 후 이용해주세요');
       // navigate('/guardian');
@@ -48,11 +46,11 @@ const PatientUpdate = () => {
       };
       getPatient();
     }
-
   }, [user, userStatus, id]);
 
   useEffect(() => {
     if (patient) {
+      console.log(patient);
       setValue('patName', patient.patName || '');
       setValue('patAge', patient.patAge || '');
       setValue('patGender', patient.patGender || '');
@@ -86,15 +84,14 @@ const PatientUpdate = () => {
   };
 
   const deletePatient = async (id) => {
-    try{
+    try {
       await patientService.deletPatient(id);
       toast.success('돌봄대상자 삭제완료!');
       navigate('/patient');
-    }catch(error){
+    } catch (error) {
       console.log(error);
     }
-
-  }
+  };
 
   return (
     <>
@@ -173,7 +170,9 @@ const PatientUpdate = () => {
             </InputGroup>
             <GridInerContainer>
               <SubmitBtn type="submit">수정</SubmitBtn>
-              <SubmitBtn type="button" onClick={() => deletePatient(id)}>삭제</SubmitBtn>
+              <SubmitBtn type="button" onClick={() => deletePatient(id)}>
+                삭제
+              </SubmitBtn>
             </GridInerContainer>
           </GridForm>
         </FromWrap>

@@ -35,6 +35,7 @@ export const API_ENDPOINTS = {
   },
   HIRING: {
     BASE: '/hiring',
+    DETAIL: (jobOpeningNo) => `/hiring?jobOpeningNo=${jobOpeningNo}`,
   },
 
   JOBSEEKING: {
@@ -64,4 +65,14 @@ export const API_ENDPOINTS = {
   REPORT: {
     BASE: (patNo) => `/report?pat_no=${patNo}`,
   },
+
+  CAREGIVERPROPOSER: {
+    BASE: '/caregiverproposer',
+    LIST: (job_opening_no) => `/caregiverproposer?caregiverproposer=${job_opening_no}`,
+  },
+  PATERPROPOSER: {
+    BASE: '/resume',
+    LIST: (resume_no) => `/patproposer?patproposer=${resume_no}`,
+  },
+
 };
