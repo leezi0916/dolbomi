@@ -1,6 +1,7 @@
 import { useStore } from 'zustand';
 import api from './axios';
 import { API_ENDPOINTS } from './config';
+import { camelToSnake, snakeToCamel } from '../utils/formatData';
 
 export const patientService = {
   //환자목록조회
@@ -28,9 +29,11 @@ export const patientService = {
     }
   },
 
+  //환자번호로 정보 가져오기
   getPatientId: async (id) => {
     try {
       const { data } = await api.get(API_ENDPOINTS.PATIENT.PATDETAIL(id));
+      console.log(snakeToCamel(data));
       return data[0];
     } catch (error) {
       if (error.response) {
