@@ -70,7 +70,7 @@ function AppRoutes() {
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<SignUp />} />
           <Route path="/myprofile" element={<MyProfile />} />
-          <Route path="/hireDetail/hiringNo" element={<HireDetail />} />
+          <Route path="/hireDetail/:hiringNo" element={<HireDetail />} />
           <Route path="/resumeDetail" element={<ResumeDetail />} />
           <Route path="/report/:patNo" element={<ReportMain />} />
           <Route path="/report/:patNo/detail/:reportNo" element={<ReportDetail />} />

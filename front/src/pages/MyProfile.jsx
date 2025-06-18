@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { toast } from 'react-toastify';
 import { userService } from '../api/users';
 import { ClipLoader } from 'react-spinners';
-
+import { FaPlus } from 'react-icons/fa6';
 import useUserStore from '../store/userStore';
-
+import useUserUpdateForm from '../hooks/useUserUpdateForm';
 import {
   GridForm,
   GridInerContainer,
@@ -23,7 +23,7 @@ const MyProfile = () => {
   const [error, setError] = useState(null);
   const [profile, setProfile] = useState(null);
   const [loading, setLoading] = useState(true);
-  const userId = useUserStore((state) => state.user?.user_id);
+  const userId = useUserStore((state) => state.user?.userId);
   const [licenseList, setLicenseList] = useState([]);
   const [formData, setFormData] = useState({
     userId: '', // 아이디 필드도 포함
@@ -53,8 +53,8 @@ const MyProfile = () => {
 
           // formData 초기화
           setFormData({
-            userId: userProfileData.user_id || '', // 아이디 필드 추가
-            userName: userProfileData.user_name || '',
+            userId: userProfileData.userId || '', // 아이디 필드 추가
+            userName: userProfileData.userName || '',
             age: userProfileData.age || '',
             gender: userProfileData.gender || '',
             phone: userProfileData.phone || '',
@@ -81,6 +81,8 @@ const MyProfile = () => {
     loadProfile();
   }, [userId]);
 
+  const { validateAndSubmit, updating } = useUserUpdateForm({ profile });
+
   // 폼 입력 값 변경 핸들러
   const handleChange = (e) => {
     const { id, value } = e.target;
@@ -101,6 +103,24 @@ const MyProfile = () => {
     }));
   };
 
+  const inputRef = useRef(null);
+  const [previewUrl, setPreviewUrl] = useState(null);
+  const handleDivClick = () => {
+    inputRef.current?.click(); // 파일 선택창 열기
+  };
+
+  const handleFileChange = (e) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      console.log('선택된 파일:', file.name);
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setPreviewUrl(reader.result); // base64 저장
+      };
+      reader.readAsDataURL(file); // base64 인코딩
+    }
+  };
+
   // 성별 라디오 버튼 변경 핸들러
   const handleGenderChange = (e) => {
     setFormData((prevData) => ({
@@ -113,8 +133,7 @@ const MyProfile = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      // 여기에 회원정보 업데이트 API 호출 로직을 구현합니다.
-      // 예: await userService.updateUserProfile(userId, formData);
+      await validateAndSubmit(formData, licenseList);
       console.log('회원정보 업데이트 데이터:', formData);
       toast.success('회원정보가 성공적으로 수정되었습니다.');
     } catch (err) {
@@ -137,6 +156,7 @@ const MyProfile = () => {
   const removeLicense = (index) => {
     setLicenseList(licenseList.filter((_, i) => i !== index));
   };
+
   if (loading) {
     return (
       <AuthContainer>
@@ -157,8 +177,18 @@ const MyProfile = () => {
     <AuthContainer>
       <FromWrap>
         <NewTitle>회원정보 수정 / 탈퇴</NewTitle>
-
-        <Img src="/src/assets/profileImg/img_환자소.png" alt="프로필 이미지" />
+        <ProfileImage onClick={handleDivClick}>
+          {previewUrl ? (
+            <img
+              src={previewUrl}
+              alt="미리보기"
+              style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '50%' }}
+            />
+          ) : (
+            <Plus />
+          )}
+        </ProfileImage>
+        <input type="file" accept="image/*" ref={inputRef} onChange={handleFileChange} style={{ display: 'none' }} />
         <Form onSubmit={handleSubmit}>
           <InputGroup>
             <Label htmlFor="userId">아이디</Label>
@@ -246,7 +276,10 @@ const MyProfile = () => {
               비밀번호 변경
             </Button>
 
-            <Button type="submit">수정하기</Button>
+            <Button type="submit" disabled={updating}>
+              {' '}
+              {updating ? '수정 중...' : '수정하기'}
+            </Button>
             <Button type="button" onClick={() => toast.info('뒤로가기 기능은 아직 구현되지 않았습니다.')}>
               뒤로가기
             </Button>
@@ -276,4 +309,24 @@ const Button = styled(SubmitBtn)`
 const LicenseGroup = styled(InputGroup)`
   justify-content: center;
 `;
+
+const ProfileImage = styled.div`
+  width: 200px;
+  height: 200px;
+  background-color: ${({ theme }) => theme.colors.gray[5]};
+  border-radius: ${({ theme }) => theme.borderRadius.md};
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto;
+  border-radius: 50%;
+`;
+
+const Plus = styled(FaPlus)`
+  width: 30px;
+  height: 30px;
+  color: white;
+`;
+
 export default MyProfile;

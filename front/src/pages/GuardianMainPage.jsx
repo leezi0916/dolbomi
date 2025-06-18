@@ -7,15 +7,20 @@ import { media } from '../styles/MediaQueries';
 import { BiSolidPhoneCall } from 'react-icons/bi';
 import { toast } from 'react-toastify';
 import { jobSeekingService } from '../api/jobSeeking';
+import { reviewService } from '../api/reviews';
 
 const GuardianMainPage = () => {
-  const [jobSeekingList, setJobSeekingList] = useState([]);
+  const [resumeLiset, setResumeLiset] = useState([]);
+  const [reviewList, setReviewList] = useState([]);
 
   useEffect(() => {
     const loadResumeList = async () => {
       try {
-        const list = await jobSeekingService.getResumeList();
-        setJobSeekingList(list);
+        const resumeList = await jobSeekingService.getResumeList();
+        const reviewList = await reviewService.getReviews();
+
+        setResumeLiset(resumeList);
+        setReviewList(reviewList);
       } catch (error) {
         console.error(error);
         const errorMessage = '구인 목록을 불러오는데 실패했습니다.';
@@ -66,27 +71,27 @@ const GuardianMainPage = () => {
 
         <JobSeekingCardSection>
           <GridContainer>
-            {jobSeekingList.map((user) => (
-              <Card key={user.job_opening_no}>
+            {resumeLiset.map((resume) => (
+              <Card key={resume.resumeNo}>
                 <CardTopContent>
-                  <CardImage src={user.profile_image} />
+                  <CardImage src={resume.profileImage} />
                   <CardTextGroup>
                     <CardTitle>
-                      {maskName(user.user_name)} <span>간병사 </span>
+                      {maskName(resume.userName)} <span>간병사 </span>
                     </CardTitle>
                     <CardText>
-                      나이: {user.age}세({user.gender == 'M' ? '남' : '여'})
+                      나이: {resume.age}세({resume.gender == 'M' ? '남' : '여'})
                     </CardText>
-                    <CardText>시급: {user.pay}원</CardText>
+                    <CardText>시급: {resume.account}원</CardText>
                   </CardTextGroup>
                 </CardTopContent>
                 <CardBottomContent>
                   <CardBottomTextSection>
                     <CardRegionText>
-                      <span>자격증</span> {user.license === true ? 'O' : 'X'}
+                      <span>자격증</span> {resume.license === true ? 'O' : 'X'}
                     </CardRegionText>
                     <CardRegionText>
-                      <span>지역</span> {user.address}
+                      <span>지역</span> {resume.address}
                     </CardRegionText>
                   </CardBottomTextSection>
                   <CardButton>상세보기</CardButton>
@@ -97,41 +102,46 @@ const GuardianMainPage = () => {
         </JobSeekingCardSection>
       </JobSeekingSection>
 
-      <RoomAndBoardSection>
-        <RoomAndBoardTextSection>
-          <RoomAndBoardTextSectionTitle>최신 리뷰</RoomAndBoardTextSectionTitle>
-        </RoomAndBoardTextSection>
+      <ReviewSection>
+        <ReviewCardTextSection>
+          <ReviewCardTextSectionTitle>최신 리뷰</ReviewCardTextSectionTitle>
+        </ReviewCardTextSection>
 
-        {/* <RoomAndBoardCardSection>
-          <GridContainer>
-            {RoomAndBoardAvailable.map((user) => (
-              <Card key={user.job_opening_no}>
-                <CardTopContent>
-                  <CardImage src={user.image} />
-                  <CardTextGroup>
-                    <CardTitle>
-                      {maskName(user.user_name)} 님({user.gender === 'M' ? '남' : '여'})
-                    </CardTitle>
-                    <CardText>나이: {user.age}세</CardText>
-                    <CardText>시급: {user.pay}원</CardText>
-                  </CardTextGroup>
-                </CardTopContent>
-                <CardBottomContent>
-                  <CardRegion>
-                    <span>지역</span> {user.address}
-                  </CardRegion>
-                  <CardButton>상세보기</CardButton>
-                </CardBottomContent>
-              </Card>
-            ))}
-          </GridContainer>
-        </RoomAndBoardCardSection> */}
-      </RoomAndBoardSection>
+        <GridContainer>
+          {reviewList.map((review) => (
+            <Card key={review.reviewNo}>
+              <ReviewerInfo>
+                <ReviewerImage />
+                <ReviewerTextGroup>
+                  <ReviewerName>{maskName(review.userName)} 간병사</ReviewerName>
+                  <ReviewerDetail>
+                    나이: {review.age}세({review.gender == 'M' ? '남' : '여'})
+                  </ReviewerDetail>
+                  <CardRegionText>
+                    <span>지역</span> {review.address}
+                  </CardRegionText>
+                </ReviewerTextGroup>
+              </ReviewerInfo>
+
+              <ReviewTextBox>{review.reviewContent}</ReviewTextBox>
+
+              <ReviewFooter>
+                <ReviewScore>
+                  평점 <strong>{review.score.toFixed(1)}</strong>
+                </ReviewScore>
+                <ReviewDate>작성일 {review.createDate}</ReviewDate>
+              </ReviewFooter>
+            </Card>
+          ))}
+        </GridContainer>
+      </ReviewSection>
     </>
   );
 };
 
 export default GuardianMainPage;
+
+// ************* 상단(베너) 섹션 *************
 
 // 홈 배너 섹션 전체 컨테이너
 export const HomeBannerSection = styled(Section)`
@@ -243,6 +253,8 @@ export const ContactLine = styled(MessageLine)`
     font-size: ${({ theme }) => theme.fontSizes['2xl']};
   `}
 `;
+
+// ************* 중단(구직 목록) 섹션 *************
 
 //  구인 관련 섹션
 export const JobSeekingSection = styled(HomeBannerSection)`
@@ -403,17 +415,103 @@ export const CardButton = styled.button`
   cursor: pointer;
 `;
 
-export const RoomAndBoardSection = styled(JobSeekingSection)``;
+// ************* 하단(최신 리뷰) 섹션 *************
 
-export const RoomAndBoardTextSection = styled(BannerMessage)`
+// 리뷰 섹션
+export const ReviewSection = styled(JobSeekingSection)``;
+
+// 리뷰 텍스트 섹션
+export const ReviewCardTextSection = styled(BannerMessage)`
   width: 100%;
   height: 60px;
   background-color: ${({ theme }) => theme.colors.third};
   border-radius: ${({ theme }) => theme.borderRadius.base};
 `;
 
-export const RoomAndBoardTextSectionTitle = styled(MessageLine)`
+// 리뷰 텍스트 섹션 글씨
+export const ReviewCardTextSectionTitle = styled(MessageLine)`
   color: ${({ theme }) => theme.colors.black2};
 `;
 
-export const RoomAndBoardCardSection = styled(JobSeekingCardSection)``;
+// 리뷰 카드 섹션
+export const ReviewCardSection = styled(JobSeekingCardSection)``;
+
+// 리뷰 카드
+export const ReviewCard = styled.div`
+  width: 100%;
+  padding: 16px;
+  border: 1px solid ${({ theme }) => theme.colors.gray[4]};
+  border-radius: ${({ theme }) => theme.borderRadius.base};
+  background-color: #fff;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+`;
+
+// 리뷰 카드
+export const ReviewerInfo = styled.div`
+  display: flex;
+  gap: 12px;
+  align-items: center;
+`;
+
+export const ReviewerImage = styled.div`
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background-color: orange; // 실제 이미지 URL 사용 시 background-image: url(...)
+`;
+
+export const ReviewerTextGroup = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+`;
+
+export const ReviewerName = styled.h4`
+  font-size: ${({ theme }) => theme.fontSizes.sm};
+  font-weight: ${({ theme }) => theme.fontWeights.bold};
+`;
+
+export const ReviewerDetail = styled.span`
+  font-size: ${({ theme }) => theme.fontSizes.xs};
+  color: ${({ theme }) => theme.colors.gray[2]};
+`;
+
+export const ReviewTextBox = styled.div`
+  background-color: ${({ theme }) => theme.colors.secondaryLight || '#FFF3EC'};
+  color: ${({ theme }) => theme.colors.gray[1]};
+  font-size: ${({ theme }) => theme.fontSizes.sm};
+  padding: 10px;
+  border-radius: 6px;
+  line-height: 1.4;
+`;
+
+export const ReviewFooter = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+`;
+
+export const ReviewScore = styled.div`
+  font-size: ${({ theme }) => theme.fontSizes.sm};
+  font-weight: ${({ theme }) => theme.fontWeights.bold};
+  display: flex;
+  align-items: center;
+  gap: 6px;
+
+  strong {
+    font-size: ${({ theme }) => theme.fontSizes.base};
+    color: ${({ theme }) => theme.colors.black};
+  }
+`;
+
+export const HeartIcons = styled.span`
+  font-size: ${({ theme }) => theme.fontSizes.base};
+  color: red;
+`;
+
+export const ReviewDate = styled.span`
+  font-size: ${({ theme }) => theme.fontSizes.xs};
+  color: ${({ theme }) => theme.colors.gray[3]};
+`;

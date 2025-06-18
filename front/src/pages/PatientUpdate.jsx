@@ -37,9 +37,10 @@ const PatientUpdate = () => {
     } else {
       const getPatient = async () => {
         try {
-          console.log(id);
+    
           const onePatient = await patientService.getPatientId(id);
           setPatinet(onePatient);
+
         } catch (error) {
           console.log(error);
         }
@@ -49,8 +50,8 @@ const PatientUpdate = () => {
   }, [user, userStatus, id]);
 
   useEffect(() => {
+  
     if (patient) {
-      console.log(patient);
       setValue('patName', patient.patName || '');
       setValue('patAge', patient.patAge || '');
       setValue('patGender', patient.patGender || '');
@@ -61,7 +62,6 @@ const PatientUpdate = () => {
       setValue('phone', patient.phone || '');
       setValue('tags', patient.tags || '');
       setTags(patient.tags ? patient.tags : []);
-      console.log(patient.tags);
     }
   }, [patient, setValue]);
 
@@ -75,7 +75,8 @@ const PatientUpdate = () => {
 
   const onSubmit = async (data) => {
     try {
-      await patientService.updatePatinet({ ...patient, ...data });
+
+      await patientService.updatePatinet(patient.patNo,{ ...patient, ...data });
       toast.success('돌봄대상자 수정완료!');
       navigate('/guardian/patient');
     } catch (error) {
@@ -87,7 +88,7 @@ const PatientUpdate = () => {
     try {
       await patientService.deletPatient(id);
       toast.success('돌봄대상자 삭제완료!');
-      navigate('/patient');
+      navigate('/guardian/patient');
     } catch (error) {
       console.log(error);
     }

@@ -23,33 +23,30 @@ export const API_ENDPOINTS = {
   USERS: {
     BASE: '/users',
 
-    PROFILE: (user_id) => `/users?user_id=${user_id}`,
+    PROFILE: (userId) => `/users?user_id=${userId}`,
 
     // LOGIN: '/users/login' //실제에는 이렇게 해야함 아래는 JsonServer 사용시
-    LOGIN: (user_id, user_pwd) => `/users?user_id=${user_id}&user_pwd=${user_pwd}`,
-    DETAIL: (user_id) => `/users?user_id=${user_id}`,
+    LOGIN: (userId, userPwd) => `/users?user_id=${userId}&user_pwd=${userPwd}`,
+    DETAIL: (userId) => `/users?user_id=${userId}`,
+    PROFILE_UPDATE: (userId) => `/users/${userId}`,
   },
   REVIEWS: {
     BASE: '/reviews',
-    DETAIL: (userNo) => `/reviews?userNo=${userNo}`,
+    DETAIL: (userNo) => `/reviews?user_no=${userNo}`,
   },
   HIRING: {
     BASE: '/hiring',
-    DETAIL: (jobOpeningNo) => `/hiring?jobOpeningNo=${jobOpeningNo}`,
+    DETAIL: (hiringNo) => `/hiring?hiring_no=${hiringNo}`,
   },
 
-  JOBSEEKING: {
-    BASE: '/jobseeking',
-  },
-
-  HIRES: {
-    BASE: '/hires',
+  RESUME: {
+    BASE: '/resume',
   },
 
   PATIENT: {
     BASE: '/patient',
     DETAIL: (guardianNo) => `/patient?guardian_no=${guardianNo}`,
-    PATDETAIL: (patNo) => `/patient?id=${patNo}`,
+    PATDETAIL: (patNo) => `/patient?pat_no=${patNo}`,
     PUT: (patNo) => `/patient/${patNo}`,
     DELETE: (patNo) => `/patient/${patNo}`,
   },
@@ -74,5 +71,4 @@ export const API_ENDPOINTS = {
     BASE: '/resume',
     LIST: (resume_no) => `/patproposer?patproposer=${resume_no}`,
   },
-
 };
