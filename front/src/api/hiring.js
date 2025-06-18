@@ -17,10 +17,10 @@ export const hiringService = {
       throw new Error('서버 통신 불량');
     }
   },
-  getHirngById : async (jobOpeningNo) =>  {
+  getHirngById: async (jobOpeningNo) => {
     try {
       const { data } = await api.get(API_ENDPOINTS.HIRING.DETAIL(jobOpeningNo));
-      console.log(data)
+      console.log(data);
       return data;
     } catch (error) {
       if (error.response) {
@@ -30,6 +30,5 @@ export const hiringService = {
 
       throw new Error('서버 통신 불량');
     }
-
-  }
+  },
 };
