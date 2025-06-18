@@ -9,6 +9,12 @@
       "address": "강원, 속초",
       "license": true,
       "profile_image": "https://i.pinimg.com/736x/19/a1/33/19a133d18c3b0c8b83dea31b159074c1.jpg",
+<<<<<<< HEAD
+=======
+      "resume_title": "dsd",
+      "care_status": "Y",
+      "score": "4.5",
+>>>>>>> b60223869fd35730b88b307a2a9fe31de4980a6a
       "id": "54eb"
     },
     {
@@ -28,7 +34,7 @@
       "gender": "F",
       "age": 58,
       "account": 14000,
-      "address": "부산, 해운대구",
+      "address": "부산, 해운대구dasdassa",
       "license": false,
       "profile_image": "https://i.pinimg.com/736x/19/a1/33/19a133d18c3b0c8b83dea31b159074c1.jpg",
       "id": "4bf3"
@@ -178,6 +184,7 @@
       "care_status": "Y"
     }
   ],
+
   "community": [
     {
       "no": "1",
@@ -185,27 +192,20 @@
       "name": "김유인",
       "title": "게임 추천합니다.",
       "create_date": "2025-11-08",
-      "count": "5"
+      "count": "5",
+      "board_detail": "없음",
+      "src": ["/img_s3/연습용img.jpg", "/img_s3/연습용이미지(1).jpg"]
     },
     {
       "no": "2",
-      "id": "extramin1",
+      "id": "dbgk9311",
       "name": "김유하",
       "title": "테스트테스트.",
       "create_date": "2025-11-09",
-      "count": "4"
-    }
-  ],
-  "community_detail": [
-    {
-      "no": "1",
-      "board_detail": "낚엿쥬",
-      "id": "84a6"
-    },
-    {
-      "no": "2",
+      "count": "4",
       "board_detail": "테스트 중입니당",
-      "id": "e2c5"
+      "src": ["/img_s3/연습용이미지(2).jpg"]
+
     }
   ],
   "users": [
@@ -293,7 +293,8 @@
       "review_content": "가족같은 마음으로 정성껏 간병 해주셔서 감사합니다!",
       "score": 4.5,
       "address": "경기, 수원시",
-      "create_date": "2025/06/10"
+      "create_date": "2025/06/10",
+      "profile_image": "https://i.pinimg.com/736x/32/5c/ff/325cff33a4ed1d703fe740f796ee33ed.jpg"
     },
     {
       "review_no": 2,
@@ -304,7 +305,8 @@
       "review_content": "항상 밝은 미소로 환자를 돌봐주셔서 너무 감사했습니다.",
       "score": 5,
       "address": "부산, 해운대구",
-      "create_date": "2025/06/15"
+      "create_date": "2025/06/15",
+      "profile_image": "https://i.pinimg.com/736x/32/5c/ff/325cff33a4ed1d703fe740f796ee33ed.jpg"
     },
     {
       "review_no": 3,
@@ -315,7 +317,8 @@
       "review_content": "세심한 배려가 느껴졌고 믿고 맡길 수 있었습니다.",
       "score": 4.8,
       "address": "서울, 강동구",
-      "create_date": "2025/06/17"
+      "create_date": "2025/06/17",
+      "profile_image": "https://i.pinimg.com/736x/32/5c/ff/325cff33a4ed1d703fe740f796ee33ed.jpg"
     }
   ],
   "patient": [

@@ -1,17 +1,18 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Page, PageInfo } from './CommunityBoard';
-import styled from 'styled-components';
-import { commuService } from '../api/community';
 import { toast } from 'react-toastify';
+import { commuService } from '../api/community';
+import { useParams } from 'react-router-dom';
+import styled from 'styled-components';
+import { Page, PageInfo } from './CommunityBoard';
 import { ClipLoader } from 'react-spinners';
-import useUserStore from '../store/userStore';
 
-const CreateCommuBoardForm = () => {
-  const userId = useUserStore((state) => state.user?.user_id);
-
+const UpdateCommuBoardForm = () => {
   const [error, setError] = useState(null);
   const [communityDetail, setCommunityDetail] = useState([]);
   const [loading, setLoading] = useState(true);
+  const { no } = useParams();
+
+  const userProfile = communityDetail.find((info) => info.no === no);
 
   const [images, setImages] = useState([]);
   const fileInputRef = useRef(null);
@@ -40,12 +41,10 @@ const CreateCommuBoardForm = () => {
     });
   };
 
-  const userName = communityDetail.find((info) => info.id === userId);
-
   useEffect(() => {
     const loadCommunity = async () => {
       try {
-        const community = await commuService.getCommunity();
+        const community = await commuService.getCommunityDetail(no);
         console.log(community);
         setCommunityDetail(community);
       } catch (error) {
@@ -58,7 +57,7 @@ const CreateCommuBoardForm = () => {
       }
     };
     loadCommunity();
-  }, []);
+  }, [no]);
 
   if (loading) {
     return (
@@ -71,17 +70,29 @@ const CreateCommuBoardForm = () => {
   if (error) {
     return null;
   }
+
+  if (!communityDetail) {
+    return <div>게시글을 찾을 수 없습니다.</div>;
+  }
+
   return (
     <Page>
       <PageInfo>
         <PageTop>
-          <PageTitle>소통 게시판 등록</PageTitle>
-          <RightBtn>뒤로가기</RightBtn>
+          <PageTitle>소통 게시판 수정</PageTitle>
         </PageTop>
         <PageBody>
-          <TitleInput type="text" placeholder="제목을 입력해 주세요" />
-          {userName && <UserName key={userName.no}>{userName.name}</UserName>}
-          <TextInput type="text" placeholder="내용을 입력해 주세요" />
+          <TitleInput type="text" value={userProfile.title} placeholder="제목을 입력해 주세요" />
+          <BodyTop>
+            <UserName>{userProfile.name}</UserName>
+            <Right>
+              <div>{userProfile.count}</div>
+              <div>{userProfile.createDate}</div>
+              <div style={{ width: '40px' }}>설정</div>
+            </Right>
+          </BodyTop>
+
+          <TextInput type="text" value={userProfile.board_detail} placeholder="내용을 입력해 주세요" />
           <FileBox>
             <FileTitle>사진</FileTitle>
             <InputFile>
@@ -110,7 +121,7 @@ const CreateCommuBoardForm = () => {
           </FileBox>
           <BtnBox>
             <button>이전으로</button>
-            <button>등록하기</button>
+            <button>수정하기</button>
           </BtnBox>
         </PageBody>
         <PageEndBox>
@@ -134,6 +145,7 @@ const PageTop = styled.div`
   display: flex;
   padding: 0 10px 6px;
 `;
+
 export const Left = styled.div`
   display: flex;
   align-items: center;
@@ -143,11 +155,6 @@ export const Left = styled.div`
 const PageTitle = styled(Left)`
   font-size: ${({ theme }) => theme.fontSizes.xl};
   font-weight: ${({ theme }) => theme.fontWeights.bold};
-`;
-const RightBtn = styled.button`
-  width: 20%;
-  border: 1px solid ${({ theme }) => theme.colors.gray[4]};
-  border-radius: 4px;
 `;
 const PageBody = styled.div`
   width: 100%;
@@ -162,11 +169,20 @@ const TitleInput = styled.input`
   font-size: ${({ theme }) => theme.fontSizes.lg};
   padding: 0 10px 10px;
 `;
+const BodyTop = styled.div`
+  width: 100%;
+  display: flex;
+  padding: 0px 10px 10px;
+  border-bottom: 1px solid ${({ theme }) => theme.colors.gray[4]};
+`;
 const UserName = styled(Left)`
   width: 100%;
   font-size: ${({ theme }) => theme.fontSizes.sm};
-  border-bottom: 1px solid ${({ theme }) => theme.colors.gray[4]};
-  padding: 0 10px 10px;
+  padding: 0 10px;
+`;
+const Right = styled.div`
+  display: flex;
+  gap: 16px;
 `;
 const TextInput = styled.textarea`
   width: 100%;
@@ -252,4 +268,4 @@ const PageEndBox = styled.div`
     font-weight: ${({ theme }) => theme.fontWeights.light};
   }
 `;
-export default CreateCommuBoardForm;
+export default UpdateCommuBoardForm;

@@ -17,7 +17,7 @@ export const API_ENDPOINTS = {
   // },
   COMMUNITY: {
     BASE: '/community', // 게시판 리스트 등
-    DETAIL: (no) => `/community?no=${no}`, // 특정 게시글 상세
+    DETAIL: (no) => `/community?no=${no}`, // 특정 게시글
   },
 
   USERS: {
@@ -56,9 +56,6 @@ export const API_ENDPOINTS = {
     DETAIL: (disNo) => `/patients?disNo=${disNo}`,
   },
 
-  RESUME: {
-    BASE: '/resume',
-  },
   REPORT: {
     BASE: `/report`,
     PROFILE: (patNo) => `/report?pat_no=${patNo}`,

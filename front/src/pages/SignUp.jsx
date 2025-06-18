@@ -79,7 +79,7 @@ const SignUp = () => {
   return (
     <>
       <AuthContainer>
-        <MainTitle>회원가입</MainTitle>
+        {/* <MainTitle>회원가입</MainTitle> */}
         <Form onSubmit={handleSubmit}>
           <Head>
             <Title>SNS 회원가입</Title>
@@ -358,12 +358,12 @@ const Bottom = styled.div`
   gap: ${({ theme }) => theme.spacing[4]}; /* 섹션 간 간격 */
 `;
 
-const MainTitle = styled(Title)`
-  font-size: ${({ theme }) => theme.fontSizes['3xl']};
-  display: flex;
-  justify-content: flex-start;
-  padding: ${({ theme }) => theme.spacing[1]};
-`;
+// const MainTitle = styled(Title)`
+//   font-size: ${({ theme }) => theme.fontSizes['3xl']};
+//   display: flex;
+//   justify-content: flex-start;
+//   padding: ${({ theme }) => theme.spacing[1]};
+// `;
 
 const Text = styled(Title)`
   font-size: ${({ theme }) => theme.fontSizes.xl};
@@ -542,7 +542,6 @@ const HiddenCheckbox = styled.input.attrs({ type: 'checkbox' })`
   border: 0;
   //기존 체크 박스 요소 숨기기
   clip: rect(0 0 0 0);
-  clippath: inset(50%);
   height: 1px;
   margin: -1px;
   overflow: hidden;
