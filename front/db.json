@@ -10,12 +10,11 @@
       "address": "강원, 속초",
       "license": true,
       "profile_image": "https://i.pinimg.com/736x/19/a1/33/19a133d18c3b0c8b83dea31b159074c1.jpg",
-<<<<<<< HEAD
-=======
+
       "resume_title": "dsd",
       "care_status": "Y",
       "score": "4.5",
->>>>>>> b60223869fd35730b88b307a2a9fe31de4980a6a
+
       "id": "54eb"
     },
     {
@@ -255,7 +254,7 @@
       "name": "김유하",
       "title": "테스트테스트.",
       "create_date": "2025-11-09",
-<<<<<<< HEAD
+
       "count": "4"
     }
   ],
@@ -267,14 +266,12 @@
     },
     {
       "no": "2",
-      "board_detail": "테스트 중입니당",
-      "id": "e2c5"
-=======
+
+      "id": "e2c5",
+
       "count": "4",
       "board_detail": "테스트 중입니당",
       "src": ["/img_s3/연습용이미지(2).jpg"]
-
->>>>>>> 4dc6bd8525c0a5ef0536bf77fe99ae6f3e046ecb
     }
   ],
   "users": [
