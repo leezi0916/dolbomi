@@ -27,8 +27,9 @@ import ResumeDetail from './pages/ResumeDetail';
 import GuardianMainPage from './pages/GuardianMainPage';
 import CareGiverMainPage from './pages/CareGiverMainPage';
 import { useEffect } from 'react';
-import useUserStore from './store/userStore';
+// import useUserStore from './store/userStore';
 import ReportMain from './pages/ReportMain';
+import CreateCommuBoardForm from './pages/CreateCommuBoardForm';
 
 function AppRoutes() {
   const navigate = useNavigate();
@@ -60,10 +61,12 @@ function AppRoutes() {
           <Route path="/review" element={<ReviewModal />} />
 
           {/* 공용 */}
-          <Route path="/NoticeBoard" element={<NoticeBoard />} />
-          <Route path="/CommunityBoard" element={<CommunityBoard />} />
-          <Route path="/CommunityBoard/:no" element={<CommunityDetail />} />
-          <Route path="/CommunityQuestion" element={<CommunityQuestion />} />
+          <Route path="/community/free/create" element={<CreateCommuBoardForm />} />
+          <Route path="/community/free" element={<CommunityBoard />} />
+          <Route path="/community/free/detail/:no" element={<CommunityDetail />} />
+          <Route path="/community/question" element={<CommunityQuestion />} />
+          <Route path="/community/notice" element={<NoticeBoard />} />
+
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<SignUp />} />
           <Route path="/myprofile" element={<MyProfile />} />
@@ -78,13 +81,14 @@ function AppRoutes() {
 }
 
 function App() {
-  const { userStatus } = useUserStore();
+  // const { userStatus } = useUserStore();
 
   return (
     <>
       <ThemeProvider theme={theme}>
         <GlobalStyle />
         <Router>
+
           <AppRoutes />
           <ToastContainer
             position="top-right"
@@ -96,6 +100,7 @@ function App() {
             theme="light"
             pauseOnHover
           />
+
         </Router>
       </ThemeProvider>
     </>

@@ -53,7 +53,8 @@ const HireRegistration = () => {
               </ProfilImageWrapper>
             </div>
             <Divider>
-              <InputRow>
+           
+              <InputGroup>
                 <InputGroup>
                   <Label>이름</Label>
                   <Input type="text" value={'김옥순'} />
@@ -62,7 +63,7 @@ const HireRegistration = () => {
                   <Label>나이</Label>
                   <Input type="text" value={'85'} />
                 </InputGroup>
-              </InputRow>
+              </InputGroup>
               <RadioGroup>
                 <Label>성별</Label>
                 <RadioWrapper>
@@ -111,7 +112,7 @@ const HireRegistration = () => {
             <HireContent>
               <Label>제목</Label>
               <Input type="text" value={'제목입니다 '} />
-              <InputRow>
+              <InputGird>
                 <InputGroup>
                   <Label>지급 금액 (시급)</Label>
                   <Input type="text" value={'15000'} />
@@ -129,7 +130,7 @@ const HireRegistration = () => {
                   <Label>모집 인원수 설정</Label>
                   <Input type="number" value={'1'} />
                 </InputGroup>
-              </InputRow>
+              </InputGird>
               <Label>내용</Label>
               <Content type="text" value={'제목입니다 '} />
               <RadioGroup>
@@ -233,16 +234,29 @@ const ProfilImageWrapper = styled.div`
   `}
 `;
 
+
 const InputRow = styled.div`
   display: flex;
   flex-direction: column;
   gap: ${({ theme }) => theme.spacing[5]};
 
   ${media.md`
-    
     flex-direction: row;
   `}
 `;
+
+const InputGird = styled.div`
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  gap: ${({ theme }) => theme.spacing[5]};
+
+  ${media.md`
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(20%, auto));
+    
+  `}
+`
 
 const Label = styled.label`
   font-size: ${({ theme }) => theme.fontSizes.sm};
