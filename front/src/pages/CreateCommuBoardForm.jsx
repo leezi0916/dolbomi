@@ -7,7 +7,7 @@ import { ClipLoader } from 'react-spinners';
 
 const CreateCommuBoardForm = () => {
   const [error, setError] = useState(null);
-  const [setCommunityDetail] = useState([]); //communityDetail
+  const [communityDetail, setCommunityDetail] = useState([]);
   const [loading, setLoading] = useState(true);
 
   const [images, setImages] = useState([]);
