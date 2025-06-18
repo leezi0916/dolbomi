@@ -24,7 +24,7 @@ const guardianSchema = yup.object().shape({
     .min(0, '0세 이상이어야 합니다.')
     .max(120, '120세 이하로 입력해주세요.'),
 
-    gender: yup.string().oneOf(['M', 'F'], '성별을 선택해주세요').required('성별은 필수입니다.'),
+  gender: yup.string().oneOf(['M', 'F'], '성별을 선택해주세요').required('성별은 필수입니다.'),
 
   phone: yup
     .string()
@@ -38,7 +38,7 @@ const guardianSchema = yup.object().shape({
     .max(100, '주소는 100자 이하로 입력해주세요.'),
 });
 
-export const usepatientRegistrationForm = () => {
+export const guardianHiringForm = () => {
   const navigate = useNavigate();
   const { user } = useUserStore();
 
