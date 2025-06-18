@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import { Container, Section } from '../styles/common/Container';
 import profileImage from '../assets/images/pat.png'; // 프로필 이미지 경로
 import styled from 'styled-components';
@@ -20,7 +20,7 @@ import { FaPlus } from 'react-icons/fa6';
 
 const HireRegistration = () => {
   const inputRef = useRef(null);
-
+  const [previewUrl, setPreviewUrl] = useState(null);
   const handleDivClick = () => {
     inputRef.current?.click(); // 파일 선택창 열기
   };
@@ -29,9 +29,14 @@ const HireRegistration = () => {
     const file = e.target.files?.[0];
     if (file) {
       console.log('선택된 파일:', file.name);
-      // 원하는 로직 처리 (예: 업로드)
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setPreviewUrl(reader.result); // base64 저장
+      };
+      reader.readAsDataURL(file); // base64 인코딩
     }
   };
+
   return (
     <HireRegistSection>
       <HireContainer>
@@ -135,21 +140,35 @@ const HireRegistration = () => {
               <RadioGroup>
                 <Label>숙식 제공 여부</Label>
                 <RadioWrapper>
-                  <input type="radio" id="care_status" name="care_status" value="care_status" />
-                  <label htmlFor="care_status">0</label>
+                  <input type="radio" id="careStatus" name="careStatus" value="careStatus" />
+                  <label htmlFor="careStatus">0</label>
                 </RadioWrapper>
                 <RadioWrapper>
-                  <input type="radio" id="care_status" name="care_status" value="care_status" />
-                  <label htmlFor="care_status">X</label>
+                  <input type="radio" id="careStatus" name="careStatus" value="careStatus" />
+                  <label htmlFor="careStatus">X</label>
                 </RadioWrapper>
               </RadioGroup>
               <InputGroup>
                 <Label>숙소 정보</Label>
                 {/* 클릭 가능한 div */}
                 <RoomImage onClick={handleDivClick}>
-                  <Plus />
+                  {previewUrl ? (
+                    <img
+                      src={previewUrl}
+                      alt="미리보기"
+                      style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '4px' }}
+                    />
+                  ) : (
+                    <Plus />
+                  )}
                 </RoomImage>
-                <input type="file" ref={inputRef} onChange={handleFileChange} style={{ display: 'none' }} />
+                <input
+                  type="file"
+                  accept="image/*"
+                  ref={inputRef}
+                  onChange={handleFileChange}
+                  style={{ display: 'none' }}
+                />
               </InputGroup>
             </HireContent>
           </ContentWrapper1>
@@ -383,7 +402,6 @@ const Content = styled.textarea`
 `;
 
 const RoomImage = styled.div`
-  padding: ${({ theme }) => theme.spacing[3]};
   width: 50%;
   height: 200px;
   background-color: ${({ theme }) => theme.colors.gray[5]};

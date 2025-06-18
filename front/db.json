@@ -8,7 +8,8 @@
       "pay": 15000,
       "address": "강원, 속초",
       "license": true,
-      "profile_image": "https://i.pinimg.com/736x/19/a1/33/19a133d18c3b0c8b83dea31b159074c1.jpg"
+      "profile_image": "https://i.pinimg.com/736x/19/a1/33/19a133d18c3b0c8b83dea31b159074c1.jpg",
+      "id": "4cb1"
     },
     {
       "resume_no": 2,
@@ -18,7 +19,8 @@
       "pay": 16000,
       "address": "서울, 강동구",
       "license": false,
-      "profile_image": "https://i.pinimg.com/736x/19/a1/33/19a133d18c3b0c8b83dea31b159074c1.jpg"
+      "profile_image": "https://i.pinimg.com/736x/19/a1/33/19a133d18c3b0c8b83dea31b159074c1.jpg",
+      "id": "df78"
     },
     {
       "resume_no": 3,
@@ -28,7 +30,8 @@
       "pay": 14000,
       "address": "부산, 해운대구",
       "license": false,
-      "profile_image": "https://i.pinimg.com/736x/19/a1/33/19a133d18c3b0c8b83dea31b159074c1.jpg"
+      "profile_image": "https://i.pinimg.com/736x/19/a1/33/19a133d18c3b0c8b83dea31b159074c1.jpg",
+      "id": "4e84"
     },
     {
       "resume_no": 4,
@@ -38,7 +41,8 @@
       "pay": 15500,
       "address": "대전, 유성구",
       "license": false,
-      "profile_image": "https://i.pinimg.com/736x/19/a1/33/19a133d18c3b0c8b83dea31b159074c1.jpg"
+      "profile_image": "https://i.pinimg.com/736x/19/a1/33/19a133d18c3b0c8b83dea31b159074c1.jpg",
+      "id": "1587"
     },
     {
       "resume_no": 5,
@@ -48,7 +52,8 @@
       "pay": 17000,
       "address": "경기, 수원시",
       "license": true,
-      "profile_image": "https://i.pinimg.com/736x/19/a1/33/19a133d18c3b0c8b83dea31b159074c1.jpg"
+      "profile_image": "https://i.pinimg.com/736x/19/a1/33/19a133d18c3b0c8b83dea31b159074c1.jpg",
+      "id": "2819"
     },
     {
       "resume_no": 6,
@@ -58,7 +63,8 @@
       "pay": 14500,
       "address": "인천, 미추홀구",
       "license": false,
-      "profile_image": "https://i.pinimg.com/736x/19/a1/33/19a133d18c3b0c8b83dea31b159074c1.jpg"
+      "profile_image": "https://i.pinimg.com/736x/19/a1/33/19a133d18c3b0c8b83dea31b159074c1.jpg",
+      "id": "0a39"
     },
     {
       "resume_no": 7,
@@ -68,7 +74,8 @@
       "pay": 15000,
       "address": "전북, 전주시",
       "license": true,
-      "profile_image": "https://i.pinimg.com/736x/19/a1/33/19a133d18c3b0c8b83dea31b159074c1.jpg"
+      "profile_image": "https://i.pinimg.com/736x/19/a1/33/19a133d18c3b0c8b83dea31b159074c1.jpg",
+      "id": "ed15"
     },
     {
       "resume_no": 8,
@@ -78,10 +85,10 @@
       "pay": 16500,
       "address": "충남, 천안시",
       "license": false,
-      "profile_image": "https://i.pinimg.com/736x/19/a1/33/19a133d18c3b0c8b83dea31b159074c1.jpg"
+      "profile_image": "https://i.pinimg.com/736x/19/a1/33/19a133d18c3b0c8b83dea31b159074c1.jpg",
+      "id": "88dd"
     }
   ],
-
   "hiring": [
     {
       "job_opening_no": 1,
@@ -92,7 +99,8 @@
       "pay": 15000,
       "address": "강원도",
       "profile_image": "https://i.pinimg.com/736x/ba/ca/a0/bacaa0c3434602bc8e7d6a99db91b372.jpg",
-      "care_status": "X"
+      "care_status": "X",
+      "id": "8901"
     },
     {
       "job_opening_no": 2,
@@ -103,7 +111,8 @@
       "pay": 16000,
       "address": "서울특별시",
       "profile_image": "https://i.pinimg.com/736x/ba/ca/a0/bacaa0c3434602bc8e7d6a99db91b372.jpg",
-      "care_status": "O"
+      "care_status": "O",
+      "id": "0539"
     },
     {
       "job_opening_no": 3,
@@ -114,7 +123,8 @@
       "pay": 14000,
       "address": "부산광역시",
       "profile_image": "https://i.pinimg.com/736x/ba/ca/a0/bacaa0c3434602bc8e7d6a99db91b372.jpg",
-      "care_status": "X"
+      "care_status": "X",
+      "id": "883f"
     },
     {
       "job_opening_no": 4,
@@ -125,7 +135,8 @@
       "pay": 17000,
       "address": "대구광역시",
       "profile_image": "https://i.pinimg.com/736x/ba/ca/a0/bacaa0c3434602bc8e7d6a99db91b372.jpg",
-      "care_status": "O"
+      "care_status": "O",
+      "id": "4f23"
     },
     {
       "job_opening_no": 5,
@@ -136,7 +147,8 @@
       "pay": 14500,
       "address": "인천광역시",
       "profile_image": "https://i.pinimg.com/736x/ba/ca/a0/bacaa0c3434602bc8e7d6a99db91b372.jpg",
-      "care_status": "X"
+      "care_status": "X",
+      "id": "f904"
     },
     {
       "job_opening_no": 6,
@@ -147,7 +159,8 @@
       "pay": 15000,
       "address": "강원도",
       "profile_image": "https://i.pinimg.com/736x/ba/ca/a0/bacaa0c3434602bc8e7d6a99db91b372.jpg",
-      "care_status": "O"
+      "care_status": "O",
+      "id": "5755"
     },
     {
       "job_opening_no": 8,
@@ -158,7 +171,8 @@
       "pay": 15800,
       "address": "경기도",
       "profile_image": "https://i.pinimg.com/736x/ba/ca/a0/bacaa0c3434602bc8e7d6a99db91b372.jpg",
-      "care_status": "X"
+      "care_status": "X",
+      "id": "5dae"
     },
     {
       "job_opening_no": 10,
@@ -169,7 +183,27 @@
       "pay": 16000,
       "address": "서울특별시",
       "profile_image": "https://i.pinimg.com/736x/ba/ca/a0/bacaa0c3434602bc8e7d6a99db91b372.jpg",
-      "care_status": "O"
+      "care_status": "O",
+      "id": "21ff"
+    },
+    {
+      "id": "1",
+      "hiring_no": "1",
+      "pat_no": "1",
+      "user_no": "1",
+      "profile_image": "/src/assets/images/pat.png",
+      "pat_name": "김영희",
+      "pat_address": "서울 강남구 역삼동",
+      "pat_age": "85",
+      "pat_gender": "F",
+      "pat_height": 160,
+      "pat_weight": 54,
+      "hiring_title": "치매 어머님 돌봄 구합니다. (주간)",
+      "hiring_content": "fdsafsafsa",
+      "start_date": "2025-07-01",
+      "end_date": "2025-07-31",
+      "account": "13000",
+      "care_status": true
     }
   ],
   "community": [
@@ -193,19 +227,19 @@
   "community_detail": [
     {
       "no": "1",
-      "board_detail": "낚엿쥬"
+      "board_detail": "낚엿쥬",
+      "id": "727a"
     },
     {
       "no": "2",
-      "board_detail": "테스트 중입니당"
+      "board_detail": "테스트 중입니당",
+      "id": "d0f1"
     }
   ],
   "users": [
     {
       "user_no": 1,
-
       "id": "ac77",
-
       "user_id": "admin",
       "user_pwd": "a1234",
       "user_name": "이지묵",
@@ -215,7 +249,6 @@
       "address": "별내동dsafsdafas",
       "email": "admin@diamelo.com"
     },
-
     {
       "user_no": 1,
       "id": "5b3b",
@@ -261,151 +294,23 @@
       "phone": "01022222222",
       "address": "서울 강남구 강남역",
       "email": "user0@naver.com"
+    },
+
+    {
+      "user_no": 123,
+      "id": "e232",
+      "email": "leezi0916@naver.com",
+      "address": "경기도 남양주시 별내동",
+      "phone": "01083281182",
+      "gender": "M",
+      "age": 26,
+      "user_pwd": "wlanr1506!",
+      "user_name": "이지묵",
+      "user_id": "dlwlanr0916"
     }
   ],
   "reviews": [],
-  "hires": [
-    {
-      "id": "1",
-      "hiring_no": "1",
-      "pat_name": "김영희",
-      "pat_age": "85",
-      "pat_gender": "female",
-      "title": "치매 어머님 돌봄 구합니다. (주간)",
-      "start_date": "2025-07-01",
-      "end_date": "2025-07-31",
-      "pat_address": "서울 강남구 역삼동",
-      "account": "13000",
-      "care_status": true,
-      "profile_image": "/src/assets/images/pat.png"
-    },
-    {
-      "id": "2",
-      "hiring_no": "2",
-      "pat_name": "김영희",
-      "pat_age": "85",
-      "pat_gender": "female",
-      "title": "치매 어머님 돌봄 구합니다. (주간)",
-      "start_date": "2025-07-01",
-      "end_date": "2025-07-31",
-      "pat_address": "서울 강남구 역삼동",
-      "account": "13000",
-      "care_status": true,
-      "profile_image": "/src/assets/images/pat.png"
-    },
-    {
-      "id": "3",
-      "hiring_no": "3",
-      "pat_name": "김영희",
-      "pat_age": "85",
-      "pat_gender": "female",
-      "title": "치매 어머님 돌봄 구합니다. (주간)",
-      "start_date": "2025-07-01",
-      "end_date": "2025-07-31",
-      "pat_address": "서울 강남구 역삼동",
-      "account": "13000",
-      "care_status": true,
-      "profile_image": "/src/assets/images/pat.png"
-    },
-    {
-      "id": "4",
-      "hiring_no": "4",
-      "pat_name": "김영희",
-      "pat_age": "85",
-      "pat_gender": "female",
-      "title": "치매 어머님 돌봄 구합니다. (주간)",
-      "start_date": "2025-07-01",
-      "end_date": "2025-07-31",
-      "pat_address": "서울 강남구 역삼동",
-      "account": "13000",
-      "care_status": true,
-      "profile_image": "/src/assets/images/pat.png"
-    },
-    {
-      "id": "5",
-      "hiringno": "5",
-      "pat_name": "김영희",
-      "pat_age": "85",
-      "pat_gender": "female",
-      "title": "치매 어머님 돌봄 구합니다. (주간)",
-      "start_date": "2025-07-01",
-      "end_date": "2025-07-31",
-      "pat_address": "서울 강남구 역삼동",
-      "account": "13000",
-      "care_status": true,
-      "profile_image": "/src/assets/images/pat.png"
-    },
-    {
-      "id": "6",
-      "hiringno": "6",
-      "pat_name": "김영희",
-      "pat_age": "85",
-      "pat_gender": "female",
-      "title": "치매 어머님 돌봄 구합니다. (주간)",
-      "start_date": "2025-07-01",
-      "end_date": "2025-07-31",
-      "pat_address": "서울 강남구 역삼동",
-      "account": "13000",
-      "care_status": true,
-      "profile_image": "/src/assets/images/pat.png"
-    },
-    {
-      "id": "7",
-      "hiring_no": "7",
-      "pat_name": "김영희",
-      "pat_age": "85",
-      "pat_gender": "female",
-      "title": "치매 어머님 돌봄 구합니다. (주간)",
-      "start_date": "2025-07-01",
-      "end_date": "2025-07-31",
-      "pat_address": "서울 강남구 역삼동",
-      "account": "13000",
-      "care_status": true,
-      "profile_image": "/src/assets/images/pat.png"
-    },
-    {
-      "id": "8",
-      "hiring_no": "8",
-      "pat_name": "김영희",
-      "pat_age": "85",
-      "pat_gender": "female",
-      "title": "치매 어머님 돌봄 구합니다. (주간)",
-      "start_date": "2025-07-01",
-      "end_date": "2025-07-31",
-      "pat_address": "서울 강남구 역삼동",
-      "account": "13000",
-      "care_status": true,
-      "profile_image": "/src/assets/images/pat.png"
-    },
-    {
-      "id": "9",
-      "hiring_no": "9",
-      "pat_name": "김영희",
-      "pat_age": "85",
-      "pat_gender": "female",
-      "title": "치매 어머님 돌봄 구합니다. (주간)",
-      "start_date": "2025-07-01",
-      "end_date": "2025-07-31",
-      "pat_address": "서울 강남구 역삼동",
-      "account": "13000",
-      "care_status": true,
-      "profile_image": "/src/assets/images/pat.png"
-    },
-    {
-      "id": "10",
-      "hiring_no": "10",
-      "pat_name": "김영희",
-      "pat_age": "85",
-      "pat_gender": "male",
-      "title": "치매 어머님 돌봄 구합니다. (주간)",
-      "start_date": "2025-07-01",
-      "end_date": "2025-07-31",
-      "pat_address": "부산",
-      "account": "15000",
-      "care_status": true,
-      "profile_image": "/src/assets/images/pat.png"
-    }
-  ],
+
   "patient": [
     {
       "id": "de62",
@@ -485,7 +390,8 @@
       "reportContent": "우우우우우우우우우우우우우우\n우우우우",
       "createDate": "2025-07-01",
       "updateDate": "2025-07-01",
-      "status": "Y"
+      "status": "Y",
+      "id": "4430"
     },
     {
       "reportNo": 2,
@@ -495,7 +401,8 @@
       "reportContent": "아아아아아아아아아아아아아아\n우우우우",
       "createDate": "2025-07-01",
       "updateDate": "2025-07-01",
-      "status": "Y"
+      "status": "Y",
+      "id": "7bd4"
     }
   ]
 }

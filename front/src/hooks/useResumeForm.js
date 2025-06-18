@@ -21,7 +21,7 @@ export const useResumeForm = () => {
 
   const navigate = useNavigate();
 
-  const [licenseList, setLicenseList] = useState([{ license_name: '', license_publisher: '', license_date: '' }]);
+  const [licenseList, setLicenseList] = useState([{ licenseName: '', licensPublisher: '', licenseDate: '' }]);
 
   const {
     register,
@@ -44,7 +44,7 @@ export const useResumeForm = () => {
     try {
       const parsedState = JSON.parse(storedData);
       const user = parsedState.state.user;
-      const userId = user?.user_id;
+      const userId = user?.userId;
 
       console.log('저장된 유저 ID:', userId);
 
@@ -78,7 +78,7 @@ export const useResumeForm = () => {
   };
 
   const addLicense = () => {
-    setLicenseList([...licenseList, { license_name: '', license_publisher: '', license_date: '' }]);
+    setLicenseList([...licenseList, { licenseName: '', licensPublisher: '', licenseDate: '' }]);
   };
 
   const removeLicense = (index) => {
@@ -90,7 +90,7 @@ export const useResumeForm = () => {
     try {
       const payload = {
         ...formData,
-        user_no: user.user_no,
+        userNo: user.userNo,
         licenses: licenseList,
       };
       console.log('전송 데이터:', payload);
