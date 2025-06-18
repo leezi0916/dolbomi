@@ -5,8 +5,9 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
-import { resumeService } from '../api/resume';
+
 import { userService } from '../api/users';
+import { jobSeekingService } from '../api/jobSeeking';
 
 // 유효성 스키마
 const resumeSchema = yup.object().shape({
@@ -95,7 +96,7 @@ export const useResumeForm = () => {
       };
       console.log('전송 데이터:', payload);
 
-      await resumeService.createResume(payload);
+      await jobSeekingService.createResume(payload);
       toast.success('이력서가 저장되었습니다!');
       navigate('/');
     } catch (error) {
