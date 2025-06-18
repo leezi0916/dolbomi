@@ -56,9 +56,6 @@ export const API_ENDPOINTS = {
     DETAIL: (disNo) => `/patients?disNo=${disNo}`,
   },
 
-  RESUME: {
-    BASE: '/resume',
-  },
   REPORT: {
     BASE: (patNo) => `/report?pat_no=${patNo}`,
   },

@@ -9,7 +9,7 @@ import { useNavigate } from 'react-router-dom';
 import useUserStatusStore from '../store/userStatusStore';
 const Header = () => {
   const { user, isAuthenticated } = useUserStore();
-  console.log('ㄹㅇㄴㅁㄹ:', user);
+
   const { userStatus, setUserStatus } = useUserStatusStore();
 
   const [isHovering, setIsHovering] = useState(false);
@@ -58,9 +58,9 @@ const Header = () => {
         {/* pc환경에서의 nav */}
         <DesktopNav>
           {userStatus ? (
-            <NavItem to="/caregiver/hirelist">간병사 모집</NavItem>
+            <NavItem to="/guardian/caregiverlist">간병사 모집</NavItem>
           ) : (
-            <NavItem to="guardian/caregiverlist">돌봄대상자 모집</NavItem>
+            <NavItem to="/caregiver/hirelist">돌봄대상자 모집</NavItem>
           )}
 
           <NavItem to="/community/free">소통</NavItem>
