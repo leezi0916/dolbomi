@@ -1,7 +1,7 @@
 import { useStore } from 'zustand';
 import api from './axios';
 import { API_ENDPOINTS } from './config';
-import { camelToSnake, snakeToCamel } from '../utils/formatData';
+import { snakeToCamel } from '../utils/formatData';
 
 export const patientService = {
   //환자목록조회

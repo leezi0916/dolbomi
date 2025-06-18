@@ -178,7 +178,7 @@
       "id": "extramin2",
       "name": "김유인",
       "title": "게임 추천합니다.",
-      "createDate": "2025-11-08",
+      "create_date": "2025-11-08",
       "count": "5"
     },
     {
@@ -186,7 +186,7 @@
       "id": "extramin1",
       "name": "김유하",
       "title": "테스트테스트.",
-      "createDate": "2025-11-09",
+      "create_date": "2025-11-09",
       "count": "4"
     }
   ],
@@ -240,7 +240,7 @@
         }
       ]
     },
-{
+    {
       "id": "2170",
       "user_id": "dbgk9311",
       "user_pwd": "dbgk9311",
@@ -417,9 +417,8 @@
   ],
   "patient": [
     {
-
       "id": 1,
- "guardian_no": "1",
+      "guardian_no": "1",
       "profile_image": "/src/assets/profileImg/img_환자소.png",
       "pat_name": "김건희",
       "pat_address": "서울시 강남구",
@@ -433,7 +432,6 @@
     },
 
     {
-
       "id": 2,
       "guardian_no": "1",
       "profile_image": "/src/assets/profileImg/img_환자소.png",
@@ -449,7 +447,6 @@
       "tags": ["당뇨"]
     },
     {
-
       "id": 3,
       "guardian_no": "1",
       "profile_image": "/src/assets/profileImg/img_환자소.png",
@@ -464,9 +461,6 @@
       "status": "Y"
     },
     {
-
-
-
       "id": 4,
       "guardian_no": "1",
       "profile_image": "/src/assets/profileImg/img_환자소.png",
@@ -483,7 +477,6 @@
       "tags": ""
     },
     {
-
       "id": 5,
       "guardian_no": "1",
       "pat_name": "이환자",
