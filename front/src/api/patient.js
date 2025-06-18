@@ -1,20 +1,17 @@
 import { useStore } from 'zustand';
 import api from './axios';
 import { API_ENDPOINTS } from './config';
-
-import { camelToSnake, snakeToCamel } from '../utils/formatData';
+import { snakeToCamel } from '../utils/formatData';
 
 export const patientService = {
   //환자목록조회
   getPatients: async (guardianNo) => {
     try {
-      console.log(guardianNo)
+      console.log(guardianNo);
       const { data } = await api.get(API_ENDPOINTS.PATIENT.DETAIL(guardianNo));
 
-      return  snakeToCamel(data);
-
-
-} catch (error) {
+      return snakeToCamel(data);
+    } catch (error) {
       if (error.response) {
         const message = error.response?.data?.message || '환자목록을 불러오는데 실패했습니다.';
         throw new Error(message);
@@ -38,11 +35,8 @@ export const patientService = {
   getPatientId: async (id) => {
     try {
       const { data } = await api.get(API_ENDPOINTS.PATIENT.PATDETAIL(id));
-
-      
       return snakeToCamel(data[0]);
-      
-   } catch (error) {
+    } catch (error) {
       if (error.response) {
         const message = error.response?.data?.message || '환자목록을 불러오는데 실패했습니다.';
         throw new Error(message);

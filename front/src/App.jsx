@@ -49,7 +49,7 @@ function AppRoutes() {
           <Route path="/caregiver" element={<CareGiverMainPage />} />
           <Route path="/caregiver/hirelist" element={<HireList />} />
           <Route path="/caregiver/resumeRegistration" element={<ResumeRegistration />} />
-          <Route path="/caregiver/reportform" element={<ReportForm />} />
+          <Route path="/caregiver/reportform/:patNo" element={<ReportForm />} />
 
           {/* 보호자 */}
           <Route path="/guardian" element={<GuardianMainPage />} />
