@@ -32,15 +32,15 @@ export const API_ENDPOINTS = {
   },
   REVIEWS: {
     BASE: '/reviews',
-    DETAIL: (userNo) => `/reviews?userNo=${userNo}`,
+    DETAIL: (userNo) => `/reviews?user_no=${userNo}`,
   },
   HIRING: {
     BASE: '/hiring',
     DETAIL: (hiringNo) => `/hiring?hiring_no=${hiringNo}`,
   },
 
-  JOBSEEKING: {
-    BASE: '/jobseeking',
+  RESUME: {
+    BASE: '/resume',
   },
 
   PATIENT: {
