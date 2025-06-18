@@ -6,22 +6,23 @@ import styled from 'styled-components';
 import profileImage from '../assets/images/pat.png'; // 프로필 이미지 경로
 
 import { media } from '../styles/MediaQueries';
-import { hireService } from '../api/hires';
+
 import SearchBar from '../components/SearchBar';
 import { IoCheckmarkOutline } from 'react-icons/io5';
 import { ClipLoader } from 'react-spinners';
 import { Link } from 'react-router-dom';
+import { hiringService } from '../api/hiring';
 
 const HireList = () => {
   const [hireLists, setHireLists] = useState([]);
   const [loading, setLoading] = useState(false); // 초기 false
   const [error, setError] = useState(null);
-  const [location, setLocation] = useState('');
+  const [patAddress, setPatAddress] = useState('');
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
-  const [gender, setGender] = useState('');
+  const [patGender, setPatGender] = useState('');
   const [account, setAccount] = useState('');
-  const [searchKeyword, setSearchKeyword] = useState('');
+  const [keyword, setSearchKeyword] = useState('');
   const [careStatus, setCareStatus] = useState(false);
 
   // 1. 컴포넌트가 처음 마운트될 때 전체 리스트를 불러옵니다.
@@ -29,41 +30,12 @@ const HireList = () => {
     loadHireLists(false); // 초기 로딩 시에는 필터 없이 전체 데이터 요청
   }, []);
 
-  // 2. 필터 조건 (location, startDate, endDate, gender, account, searchKeyword, careStatus) 중
-  //    어떤 것이라도 변경되면 이 useEffect가 실행되어 새로운 검색을 트리거합니다.
-  useEffect(() => {
-    // 모든 필터가 비어있는지 확인하여 불필요한 검색을 방지합니다.
-    const hasActiveFilters = location || startDate || endDate || gender || account || searchKeyword || careStatus;
-
-    if (hasActiveFilters) {
-      // 하나라도 활성화된 필터가 있으면 검색 조건을 포함하여 데이터를 다시 불러옵니다.
-      loadHireLists(true);
-    } else {
-      // 모든 필터가 비어있으면 (초기 상태이거나 필터가 모두 해제된 경우)
-      // 필터 없이 전체 리스트를 다시 불러옵니다.
-      loadHireLists(false);
-    }
-  }, [location, startDate, endDate, gender, account, searchKeyword, careStatus]); // 의존성 배열
-  // 돌봄 대상자 리스트를 불러오는 함수
-  const loadHireLists = async (isSearch = false) => {
+  const loadHireLists = async () => {
     try {
       setLoading(true);
       setError(null);
 
-      const params = {};
-
-      // isSearch가 true일 경우에만 필터를 params에 추가합니다.
-      if (isSearch) {
-        if (location) params.location = location;
-        if (startDate) params.startDate = startDate;
-        if (endDate) params.endDate = endDate;
-        if (gender) params.gender = gender;
-        if (account) params.account = account;
-        if (searchKeyword) params.keyword = searchKeyword; // SearchBar에서 넘어온 키워드 사용
-        if (careStatus) params.care_status = true;
-      }
-
-      const hireList = await hireService.getHireLists(params);
+      const hireList = await hiringService.getJobOpeningList();
       setHireLists(hireList);
     } catch (error) {
       console.error(error);
@@ -81,10 +53,8 @@ const HireList = () => {
     // 이 상태 변경은 위에 있는 useEffect를 트리거하여 자동으로 검색을 실행시킬 것입니다.
   };
 
-  // 숙식 제공 체크박스 변경 핸들러
   const handleCheckChange = (e) => {
     setCareStatus(e.target.checked);
-    // 이 상태 변경 역시 위에 있는 useEffect를 트리거하여 자동으로 검색을 실행시킬 것입니다.
   };
   return (
     <>
@@ -94,7 +64,7 @@ const HireList = () => {
           <SearchDivder>
             <Section1>
               <SearchDivder1>
-                <SelectBox value={location} onChange={(e) => setLocation(e.target.value)}>
+                <SelectBox value={patAddress} onChange={(e) => setPatAddress(e.target.value)}>
                   <option value="">지역</option>
                   <option value="서울">서울</option>
                   <option value="부산">부산</option>
@@ -130,10 +100,10 @@ const HireList = () => {
                     <input
                       type="radio"
                       id="male"
-                      name="gender"
+                      name="patGender"
                       value="male"
-                      checked={gender === 'male'}
-                      onChange={() => setGender('male')}
+                      checked={patGender === 'M'}
+                      onChange={() => setPatGender('M')}
                     />
                     <label htmlFor="male">남성</label>
                   </RadioWrapper>
@@ -142,12 +112,12 @@ const HireList = () => {
                     <input
                       type="radio"
                       id="female"
-                      name="gender"
-                      value="female"
-                      checked={gender === 'female'}
-                      onChange={() => setGender('female')}
+                      name="patGender"
+                      value="F"
+                      checked={patGender === 'F'}
+                      onChange={() => setPatGender('F')}
                     />
-                    <label htmlFor="female">여성</label>
+                    <label htmlFor="F">여성</label>
                   </RadioWrapper>
                   <RadioWrapper>
                     <input
@@ -155,8 +125,8 @@ const HireList = () => {
                       id="anyGender"
                       name="gender"
                       value="" // 성별 무관을 위해 빈 문자열로 설정
-                      checked={gender === ''}
-                      onChange={() => setGender('')}
+                      checked={patGender === ''}
+                      onChange={() => setPatGender('')}
                     />
                     <label htmlFor="anyGender">성별 무관</label>
                   </RadioWrapper>
@@ -187,23 +157,23 @@ const HireList = () => {
       ) : (
         <HireListSection>
           {hireLists.map((hire) => (
-            <HireListCard key={hire.hiring_no} to={'/hireDetail'}>
+            <HireListCard key={hire.hiringNo} to={`/hireDetail/${hire.hiringNo}`}>
               <CardHeader>
-                <ProfileImage src={hire.profile_image || profileImage} alt="프로필" />
+                <ProfileImage src={hire.profileImage || profileImage} alt="프로필" />
                 <HeaderContent>
                   <Divder>
                     <UserInfo>
-                      <UserName>{hire.pat_name}</UserName>
+                      <UserName>{hire.patName}</UserName>
                       <UserAge>
-                        나이 {hire.pat_age}세(
-                        {hire.pat_gender === 'male' ? '남' : hire.pat_gender === 'female' ? '여' : ''})
+                        나이 {hire.patAge}세(
+                        {hire.patGender === 'M' ? '남' : hire.patGender === 'F' ? '여' : ''})
                       </UserAge>
                     </UserInfo>
-                    <CareContent>{hire.title}</CareContent>
+                    <CareContent>{hire.hiringTitle}</CareContent>
                     <div></div>
                   </Divder>
                   <DateInfo>
-                    {hire.start_date} ~ {hire.end_date}
+                    {hire.startDate} ~ {hire.endDate}
                   </DateInfo>
                 </HeaderContent>
               </CardHeader>
@@ -211,13 +181,13 @@ const HireList = () => {
                 <LocationWage>
                   <LocationText>
                     <GrayText>지역 </GrayText>
-                    {hire.pat_address}
+                    {hire.patAddress}
                   </LocationText>
                   <AccuontText>
                     <GrayText>시급</GrayText> <BoldAccount>{hire.account}원</BoldAccount>
                   </AccuontText>
                 </LocationWage>
-                {hire.care_status && <AccommodationInfo>숙식 제공 가능</AccommodationInfo>}
+                {hire.careStatus && <AccommodationInfo>숙식 제공 가능</AccommodationInfo>}
               </CardFooter>
             </HireListCard>
           ))}

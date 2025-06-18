@@ -6,7 +6,6 @@ import theme from './styles/theme';
 import Layout from './components/Layout';
 import { ToastContainer } from 'react-toastify';
 import CommunityBoard from './pages/CommunityBoard';
-import ReviewModal from './pages/ReviewModal';
 import SignUp from './pages/SignUp';
 import MyProfile from './pages/MyProfile';
 import Login from './pages/Login';
@@ -31,6 +30,7 @@ import { useEffect } from 'react';
 import ReportMain from './pages/ReportMain';
 import CreateCommuBoardForm from './pages/CreateCommuBoardForm';
 import UpdateCommuBoardForm from './pages/UpdateCommuBoardForm';
+import ReviewModal from './components/ReviewModal';
 
 function AppRoutes() {
   const navigate = useNavigate();
@@ -72,7 +72,7 @@ function AppRoutes() {
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<SignUp />} />
           <Route path="/myprofile" element={<MyProfile />} />
-          <Route path="/hireDetail/hiringNo" element={<HireDetail />} />
+          <Route path="/hireDetail/:hiringNo" element={<HireDetail />} />
           <Route path="/resumeDetail" element={<ResumeDetail />} />
           <Route path="/report/:patNo" element={<ReportMain />} />
           <Route path="/report/:patNo/detail/:reportNo" element={<ReportDetail />} />

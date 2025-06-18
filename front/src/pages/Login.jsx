@@ -18,6 +18,7 @@ import { media } from '../styles/MediaQueries';
 const Login = () => {
   const { register, handleSubmit, errors, onSubmit, isLoading } = useLoginForm();
   const navigate = useNavigate();
+
   return (
     <AuthContainer>
       <LoginSection>
@@ -29,32 +30,32 @@ const Login = () => {
         <LoginInputContainer>
           <form onSubmit={handleSubmit(onSubmit)}>
             <InputGroup>
-              <LoginLabel htmlFor="user_id">아이디</LoginLabel>
+              <LoginLabel htmlFor="userId">아이디</LoginLabel>
               <InputWrapper>
                 <Icon src="/src/assets/icons/icon_아이디.png" alt="" />
                 <LoginInput
-                  id="user_id"
-                  type="text"   
+                  id="userId"
+                  type="text"
                   placeholder="아이디를 입력해주세요"
-                  {...register('user_id')}
-                  $error={errors.user_id}
+                  {...register('userId')}
+                  $error={errors.userId}
                 />
               </InputWrapper>
-              {errors.user_id && <ErrorMessage>{errors.user_id.message}</ErrorMessage>}
+              {errors.userId && <ErrorMessage>{errors.userId.message}</ErrorMessage>}
             </InputGroup>
             <InputGroup>
-              <LoginLabel htmlFor="user_pwd">비밀번호</LoginLabel>
+              <LoginLabel htmlFor="userPwd">비밀번호</LoginLabel>
               <InputWrapper>
                 <Icon src="/src/assets/icons/icon_비밀번호.png" alt="" />
                 <LoginInput
-                  id="user_pwd"
+                  id="userPwd"
                   type="password"
                   placeholder="비밀번호를 입력해주세요"
-                  {...register('user_pwd')}
-                  $error={errors.user_pwd}
+                  {...register('userPwd')}
+                  $error={errors.userPwd}
                 />
               </InputWrapper>
-              {errors.user_pwd && <ErrorMessage>{errors.user_pwd.message}</ErrorMessage>}
+              {errors.userPwd && <ErrorMessage>{errors.userPwd.message}</ErrorMessage>}
             </InputGroup>
             <LoginButtonGroup>
               <Button type="submit" disabled={isLoading}>

@@ -7,7 +7,7 @@ import { useNavigate } from 'react-router-dom';
 
 //회원가입 폼의 유효성 검사 스키마
 const signUpSchema = yup.object().shape({
-  username: yup
+  userName: yup
     .string()
     .min(2, '사용자 이름은 2자 이상...')
     .max(20, '사용자 이름은 20자 이하...')
@@ -38,8 +38,8 @@ export const useUpdateForm = () => {
 
       //회원 수정 API호출
       await userService.updateUserProfile({
-        userid: data.userid,
-        username: data.username,
+        userId: data.userId,
+        userName: data.userName,
         age: data.age,
         gender: data.gender,
         phone: data.phone,

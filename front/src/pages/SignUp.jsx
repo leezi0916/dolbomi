@@ -92,42 +92,42 @@ const SignUp = () => {
             <Title>회원가입</Title>
             <InputContainer1>
               <InputGroup>
-                <Label htmlFor="user_id">아이디</Label>
+                <Label htmlFor="userId">아이디</Label>
                 <Row>
                   <Inputs
                     type="text"
-                    id="user_id"
+                    id="userId"
                     placeholder="아이디를 입력해주세요"
-                    {...register('user_id')}
-                    $error={errors.user_id}
+                    {...register('userId')}
+                    $error={errors.userId}
                   />
 
                   <CheckDuplicateButton onClick={handleClick}>중복확인</CheckDuplicateButton>
                 </Row>
-                {errors.user_id && <ErrorMessage>{errors.user_id.message}</ErrorMessage>}
+                {errors.userId && <ErrorMessage>{errors.userId.message}</ErrorMessage>}
               </InputGroup>
 
               <InputGroup>
-                <Label htmlFor="user_pwd">비밀번호</Label>
+                <Label htmlFor="userPwd">비밀번호</Label>
                 <Input
-                  id="user_pwd"
+                  id="userPwd"
                   type="password"
                   placeholder="비밀번호를 입력해주세요"
-                  {...register('user_pwd')}
-                  $error={errors.user_pwd}
+                  {...register('userPwd')}
+                  $error={errors.userPwd}
                 />
-                {errors.user_pwd && <ErrorMessage>{errors.user_pwd.message}</ErrorMessage>}
+                {errors.userPwd && <ErrorMessage>{errors.userPwd.message}</ErrorMessage>}
               </InputGroup>
               <InputGroup>
-                <Label htmlFor="user_name">이름</Label>
+                <Label htmlFor="userName">이름</Label>
                 <Input
-                  id="user_name"
+                  id="userName"
                   type="text"
                   placeholder="이름을 입력해주세요"
-                  {...register('user_name')}
-                  $error={errors.user_name}
+                  {...register('userName')}
+                  $error={errors.userName}
                 />
-                {errors.user_name && <ErrorMessage>{errors.user_name.message}</ErrorMessage>}
+                {errors.userName && <ErrorMessage>{errors.userName.message}</ErrorMessage>}
               </InputGroup>
               <InputGroup>
                 <Label htmlFor="age">나이</Label>

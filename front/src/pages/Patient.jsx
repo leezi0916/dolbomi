@@ -23,7 +23,6 @@ const Patient = () => {
       }
 
       try {
-       
         const userInfo = await userService.getUserProfile(user.user_id);
         setUserInfo(userInfo[0]);
 
@@ -35,7 +34,7 @@ const Patient = () => {
       }
     };
     fetchAll();
-  }, [user]);
+  }, []);
 
   return (
     <>
@@ -49,7 +48,7 @@ const Patient = () => {
 
         <CardWrap>
           {userPatients?.map((pat) => (
-            <Card key={pat.id}>
+            <Card key={pat.patNo}>
               <ProfileDiv>
                 <Img src={pat.profileImage} alt="" />
                 <div>
@@ -67,10 +66,10 @@ const Patient = () => {
               </ProfileDiv>
 
               <ButtonDiv>
-                <SubmitButton1>
-                  <ButtonText onClick={() => navigate(`/guardian/patient/${pat.id}`)}>관리</ButtonText>
+                <SubmitButton1 onClick={() => navigate(`/guardian/patient/${pat.patNo}`)}>
+                  <ButtonText>관리</ButtonText>
                 </SubmitButton1>
-                <SubmitButton1>
+                <SubmitButton1 onClick={() => navigate(`/report/${pat.id}`, 1)}>
                   <ButtonText>일지</ButtonText>
                 </SubmitButton1>
               </ButtonDiv>

@@ -1,18 +1,17 @@
-import { useForm } from 'react-hook-form';
-import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { userService } from '../api/users';
 import { toast } from 'react-toastify';
+import { useState } from 'react';
 
 // 유효성 스키마
 const updateSchema = yup.object().shape({
-  user_name: yup
+  userName: yup
     .string()
     .required('이름을 입력하세요.')
     .matches(/^[가-힣]+$/, '이름은 한글만 입력 가능합니다.')
     .max(4, '이름은 최대 4자까지만 입력 가능합니다.'),
 
-  user_pwd: yup
+  userPwd: yup
     .string()
     .required('비밀번호를 입력하세요.')
     .matches(/^(?=.*[a-zA-Z]).{5,}$/, '비밀번호는 영문자를 포함해 5자 이상이어야 합니다.'),
@@ -41,71 +40,53 @@ const updateSchema = yup.object().shape({
   email: yup.string().email('유효한 이메일 주소를 입력하세요.').required('이메일을 입력해주세요.'),
 });
 
-export const useUserUpdateForm = ({ defaultValues, defaultLicenses, onSuccess }) => {
-  const {
-    register,
-    handleSubmit,
-    formState: { errors, isSubmitting },
-    watch,
-    setValue,
-  } = useForm({
-    resolver: yupResolver(updateSchema),
-    mode: 'onChange',
-    defaultValues,
-  });
+const useUserUpdateForm = ({ profile }) => {
+  const [updating, setUpdating] = useState(false);
 
-  // 배열 비교 유틸 함수
-  const isLicenseChanged = (a = [], b = []) => {
-    if (a.length !== b.length) return true;
-    return a.some((item, i) => {
-      return (
-        item.license_name !== b[i]?.license_name ||
-        item.license_publisher !== b[i]?.license_publisher ||
-        item.license_date !== b[i]?.license_date
-      );
-    });
-  };
-
-  const onSubmit = async (formData) => {
-    const changedFields = {};
-
-    // 필드 값 비교
-    for (const key in formData) {
-      if (formData[key] !== defaultValues[key]) {
-        changedFields[key] = formData[key];
-      }
-    }
-
-    // 라이선스 비교
-    const currentLicenses = watch('licenses') || [];
-    if (isLicenseChanged(currentLicenses, defaultLicenses)) {
-      changedFields.licenses = currentLicenses;
-    }
-
-    if (Object.keys(changedFields).length === 0) {
-      toast.info('변경된 내용이 없습니다.');
-      return;
-    }
-
+  const validateAndSubmit = async (formData, licenseList) => {
     try {
-      await userService.updateUserProfile({
-        userId: defaultValues.userId,
+      // 변경된 값만 필터링
+      const changedFields = Object.entries(formData).reduce((acc, [key, value]) => {
+        if (value !== profile[key]) {
+          acc[key] = value;
+        }
+        return acc;
+      }, {});
+
+      // 자격증도 변경되었는지 체크
+      const licensesChanged = JSON.stringify(profile.licenses || []) !== JSON.stringify(licenseList);
+
+      if (Object.keys(changedFields).length === 0 && !licensesChanged) {
+        toast.info('변경된 정보가 없습니다.');
+        return;
+      }
+
+      // 유효성 검사
+      await updateSchema.validate(formData, { abortEarly: false });
+
+      setUpdating(true);
+
+      const updatedData = {
         ...changedFields,
-      });
+        ...(licensesChanged ? { licenses: licenseList } : {}),
+      };
+
+      await userService.updateUserProfile(profile.userId, updatedData);
+
       toast.success('회원정보가 성공적으로 수정되었습니다.');
-      onSuccess?.(); // 성공 콜백
-    } catch (error) {
-      toast.error('회원정보 수정 실패');
-      console.error('Update error:', error);
+    } catch (err) {
+      if (err.name === 'ValidationError') {
+        err.inner.forEach((e) => toast.error(e.message));
+      } else {
+        toast.error('회원정보 수정 중 문제가 발생했습니다.');
+        console.error(err);
+      }
+    } finally {
+      setUpdating(false);
     }
   };
 
-  return {
-    register,
-    handleSubmit: handleSubmit(onSubmit),
-    errors,
-    isSubmitting,
-    setValue,
-    watch,
-  };
+  return { validateAndSubmit, updating };
 };
+
+export default useUserUpdateForm;

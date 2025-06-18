@@ -9,6 +9,7 @@ import { useNavigate } from 'react-router-dom';
 import useUserStatusStore from '../store/userStatusStore';
 const Header = () => {
   const { user, isAuthenticated } = useUserStore();
+
   const { userStatus, setUserStatus } = useUserStatusStore();
 
   const [isHovering, setIsHovering] = useState(false);
@@ -37,7 +38,7 @@ const Header = () => {
         <MobileMenu>
           {isAuthenticated ? (
             <UserProfile>
-              <UserName> {user?.user_name}님</UserName>
+              <UserName> {user?.userName}님</UserName>
             </UserProfile>
           ) : (
             <>
@@ -57,9 +58,9 @@ const Header = () => {
         {/* pc환경에서의 nav */}
         <DesktopNav>
           {userStatus ? (
-            <NavItem to="/caregiver/hirelist">간병사 모집</NavItem>
+            <NavItem to="/guardian/caregiverlist">간병사 모집</NavItem>
           ) : (
-            <NavItem to="guardian/caregiverlist">돌봄대상자 모집</NavItem>
+            <NavItem to="/caregiver/hirelist">돌봄대상자 모집</NavItem>
           )}
 
           <NavItem to="/community/free">소통</NavItem>
@@ -92,7 +93,7 @@ const Header = () => {
 
           {isAuthenticated ? (
             <NavItem onMouseEnter={() => setIsHovering(true)} style={{ cursor: 'pointer', padding: '5px' }}>
-              {user?.user_name}님
+              {user?.userName} 님
             </NavItem>
           ) : (
             <>

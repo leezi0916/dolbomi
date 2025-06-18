@@ -1,73 +1,43 @@
 import React, { useEffect, useState } from 'react';
 import { Container, Section } from '../styles/common/Container';
 import styled from 'styled-components';
-
-// import { toast } from 'react-toastify';
 import profileImage from '../assets/images/pat.png'; // 프로필 이미지 경로
-
 import { media } from '../styles/MediaQueries';
-import { hireService } from '../api/hires';
 import SearchBar from '../components/SearchBar';
 import { IoCheckmarkOutline } from 'react-icons/io5';
 import { ClipLoader } from 'react-spinners';
+import { jobSeekingService } from '../api/jobSeeking';
+
 const CaregiverList = () => {
-  const [hireLists, setHireLists] = useState([]);
+  const [caregiverLists, setCaregiverLists] = useState([]);
   const [loading, setLoading] = useState(false); // 초기 false
   const [error, setError] = useState(null);
-  const [location, setLocation] = useState('');
+  const [address, setAddress] = useState('');
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
   const [gender, setGender] = useState('');
   const [account, setAccount] = useState('');
-  const [searchKeyword, setSearchKeyword] = useState('');
   const [careStatus, setCareStatus] = useState(false);
-  //   const [hasCertificate, setHasCertificate] = useState(false); // 관련 자격증
-  //   const [isResidentCaregiver, setIsResidentCaregiver] = useState(false); // 상주 간병인
-  //   const [sortByRating, setSortByRating] = useState(false); // 높은 평점 순
+
+  //검색창
+  const [keyword, setKeyword] = useState('');
+
   // 1. 컴포넌트가 처음 마운트될 때 전체 리스트를 불러옵니다.
   useEffect(() => {
     loadHireLists(false); // 초기 로딩 시에는 필터 없이 전체 데이터 요청
   }, []);
 
-  // 2. 필터 조건 (location, startDate, endDate, gender, account, searchKeyword, careStatus) 중
-  //    어떤 것이라도 변경되면 이 useEffect가 실행되어 새로운 검색을 트리거합니다.
-  useEffect(() => {
-    // 모든 필터가 비어있는지 확인하여 불필요한 검색을 방지합니다.
-    const hasActiveFilters = location || startDate || endDate || gender || account || searchKeyword || careStatus;
-
-    if (hasActiveFilters) {
-      // 하나라도 활성화된 필터가 있으면 검색 조건을 포함하여 데이터를 다시 불러옵니다.
-      loadHireLists(true);
-    } else {
-      // 모든 필터가 비어있으면 (초기 상태이거나 필터가 모두 해제된 경우)
-      // 필터 없이 전체 리스트를 다시 불러옵니다.
-      loadHireLists(false);
-    }
-  }, [location, startDate, endDate, gender, account, searchKeyword, careStatus]); // 의존성 배열
-  // 돌봄 대상자 리스트를 불러오는 함수
-  const loadHireLists = async (isSearch = false) => {
+  // 간병사모집 리스트를 불러오는 함수
+  const loadHireLists = async () => {
     try {
       setLoading(true);
       setError(null);
 
-      const params = {};
-
-      // isSearch가 true일 경우에만 필터를 params에 추가합니다.
-      if (isSearch) {
-        if (location) params.location = location;
-        if (startDate) params.startDate = startDate;
-        if (endDate) params.endDate = endDate;
-        if (gender) params.gender = gender;
-        if (account) params.account = account;
-        if (searchKeyword) params.keyword = searchKeyword; // SearchBar에서 넘어온 키워드 사용
-        if (careStatus) params.care_status = true;
-      }
-
-      const hireList = await hireService.getHireLists(params);
-      setHireLists(hireList);
+      const caregiverList = await jobSeekingService.getResumeList();
+      setCaregiverLists(caregiverList);
     } catch (error) {
       console.error(error);
-      const errorMessage = '돌봄 대상자 구인 리스트를 가져오지 못했습니다.';
+      const errorMessage = '간병사모집 리스트를 가져오지 못했습니다.';
       setError(errorMessage);
     } finally {
       setLoading(false);
@@ -77,7 +47,7 @@ const CaregiverList = () => {
   // SearchBar에서 검색 버튼을 눌렀을 때 호출되는 함수
   const handleSearchSubmit = (keyword) => {
     // SearchBar로부터 받은 키워드를 searchKeyword 상태에 저장합니다.
-    setSearchKeyword(keyword);
+    setKeyword(keyword);
     // 이 상태 변경은 위에 있는 useEffect를 트리거하여 자동으로 검색을 실행시킬 것입니다.
   };
 
@@ -94,7 +64,7 @@ const CaregiverList = () => {
           <SearchDivder>
             <Section1>
               <SearchDivder1>
-                <SelectBox value={location} onChange={(e) => setLocation(e.target.value)}>
+                <SelectBox value={address} onChange={(e) => setAddress(e.target.value)}>
                   <option value="">지역</option>
                   <option value="서울">서울</option>
                   <option value="부산">부산</option>
@@ -132,8 +102,8 @@ const CaregiverList = () => {
                       id="male"
                       name="gender"
                       value="male"
-                      checked={gender === 'male'}
-                      onChange={() => setGender('male')}
+                      checked={gender === 'M'}
+                      onChange={() => setGender('M')}
                     />
                     <label htmlFor="male">남성</label>
                   </RadioWrapper>
@@ -144,8 +114,8 @@ const CaregiverList = () => {
                       id="female"
                       name="gender"
                       value="female"
-                      checked={gender === 'female'}
-                      onChange={() => setGender('female')}
+                      checked={gender === 'F'}
+                      onChange={() => setGender('F')}
                     />
                     <label htmlFor="female">여성</label>
                   </RadioWrapper>
@@ -200,39 +170,40 @@ const CaregiverList = () => {
         <ErrorMessage>{error}</ErrorMessage>
       ) : (
         <HireListSection>
-          {hireLists.map((hire) => (
-            <HireListCard key={hire.hiring_no}>
+          {caregiverLists.map((resume) => (
+            <HireListCard key={resume.resumeNo}>
               <CardHeader>
-                <ProfileImage src={hire.profile_image || profileImage} alt="프로필" />
+                <ProfileImage src={resume.profileImage || profileImage} alt="프로필" />
                 <HeaderContent>
                   <Divder>
                     <UserInfo>
                       <UserName>
-                        {hire.pat_name} <GrayText>님</GrayText>
+                        {resume.userName} <GrayText>님</GrayText>
                       </UserName>
                       <UserAge>
-                        <GrayText>나이</GrayText> {hire.pat_age}세(
-                        {hire.pat_gender === 'male' ? '남' : hire.pat_gender === 'female' ? '여' : ''})
+                        <GrayText>나이</GrayText> {resume.age}세(
+                        {resume.gender === 'M' ? '남' : resume.gender === 'F' ? '여' : ''})
                       </UserAge>
                     </UserInfo>
-                    <CareContent>{hire.title}</CareContent>
+                    <CareContent>{resume.resumeTitle}</CareContent>
                     <div></div>
                   </Divder>
-                  {hire.care_status && <AccommodationInfo>평점 4.0</AccommodationInfo>}
+
+                  {resume.score && <AccommodationInfo>평점 {resume.score}</AccommodationInfo>}
                 </HeaderContent>
               </CardHeader>
               <CardFooter>
                 <LocationWage>
                   <LocationText>
-                    <GrayText>지역</GrayText> {hire.pat_address}
+                    <GrayText>지역</GrayText> {resume.address}
                   </LocationText>
                   <AccuontText>
-                    <GrayText>시급</GrayText> <BoldAccount>{hire.account}원</BoldAccount>
+                    <GrayText>시급</GrayText> <BoldAccount>{resume.account}원</BoldAccount>
                   </AccuontText>
                 </LocationWage>
                 <USERINFO1>
-                  {hire.care_status && <AccommodationInfo>자격증 보유</AccommodationInfo>}
-                  {hire.care_status ? (
+                  {resume.licesnse && <AccommodationInfo>자격증 보유</AccommodationInfo>}
+                  {resume.careStatus ? (
                     <AccommodationInfo>상주 간병 O</AccommodationInfo>
                   ) : (
                     <AccommodationInfo>상주 간병 X</AccommodationInfo>

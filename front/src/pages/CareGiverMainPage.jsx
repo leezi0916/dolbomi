@@ -10,7 +10,7 @@ import { toast } from 'react-toastify';
 
 const CareGiverMainPage = () => {
   const [jobOpeningList, setJobOpeningList] = useState([]);
-  const [RoomAndBoardAvailabler, setRoomAndBoardAvailabler] = useState([]);
+  const [RoomAndBoardList, setRoomAndBoardList] = useState([]);
 
   useEffect(() => {
     const loadJobOpeningList = async () => {
@@ -18,12 +18,10 @@ const CareGiverMainPage = () => {
         const list = await hiringService.getJobOpeningList();
         setJobOpeningList(list);
 
-        // 숙식 제공자
-        setRoomAndBoardAvailabler(jobOpeningList.filter((h) => h.care_status === 'O'));
+        // list를 기반으로 바로 필터링
+        setRoomAndBoardList(list.filter((h) => h.careStatus === 'Y'));
       } catch (error) {
-        console.error(error);
-        const errorMessage = '구인 목록을 불러오는데 실패했습니다.';
-        toast.error(errorMessage);
+        toast.error('구인 목록을 불러오는데 실패했습니다.');
       }
     };
 
@@ -71,20 +69,20 @@ const CareGiverMainPage = () => {
         <HiringCardSection>
           <GridContainer>
             {jobOpeningList.map((user) => (
-              <Card key={user.job_opening_no}>
+              <Card key={user.hiringNo}>
                 <CardTopContent>
-                  <CardImage src={user.profile_image} />
+                  <CardImage src={user.profileImage} />
                   <CardTextGroup>
-                    <CardTitle>{maskName(user.user_name)} 님</CardTitle>
+                    <CardTitle>{maskName(user.patName)} 님</CardTitle>
                     <CardText>
-                      나이: {user.age}세({user.gender == 'M' ? '남' : '여'})
+                      나이: {user.patAge}세({user.patGender == 'M' ? '남' : '여'})
                     </CardText>
-                    <CardText>시급: {user.pay}원</CardText>
+                    <CardText>시급: {user.account}원</CardText>
                   </CardTextGroup>
                 </CardTopContent>
                 <CardBottomContent>
                   <CardRegion>
-                    <span>지역</span> {user.address}
+                    <span>지역</span> {user.patAddress}
                   </CardRegion>
                   <CardButton>상세보기</CardButton>
                 </CardBottomContent>
@@ -101,21 +99,21 @@ const CareGiverMainPage = () => {
 
         <RoomAndBoardCardSection>
           <GridContainer>
-            {RoomAndBoardAvailabler.map((user) => (
-              <Card key={user.job_opening_no}>
+            {RoomAndBoardList.map((user) => (
+              <Card key={user.hiringNo}>
                 <CardTopContent>
-                  <CardImage src={user.profile_image} />
+                  <CardImage src={user.profileImage} />
                   <CardTextGroup>
-                    <CardTitle>{maskName(user.user_name)} 님</CardTitle>
+                    <CardTitle>{maskName(user.patName)} 님</CardTitle>
                     <CardText>
-                      나이: {user.age}세({user.gender == 'M' ? '남' : '여'})
+                      나이: {user.patAge}세({user.patGender == 'M' ? '남' : '여'})
                     </CardText>
-                    <CardText>시급: {user.pay}원</CardText>
+                    <CardText>시급: {user.account}원</CardText>
                   </CardTextGroup>
                 </CardTopContent>
                 <CardBottomContent>
                   <CardRegion>
-                    <span>지역</span> {user.address}
+                    <span>지역</span> {user.patAddress}
                   </CardRegion>
                   <CardButton>상세보기</CardButton>
                 </CardBottomContent>
@@ -129,6 +127,8 @@ const CareGiverMainPage = () => {
 };
 
 export default CareGiverMainPage;
+
+// ************* 상단(베너) 섹션 *************
 
 // 홈 배너 섹션 전체 컨테이너
 export const HomeBannerSection = styled(Section)`
@@ -240,6 +240,8 @@ export const ContactLine = styled(MessageLine)`
     font-size: ${({ theme }) => theme.fontSizes['2xl']};
   `}
 `;
+
+// ************* 중단(구인 목록) 섹션 *************
 
 //  구인 관련 섹션
 export const HiringSection = styled(HomeBannerSection)`
@@ -365,6 +367,8 @@ export const CardButton = styled.button`
   border-radius: ${({ theme }) => theme.borderRadius.md};
   cursor: pointer;
 `;
+
+// ************* 하단(숙식 제공 돌봄 대상자) 섹션 *************
 
 export const RoomAndBoardSection = styled(HiringSection)``;
 

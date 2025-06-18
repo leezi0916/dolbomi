@@ -5,8 +5,9 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
-import { resumeService } from '../api/resume';
+
 import { userService } from '../api/users';
+import { jobSeekingService } from '../api/jobSeeking';
 
 // 유효성 스키마
 const resumeSchema = yup.object().shape({
@@ -21,7 +22,7 @@ export const useResumeForm = () => {
 
   const navigate = useNavigate();
 
-  const [licenseList, setLicenseList] = useState([{ license_name: '', license_publisher: '', license_date: '' }]);
+  const [licenseList, setLicenseList] = useState([{ licenseName: '', licensPublisher: '', licenseDate: '' }]);
 
   const {
     register,
@@ -44,7 +45,7 @@ export const useResumeForm = () => {
     try {
       const parsedState = JSON.parse(storedData);
       const user = parsedState.state.user;
-      const userId = user?.user_id;
+      const userId = user?.userId;
 
       console.log('저장된 유저 ID:', userId);
 
@@ -78,7 +79,7 @@ export const useResumeForm = () => {
   };
 
   const addLicense = () => {
-    setLicenseList([...licenseList, { license_name: '', license_publisher: '', license_date: '' }]);
+    setLicenseList([...licenseList, { licenseName: '', licensPublisher: '', licenseDate: '' }]);
   };
 
   const removeLicense = (index) => {
@@ -90,12 +91,12 @@ export const useResumeForm = () => {
     try {
       const payload = {
         ...formData,
-        user_no: user.user_no,
+        userNo: user.userNo,
         licenses: licenseList,
       };
       console.log('전송 데이터:', payload);
 
-      await resumeService.createResume(payload);
+      await jobSeekingService.createResume(payload);
       toast.success('이력서가 저장되었습니다!');
       navigate('/');
     } catch (error) {
