@@ -472,7 +472,9 @@
       "pat_content": "당뇨합병증",
       "status": "Y",
       "phone": "01022222222",
-      "tags": ["당뇨"]
+      "tags": [
+        "당뇨"
+      ]
     },
     {
       "id": "3",
@@ -516,7 +518,9 @@
       "pat_weight": 65.4,
       "pat_content": "거동이 불편함",
       "phone": "01011111111",
-      "tags": ["골절"]
+      "tags": [
+        "골절"
+      ]
     },
     {
       "id": "6",
@@ -530,21 +534,26 @@
       "pat_weight": "65",
       "pat_content": "",
       "phone": "01022222222",
-      "tags": ["당뇨"]
+      "tags": [
+        "당뇨"
+      ]
     },
     {
       "id": "7",
       "pat_no": 7,
       "guardian_no": 5,
-      "pat_name": "김겅강",
+      "pat_name": "강환자",
       "pat_age": 70,
       "pat_address": "서울시 강남구",
-      "pat_gender": "M",
+      "pat_gender": "F",
       "pat_height": "160",
       "pat_weight": "40",
       "pat_content": "",
       "phone": "01022222222",
-      "tags": ["당뇨", "고혈압"]
+      "tags": [
+        "당뇨",
+        "고혈압"
+      ]
     }
   ],
   "report": [

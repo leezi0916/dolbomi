@@ -13,7 +13,7 @@ const Patient = () => {
   const { user } = useUserStore();
   const [userPatients, setUserpatients] = useState();
   const navigate = useNavigate();
-  const [loginUser, setUserInfo] = useState();
+
 
   useEffect(() => {
     const fetchAll = async () => {
@@ -23,10 +23,8 @@ const Patient = () => {
       }
 
       try {
-        const userInfo = await userService.getUserProfile(user.user_id);
-        setUserInfo(userInfo[0]);
 
-        const patientsList = await patientService.getPatients(userInfo[0].user_no);
+        const patientsList = await patientService.getPatients(user.user_no);
 
         setUserpatients(patientsList);
       } catch (err) {
