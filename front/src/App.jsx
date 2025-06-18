@@ -30,6 +30,7 @@ import { useEffect } from 'react';
 // import useUserStore from './store/userStore';
 import ReportMain from './pages/ReportMain';
 import CreateCommuBoardForm from './pages/CreateCommuBoardForm';
+import UpdateCommuBoardForm from './pages/UpdateCommuBoardForm';
 
 function AppRoutes() {
   const navigate = useNavigate();
@@ -64,6 +65,7 @@ function AppRoutes() {
           <Route path="/community/free/create" element={<CreateCommuBoardForm />} />
           <Route path="/community/free" element={<CommunityBoard />} />
           <Route path="/community/free/detail/:no" element={<CommunityDetail />} />
+          <Route path="/community/free/update/:no" element={<UpdateCommuBoardForm />} />
           <Route path="/community/question" element={<CommunityQuestion />} />
           <Route path="/community/notice" element={<NoticeBoard />} />
 

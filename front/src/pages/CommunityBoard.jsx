@@ -4,8 +4,11 @@ import { commuService } from '../api/community';
 import { toast } from 'react-toastify';
 import { ClipLoader } from 'react-spinners';
 import styled from 'styled-components';
+import useUserStore from '../store/userStore';
 
 const CommunityBoard = () => {
+  const userId = useUserStore((state) => state.user?.user_id);
+
   const [error, setError] = useState(null);
   const [communityList, setCommunityList] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -54,7 +57,7 @@ const CommunityBoard = () => {
           <Right>
             <Input type="text" />
             <Input type="text" />
-            <Btn to="/community/free/create">글쓰기</Btn>
+            {userId ? <Btn to="/community/free/create">글쓰기</Btn> : null}
           </Right>
         </BoardTop>
         <BoardItemTop>
