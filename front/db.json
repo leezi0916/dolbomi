@@ -444,9 +444,9 @@
   ],
   "patient": [
     {
-      "id": "1",
+      "id": 1,
+      "guardian_no": 1,
       "pat_no": 1,
-      "guardian_no": 5,
       "profile_image": "/src/assets/profileImg/img_환자소.png",
       "pat_name": "김건희",
       "pat_address": "서울시 강남구",
@@ -472,9 +472,7 @@
       "pat_content": "당뇨합병증",
       "status": "Y",
       "phone": "01022222222",
-      "tags": [
-        "당뇨"
-      ]
+      "tags": ["당뇨"]
     },
     {
       "id": "3",
@@ -518,9 +516,7 @@
       "pat_weight": 65.4,
       "pat_content": "거동이 불편함",
       "phone": "01011111111",
-      "tags": [
-        "골절"
-      ]
+      "tags": ["골절"]
     },
     {
       "id": "6",
@@ -534,9 +530,7 @@
       "pat_weight": "65",
       "pat_content": "",
       "phone": "01022222222",
-      "tags": [
-        "당뇨"
-      ]
+      "tags": ["당뇨"]
     },
     {
       "id": "7",
@@ -550,10 +544,7 @@
       "pat_weight": "40",
       "pat_content": "",
       "phone": "01022222222",
-      "tags": [
-        "당뇨",
-        "고혈압"
-      ]
+      "tags": ["당뇨", "고혈압"]
     }
   ],
   "report": [
@@ -562,7 +553,7 @@
       "care_giver_no": 1,
       "pat_no": 1,
       "report_title": "아아아아아아아아아아아아",
-      "report_content": "특이사항:\n오늘 아침 혈압이 다소 높음.",
+      "report_content": "1. 신체활동 수준:\n거의 없음\n\n2. 식사내용\n아침: 계란후라이, 흰밥, 김치\n점심: 돈까스, 밥, 김치\n저녁: 전복죽, 김치\n\n3. 약 복용 주의사항:\n하루 세끼 식후 30분뒤 복용\n\n특이사항:\n오늘 아침 혈압이 다소 높음.\n혼잣말을 자주함.\n감정이 우울해보임",
       "create_date": "2025-07-01",
       "update_date": "2025-07-01",
       "status": "Y",

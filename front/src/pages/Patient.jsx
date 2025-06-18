@@ -69,7 +69,7 @@ const Patient = () => {
                 <SubmitButton1 onClick={() => navigate(`/guardian/patient/${pat.patNo}`)}>
                   <ButtonText>관리</ButtonText>
                 </SubmitButton1>
-                <SubmitButton1>
+                <SubmitButton1 onClick={() => navigate(`/report/${pat.id}`, 1)}>
                   <ButtonText>일지</ButtonText>
                 </SubmitButton1>
               </ButtonDiv>

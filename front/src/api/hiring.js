@@ -26,7 +26,7 @@ export const hiringService = {
       const { data } = await api.get(API_ENDPOINTS.HIRING.DETAIL(id));
     
       return snakeToCamel(data[0]) ;
-    } catch (error) {
+ } catch (error) {
       if (error.response) {
         const message = error.response?.data?.message || '구인 리스트를 가져오는데에 실패했습니다.';
         throw new Error(message);
@@ -34,6 +34,5 @@ export const hiringService = {
 
       throw new Error('서버 통신 불량');
     }
-
-  }
+  },
 };
