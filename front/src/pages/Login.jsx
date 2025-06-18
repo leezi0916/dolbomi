@@ -34,7 +34,7 @@ const Login = () => {
                 <Icon src="/src/assets/icons/icon_아이디.png" alt="" />
                 <LoginInput
                   id="user_id"
-                  type="text"
+                  type="text"   
                   placeholder="아이디를 입력해주세요"
                   {...register('user_id')}
                   $error={errors.user_id}

@@ -35,7 +35,7 @@ const signUpSchema = yup.object().shape({
     .min(0, '0세 이상이어야 합니다.')
     .max(120, '120세 이하로 입력해주세요.'),
 
-  gender: yup.string().oneOf(['male', 'female'], '성별을 선택해주세요').required('성별은 필수입니다.'),
+  gender: yup.string().oneOf(['M', 'F'], '성별을 선택해주세요').required('성별은 필수입니다.'),
 
   phone: yup
     .string()
@@ -65,7 +65,7 @@ export const useSignUpForm = () => {
     mode: 'onChange',
     defaultValues: {
       // gender 필드의 초기값을 설정합니다.
-      gender: 'male', // 기본값을 'male'로 설정 (또는 원하는 값으로)
+      gender: 'M', // 기본값을 'male'로 설정 (또는 원하는 값으로)
       // 나머지 필드에 대한 기본값이 있다면 여기에 추가
     },
   });

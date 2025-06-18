@@ -8,8 +8,8 @@ import useUserStore from '../store/userStore';
 import { useNavigate } from 'react-router-dom';
 import useUserStatusStore from '../store/userStatusStore';
 const Header = () => {
-  const { user, isAuthenticated} = useUserStore();
-  const {userStatus, setUserStatus} = useUserStatusStore();
+  const { user, isAuthenticated } = useUserStore();
+  const { userStatus, setUserStatus } = useUserStatusStore();
 
   const [isHovering, setIsHovering] = useState(false);
   const logout = useUserStore((state) => state.logout);
@@ -57,10 +57,9 @@ const Header = () => {
         {/* pc환경에서의 nav */}
         <DesktopNav>
           {userStatus ? (
-            <NavItem to="/caregiverlist">간병사 모집</NavItem>
+            <NavItem to="/caregiver/hirelist">간병사 모집</NavItem>
           ) : (
-            <NavItem to="/hirelist">돌봄대상자 모집</NavItem>
-            
+            <NavItem to="guardian/caregiverlist">돌봄대상자 모집</NavItem>
           )}
 
           <NavItem to="/CommunityBoard">소통</NavItem>
@@ -71,10 +70,22 @@ const Header = () => {
           <img src="/src/assets/icons/icon_채팅알림.png" alt="" />
           <ToggleWrap>
             {/* 간병인은 true / 보호자는 false */}
-            <ToggleItem $userStatus={!userStatus} onClick={() => setUserStatus(false)}>
+            <ToggleItem
+              $userStatus={!userStatus}
+              onClick={() => {
+                setUserStatus(false); // 상태 설정
+                navigate('/caregiver'); // 페이지 이동
+              }}
+            >
               간병인
             </ToggleItem>
-            <ToggleItem $userStatus={userStatus} onClick={() => setUserStatus(true)}>
+            <ToggleItem
+              $userStatus={userStatus}
+              onClick={() => {
+                setUserStatus(true); // 상태 설정
+                navigate('/guardian'); // 페이지 이동
+              }}
+            >
               보호자
             </ToggleItem>
           </ToggleWrap>

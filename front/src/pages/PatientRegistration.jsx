@@ -1,4 +1,4 @@
-import React, { useEffect,useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { AuthContainer } from '../styles/Auth.styles';
 import {
   GridForm,
@@ -9,14 +9,14 @@ import {
   FromWrap,
   NotesTexttarea,
   SubmitBtn,
-  Img, NewTitle
+  Img,
+  NewTitle,
 } from '../styles/PatientRegistration';
 import { Label, Input, InputGroup } from '../styles/Auth.styles';
 import { usepatientRegistrationForm } from '../hooks/usePatientRegistrationForm';
 import useUserStore from '../store/userStore';
 import { useNavigate } from 'react-router-dom';
-import { patientService
- } from '../api/patient';
+import { patientService } from '../api/patient';
 import { toast } from 'react-toastify';
 import Tags from '../components/Tags';
 
@@ -31,11 +31,15 @@ const PatientRegistration = () => {
       alert('로그인 후 이용해주세요');
       // navigate('/guardian');
     }
-   
   }, [user]);
 
   // 'gender' 필드의 현재 값을 watch하여 라디오 버튼의 checked 상태를 제어합니다.
   const currentGender = watch('patGender');
+
+  const [tags, setTags] = useState([]);
+  useEffect(() => {
+    setValue('tags', tags);
+  }, [tags, setValue]);
 
 
  const [tags, setTags] = useState([]);
@@ -46,19 +50,30 @@ useEffect(() => {
 
 const onSubmit = async (data) => {
   try {
-    //환자수정 API호출
+
     await patientService.postNewPatient({
-    // 수정필요
-      guardian_no: user ? user.userid : '1',
-      pat_name: data.patName,
-      pat_age: data.patAge,
-      pat_address: data.patAddress,
-      pat_gender: data.patGender,
-      pat_height: data.patHeight,
-      pat_weight: data.patWeight,
-      pat_Content: data.patContent,
-      phone: data.phone,
-      tags : data.tags
+
+      // guardian_no: user ? user.userid : '1',
+      // pat_name: data.patName,
+      // pat_age: data.patAge,
+      // pat_address: data.patAddress,
+      // pat_gender: data.patGender,
+      // pat_height: data.patHeight,
+      // pat_weight: data.patWeight,
+      // pat_Content: data.patContent,
+      // phone: data.phone,
+      // tags : data.tags
+      // //
+      // guardianNo: user ? user.userid : '1',
+      // patName: data.patName,
+      // patAge: data.patAge,
+      // patAddress: data.patAddress,
+      // patGender: data.patGender,
+      // patHeight: data.patHeight,
+      // patWeight: data.patWeight,
+      // patContent: data.patContent,
+      // phone: data.phone,
+      // tags: data.tags,
     });
     toast.success('돌봄대상자 등록 완료!');
     navigate('/patient');
@@ -67,7 +82,7 @@ const onSubmit = async (data) => {
     console.error('돌본대상자 등록 에러 : ', error);
   }
 };
-  return (
+ return (
     <>
       <AuthContainer>
         <FromWrap>
@@ -135,7 +150,7 @@ const onSubmit = async (data) => {
             </GridInerContainer>
 
             <InputGroup>
-            <Tags tags={tags} setTags={setTags} {...register('tags')} />
+              <Tags tags={tags} setTags={setTags} {...register('tags')} />
             </InputGroup>
 
             <InputGroup>
