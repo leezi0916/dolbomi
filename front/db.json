@@ -203,9 +203,7 @@
   "users": [
     {
       "user_no": 1,
-
       "id": "ac77",
-
       "user_id": "admin",
       "user_pwd": "a1234",
       "user_name": "이지묵",
@@ -253,6 +251,7 @@
     },
     {
       "id": "1",
+      "user_no": 5,
       "user_id": "lee111",
       "user_pwd": "lee111",
       "user_name": "이인혜",
@@ -418,7 +417,7 @@
   "patient": [
     {
       "id": 1,
-      "guardian_no": "1",
+      "guardian_no": 5,
       "profile_image": "/src/assets/profileImg/img_환자소.png",
       "pat_name": "김건희",
       "pat_address": "서울시 강남구",
@@ -433,7 +432,7 @@
 
     {
       "id": 2,
-      "guardian_no": "1",
+      "guardian_no": 5,
       "profile_image": "/src/assets/profileImg/img_환자소.png",
       "pat_name": "김겅강",
       "pat_address": "서울시 강남구",
@@ -448,7 +447,7 @@
     },
     {
       "id": 3,
-      "guardian_no": "1",
+      "guardian_no": 1,
       "profile_image": "/src/assets/profileImg/img_환자소.png",
       "pat_name": "이건강",
       "pat_address": "서울시 강남구",
@@ -462,7 +461,7 @@
     },
     {
       "id": 4,
-      "guardian_no": "1",
+      "guardian_no": 1,
       "profile_image": "/src/assets/profileImg/img_환자소.png",
       "pat_name": "이환자",
       "pat_age": 60,
@@ -478,7 +477,7 @@
     },
     {
       "id": 5,
-      "guardian_no": "1",
+      "guardian_no": 1,
       "pat_name": "이환자",
       "pat_age": 70,
       "pat_address": "서울시 강남구 역삼",

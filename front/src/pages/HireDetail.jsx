@@ -41,7 +41,7 @@ const HireDetail = () => {
     };
     console.log(jobOpening[0].job_opening_no);
     getJobOpening();
-  }, [jobOpening]);
+  }, []);
 
   return (
     <HireRegistSection>
