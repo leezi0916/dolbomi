@@ -47,7 +47,7 @@ export const API_ENDPOINTS = {
 
   PATIENT: {
     BASE: '/patient',
-    DETAIL: (guardianNo) => `/patient?guardianNo=${guardianNo}`,
+    DETAIL: (guardianNo) => `/patient?guardian_no=${guardianNo}`,
     PATDETAIL: (patNo) => `/patient?id=${patNo}`,
     PUT: (patNo) => `/patient/${patNo}`,
     DELETE: (patNo) => `/patient/${patNo}`,
@@ -62,6 +62,6 @@ export const API_ENDPOINTS = {
     BASE: '/resume',
   },
   REPORT: {
-    BASE: (patNo) => `/report?patNo=${patNo}`,
+    BASE: (patNo) => `/report?pat_no=${patNo}`,
   },
 };

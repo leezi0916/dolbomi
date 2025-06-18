@@ -10,7 +10,7 @@ import { patientService } from '../api/patient';
 
 const ReportMain = () => {
   const { patNo } = useParams(); // URL의 :patNo 값 가져오기
-  const [pat, setpat] = useState({});
+  const [pat, setpat] = useState({}); //환자들
   const [allReport, setAllReport] = useState([]); // 처음 가져온 전체 일지 목록
   const [dateFilter, setDateFilter] = useState(''); // 날짜 필터
   const [authorFilter, setAuthorFilter] = useState(''); // 작성자 필터
