@@ -178,7 +178,7 @@
       "id": "extramin2",
       "name": "김유인",
       "title": "게임 추천합니다.",
-      "createDate": "2025-11-08",
+      "create_date": "2025-11-08",
       "count": "5"
     },
     {
@@ -186,7 +186,7 @@
       "id": "extramin1",
       "name": "김유하",
       "title": "테스트테스트.",
-      "createDate": "2025-11-09",
+      "create_date": "2025-11-09",
       "count": "4"
     }
   ],
