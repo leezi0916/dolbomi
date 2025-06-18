@@ -29,6 +29,7 @@ import CareGiverMainPage from './pages/CareGiverMainPage';
 import { useEffect } from 'react';
 // import useUserStore from './store/userStore';
 import ReportMain from './pages/ReportMain';
+import CreateCommuBoardForm from './pages/CreateCommuBoardForm';
 
 function AppRoutes() {
   const navigate = useNavigate();
