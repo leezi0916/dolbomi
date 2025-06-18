@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { Section } from '../styles/common/Container';
 import { ButtonText, SubmitButton } from '../styles/common/Button';
@@ -6,57 +6,44 @@ import { useParams } from 'react-router-dom';
 
 const ReportForm = () => {
   const { patNo } = useParams();
+  const [count, setCount] = useState(1);
 
   return (
     <Wrap>
       <MainTitle>진단 일지 등록 / 수정</MainTitle>
       <br />
-      <TopContainer>
-        <Top>
-          <Input placeholder="제목" />
-          <Name>환자명</Name>
-          <Name>{new Date().toISOString().slice(0, 10)}</Name>
-        </Top>
-      </TopContainer>
+      <form onSubmit={(e) => e.preventDefault()}>
+        <TopContainer>
+          <Top>
+            <Input placeholder="제목" />
+            <Name>환자명</Name>
+            <Name>{new Date().toISOString().slice(0, 10)}</Name>
+          </Top>
+        </TopContainer>
+        {Array.from({ length: count }).map((_, index) => (
+          <Container key={index}>
+            <Header>
+              <Contents onClick={() => close()}>
+                <img src="Union.png" alt="" />
+              </Contents>
+            </Header>
+            <Body>
+              <Input placeholder="소제목 : " />
+              <MainInput />
+            </Body>
+          </Container>
+        ))}
+      </form>
       <br />
-      <Container>
-        <Header>
-          <Contents>
-            <img src="Union.png" alt="" />
-          </Contents>
-        </Header>
-        <Body>
-          <Input placeholder="소제목 : " />
-          <MainInput />
-        </Body>
-      </Container>
-      <br />
-      <Container>
-        <Header>
-          <Contents onClick={() => close()}>
-            <img src="Union.png" alt="" />
-          </Contents>
-        </Header>
-        <Body>
-          <Input placeholder="소제목 : " />
-          <MainInput />
-        </Body>
-      </Container>
-      <AddBtn>
-        <ButtonText>추가</ButtonText>
+      <AddBtn onClick={() => setCount((prevCount) => prevCount + 1)}>
+        <ButtonText>➕</ButtonText>
       </AddBtn>
-
-      <br />
-      <br />
-      <br />
+      <br /> <br />
       <Line />
       <br />
       <Buttons>
         <Btn>
-          <ButtonText>삭제</ButtonText>
-        </Btn>
-        <Btn>
-          <ButtonText>등록</ButtonText>
+          <ButtonText type="submit">등록</ButtonText>
         </Btn>
       </Buttons>
     </Wrap>
@@ -87,6 +74,7 @@ const Container = styled(Section)`
   flex-direction: column;
   align-items: flex-start;
   padding: 0;
+  margin: 20px 0 20px 0;
 `;
 
 const Top = styled.div`
@@ -136,6 +124,7 @@ const MainInput = styled.input`
   height: 200px;
   padding: 10px 20px;
   margin: 10px 0;
+  text-align: start;
 `;
 
 const Body = styled.div`

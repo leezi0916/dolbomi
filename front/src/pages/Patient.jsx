@@ -23,7 +23,6 @@ const Patient = () => {
       }
 
       try {
-       
         const userInfo = await userService.getUserProfile(user.user_id);
         setUserInfo(userInfo[0]);
 
@@ -67,10 +66,10 @@ const Patient = () => {
               </ProfileDiv>
 
               <ButtonDiv>
-                <SubmitButton1>
-                  <ButtonText onClick={() => navigate(`/guardian/patient/${pat.id}`)}>관리</ButtonText>
+                <SubmitButton1 onClick={() => navigate(`/guardian/patient/${pat.id}`)}>
+                  <ButtonText>관리</ButtonText>
                 </SubmitButton1>
-                <SubmitButton1>
+                <SubmitButton1 onClick={() => navigate(`/report/${pat.id}`, 1)}>
                   <ButtonText>일지</ButtonText>
                 </SubmitButton1>
               </ButtonDiv>
