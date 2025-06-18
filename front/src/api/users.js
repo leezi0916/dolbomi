@@ -6,6 +6,7 @@ export const userService = {
   getUserProfile: async (userId) => {
     try {
       const { data } = await api.get(API_ENDPOINTS.USERS.PROFILE(userId));
+
       console.log('요청 URL:', API_ENDPOINTS.USERS.PROFILE(userId));
 
       return data;
@@ -42,7 +43,7 @@ export const userService = {
   login: async (user_id, user_pwd) => {
     try {
       const { data } = await api.get(API_ENDPOINTS.USERS.LOGIN(user_id, user_pwd));
-      console.log(data[0])
+      console.log(data[0]);
       return data[0]; //
     } catch (error) {
       if (error.response) {

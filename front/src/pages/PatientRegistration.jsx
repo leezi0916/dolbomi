@@ -1,4 +1,4 @@
-import React, { useEffect,useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { AuthContainer } from '../styles/Auth.styles';
 import {
   GridForm,
@@ -9,68 +9,61 @@ import {
   FromWrap,
   NotesTexttarea,
   SubmitBtn,
-  Img, NewTitle
+  Img,
+  NewTitle,
 } from '../styles/PatientRegistration';
 import { Label, Input, InputGroup } from '../styles/Auth.styles';
 import { usepatientRegistrationForm } from '../hooks/usePatientRegistrationForm';
 import useUserStore from '../store/userStore';
 import { useNavigate } from 'react-router-dom';
-import { patientService
- } from '../api/patient';
+import { patientService } from '../api/patient';
 import { toast } from 'react-toastify';
 import Tags from '../components/Tags';
 
 const PatientRegistration = () => {
-  const { user, userStatus } = useUserStore();
+  const { user } = useUserStore();
   const navigate = useNavigate();
   const { register, handleSubmit, errors, isSubmitting, watch, setValue } = usepatientRegistrationForm();
 
   useEffect(() => {
     // 일단 접근가능하게 로그인 구현 되면 user -> !user 바꿀것
-    if (user) {
+    if (!user) {
       alert('로그인 후 이용해주세요');
-      navigate('/');
+      // navigate('/guardian');
     }
-    if (!userStatus) {
-      console.log(userStatus);
-      navigate('/');
-    }
-   
-  }, [user, userStatus]);
+  }, [user]);
 
   // 'gender' 필드의 현재 값을 watch하여 라디오 버튼의 checked 상태를 제어합니다.
   const currentGender = watch('patGender');
 
+  const [tags, setTags] = useState([]);
+  useEffect(() => {
+    setValue('tags', tags);
+  }, [tags, setValue]);
 
- const [tags, setTags] = useState([]);
-useEffect(() => {
-  setValue('tags',tags);
-}, [tags, setValue]);
-
-
-const onSubmit = async (data) => {
-  try {
-    //환자등록 API호출
-    await patientService.postNewPatient({
-    // 수정필요
-      guardianNo: user ? user.userid : '1',
-      patName: data.patName,
-      patAge: data.patAge,
-      patAddress: data.patAddress,
-      patGender: data.patGender,
-      patHeight: data.patHeight,
-      patWeight: data.patWeight,
-      patContent: data.patContent,
-      phone: data.phone,
-      tags : data.tags
-    });
-    toast.success('돌봄대상자 등록 완료!');
-    navigate('/patient');
-  } catch (error) {
-    toast.error('돌봄대상자 등록 중 문제가 발생하였습니다.');
-    console.error('돌본대상자 등록 에러 : ', error);
-  }
-};
+  const onSubmit = async (data) => {
+    try {
+      //환자등록 API호출
+      await patientService.postNewPatient({
+        // 수정필요
+        guardianNo: user ? user.userid : '1',
+        patName: data.patName,
+        patAge: data.patAge,
+        patAddress: data.patAddress,
+        patGender: data.patGender,
+        patHeight: data.patHeight,
+        patWeight: data.patWeight,
+        patContent: data.patContent,
+        phone: data.phone,
+        tags: data.tags,
+      });
+      toast.success('돌봄대상자 등록 완료!');
+      navigate('/patient');
+    } catch (error) {
+      toast.error('돌봄대상자 등록 중 문제가 발생하였습니다.');
+      console.error('돌본대상자 등록 에러 : ', error);
+    }
+  };
   return (
     <>
       <AuthContainer>
@@ -139,7 +132,7 @@ const onSubmit = async (data) => {
             </GridInerContainer>
 
             <InputGroup>
-            <Tags tags={tags} setTags={setTags} {...register('tags')} />
+              <Tags tags={tags} setTags={setTags} {...register('tags')} />
             </InputGroup>
 
             <InputGroup>
