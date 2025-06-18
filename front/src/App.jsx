@@ -6,7 +6,6 @@ import theme from './styles/theme';
 import Layout from './components/Layout';
 import { ToastContainer } from 'react-toastify';
 import CommunityBoard from './pages/CommunityBoard';
-import ReviewModal from './pages/ReviewModal';
 import SignUp from './pages/SignUp';
 import MyProfile from './pages/MyProfile';
 import Login from './pages/Login';
@@ -30,6 +29,7 @@ import { useEffect } from 'react';
 // import useUserStore from './store/userStore';
 import ReportMain from './pages/ReportMain';
 import CreateCommuBoardForm from './pages/CreateCommuBoardForm';
+import ReviewModal from './components/ReviewModal';
 
 function AppRoutes() {
   const navigate = useNavigate();
