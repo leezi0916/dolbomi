@@ -30,6 +30,8 @@ import { useEffect } from 'react';
 import ReportMain from './pages/ReportMain';
 import CreateCommuBoardForm from './pages/CreateCommuBoardForm';
 import ReviewModal from './components/ReviewModal';
+import ResumeManagement from './pages/ResumeManagement';
+import ScrollToTop from './utils/scrollToTop';
 
 function AppRoutes() {
   const navigate = useNavigate();
@@ -44,12 +46,15 @@ function AppRoutes() {
   return (
     <>
       <Layout>
+        <ScrollToTop />
+
         <Routes>
           {/* 간병인 */}
           <Route path="/caregiver" element={<CareGiverMainPage />} />
           <Route path="/caregiver/hirelist" element={<HireList />} />
-          <Route path="/caregiver/resumeRegistration" element={<ResumeRegistration />} />
+          <Route path="/caregiver/resumeregistration" element={<ResumeRegistration />} />
           <Route path="/caregiver/reportform/:patNo" element={<ReportForm />} />
+          <Route path="/caregiver/resumemanagement" element={<ResumeManagement />} />
 
           {/* 보호자 */}
           <Route path="/guardian" element={<GuardianMainPage />} />
@@ -71,7 +76,7 @@ function AppRoutes() {
           <Route path="/signup" element={<SignUp />} />
           <Route path="/myprofile" element={<MyProfile />} />
           <Route path="/hireDetail/:hiringNo" element={<HireDetail />} />
-          <Route path="/resumeDetail" element={<ResumeDetail />} />
+          <Route path="/resumeDetail/:resumeNo" element={<ResumeDetail />} />
           <Route path="/report/:patNo" element={<ReportMain />} />
           <Route path="/report/:patNo/detail/:reportNo" element={<ReportDetail />} />
         </Routes>

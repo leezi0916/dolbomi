@@ -6,6 +6,7 @@ import useUserStore from '../store/userStore';
 export default function Menubar() {
   const { userStatus, logout } = useUserStore();
   const navigate = useNavigate();
+  console.log('userStatus 상태:', userStatus);
   const handleLogout = () => {
     logout();
     alert('로그아웃 되었습니다.');
@@ -15,7 +16,7 @@ export default function Menubar() {
     // 삭제예정
     <>
       <Wrap>
-        <NavItem to="/MyProfile">
+        <NavItem to="/myprofile">
           <Icon src="/src/assets/icons/icon_개인정보홈.png" alt="" /> 개인정보홈
         </NavItem>
 
@@ -25,7 +26,7 @@ export default function Menubar() {
             돌봄대상자 관리
           </NavItem>
         ) : (
-          <NavItem to="/">
+          <NavItem to="/caregiver/resumemanagement">
             <Icon src="/src/assets/icons/icon_이력서등록.png" alt="" />
             이력서 등록
           </NavItem>
