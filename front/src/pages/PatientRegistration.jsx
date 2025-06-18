@@ -44,27 +44,16 @@ const PatientRegistration = () => {
   const onSubmit = async (data) => {
     try {
       await patientService.postNewPatient({
-        // guardian_no: user ? user.userid : '1',
-        // pat_name: data.patName,
-        // pat_age: data.patAge,
-        // pat_address: data.patAddress,
-        // pat_gender: data.patGender,
-        // pat_height: data.patHeight,
-        // pat_weight: data.patWeight,
-        // pat_Content: data.patContent,
-        // phone: data.phone,
-        // tags : data.tags
-        // //
-        // guardianNo: user ? user.userid : '1',
-        // patName: data.patName,
-        // patAge: data.patAge,
-        // patAddress: data.patAddress,
-        // patGender: data.patGender,
-        // patHeight: data.patHeight,
-        // patWeight: data.patWeight,
-        // patContent: data.patContent,
-        // phone: data.phone,
-        // tags: data.tags,
+        guardianNo: user ? user.userid : '1',
+        patName: data.patName,
+        patAge: data.patAge,
+        patAddress: data.patAddress,
+        patGender: data.patGender,
+        patHeight: data.patHeight,
+        patWeight: data.patWeight,
+        patContent: data.patContent,
+        phone: data.phone,
+        tags: data.tags,
       });
       toast.success('돌봄대상자 등록 완료!');
       navigate('/patient');
