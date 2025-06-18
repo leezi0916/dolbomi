@@ -69,12 +69,6 @@ const Header = () => {
           <img src="/src/assets/icons/icon_알림.png" alt="" />
           <img src="/src/assets/icons/icon_채팅알림.png" alt="" />
           <ToggleWrap>
-<<<<<<< HEAD
-            <ToggleItem userStatus={!userStatus} onClick={() => setUserStatus(userStatus)}>
-              간병인
-            </ToggleItem>
-            <ToggleItem userStatus={userStatus} onClick={() => setUserStatus(!userStatus)}>
-=======
             {/* 간병인은 true / 보호자는 false */}
             <ToggleItem
               $userStatus={!userStatus}
@@ -92,7 +86,6 @@ const Header = () => {
                 navigate('/guardian'); // 페이지 이동
               }}
             >
->>>>>>> ed006b3361f144c4d9d6c8c5ae50be71b4fd9da5
               보호자
             </ToggleItem>
           </ToggleWrap>
@@ -120,7 +113,7 @@ const Header = () => {
               onMouseLeave={() => setIsHovering(false)}
             >
               <Wrap>
-                <NavItem to="/profile">
+                <NavItem to="/myprofile">
                   <Icon src="/src/assets/icons/icon_개인정보홈.png" alt="" /> 개인정보홈
                 </NavItem>
 
@@ -137,7 +130,7 @@ const Header = () => {
                 )}
 
                 {userStatus ? (
-                  <NavItem to="/hireRegistration">
+                  <NavItem to="/hireDetail/hiringNo">
                     <Icon src="/src/assets/icons/icon_이력서등록.png" alt="" />
                     돌봄대상자 신청
                   </NavItem>

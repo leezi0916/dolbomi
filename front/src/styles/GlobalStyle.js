@@ -21,6 +21,9 @@ const GlobalStyle = createGlobalStyle`
     line-height: 1.5; */
     
   }
+  pre{
+    font-family: "Noto Sans KR", sans-serif;
+  }
 
   /* 링크 스타일 초기화 */
   a {
