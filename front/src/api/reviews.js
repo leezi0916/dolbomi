@@ -1,13 +1,15 @@
 import { useStore } from 'zustand';
 import api from './axios';
 import { API_ENDPOINTS } from './config';
+import { snakeToCamel } from '../utils/formatData';
 
 export const reviewService = {
   //리뷰전체조회
   getReviews: async () => {
     try {
       const { data } = await api.get(API_ENDPOINTS.REVIEWS.BASE);
-      return data;
+
+      return snakeToCamel(data);
     } catch (error) {
       if (error.response) {
         const message = error.response?.data?.message || '리뷰를 불러오는데 실패했습니다.';
