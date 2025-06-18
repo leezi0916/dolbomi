@@ -9,7 +9,6 @@ import { useNavigate } from 'react-router-dom';
 import useUserStatusStore from '../store/userStatusStore';
 const Header = () => {
   const { user, isAuthenticated } = useUserStore();
-
   const { userStatus, setUserStatus } = useUserStatusStore();
 
   const [isHovering, setIsHovering] = useState(false);

@@ -9,9 +9,12 @@
       "address": "강원, 속초",
       "license": true,
       "profile_image": "https://i.pinimg.com/736x/19/a1/33/19a133d18c3b0c8b83dea31b159074c1.jpg",
+<<<<<<< HEAD
+=======
       "resume_title": "dsd",
       "care_status": "Y",
       "score": "4.5",
+>>>>>>> b60223869fd35730b88b307a2a9fe31de4980a6a
       "id": "54eb"
     },
     {
@@ -23,7 +26,6 @@
       "address": "서울, 강동구",
       "license": false,
       "profile_image": "https://i.pinimg.com/736x/19/a1/33/19a133d18c3b0c8b83dea31b159074c1.jpg",
-
       "id": "3707"
     },
     {
@@ -35,7 +37,6 @@
       "address": "부산, 해운대구dasdassa",
       "license": false,
       "profile_image": "https://i.pinimg.com/736x/19/a1/33/19a133d18c3b0c8b83dea31b159074c1.jpg",
-
       "id": "4bf3"
     },
     {
@@ -47,7 +48,6 @@
       "address": "대전, 유성구",
       "license": false,
       "profile_image": "https://i.pinimg.com/736x/19/a1/33/19a133d18c3b0c8b83dea31b159074c1.jpg",
-
       "id": "10a6"
     },
     {
@@ -59,7 +59,6 @@
       "address": "경기, 수원시",
       "license": true,
       "profile_image": "https://i.pinimg.com/736x/19/a1/33/19a133d18c3b0c8b83dea31b159074c1.jpg",
-
       "id": "f6d4"
     },
     {
@@ -71,7 +70,6 @@
       "address": "인천, 미추홀구",
       "license": false,
       "profile_image": "https://i.pinimg.com/736x/19/a1/33/19a133d18c3b0c8b83dea31b159074c1.jpg",
-
       "id": "adfd"
     },
     {
@@ -83,7 +81,6 @@
       "address": "전북, 전주시",
       "license": true,
       "profile_image": "https://i.pinimg.com/736x/19/a1/33/19a133d18c3b0c8b83dea31b159074c1.jpg",
-
       "id": "c170"
     },
     {
@@ -208,12 +205,13 @@
       "count": "4",
       "board_detail": "테스트 중입니당",
       "src": ["/img_s3/연습용이미지(2).jpg"]
+
     }
   ],
   "users": [
     {
       "user_no": 1,
-      "id": "ac77",
+      "id": 1,
       "user_id": "admin",
       "user_pwd": "a1234",
       "user_name": "이지묵",
@@ -225,7 +223,7 @@
     },
     {
       "user_no": 1,
-      "id": "5b3b",
+      "id": 2,
       "user_id": "user01",
       "user_pwd": "pass01",
       "user_name": "관리자",
@@ -248,7 +246,7 @@
       ]
     },
     {
-      "id": "2170",
+      "id": 3,
       "user_id": "dbgk9311",
       "user_pwd": "dbgk9311",
       "user_name": "유하",
@@ -305,7 +303,7 @@
       "gender": "female",
       "age": 53,
       "review_content": "항상 밝은 미소로 환자를 돌봐주셔서 너무 감사했습니다.",
-      "score": 5.0,
+      "score": 5,
       "address": "부산, 해운대구",
       "create_date": "2025/06/15",
       "profile_image": "https://i.pinimg.com/736x/32/5c/ff/325cff33a4ed1d703fe740f796ee33ed.jpg"
