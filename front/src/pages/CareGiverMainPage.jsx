@@ -28,7 +28,7 @@ const CareGiverMainPage = () => {
     };
 
     loadJobOpeningList();
-  }, [RoomAndBoardAvailabler]);
+  }, []);
 
   // 이름 첫글자 O 처리하기
   const maskName = (name) => {
