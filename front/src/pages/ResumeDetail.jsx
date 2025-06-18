@@ -1,7 +1,13 @@
 import React from 'react';
+import Supportstatus from '../components/Supportstatus';
 
-const ResumeDetail = () => {
-  return <div>ResumeDetail</div>;
-};
+function ResumeDetail() {
+  return (
+    <>
+      <Supportstatus></Supportstatus>
+      <div>ResumeDetail</div>
+    </>
+  );
+}
 
 export default ResumeDetail;

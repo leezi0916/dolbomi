@@ -36,6 +36,7 @@ export const API_ENDPOINTS = {
   },
   HIRING: {
     BASE: '/hiring',
+    DETAIL: (hiringNo) => `/hiring?hiring_no=${hiringNo}`,
   },
 
   JOBSEEKING: {
@@ -44,8 +45,8 @@ export const API_ENDPOINTS = {
 
   PATIENT: {
     BASE: '/patient',
-    DETAIL: (guardianNo) => `/patient?guardianNo=${guardianNo}`,
-    PATDETAIL: (patNo) => `/patient?id=${patNo}`,
+    DETAIL: (guardianNo) => `/patient?guardian_no=${guardianNo}`,
+    PATDETAIL: (patNo) => `/patient?pat_no=${patNo}`,
     PUT: (patNo) => `/patient/${patNo}`,
     DELETE: (patNo) => `/patient/${patNo}`,
   },
@@ -59,6 +60,15 @@ export const API_ENDPOINTS = {
     BASE: '/resume',
   },
   REPORT: {
-    BASE: '/report',
+    BASE: (patNo) => `/report?pat_no=${patNo}`,
+  },
+
+  CAREGIVERPROPOSER: {
+    BASE: '/caregiverproposer',
+    LIST: (job_opening_no) => `/caregiverproposer?caregiverproposer=${job_opening_no}`,
+  },
+  PATERPROPOSER: {
+    BASE: '/resume',
+    LIST: (resume_no) => `/patproposer?patproposer=${resume_no}`,
   },
 };

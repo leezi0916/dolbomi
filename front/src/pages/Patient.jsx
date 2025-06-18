@@ -16,35 +16,26 @@ const Patient = () => {
   const [loginUser, setUserInfo] = useState();
 
   useEffect(() => {
-    // 일단 접근가능하게 로그인 구현 되면 user -> !user 바꿀것
-    if (!user) {
-      alert('로그인 후 이용해주세요');
-      // navigate('/guardian');
-    }
-      const getUserInfo = async () => {
-        const userInfo = await userService.getUserProfile(user.user_id);
-        setUserInfo(userInfo[1]);
-      };
-      getUserInfo();
+    const fetchAll = async () => {
+      if (!user) {
+        alert('로그인 후 이용해주세요');
+        return;
+      }
 
-  }, [user]);
-  useEffect(() => {
-    if (!loginUser?.id) return;
-  
-    const getPatientList = async () => {
       try {
-        console.log('loginUserid', loginUser.id);
-        const patientsList = await patientService.getPatients(loginUser.id);
+        const userInfo = await userService.getUserProfile(user.user_id);
+        setUserInfo(userInfo[0]);
+
+        const patientsList = await patientService.getPatients(userInfo[0].user_no);
+
         setUserpatients(patientsList);
-        console.log(patientsList);
-      } catch (error) {
-        console.error(error);
+      } catch (err) {
+        console.error(err);
       }
     };
-  
-    getPatientList();
-  }, [loginUser]);
-  
+    fetchAll();
+  }, []);
+
   return (
     <>
       <AuthContainer>
@@ -57,7 +48,7 @@ const Patient = () => {
 
         <CardWrap>
           {userPatients?.map((pat) => (
-            <Card key={pat.id}>
+            <Card key={pat.patNo}>
               <ProfileDiv>
                 <Img src={pat.profileImage} alt="" />
                 <div>
@@ -75,10 +66,10 @@ const Patient = () => {
               </ProfileDiv>
 
               <ButtonDiv>
-                <SubmitButton1>
-                  <ButtonText onClick={() => navigate(`/guardian/patient/${pat.id}`)}>관리</ButtonText>
+                <SubmitButton1 onClick={() => navigate(`/guardian/patient/${pat.patNo}`)}>
+                  <ButtonText>관리</ButtonText>
                 </SubmitButton1>
-                <SubmitButton1>
+                <SubmitButton1 onClick={() => navigate(`/report/${pat.id}`, 1)}>
                   <ButtonText>일지</ButtonText>
                 </SubmitButton1>
               </ButtonDiv>
@@ -136,7 +127,7 @@ const ProfileTextGray = styled.p`
 `;
 
 const ProfileTextStrong = styled.strong`
-  color: ${({ theme }) => theme.colors.black1};
+  color: ${({ theme }) => theme.colors.black};
   font-weight: ${({ theme }) => theme.fontWeights.semibold};
 `;
 

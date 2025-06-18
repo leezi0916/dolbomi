@@ -29,7 +29,7 @@ const PatientRegistration = () => {
     // 일단 접근가능하게 로그인 구현 되면 user -> !user 바꿀것
     if (!user) {
       alert('로그인 후 이용해주세요');
-      // navigate('/guardian');
+      navigate('/guardian');
     }
   }, [user]);
 
@@ -42,11 +42,11 @@ const PatientRegistration = () => {
   }, [tags, setValue]);
 
   const onSubmit = async (data) => {
+    console.log(user.user_id);
     try {
-      //환자등록 API호출
       await patientService.postNewPatient({
-        // 수정필요
-        guardianNo: user ? user.userid : '1',
+        // user가 있는 경우 user_no 저장해야함 아래의 숫자는 로그인한 user_no로 작성해주세요
+        guardianNo: user ? 5 : '',
         patName: data.patName,
         patAge: data.patAge,
         patAddress: data.patAddress,
@@ -58,7 +58,7 @@ const PatientRegistration = () => {
         tags: data.tags,
       });
       toast.success('돌봄대상자 등록 완료!');
-      navigate('/patient');
+      navigate('/guardian/patient');
     } catch (error) {
       toast.error('돌봄대상자 등록 중 문제가 발생하였습니다.');
       console.error('돌본대상자 등록 에러 : ', error);
@@ -108,7 +108,7 @@ const PatientRegistration = () => {
             </GenderRadioGroup>
 
             <InputGroup>
-              <Label htmlFor="phone">보호자 전화번호</Label>
+              <Label htmlFor="phone">비상연락망</Label>
               <Input type="text" id="phone" {...register('phone')} />
             </InputGroup>
 

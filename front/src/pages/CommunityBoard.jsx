@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Link, Navigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { commuService } from '../api/community';
 import { toast } from 'react-toastify';
 import { ClipLoader } from 'react-spinners';
@@ -43,18 +43,18 @@ const CommunityBoard = () => {
 
   return (
     <Page>
-      <CommuBoard>
+      <PageInfo>
         <BoardMenu>
           <NowBoard>자유게시판</NowBoard>
-          <Link to="/NoticeBoard">공지사항</Link>
-          <Link to="/CommunityQuestion">1:1문의사항</Link>
+          <Link to="/community/notice">공지사항</Link>
+          <Link to="/community/question">1:1문의사항</Link>
         </BoardMenu>
         <BoardTop>
           <Left>총 {communityList.length}건</Left>
           <Right>
             <Input type="text" />
             <Input type="text" />
-            <Btn to="/CreateCommuBoardForm">글쓰기</Btn>
+            <Btn to="/community/free/create">글쓰기</Btn>
           </Right>
         </BoardTop>
         <BoardItemTop>
@@ -65,7 +65,7 @@ const CommunityBoard = () => {
           <div>조회수</div>
         </BoardItemTop>
         {communityList.map((community) => (
-          <BoardItem key={community.no} to={`/CommunityDetail/${community.no}`}>
+          <BoardItem key={community.no} to={`/community/free/detail/${community.no}`}>
             <div>{community.no}</div>
             <div>{community.title}</div>
             <div>{community.name}</div>
@@ -74,17 +74,18 @@ const CommunityBoard = () => {
           </BoardItem>
         ))}
         <BorderDiv></BorderDiv>
-      </CommuBoard>
+      </PageInfo>
     </Page>
   );
 };
 export const Page = styled.div`
+  width: 100%;
   display: flex;
   justify-content: center;
+  margin-top: 70px;
 `;
-export const CommuBoard = styled.div`
-  width: 80%;
-  padding-top: 80px;
+export const PageInfo = styled.div`
+  width: 74%;
   > div {
     display: flex;
     justify-content: center;
@@ -109,10 +110,10 @@ const BoardTop = styled.div`
   padding: 5px 0;
   border-bottom: 1px solid ${({ theme }) => theme.colors.gray[3]};
 `;
-const Input = styled.input`
+export const Input = styled.input`
   border: 1px solid ${({ theme }) => theme.colors.gray[5]};
   border-radius: 4px;
-  padding: 0 4px;
+  padding: 2px 4px;
 `;
 const Btn = styled(Link)`
   align-content: center;

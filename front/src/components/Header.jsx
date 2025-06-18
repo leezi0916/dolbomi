@@ -63,7 +63,7 @@ const Header = () => {
             <NavItem to="guardian/caregiverlist">돌봄대상자 모집</NavItem>
           )}
 
-          <NavItem to="/CommunityBoard">소통</NavItem>
+          <NavItem to="/community/free">소통</NavItem>
         </DesktopNav>
         <GridEmptyDiv></GridEmptyDiv>
         <DesktopUserMenu>
@@ -114,7 +114,7 @@ const Header = () => {
               onMouseLeave={() => setIsHovering(false)}
             >
               <Wrap>
-                <NavItem to="/MyProfile">
+                <NavItem to="/myprofile">
                   <Icon src="/src/assets/icons/icon_개인정보홈.png" alt="" /> 개인정보홈
                 </NavItem>
 
@@ -131,7 +131,7 @@ const Header = () => {
                 )}
 
                 {userStatus ? (
-                  <NavItem to="/hireRegistration">
+                  <NavItem to="/hireDetail/hiringNo">
                     <Icon src="/src/assets/icons/icon_이력서등록.png" alt="" />
                     돌봄대상자 신청
                   </NavItem>

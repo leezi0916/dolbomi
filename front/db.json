@@ -9,7 +9,8 @@
       "address": "강원, 속초",
       "license": true,
       "profile_image": "https://i.pinimg.com/736x/19/a1/33/19a133d18c3b0c8b83dea31b159074c1.jpg",
-      "id": "4cb1"
+
+      "id": "54eb"
     },
     {
       "resume_no": 2,
@@ -20,7 +21,8 @@
       "address": "서울, 강동구",
       "license": false,
       "profile_image": "https://i.pinimg.com/736x/19/a1/33/19a133d18c3b0c8b83dea31b159074c1.jpg",
-      "id": "df78"
+
+      "id": "3707"
     },
     {
       "resume_no": 3,
@@ -31,7 +33,8 @@
       "address": "부산, 해운대구",
       "license": false,
       "profile_image": "https://i.pinimg.com/736x/19/a1/33/19a133d18c3b0c8b83dea31b159074c1.jpg",
-      "id": "4e84"
+
+      "id": "4bf3"
     },
     {
       "resume_no": 4,
@@ -42,7 +45,8 @@
       "address": "대전, 유성구",
       "license": false,
       "profile_image": "https://i.pinimg.com/736x/19/a1/33/19a133d18c3b0c8b83dea31b159074c1.jpg",
-      "id": "1587"
+
+      "id": "10a6"
     },
     {
       "resume_no": 5,
@@ -53,7 +57,8 @@
       "address": "경기, 수원시",
       "license": true,
       "profile_image": "https://i.pinimg.com/736x/19/a1/33/19a133d18c3b0c8b83dea31b159074c1.jpg",
-      "id": "2819"
+
+      "id": "f6d4"
     },
     {
       "resume_no": 6,
@@ -64,7 +69,8 @@
       "address": "인천, 미추홀구",
       "license": false,
       "profile_image": "https://i.pinimg.com/736x/19/a1/33/19a133d18c3b0c8b83dea31b159074c1.jpg",
-      "id": "0a39"
+
+      "id": "adfd"
     },
     {
       "resume_no": 7,
@@ -75,7 +81,8 @@
       "address": "전북, 전주시",
       "license": true,
       "profile_image": "https://i.pinimg.com/736x/19/a1/33/19a133d18c3b0c8b83dea31b159074c1.jpg",
-      "id": "ed15"
+
+      "id": "c170"
     },
     {
       "resume_no": 8,
@@ -86,133 +93,18 @@
       "address": "충남, 천안시",
       "license": false,
       "profile_image": "https://i.pinimg.com/736x/19/a1/33/19a133d18c3b0c8b83dea31b159074c1.jpg",
-      "id": "88dd"
+
+      "id": "a500"
     }
   ],
-  "hiring": [
-    {
-      "job_opening_no": 1,
-      "pat_no": 1,
-      "user_name": "김길동",
-      "gender": "F",
-      "age": 65,
-      "pay": 15000,
-      "address": "강원도",
-      "profile_image": "https://i.pinimg.com/736x/ba/ca/a0/bacaa0c3434602bc8e7d6a99db91b372.jpg",
-      "care_status": "X",
-      "id": "8901"
-    },
-    {
-      "job_opening_no": 2,
-      "pat_no": 2,
-      "user_name": "이순자",
-      "gender": "F",
-      "age": 82,
-      "pay": 16000,
-      "address": "서울특별시",
-      "profile_image": "https://i.pinimg.com/736x/ba/ca/a0/bacaa0c3434602bc8e7d6a99db91b372.jpg",
-      "care_status": "O",
-      "id": "0539"
-    },
-    {
-      "job_opening_no": 3,
-      "pat_no": 3,
-      "user_name": "박철수",
-      "gender": "M",
-      "age": 78,
-      "pay": 14000,
-      "address": "부산광역시",
-      "profile_image": "https://i.pinimg.com/736x/ba/ca/a0/bacaa0c3434602bc8e7d6a99db91b372.jpg",
-      "care_status": "X",
-      "id": "883f"
-    },
-    {
-      "job_opening_no": 4,
-      "pat_no": 4,
-      "user_name": "최민자",
-      "gender": "F",
-      "age": 85,
-      "pay": 17000,
-      "address": "대구광역시",
-      "profile_image": "https://i.pinimg.com/736x/ba/ca/a0/bacaa0c3434602bc8e7d6a99db91b372.jpg",
-      "care_status": "O",
-      "id": "4f23"
-    },
-    {
-      "job_opening_no": 5,
-      "pat_no": 5,
-      "user_name": "장영수",
-      "gender": "M",
-      "age": 75,
-      "pay": 14500,
-      "address": "인천광역시",
-      "profile_image": "https://i.pinimg.com/736x/ba/ca/a0/bacaa0c3434602bc8e7d6a99db91b372.jpg",
-      "care_status": "X",
-      "id": "f904"
-    },
-    {
-      "job_opening_no": 6,
-      "pat_no": 1,
-      "user_name": "김길동",
-      "gender": "F",
-      "age": 65,
-      "pay": 15000,
-      "address": "강원도",
-      "profile_image": "https://i.pinimg.com/736x/ba/ca/a0/bacaa0c3434602bc8e7d6a99db91b372.jpg",
-      "care_status": "O",
-      "id": "5755"
-    },
-    {
-      "job_opening_no": 8,
-      "pat_no": 7,
-      "user_name": "나동훈",
-      "gender": "M",
-      "age": 81,
-      "pay": 15800,
-      "address": "경기도",
-      "profile_image": "https://i.pinimg.com/736x/ba/ca/a0/bacaa0c3434602bc8e7d6a99db91b372.jpg",
-      "care_status": "X",
-      "id": "5dae"
-    },
-    {
-      "job_opening_no": 10,
-      "pat_no": 2,
-      "user_name": "이순자",
-      "gender": "F",
-      "age": 82,
-      "pay": 16000,
-      "address": "서울특별시",
-      "profile_image": "https://i.pinimg.com/736x/ba/ca/a0/bacaa0c3434602bc8e7d6a99db91b372.jpg",
-      "care_status": "O",
-      "id": "21ff"
-    },
-    {
-      "id": "1",
-      "hiring_no": "1",
-      "pat_no": "1",
-      "user_no": "1",
-      "profile_image": "/src/assets/images/pat.png",
-      "pat_name": "김영희",
-      "pat_address": "서울 강남구 역삼동",
-      "pat_age": "85",
-      "pat_gender": "F",
-      "pat_height": 160,
-      "pat_weight": 54,
-      "hiring_title": "치매 어머님 돌봄 구합니다. (주간)",
-      "hiring_content": "fdsafsafsa",
-      "start_date": "2025-07-01",
-      "end_date": "2025-07-31",
-      "account": "13000",
-      "care_status": true
-    }
-  ],
+  "hiring": [],
   "community": [
     {
       "no": "1",
       "id": "extramin2",
       "name": "김유인",
       "title": "게임 추천합니다.",
-      "createDate": "2025-11-08",
+      "create_date": "2025-11-08",
       "count": "5"
     },
     {
@@ -220,7 +112,7 @@
       "id": "extramin1",
       "name": "김유하",
       "title": "테스트테스트.",
-      "createDate": "2025-11-09",
+      "create_date": "2025-11-09",
       "count": "4"
     }
   ],
@@ -228,12 +120,14 @@
     {
       "no": "1",
       "board_detail": "낚엿쥬",
-      "id": "727a"
+
+      "id": "84a6"
     },
     {
       "no": "2",
       "board_detail": "테스트 중입니당",
-      "id": "d0f1"
+
+      "id": "e2c5"
     }
   ],
   "users": [
@@ -285,7 +179,8 @@
       "email": "383838383@naver.com"
     },
     {
-      "id": "1578",
+      "id": "1",
+      "user_no": 5,
       "user_id": "lee111",
       "user_pwd": "lee111",
       "user_name": "이인혜",
@@ -309,100 +204,210 @@
       "user_id": "dlwlanr0916"
     }
   ],
-  "reviews": [],
+
+  "reviews": [
+    {
+      "review_no": 1,
+      "review_writer_no": 1,
+      "score": 5,
+      "create_date": "2025-07-01",
+      "update_date": "2025-07-01",
+      "status": "Y",
+      "id": "68db"
+    }
+  ],
 
   "patient": [
     {
-      "id": "de62",
-      "guardianNo": "1",
-      "profileImage": "/src/assets/profileImg/img_환자소.png",
-      "patName": "김건희",
-      "patAddress": "서울시 강남구",
-      "patAge": 60,
-      "patGender": "F",
-      "patHeight": 162.5,
-      "patWeight": 52.5,
-      "patContent": "당뇨합병증",
+      "id": 1,
+      "guardian_no": 1,
+      "pat_no": 1,
+      "profile_image": "/src/assets/profileImg/img_환자소.png",
+      "pat_name": "김건희",
+      "pat_address": "서울시 강남구",
+      "pat_age": 60,
+      "pat_gender": "F",
+      "pat_height": 162.5,
+      "pat_weight": 52.5,
+      "pat_content": "당뇨합병증",
+      "phone": "01022222222",
       "status": "Y"
     },
     {
-      "id": "74db",
-      "guardianNo": "1",
-      "profileImage": "/src/assets/profileImg/img_환자소.png",
-      "patName": "김겅강",
-      "patAddress": "서울시 강남구",
-      "patAge": 70,
-      "patGender": "F",
-      "patHeight": "162",
-      "patWeight": "52",
-      "patContent": "당뇨합병증",
+      "id": "2",
+      "pat_no": 2,
+      "guardian_no": 5,
+      "profile_image": "/src/assets/profileImg/img_환자소.png",
+      "pat_name": "김겅강",
+      "pat_address": "서울시 강남구",
+      "pat_age": 70,
+      "pat_gender": "F",
+      "pat_height": 162.5,
+      "pat_weight": 52.5,
+      "pat_content": "당뇨합병증",
       "status": "Y",
       "phone": "01022222222",
       "tags": ["당뇨"]
     },
     {
-      "id": "5021",
-      "guardianNo": "1",
-      "profileImage": "/src/assets/profileImg/img_환자소.png",
-      "patName": "이건강",
-      "patAddress": "서울시 강남구",
-      "patAge": 80,
-      "patGender": "F",
-      "patHeight": 162.5,
-      "patWeight": 52.5,
-      "patContent": "당뇨합병증",
+      "id": "3",
+      "pat_no": 3,
+      "guardian_no": 1,
+      "profile_image": "/src/assets/profileImg/img_환자소.png",
+      "pat_name": "이건강",
+      "pat_address": "서울시 강남구",
+      "pat_age": 80,
+      "pat_gender": "F",
+      "pat_height": 162.5,
+      "pat_weight": 52.5,
+      "pat_content": "당뇨합병증",
       "phone": "",
       "status": "Y"
     },
     {
       "id": "4",
-      "guardianNo": "1",
-      "patName": "이환자",
-      "patAge": 60,
-      "patAddress": "서울시 강남구",
-      "patGender": "M",
-      "patHeight": "155",
-      "patWeight": "55",
-      "patContent": "치매환자입니다.",
+      "pat_no": 4,
+      "guardian_no": 1,
+      "profile_image": "/src/assets/profileImg/img_환자소.png",
+      "pat_name": "이환자",
+      "pat_age": 60,
+      "pat_address": "서울시 강남구",
+      "pat_gender": "M",
+      "pat_height": 155.2,
+      "pat_weight": 55.3,
+      "pat_content": "치매환자입니다.",
       "phone": "01011111111",
       "tags": ""
     },
     {
-      "id": "9050",
-      "guardianNo": "1",
-      "patName": "이환자",
-      "patAge": 70,
-      "patAddress": "서울시 강남구 역삼",
-      "patGender": "F",
-      "patHeight": "160",
-      "patWeight": "65",
-      "patContent": "거동이 불편함",
+      "id": "5",
+      "pat_no": 5,
+      "guardian_no": 1,
+      "pat_name": "이환자",
+      "pat_age": 70,
+      "pat_address": "서울시 강남구 역삼",
+      "pat_gender": "F",
+      "pat_height": 160.1,
+      "pat_weight": 65.4,
+      "pat_content": "거동이 불편함",
       "phone": "01011111111",
       "tags": ["골절"]
+    },
+    {
+      "id": "6",
+      "pat_no": 6,
+      "guardian_no": 5,
+      "pat_name": "김겅강",
+      "pat_age": 70,
+      "pat_address": "서울시 강남구",
+      "pat_gender": "M",
+      "pat_height": "165",
+      "pat_weight": "65",
+      "pat_content": "",
+      "phone": "01022222222",
+      "tags": ["당뇨"]
+    },
+    {
+      "id": "7",
+      "pat_no": 7,
+      "guardian_no": 5,
+      "pat_name": "김겅강",
+      "pat_age": 70,
+      "pat_address": "서울시 강남구",
+      "pat_gender": "M",
+      "pat_height": "160",
+      "pat_weight": "40",
+      "pat_content": "",
+      "phone": "01022222222",
+      "tags": ["당뇨", "고혈압"]
     }
   ],
   "report": [
     {
-      "reportNo": 1,
-      "careGiverNo": 1,
-      "patNo": 1,
-      "reportTitle": "아아아아아아아아아아아아",
-      "reportContent": "우우우우우우우우우우우우우우\n우우우우",
-      "createDate": "2025-07-01",
-      "updateDate": "2025-07-01",
+      "report_no": 1,
+      "care_giver_no": 1,
+      "pat_no": 1,
+      "report_title": "아아아아아아아아아아아아",
+      "report_content": "1. 신체활동 수준:\n거의 없음\n\n2. 식사내용\n아침: 계란후라이, 흰밥, 김치\n점심: 돈까스, 밥, 김치\n저녁: 전복죽, 김치\n\n3. 약 복용 주의사항:\n하루 세끼 식후 30분뒤 복용\n\n특이사항:\n오늘 아침 혈압이 다소 높음.\n혼잣말을 자주함.\n감정이 우울해보임",
+      "create_date": "2025-07-01",
+      "update_date": "2025-07-01",
       "status": "Y",
-      "id": "4430"
+      "id": "de40"
     },
     {
-      "reportNo": 2,
-      "careGiverNo": 2,
-      "patNo": 1,
-      "reportTitle": "우우우우우우우우우우우우우",
-      "reportContent": "아아아아아아아아아아아아아아\n우우우우",
-      "createDate": "2025-07-01",
-      "updateDate": "2025-07-01",
+      "report_no": 2,
+      "care_giver_no": 2,
+      "pat_no": 1,
+      "report_title": "우우우우우우우우우우우우우",
+      "report_content": "특이사항:\n오늘 아침 혈압이 다소 높음.\n\n신체활동수준:\n거의 없음",
+      "create_date": "2025-07-01",
+      "update_date": "2025-07-01",
       "status": "Y",
-      "id": "7bd4"
+      "id": "0347"
+    }
+  ],
+  "caregiverproposer": [
+    {
+      "id": 1,
+      "propposer_no": 1,
+      "job_opening_no": 1,
+      "caregiver_no": 1,
+      "status": "W",
+      "image": "/src/assets/images/pat.png"
+    },
+    {
+      "id": 2,
+      "propposer_no": 2,
+      "job_opening_no": 1,
+      "caregiver_no": 2,
+      "status": "W",
+      "image": "/src/assets/images/pat.png"
+    },
+    {
+      "id": 3,
+      "propposer_no": 3,
+      "job_opening_no": 3,
+      "caregiver_no": 3,
+      "status": "W",
+      "image": "/src/assets/images/pat.png"
+    }
+  ],
+  "patproposer": [
+    {
+      "id": 1,
+      "propposer_no": 1,
+      "resume_no": 1,
+      "guardian_no": 2,
+      "pat_no": 1,
+      "status": "W",
+      "image": "/src/assets/profileImg/img_환자소.png"
+    },
+    {
+      "id": 2,
+      "propposer_no": 2,
+      "resume_no": 1,
+      "guardian_no": 3,
+      "pat_no": 1,
+      "status": "W",
+      "image": "/src/assets/profileImg/img_환자소.png"
+    },
+    {
+      "id": 3,
+      "propposer_no": 3,
+      "resume_no": 1,
+      "guardian_no": 4,
+      "pat_no": 1,
+      "status": "W",
+      "image": "/src/assets/profileImg/img_환자소.png"
+    },
+    {
+      "id": 4,
+      "propposer_no": 4,
+      "resume_no": 1,
+      "guardian_no": 5,
+      "pat_no": 1,
+      "status": "W",
+      "image": "/src/assets/profileImg/img_환자소.png"
     }
   ]
 }
