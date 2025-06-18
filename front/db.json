@@ -9,7 +9,6 @@
       "address": "강원, 속초",
       "license": true,
       "profile_image": "https://i.pinimg.com/736x/19/a1/33/19a133d18c3b0c8b83dea31b159074c1.jpg",
-
       "id": "54eb"
     },
     {
@@ -21,7 +20,6 @@
       "address": "서울, 강동구",
       "license": false,
       "profile_image": "https://i.pinimg.com/736x/19/a1/33/19a133d18c3b0c8b83dea31b159074c1.jpg",
-
       "id": "3707"
     },
     {
@@ -33,7 +31,6 @@
       "address": "부산, 해운대구",
       "license": false,
       "profile_image": "https://i.pinimg.com/736x/19/a1/33/19a133d18c3b0c8b83dea31b159074c1.jpg",
-
       "id": "4bf3"
     },
     {
@@ -45,7 +42,6 @@
       "address": "대전, 유성구",
       "license": false,
       "profile_image": "https://i.pinimg.com/736x/19/a1/33/19a133d18c3b0c8b83dea31b159074c1.jpg",
-
       "id": "10a6"
     },
     {
@@ -57,7 +53,6 @@
       "address": "경기, 수원시",
       "license": true,
       "profile_image": "https://i.pinimg.com/736x/19/a1/33/19a133d18c3b0c8b83dea31b159074c1.jpg",
-
       "id": "f6d4"
     },
     {
@@ -69,7 +64,6 @@
       "address": "인천, 미추홀구",
       "license": false,
       "profile_image": "https://i.pinimg.com/736x/19/a1/33/19a133d18c3b0c8b83dea31b159074c1.jpg",
-
       "id": "adfd"
     },
     {
@@ -81,7 +75,6 @@
       "address": "전북, 전주시",
       "license": true,
       "profile_image": "https://i.pinimg.com/736x/19/a1/33/19a133d18c3b0c8b83dea31b159074c1.jpg",
-
       "id": "c170"
     },
     {
@@ -207,13 +200,11 @@
     {
       "no": "1",
       "board_detail": "낚엿쥬",
-
       "id": "84a6"
     },
     {
       "no": "2",
       "board_detail": "테스트 중입니당",
-
       "id": "e2c5"
     }
   ],
@@ -311,7 +302,7 @@
       "gender": "female",
       "age": 53,
       "review_content": "항상 밝은 미소로 환자를 돌봐주셔서 너무 감사했습니다.",
-      "score": 5.0,
+      "score": 5,
       "address": "부산, 해운대구",
       "create_date": "2025/06/15"
     },

@@ -9,21 +9,11 @@ const ReportForm = () => {
   const patName = useLocation().state;
   const [count, setCount] = useState(1);
 
-  const formRef = useRef(null);
-
-  const handleSubmit = async () => {
-    if (formRef.current) {
-      const formData = new FormData(formRef.current); // `form` 데이터를 수집
-      const data = Object.fromEntries(formData.entries()); // 객체로 변환
-      console.log('전송 데이터:', data[0]);
-    }
-  };
-
   return (
     <Wrap>
       <MainTitle>진단 일지 등록 / 수정</MainTitle>
       <br />
-      <form ref={formRef}>
+      <form>
         <TopContainer>
           <Top>
             <Input placeholder="제목" />
@@ -53,7 +43,7 @@ const ReportForm = () => {
       <Line />
       <br />
       <Buttons>
-        <Btn onClick={handleSubmit}>
+        <Btn onClick="">
           <ButtonText>등록</ButtonText>
         </Btn>
       </Buttons>

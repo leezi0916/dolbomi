@@ -119,7 +119,7 @@ const ReportMain = () => {
           <div>작성자</div>
           <div>작성 일자</div>
         </BoardItemTop>
-        {reportList.map((report) => (
+        {reportList.reverse().map((report) => (
           <BoardItem key={report.reportNo} to={`/report/${patNo}/detail/${report.reportNo}`} state={{ report }}>
             <div>{report.reportNo}</div>
             <div>{report.reportTitle}</div>
