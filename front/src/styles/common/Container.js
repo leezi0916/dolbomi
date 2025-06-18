@@ -54,22 +54,16 @@ export const FlexContainer = styled(Container)`
 
 export const GridContainer = styled(Section)`
   display: grid;
-  padding: 0px;
-  grid-template-columns: repeat(1, 1fr); //한줄에 하나 , 넓이 동일하게
+  padding: 0;
   gap: ${({ theme }) => theme.spacing[4]};
 
-  ${media.sm`
-    grid-template-columns: repeat(2, 1fr); // 한줄에 두개 , 넓이 동일하게
-  `}
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
 
   ${media.md`
-    grid-template-columns: repeat(3, 1fr);
     gap: ${({ theme }) => theme.spacing[5]};
   `}
 
-
   ${media.lg`
-    grid-template-columns: repeat(4, 1fr);
     gap: ${({ theme }) => theme.spacing[6]};
   `}
 `;

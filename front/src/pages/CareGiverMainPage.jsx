@@ -75,9 +75,11 @@ const CareGiverMainPage = () => {
                   <CardTextGroup>
                     <CardTitle>{maskName(user.patName)} 님</CardTitle>
                     <CardText>
-                      나이: {user.patAge}세({user.patGender == 'M' ? '남' : '여'})
+                      <span>나이</span> : {user.patAge}세({user.patGender == 'M' ? '남' : '여'})
                     </CardText>
-                    <CardText>시급: {user.account}원</CardText>
+                    <CardText>
+                      <span>시급</span> : {user.account.toLocaleString()}원
+                    </CardText>
                   </CardTextGroup>
                 </CardTopContent>
                 <CardBottomContent>
@@ -106,9 +108,11 @@ const CareGiverMainPage = () => {
                   <CardTextGroup>
                     <CardTitle>{maskName(user.patName)} 님</CardTitle>
                     <CardText>
-                      나이: {user.patAge}세({user.patGender == 'M' ? '남' : '여'})
+                      <span>나이</span> : {user.patAge}세({user.patGender == 'M' ? '남' : '여'})
                     </CardText>
-                    <CardText>시급: {user.account}원</CardText>
+                    <CardText>
+                      <span>시급</span> : {user.account.toLocaleString()}원
+                    </CardText>
                   </CardTextGroup>
                 </CardTopContent>
                 <CardBottomContent>
@@ -270,7 +274,7 @@ export const HiringCardSection = styled(Section)`
 export const Card = styled.div`
   background: #fff;
   border-radius: ${({ theme }) => theme.borderRadius.lg};
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  box-shadow: ${({ theme }) => theme.shadows.base};
   overflow: hidden;
   display: flex;
   flex-direction: column;
@@ -331,10 +335,14 @@ export const CardTitle = styled.h3`
 // 텍스트 라벨 (나이, 시급)
 export const CardText = styled.p`
   font-size: ${({ theme }) => theme.fontSizes.sm};
-  color: ${({ theme }) => theme.colors.gray[2]};
-  font-weight: ${({ theme }) => theme.fontWeights.medium};
-`;
+  color: ${({ theme }) => theme.colors.gray[1]};
+  font-weight: ${({ theme }) => theme.fontWeights.bold};
 
+  span {
+    color: ${({ theme }) => theme.colors.gray[3]};
+    font-weight: ${({ theme }) => theme.fontWeights.medium};
+  }
+`;
 // 구분선 + 지역 + 버튼 감싸는 하단 영역
 export const CardBottomContent = styled.div`
   margin-top: ${({ theme }) => theme.spacing[2]};
