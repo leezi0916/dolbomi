@@ -41,48 +41,39 @@ const PatientRegistration = () => {
     setValue('tags', tags);
   }, [tags, setValue]);
 
-
- const [tags, setTags] = useState([]);
-useEffect(() => {
-  setValue('tags',tags);
-}, [tags, setValue]);
-
-
-const onSubmit = async (data) => {
-  try {
-
-    await patientService.postNewPatient({
-
-      // guardian_no: user ? user.userid : '1',
-      // pat_name: data.patName,
-      // pat_age: data.patAge,
-      // pat_address: data.patAddress,
-      // pat_gender: data.patGender,
-      // pat_height: data.patHeight,
-      // pat_weight: data.patWeight,
-      // pat_Content: data.patContent,
-      // phone: data.phone,
-      // tags : data.tags
-      // //
-      // guardianNo: user ? user.userid : '1',
-      // patName: data.patName,
-      // patAge: data.patAge,
-      // patAddress: data.patAddress,
-      // patGender: data.patGender,
-      // patHeight: data.patHeight,
-      // patWeight: data.patWeight,
-      // patContent: data.patContent,
-      // phone: data.phone,
-      // tags: data.tags,
-    });
-    toast.success('돌봄대상자 등록 완료!');
-    navigate('/patient');
-  } catch (error) {
-    toast.error('돌봄대상자 등록 중 문제가 발생하였습니다.');
-    console.error('돌본대상자 등록 에러 : ', error);
-  }
-};
- return (
+  const onSubmit = async (data) => {
+    try {
+      await patientService.postNewPatient({
+        // guardian_no: user ? user.userid : '1',
+        // pat_name: data.patName,
+        // pat_age: data.patAge,
+        // pat_address: data.patAddress,
+        // pat_gender: data.patGender,
+        // pat_height: data.patHeight,
+        // pat_weight: data.patWeight,
+        // pat_Content: data.patContent,
+        // phone: data.phone,
+        // tags : data.tags
+        // //
+        // guardianNo: user ? user.userid : '1',
+        // patName: data.patName,
+        // patAge: data.patAge,
+        // patAddress: data.patAddress,
+        // patGender: data.patGender,
+        // patHeight: data.patHeight,
+        // patWeight: data.patWeight,
+        // patContent: data.patContent,
+        // phone: data.phone,
+        // tags: data.tags,
+      });
+      toast.success('돌봄대상자 등록 완료!');
+      navigate('/patient');
+    } catch (error) {
+      toast.error('돌봄대상자 등록 중 문제가 발생하였습니다.');
+      console.error('돌본대상자 등록 에러 : ', error);
+    }
+  };
+  return (
     <>
       <AuthContainer>
         <FromWrap>
