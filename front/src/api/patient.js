@@ -1,13 +1,15 @@
 import { useStore } from 'zustand';
 import api from './axios';
 import { API_ENDPOINTS } from './config';
+import {snakeToCamel} from '../utils/formatData.js'
 
 export const patientService = {
   //환자목록조회
   getPatients: async (guardianNo) => {
     try {
+      console.log(guardianNo)
       const { data } = await api.get(API_ENDPOINTS.PATIENT.DETAIL(guardianNo));
-      return data;
+      return  snakeToCamel(data);
 
     } catch (error) {
       if (error.response) {
@@ -32,7 +34,8 @@ export const patientService = {
   getPatientId: async (id) => {
     try {
       const { data } = await api.get(API_ENDPOINTS.PATIENT.PATDETAIL(id));
-      return data[0];
+      
+      return snakeToCamel(data[0]);
       
     } catch (error) {
       if (error.response) {

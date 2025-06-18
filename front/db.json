@@ -13,7 +13,7 @@
       "id": "2dce"
     },
     {
-      "job_opening_no": 2,
+      "job_opening_No": 2,
       "pat_no": 2,
       "user_name": "이순자",
       "gender": "F",
@@ -25,7 +25,7 @@
       "id": "96b4"
     },
     {
-      "job_opening_no": 3,
+      "job_opening_No": 3,
       "pat_no": 3,
       "user_name": "박철수",
       "gender": "M",
@@ -37,7 +37,7 @@
       "id": "f5df"
     },
     {
-      "job_opening_no": 4,
+      "job_opening_No": 4,
       "pat_no": 4,
       "user_name": "최민자",
       "gender": "F",
@@ -138,7 +138,6 @@
       "email": "admin@diamelo.com"
     },
     {
-
       "id": "2170",
       "user_id": "dbgk9311",
       "user_pwd": "dbgk9311",
@@ -150,7 +149,7 @@
       "email": "383838383@naver.com"
     },
     {
-      "id": "1578",
+      "id": "1",
       "user_id": "lee111",
       "user_pwd": "lee111",
       "user_name": "이인혜",
@@ -221,7 +220,7 @@
     },
     {
       "id": "5",
-      "hiringno": "5",
+      "hiring_no": "5",
       "pat_name": "김영희",
       "pat_age": "85",
       "pat_gender": "female",
@@ -307,71 +306,72 @@
   "patient": [
     {
       "id": "de62",
-      "guardianNo": "1",
-      "profileImage": "/src/assets/profileImg/img_환자소.png",
-      "patName": "김건희",
-      "patAddress": "서울시 강남구",
-      "patAge": 60,
-      "patGender": "F",
-      "patHeight": 162.5,
-      "patWeight": 52.5,
-      "patContent": "당뇨합병증",
+      "guardian_no": "1",
+      "profile_image": "/src/assets/profileImg/img_환자소.png",
+      "pat_name": "김건희",
+      "pat_address": "서울시 강남구",
+      "pat_age": 60,
+      "pat_gender": "F",
+      "pat_height": 162.5,
+      "pat_weight": 52.5,
+      "pat_content": "당뇨합병증",
+      "phone": "01022222222",
       "status": "Y"
     },
     {
       "id": "74db",
-      "guardianNo": "1",
-      "profileImage": "/src/assets/profileImg/img_환자소.png",
-      "patName": "김겅강",
-      "patAddress": "서울시 강남구",
-      "patAge": 70,
-      "patGender": "F",
-      "patHeight": "162",
-      "patWeight": "52",
-      "patContent": "당뇨합병증",
+      "guardian_no": "1",
+      "profile_image": "/src/assets/profileImg/img_환자소.png",
+      "pat_name": "김겅강",
+      "pat_address": "서울시 강남구",
+      "pat_age": 70,
+      "pat_gender": "F",
+      "pat_height": "162",
+      "pat_weight": "52",
+      "pat_content": "당뇨합병증",
       "status": "Y",
       "phone": "01022222222",
-      "tags": [
-        "당뇨"
-      ]
+      "tags": ["당뇨"]
     },
     {
       "id": "5021",
-      "guardianNo": "1",
-      "profileImage": "/src/assets/profileImg/img_환자소.png",
-      "patName": "이건강",
-      "patAddress": "서울시 강남구",
-      "patAge": 80,
-      "patGender": "F",
-      "patHeight": 162.5,
-      "patWeight": 52.5,
-      "patContent": "당뇨합병증",
+      "guardian_no": "1",
+      "profile_image": "/src/assets/profileImg/img_환자소.png",
+      "pat_name": "이건강",
+      "pat_address": "서울시 강남구",
+      "pat_age": 80,
+      "pat_gender": "F",
+      "pat_height": 162.5,
+      "pat_weight": 52.5,
+      "pat_content": "당뇨합병증",
       "phone": "",
       "status": "Y"
     },
     {
       "id": "4",
-      "guardianNo": "1",
-      "patName": "이환자",
-      "patAge": 60,
-      "patAddress": "서울시 강남구",
-      "patGender": "M",
-      "patHeight": "155",
-      "patWeight": "55",
-      "patContent": "치매환자입니다.",
+      "guardian_no": "1",
+      "profile_image": "/src/assets/profileImg/img_환자소.png",
+      "pat_name": "이환자",
+      "pat_age": 60,
+      "pat_address": "서울시 강남구",
+      "pat_gender": "M",
+      "pat_height": "155",
+      "pat_weight": "55",
+      "pat_content": "치매환자입니다.",
       "phone": "01011111111",
       "tags": ""
     },
     {
       "id": "9050",
-      "guardianNo": "1",
-      "patName": "이환자",
-      "patAge": 70,
-      "patAddress": "서울시 강남구 역삼",
-      "patGender": "F",
-      "patHeight": "160",
-      "patWeight": "65",
-      "patContent": "거동이 불편함",
+      "guardian_no": "1",
+      "profile_image": "/src/assets/profileImg/img_환자소.png",
+      "pat_name": "이환자",
+      "pat_age": 70,
+      "pat_address": "서울시 강남구 역삼",
+      "pat_gender": "F",
+      "pat_height": "160",
+      "pat_weight": "65",
+      "pat_content": "거동이 불편함",
       "phone": "01011111111",
       "tags": ["골절"]
     }
@@ -396,6 +396,45 @@
       "createDate": "2025-07-01",
       "updateDate": "2025-07-01",
       "status": "Y"
+    }
+  ],
+  "caregiverproposer": [
+    { "id": 1, "job_opening_no": 1, "caregiver_no": 1, "status": "W", "image": "/src/assets/images/pat.png" },
+    { "id": 2, "job_opening_no": 1, "caregiver_no": 2, "status": "W", "image": "/src/assets/images/pat.png" },
+    { "id": 3, "job_opening_no": 3, "caregiver_no": 3, "status": "W", "image": "/src/assets/images/pat.png" }
+  ],
+  "patproposer": [
+    {
+      "id": 1,
+      "resume_no": 1,
+      "guardian_no": 2,
+      "pat_no": 1,
+      "status": "W",
+      "image": "/src/assets/profileImg/img_환자소.png"
+    },
+    {
+      "id": 1,
+      "resume_no": 1,
+      "guardian_no": 3,
+      "pat_no": 1,
+      "status": "W",
+      "image": "/src/assets/profileImg/img_환자소.png"
+    },
+    {
+      "id": 1,
+      "resume_no": 1,
+      "guardian_no": 4,
+      "pat_no": 1,
+      "status": "W",
+      "image": "/src/assets/profileImg/img_환자소.png"
+    },
+    {
+      "id": 1,
+      "resume_no": 1,
+      "guardian_no": 5,
+      "pat_no": 1,
+      "status": "W",
+      "image": "/src/assets/profileImg/img_환자소.png"
     }
   ]
 }

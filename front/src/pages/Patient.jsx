@@ -16,35 +16,27 @@ const Patient = () => {
   const [loginUser, setUserInfo] = useState();
 
   useEffect(() => {
-    // 일단 접근가능하게 로그인 구현 되면 user -> !user 바꿀것
-    if (!user) {
-      alert('로그인 후 이용해주세요');
-      // navigate('/guardian');
-    }
-      const getUserInfo = async () => {
-        const userInfo = await userService.getUserProfile(user.user_id);
-        setUserInfo(userInfo[1]);
-      };
-      getUserInfo();
+    const fetchAll = async () => {
+      if (!user) {
+        alert('로그인 후 이용해주세요');
+        return;
+      }
 
-  }, [user]);
-  useEffect(() => {
-    if (!loginUser?.id) return;
-  
-    const getPatientList = async () => {
       try {
-        console.log('loginUserid', loginUser.id);
-        const patientsList = await patientService.getPatients(loginUser.id);
+        const userInfo = await userService.getUserProfile(user.user_id);
+        setUserInfo(userInfo[0]);
+
+        const patientsList = await patientService.getPatients(userInfo[0].id);
+
         setUserpatients(patientsList);
-        console.log(patientsList);
-      } catch (error) {
-        console.error(error);
+   
+      } catch (err) {
+        console.error(err);
       }
     };
-  
-    getPatientList();
-  }, [loginUser]);
-  
+    fetchAll();
+  }, [user]);
+
   return (
     <>
       <AuthContainer>
@@ -136,7 +128,7 @@ const ProfileTextGray = styled.p`
 `;
 
 const ProfileTextStrong = styled.strong`
-  color: ${({ theme }) => theme.colors.black1};
+  color: ${({ theme }) => theme.colors.black};
   font-weight: ${({ theme }) => theme.fontWeights.semibold};
 `;
 

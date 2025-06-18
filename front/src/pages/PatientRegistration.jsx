@@ -46,17 +46,17 @@ useEffect(() => {
 
 const onSubmit = async (data) => {
   try {
-    //환자등록 API호출
+    //환자수정 API호출
     await patientService.postNewPatient({
     // 수정필요
-      guardianNo: user ? user.userid : '1',
-      patName: data.patName,
-      patAge: data.patAge,
-      patAddress: data.patAddress,
-      patGender: data.patGender,
-      patHeight: data.patHeight,
-      patWeight: data.patWeight,
-      patContent: data.patContent,
+      guardian_no: user ? user.userid : '1',
+      pat_name: data.patName,
+      pat_age: data.patAge,
+      pat_address: data.patAddress,
+      pat_gender: data.patGender,
+      pat_height: data.patHeight,
+      pat_weight: data.patWeight,
+      pat_Content: data.patContent,
       phone: data.phone,
       tags : data.tags
     });
@@ -111,7 +111,7 @@ const onSubmit = async (data) => {
             </GenderRadioGroup>
 
             <InputGroup>
-              <Label htmlFor="phone">보호자 전화번호</Label>
+              <Label htmlFor="phone">비상연락망</Label>
               <Input type="text" id="phone" {...register('phone')} />
             </InputGroup>
 

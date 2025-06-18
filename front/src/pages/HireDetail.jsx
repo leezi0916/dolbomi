@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Container, Section } from '../styles/common/Container';
 import profileImage from '../assets/images/pat.png'; // 프로필 이미지 경로
 import chatImage from '../assets/icons/icon_채팅아이콘.png'; // 채팅 이미지 경로
@@ -18,21 +18,44 @@ import {
   ErrorMessage,
   InputContainer,
 } from '../styles/Auth.styles';
+import useUserStore from '../store/userStore';
+import { hiringService } from '../api/hiring';
+import { useParams } from 'react-router-dom';
+import Supportstatus from '../components/Supportstatus';
 
 const HireDetail = () => {
   const navigate = useNavigate();
+  const { hiringNo } = useParams();
+  const { user } = useUserStore();
+  const [jobOpening, setJobOpening] = useState();
+
+  useEffect(() => {
+    if (!user) {
+      alert('로그인 후 이용해주세요');
+      // navigate('/guardian');
+    }
+
+    const getJobOpening = async () => {
+      const getOneJobOpening = await hiringService.getHirngById(Number(hiringNo));
+      setJobOpening(getOneJobOpening);
+    };
+    console.log(jobOpening[0].job_opening_no);
+    getJobOpening();
+  }, [jobOpening]);
 
   return (
     <HireRegistSection>
+      {/* jobOpening에 들어있는 유저no = user no랑 같아야함 */}
+      {/* {user.user_id === jobOpening[0].job_opening_no}; */}
       <HireContainer>
         <HireHead>
           <HireHeadTitle>돌봄대상자 정보</HireHeadTitle>
         </HireHead>
-        <form action="">
+        {/* <form > */}
           <ContentWrapper>
             <div>
               <ProfilImageWrapper>
-                <img src={profileImage} alt="프로필 이미지" />
+                <img src={profileImage} alt="프로필 이미지"  />
               </ProfilImageWrapper>
               <ChatButton>
                 <img src={chatImage} alt="프로필 이미지" />1 : 1 채팅하기
@@ -139,7 +162,7 @@ const HireDetail = () => {
               </InputGroup>
             </HireContent>
           </ContentWrapper1>
-        </form>
+        {/* </form> */}
         <ButtonGroup>
           <BackButton onClick={() => navigate(-1)}>이전</BackButton>
           <SubmitButton1>신청하기</SubmitButton1>

@@ -64,7 +64,7 @@ function App() {
               <Route path="/hirelist" element={<HireList />} />
               <Route path="/caregiverlist" element={<CaregiverList />} />
               <Route path="/hireRegistration" element={<HireRegistration />} />
-              <Route path="/hireDetail" element={<HireDetail />} />
+              <Route path="/hireDetail/:hiringNo" element={<HireDetail />} />
               <Route path="/resumeRegistration" element={<ResumeRegistration />} />
               <Route path="/resumeDetail" element={<ResumeDetail />} />
 
