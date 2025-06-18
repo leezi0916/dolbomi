@@ -1,44 +1,43 @@
 import React, { useEffect, useState } from 'react';
 import { Container, Section } from '../styles/common/Container';
 import styled from 'styled-components';
-
-// import { toast } from 'react-toastify';
 import profileImage from '../assets/images/pat.png'; // 프로필 이미지 경로
-
 import { media } from '../styles/MediaQueries';
-
 import SearchBar from '../components/SearchBar';
 import { IoCheckmarkOutline } from 'react-icons/io5';
 import { ClipLoader } from 'react-spinners';
-import { hiringService } from '../api/hiring';
+import { jobSeekingService } from '../api/jobSeeking';
+
 const CaregiverList = () => {
-  const [hireLists, setHireLists] = useState([]);
+  const [caregiverLists, setCaregiverLists] = useState([]);
   const [loading, setLoading] = useState(false); // 초기 false
   const [error, setError] = useState(null);
-  const [patAddress, setPatAddress] = useState('');
+  const [address, setAddress] = useState('');
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
   const [gender, setGender] = useState('');
   const [account, setAccount] = useState('');
-  const [keyword, setKeyword] = useState('');
   const [careStatus, setCareStatus] = useState(false);
+
+  //검색창
+  const [keyword, setKeyword] = useState('');
 
   // 1. 컴포넌트가 처음 마운트될 때 전체 리스트를 불러옵니다.
   useEffect(() => {
     loadHireLists(false); // 초기 로딩 시에는 필터 없이 전체 데이터 요청
   }, []);
 
-  // 돌봄 대상자 리스트를 불러오는 함수
+  // 간병사모집 리스트를 불러오는 함수
   const loadHireLists = async () => {
     try {
       setLoading(true);
       setError(null);
 
-      const hireList = await hiringService.getJobOpeningList();
-      setHireLists(hireList);
+      const caregiverList = await jobSeekingService.getResumeList();
+      setCaregiverLists(caregiverList);
     } catch (error) {
       console.error(error);
-      const errorMessage = '돌봄 대상자 구인 리스트를 가져오지 못했습니다.';
+      const errorMessage = '간병사모집 리스트를 가져오지 못했습니다.';
       setError(errorMessage);
     } finally {
       setLoading(false);
@@ -65,7 +64,7 @@ const CaregiverList = () => {
           <SearchDivder>
             <Section1>
               <SearchDivder1>
-                <SelectBox value={patAddress} onChange={(e) => setPatAddress(e.target.value)}>
+                <SelectBox value={address} onChange={(e) => setAddress(e.target.value)}>
                   <option value="">지역</option>
                   <option value="서울">서울</option>
                   <option value="부산">부산</option>
@@ -103,8 +102,8 @@ const CaregiverList = () => {
                       id="male"
                       name="gender"
                       value="male"
-                      checked={gender === 'male'}
-                      onChange={() => setGender('male')}
+                      checked={gender === 'M'}
+                      onChange={() => setGender('M')}
                     />
                     <label htmlFor="male">남성</label>
                   </RadioWrapper>
@@ -115,8 +114,8 @@ const CaregiverList = () => {
                       id="female"
                       name="gender"
                       value="female"
-                      checked={gender === 'female'}
-                      onChange={() => setGender('female')}
+                      checked={gender === 'F'}
+                      onChange={() => setGender('F')}
                     />
                     <label htmlFor="female">여성</label>
                   </RadioWrapper>
@@ -171,39 +170,40 @@ const CaregiverList = () => {
         <ErrorMessage>{error}</ErrorMessage>
       ) : (
         <HireListSection>
-          {hireLists.map((hire) => (
-            <HireListCard key={hire.hiringNo}>
+          {caregiverLists.map((resume) => (
+            <HireListCard key={resume.resumeNo}>
               <CardHeader>
-                <ProfileImage src={hire.profileImage || profileImage} alt="프로필" />
+                <ProfileImage src={resume.profileImage || profileImage} alt="프로필" />
                 <HeaderContent>
                   <Divder>
                     <UserInfo>
                       <UserName>
-                        {hire.patName} <GrayText>님</GrayText>
+                        {resume.userName} <GrayText>님</GrayText>
                       </UserName>
                       <UserAge>
-                        <GrayText>나이</GrayText> {hire.patAge}세(
-                        {hire.patGender === 'male' ? '남' : hire.patGender === 'female' ? '여' : ''})
+                        <GrayText>나이</GrayText> {resume.age}세(
+                        {resume.gender === 'M' ? '남' : resume.gender === 'F' ? '여' : ''})
                       </UserAge>
                     </UserInfo>
-                    <CareContent>{hire.title}</CareContent>
+                    <CareContent>{resume.resumeTitle}</CareContent>
                     <div></div>
                   </Divder>
-                  {hire.careStatus && <AccommodationInfo>평점 4.0</AccommodationInfo>}
+
+                  {resume.score && <AccommodationInfo>평점 {resume.score}</AccommodationInfo>}
                 </HeaderContent>
               </CardHeader>
               <CardFooter>
                 <LocationWage>
                   <LocationText>
-                    <GrayText>지역</GrayText> {hire.patAddress}
+                    <GrayText>지역</GrayText> {resume.address}
                   </LocationText>
                   <AccuontText>
-                    <GrayText>시급</GrayText> <BoldAccount>{hire.account}원</BoldAccount>
+                    <GrayText>시급</GrayText> <BoldAccount>{resume.account}원</BoldAccount>
                   </AccuontText>
                 </LocationWage>
                 <USERINFO1>
-                  {hire.careStatus && <AccommodationInfo>자격증 보유</AccommodationInfo>}
-                  {hire.careStatus ? (
+                  {resume.licesnse && <AccommodationInfo>자격증 보유</AccommodationInfo>}
+                  {resume.careStatus ? (
                     <AccommodationInfo>상주 간병 O</AccommodationInfo>
                   ) : (
                     <AccommodationInfo>상주 간병 X</AccommodationInfo>

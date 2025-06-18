@@ -157,7 +157,7 @@ const HireList = () => {
       ) : (
         <HireListSection>
           {hireLists.map((hire) => (
-            <HireListCard key={hire.hiringNo} to={'/hireDetail'}>
+            <HireListCard key={hire.hiringNo} to={`/hireDetail/${hire.hiringNo}`}>
               <CardHeader>
                 <ProfileImage src={hire.profileImage || profileImage} alt="프로필" />
                 <HeaderContent>
