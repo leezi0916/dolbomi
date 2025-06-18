@@ -106,7 +106,7 @@ const ReportMain = () => {
                 </option>
               ))}
             </Fillter>
-            <Link to={`/caregiver/reportform/${patNo}`}>
+            <Link to={`/caregiver/reportform/${patNo}`} state={pat.patName}>
               <SubmitButton>
                 <ButtonText>글쓰기</ButtonText>
               </SubmitButton>

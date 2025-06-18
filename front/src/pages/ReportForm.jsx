@@ -1,22 +1,33 @@
-import React, { useEffect, useState } from 'react';
+import React, { useRef, useState } from 'react';
 import styled from 'styled-components';
 import { Section } from '../styles/common/Container';
 import { ButtonText, SubmitButton } from '../styles/common/Button';
-import { useParams } from 'react-router-dom';
+import { useParams, useLocation } from 'react-router-dom';
 
 const ReportForm = () => {
   const { patNo } = useParams();
+  const patName = useLocation().state;
   const [count, setCount] = useState(1);
+
+  const formRef = useRef(null);
+
+  const handleSubmit = async () => {
+    if (formRef.current) {
+      const formData = new FormData(formRef.current); // `form` 데이터를 수집
+      const data = Object.fromEntries(formData.entries()); // 객체로 변환
+      console.log('전송 데이터:', data[0]);
+    }
+  };
 
   return (
     <Wrap>
       <MainTitle>진단 일지 등록 / 수정</MainTitle>
       <br />
-      <form onSubmit={(e) => e.preventDefault()}>
+      <form ref={formRef}>
         <TopContainer>
           <Top>
             <Input placeholder="제목" />
-            <Name>환자명</Name>
+            <Name>{patName}</Name>
             <Name>{new Date().toISOString().slice(0, 10)}</Name>
           </Top>
         </TopContainer>
@@ -42,8 +53,8 @@ const ReportForm = () => {
       <Line />
       <br />
       <Buttons>
-        <Btn>
-          <ButtonText type="submit">등록</ButtonText>
+        <Btn onClick={handleSubmit}>
+          <ButtonText>등록</ButtonText>
         </Btn>
       </Buttons>
     </Wrap>
@@ -124,7 +135,6 @@ const MainInput = styled.input`
   height: 200px;
   padding: 10px 20px;
   margin: 10px 0;
-  text-align: start;
 `;
 
 const Body = styled.div`
