@@ -34,7 +34,7 @@ const Patient = () => {
       }
     };
     fetchAll();
-  }, [user]);
+  }, []);
 
   return (
     <>
@@ -48,7 +48,7 @@ const Patient = () => {
 
         <CardWrap>
           {userPatients?.map((pat) => (
-            <Card key={pat.id}>
+            <Card key={pat.patNo}>
               <ProfileDiv>
                 <Img src={pat.profileImage} alt="" />
                 <div>
@@ -66,7 +66,7 @@ const Patient = () => {
               </ProfileDiv>
 
               <ButtonDiv>
-                <SubmitButton1 onClick={() => navigate(`/guardian/patient/${pat.id}`)}>
+                <SubmitButton1 onClick={() => navigate(`/guardian/patient/${pat.patNo}`)}>
                   <ButtonText>관리</ButtonText>
                 </SubmitButton1>
                 <SubmitButton1 onClick={() => navigate(`/report/${pat.id}`, 1)}>

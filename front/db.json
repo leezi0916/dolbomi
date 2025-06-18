@@ -8,7 +8,8 @@
       "pay": 15000,
       "address": "강원, 속초",
       "license": true,
-      "profile_image": "https://i.pinimg.com/736x/19/a1/33/19a133d18c3b0c8b83dea31b159074c1.jpg"
+      "profile_image": "https://i.pinimg.com/736x/19/a1/33/19a133d18c3b0c8b83dea31b159074c1.jpg",
+      "id": "54eb"
     },
     {
       "resume_no": 2,
@@ -18,7 +19,8 @@
       "pay": 16000,
       "address": "서울, 강동구",
       "license": false,
-      "profile_image": "https://i.pinimg.com/736x/19/a1/33/19a133d18c3b0c8b83dea31b159074c1.jpg"
+      "profile_image": "https://i.pinimg.com/736x/19/a1/33/19a133d18c3b0c8b83dea31b159074c1.jpg",
+      "id": "3707"
     },
     {
       "resume_no": 3,
@@ -28,7 +30,8 @@
       "pay": 14000,
       "address": "부산, 해운대구",
       "license": false,
-      "profile_image": "https://i.pinimg.com/736x/19/a1/33/19a133d18c3b0c8b83dea31b159074c1.jpg"
+      "profile_image": "https://i.pinimg.com/736x/19/a1/33/19a133d18c3b0c8b83dea31b159074c1.jpg",
+      "id": "4bf3"
     },
     {
       "resume_no": 4,
@@ -38,7 +41,8 @@
       "pay": 15500,
       "address": "대전, 유성구",
       "license": false,
-      "profile_image": "https://i.pinimg.com/736x/19/a1/33/19a133d18c3b0c8b83dea31b159074c1.jpg"
+      "profile_image": "https://i.pinimg.com/736x/19/a1/33/19a133d18c3b0c8b83dea31b159074c1.jpg",
+      "id": "10a6"
     },
     {
       "resume_no": 5,
@@ -48,7 +52,8 @@
       "pay": 17000,
       "address": "경기, 수원시",
       "license": true,
-      "profile_image": "https://i.pinimg.com/736x/19/a1/33/19a133d18c3b0c8b83dea31b159074c1.jpg"
+      "profile_image": "https://i.pinimg.com/736x/19/a1/33/19a133d18c3b0c8b83dea31b159074c1.jpg",
+      "id": "f6d4"
     },
     {
       "resume_no": 6,
@@ -58,7 +63,8 @@
       "pay": 14500,
       "address": "인천, 미추홀구",
       "license": false,
-      "profile_image": "https://i.pinimg.com/736x/19/a1/33/19a133d18c3b0c8b83dea31b159074c1.jpg"
+      "profile_image": "https://i.pinimg.com/736x/19/a1/33/19a133d18c3b0c8b83dea31b159074c1.jpg",
+      "id": "adfd"
     },
     {
       "resume_no": 7,
@@ -68,7 +74,8 @@
       "pay": 15000,
       "address": "전북, 전주시",
       "license": true,
-      "profile_image": "https://i.pinimg.com/736x/19/a1/33/19a133d18c3b0c8b83dea31b159074c1.jpg"
+      "profile_image": "https://i.pinimg.com/736x/19/a1/33/19a133d18c3b0c8b83dea31b159074c1.jpg",
+      "id": "c170"
     },
     {
       "resume_no": 8,
@@ -78,13 +85,13 @@
       "pay": 16500,
       "address": "충남, 천안시",
       "license": false,
-      "profile_image": "https://i.pinimg.com/736x/19/a1/33/19a133d18c3b0c8b83dea31b159074c1.jpg"
+      "profile_image": "https://i.pinimg.com/736x/19/a1/33/19a133d18c3b0c8b83dea31b159074c1.jpg",
+      "id": "a500"
     }
   ],
-
   "hiring": [
     {
-      "job_opening_no": 1,
+      "hiring_no": 1,
       "pat_no": 1,
       "user_name": "김길동",
       "gender": "F",
@@ -92,7 +99,19 @@
       "pay": 15000,
       "address": "강원도",
       "profile_image": "https://i.pinimg.com/736x/ba/ca/a0/bacaa0c3434602bc8e7d6a99db91b372.jpg",
-      "care_status": "X"
+      "care_status": "X",
+      "user_no": 5,
+      "title": "제목",
+      "content": "내용입니다.",
+      "end_date": "2025-07-31",
+      "account": 5000000,
+      "start_date": "2025-07-01",
+      "max_applicants": 5,
+      "room_imge": "",
+      "satatus": "Y",
+      "create_date": "2025-07-01",
+      "update_date": "",
+      "id": "0b56"
     },
     {
       "job_opening_No": 2,
@@ -103,7 +122,8 @@
       "pay": 16000,
       "address": "서울특별시",
       "profile_image": "https://i.pinimg.com/736x/ba/ca/a0/bacaa0c3434602bc8e7d6a99db91b372.jpg",
-      "care_status": "O"
+      "care_status": "O",
+      "id": "61ca"
     },
     {
       "job_opening_No": 3,
@@ -114,7 +134,8 @@
       "pay": 14000,
       "address": "부산광역시",
       "profile_image": "https://i.pinimg.com/736x/ba/ca/a0/bacaa0c3434602bc8e7d6a99db91b372.jpg",
-      "care_status": "X"
+      "care_status": "X",
+      "id": "e298"
     },
     {
       "job_opening_No": 4,
@@ -125,7 +146,8 @@
       "pay": 17000,
       "address": "대구광역시",
       "profile_image": "https://i.pinimg.com/736x/ba/ca/a0/bacaa0c3434602bc8e7d6a99db91b372.jpg",
-      "care_status": "O"
+      "care_status": "O",
+      "id": "0b14"
     },
     {
       "job_opening_no": 5,
@@ -136,7 +158,8 @@
       "pay": 14500,
       "address": "인천광역시",
       "profile_image": "https://i.pinimg.com/736x/ba/ca/a0/bacaa0c3434602bc8e7d6a99db91b372.jpg",
-      "care_status": "X"
+      "care_status": "X",
+      "id": "c4a4"
     },
     {
       "job_opening_no": 6,
@@ -147,7 +170,8 @@
       "pay": 15000,
       "address": "강원도",
       "profile_image": "https://i.pinimg.com/736x/ba/ca/a0/bacaa0c3434602bc8e7d6a99db91b372.jpg",
-      "care_status": "O"
+      "care_status": "O",
+      "id": "ef0a"
     },
     {
       "job_opening_no": 8,
@@ -158,7 +182,8 @@
       "pay": 15800,
       "address": "경기도",
       "profile_image": "https://i.pinimg.com/736x/ba/ca/a0/bacaa0c3434602bc8e7d6a99db91b372.jpg",
-      "care_status": "X"
+      "care_status": "X",
+      "id": "7e13"
     },
     {
       "job_opening_no": 10,
@@ -169,7 +194,8 @@
       "pay": 16000,
       "address": "서울특별시",
       "profile_image": "https://i.pinimg.com/736x/ba/ca/a0/bacaa0c3434602bc8e7d6a99db91b372.jpg",
-      "care_status": "O"
+      "care_status": "O",
+      "id": "b20b"
     }
   ],
   "community": [
@@ -193,11 +219,13 @@
   "community_detail": [
     {
       "no": "1",
-      "board_detail": "낚엿쥬"
+      "board_detail": "낚엿쥬",
+      "id": "84a6"
     },
     {
       "no": "2",
-      "board_detail": "테스트 중입니당"
+      "board_detail": "테스트 중입니당",
+      "id": "e2c5"
     }
   ],
   "users": [
@@ -213,7 +241,6 @@
       "address": "별내동dsafsdafas",
       "email": "admin@diamelo.com"
     },
-
     {
       "user_no": 1,
       "id": "5b3b",
@@ -269,7 +296,8 @@
       "score": 5,
       "create_date": "2025-07-01",
       "update_date": "2025-07-01",
-      "status": "Y"
+      "status": "Y",
+      "id": "68db"
     }
   ],
   "hires": [
@@ -418,6 +446,7 @@
     {
       "id": 1,
       "guardian_no": 1,
+      "pat_no": 1,
       "profile_image": "/src/assets/profileImg/img_환자소.png",
       "pat_name": "김건희",
       "pat_address": "서울시 강남구",
@@ -429,9 +458,9 @@
       "phone": "01022222222",
       "status": "Y"
     },
-
     {
-      "id": 2,
+      "id": "2",
+      "pat_no": 2,
       "guardian_no": 5,
       "profile_image": "/src/assets/profileImg/img_환자소.png",
       "pat_name": "김겅강",
@@ -446,7 +475,8 @@
       "tags": ["당뇨"]
     },
     {
-      "id": 3,
+      "id": "3",
+      "pat_no": 3,
       "guardian_no": 1,
       "profile_image": "/src/assets/profileImg/img_환자소.png",
       "pat_name": "이건강",
@@ -460,23 +490,23 @@
       "status": "Y"
     },
     {
-      "id": 4,
+      "id": "4",
+      "pat_no": 4,
       "guardian_no": 1,
       "profile_image": "/src/assets/profileImg/img_환자소.png",
       "pat_name": "이환자",
       "pat_age": 60,
       "pat_address": "서울시 강남구",
       "pat_gender": "M",
-
       "pat_height": 155.2,
       "pat_weight": 55.3,
-
       "pat_content": "치매환자입니다.",
       "phone": "01011111111",
       "tags": ""
     },
     {
-      "id": 5,
+      "id": "5",
+      "pat_no": 5,
       "guardian_no": 1,
       "pat_name": "이환자",
       "pat_age": 70,
@@ -484,10 +514,37 @@
       "pat_gender": "F",
       "pat_height": 160.1,
       "pat_weight": 65.4,
-
       "pat_content": "거동이 불편함",
       "phone": "01011111111",
       "tags": ["골절"]
+    },
+    {
+      "id": "6",
+      "pat_no": 6,
+      "guardian_no": 5,
+      "pat_name": "김겅강",
+      "pat_age": 70,
+      "pat_address": "서울시 강남구",
+      "pat_gender": "M",
+      "pat_height": "165",
+      "pat_weight": "65",
+      "pat_content": "",
+      "phone": "01022222222",
+      "tags": ["당뇨"]
+    },
+    {
+      "id": "7",
+      "pat_no": 7,
+      "guardian_no": 5,
+      "pat_name": "김겅강",
+      "pat_age": 70,
+      "pat_address": "서울시 강남구",
+      "pat_gender": "M",
+      "pat_height": "160",
+      "pat_weight": "40",
+      "pat_content": "",
+      "phone": "01022222222",
+      "tags": ["당뇨", "고혈압"]
     }
   ],
   "report": [
@@ -499,7 +556,8 @@
       "report_content": "1. 신체활동 수준:\n거의 없음\n\n2. 식사내용\n아침: 계란후라이, 흰밥, 김치\n점심: 돈까스, 밥, 김치\n저녁: 전복죽, 김치\n\n3. 약 복용 주의사항:\n하루 세끼 식후 30분뒤 복용\n\n특이사항:\n오늘 아침 혈압이 다소 높음.\n혼잣말을 자주함.\n감정이 우울해보임",
       "create_date": "2025-07-01",
       "update_date": "2025-07-01",
-      "status": "Y"
+      "status": "Y",
+      "id": "de40"
     },
     {
       "report_no": 2,
@@ -509,17 +567,40 @@
       "report_content": "특이사항:\n오늘 아침 혈압이 다소 높음.\n\n신체활동수준:\n거의 없음",
       "create_date": "2025-07-01",
       "update_date": "2025-07-01",
-      "status": "Y"
+      "status": "Y",
+      "id": "0347"
     }
   ],
   "caregiverproposer": [
-    { "id": 1, "job_opening_no": 1, "caregiver_no": 1, "status": "W", "image": "/src/assets/images/pat.png" },
-    { "id": 2, "job_opening_no": 1, "caregiver_no": 2, "status": "W", "image": "/src/assets/images/pat.png" },
-    { "id": 3, "job_opening_no": 3, "caregiver_no": 3, "status": "W", "image": "/src/assets/images/pat.png" }
+    {
+      "id": 1,
+      "propposer_no": 1,
+      "job_opening_no": 1,
+      "caregiver_no": 1,
+      "status": "W",
+      "image": "/src/assets/images/pat.png"
+    },
+    {
+      "id": 2,
+      "propposer_no": 2,
+      "job_opening_no": 1,
+      "caregiver_no": 2,
+      "status": "W",
+      "image": "/src/assets/images/pat.png"
+    },
+    {
+      "id": 3,
+      "propposer_no": 3,
+      "job_opening_no": 3,
+      "caregiver_no": 3,
+      "status": "W",
+      "image": "/src/assets/images/pat.png"
+    }
   ],
   "patproposer": [
     {
       "id": 1,
+      "propposer_no": 1,
       "resume_no": 1,
       "guardian_no": 2,
       "pat_no": 1,
@@ -527,7 +608,8 @@
       "image": "/src/assets/profileImg/img_환자소.png"
     },
     {
-      "id": 1,
+      "id": 2,
+      "propposer_no": 2,
       "resume_no": 1,
       "guardian_no": 3,
       "pat_no": 1,
@@ -535,7 +617,8 @@
       "image": "/src/assets/profileImg/img_환자소.png"
     },
     {
-      "id": 1,
+      "id": 3,
+      "propposer_no": 3,
       "resume_no": 1,
       "guardian_no": 4,
       "pat_no": 1,
@@ -543,7 +626,8 @@
       "image": "/src/assets/profileImg/img_환자소.png"
     },
     {
-      "id": 1,
+      "id": 4,
+      "propposer_no": 4,
       "resume_no": 1,
       "guardian_no": 5,
       "pat_no": 1,

@@ -39,6 +39,7 @@ export const useLoginForm = () => {
       console.log('로그인 API 반환값:', user); // 이걸로 구조 확인
       //로그인 성공시 store에 로그인 정보를 저장
       login({
+        user_no : user.user_no,
         user_id: user.user_id,
         user_name: user.user_name,
       });
