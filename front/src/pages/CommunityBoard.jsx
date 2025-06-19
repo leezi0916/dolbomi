@@ -5,7 +5,6 @@ import { toast } from 'react-toastify';
 import { ClipLoader } from 'react-spinners';
 import styled from 'styled-components';
 import useUserStore from '../store/userStore';
-import theme from '../styles/theme';
 
 const CommunityBoard = () => {
   const userId = useUserStore((state) => state.user?.userId);
@@ -64,6 +63,7 @@ const CommunityBoard = () => {
               <option value="">조회순</option>
             </Drop>
             <Input type="text" />
+            <SearchBtn>검색</SearchBtn>
             {userId && <Btn to="/community/free/create">글쓰기</Btn>}
           </Right>
         </BoardTop>
@@ -137,6 +137,14 @@ const Btn = styled(Link)`
   background-color: ${({ theme }) => theme.colors.primary};
   color: ${({ theme }) => theme.colors.white};
   border-radius: 4px;
+`;
+const SearchBtn = styled.button`
+  align-content: center;
+  width: 50px;
+  background-color: ${({ theme }) => theme.colors.gray[3]};
+  color: ${({ theme }) => theme.colors.white};
+  border-radius: 4px;
+  padding: 0;
 `;
 
 const Left = styled.div`
