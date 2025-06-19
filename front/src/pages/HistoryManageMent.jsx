@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { Pagination, Stack } from '@mui/material';
+import Paging from '../components/Paging';
 
 const writtenData = [
   {
@@ -279,6 +280,11 @@ const HistoryManageMent = () => {
     }
   };
 
+  // 자식에게 물려주는 currentPage 변경시 값 추적 함수
+  const chagneCurrentPage = (value) => {
+    setCurrentPage(value);
+  };
+
   return (
     <Wrapper>
       <Header>
@@ -325,31 +331,7 @@ const HistoryManageMent = () => {
         </tbody>
       </Table>
 
-      <PaginationWrapper>
-        <Stack spacing={2}>
-          <Pagination
-            count={totalPage}
-            page={currentPage}
-            onChange={(e, value) => setCurrentPage(value)}
-            shape="rounded"
-            showFirstButton
-            showLastButton
-            sx={{
-              '& .MuiPaginationItem-root': {
-                color: '#FFA101',
-                borderColor: '#FFA101',
-              },
-              '& .Mui-selected': {
-                backgroundColor: '#FFA101 !important',
-                color: '#fff',
-              },
-              '& .MuiPaginationItem-icon': {
-                color: '#FFA101',
-              },
-            }}
-          />
-        </Stack>
-      </PaginationWrapper>
+      <Paging totalPage={totalPage} currentPage={currentPage} chagneCurrentPage={chagneCurrentPage} />
     </Wrapper>
   );
 };
@@ -400,10 +382,4 @@ const Table = styled.table`
     background-color: ${({ theme }) => theme.colors.third};
     font-weight: ${({ theme }) => theme.fontWeights.bold};
   }
-`;
-
-const PaginationWrapper = styled.div`
-  display: flex;
-  justify-content: center;
-  margin-top: ${({ theme }) => theme.spacing[5]};
 `;

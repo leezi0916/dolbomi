@@ -1,5 +1,5 @@
 // 구인 API
-import { snakeToCamel } from '../../utils/formatData';
+import { snakeToCamel } from '../utils/formatData';
 import api from './axios';
 import { API_ENDPOINTS } from './config';
 

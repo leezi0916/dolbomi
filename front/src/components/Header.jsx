@@ -80,7 +80,7 @@ const Header = () => {
           <img src="/src/assets/icons/icon_알림.png" alt="" />
           <img src="/src/assets/icons/icon_채팅알림.png" alt="" />
           <ToggleWrap>
-            {/* 간병인은 false / 보호자는 true */}
+            {/* 간병인은 true / 보호자는 false */}
             <ToggleItem
               $userStatus={!userStatus}
               onClick={() => {
@@ -134,7 +134,7 @@ const Header = () => {
                     돌봄대상자 관리
                   </NavItem>
                 ) : (
-                  <NavItem to="/">
+                  <NavItem to="/caregiver/resumemanagement">
                     <Icon src="/src/assets/icons/icon_이력서등록.png" alt="" />
                     이력서 등록
                   </NavItem>
@@ -149,27 +149,34 @@ const Header = () => {
                   ''
                 )}
 
-                <NavItem to="/">
+                <NavItem to="/history-management">
                   <Icon src="/src/assets/icons/icon_내역관리.png" alt="" />
                   내역관리
                 </NavItem>
 
                 {userStatus ? (
-                  <NavItem to="/">
+                  <NavItem to="/guardian/review">
                     <Icon src="/src/assets/icons/icon_리뷰페이지.png" alt="" />
                     내가쓴리뷰
                   </NavItem>
                 ) : (
-                  <NavItem to="/">
+                  <NavItem to="/caregiver/review">
                     <Icon src="/src/assets/icons/icon_리뷰페이지.png" alt="" />
                     받은리뷰
                   </NavItem>
                 )}
 
-                <NavItem to="/history-management">
-                  <Icon src="/src/assets/icons/icon_매칭관리.png" alt="" />
-                  매칭관리
-                </NavItem>
+                {userStatus ? (
+                  <NavItem to="/guardian/matchpage">
+                    <Icon src="/src/assets/icons/icon_매칭관리.png" alt="" />
+                    매칭관리
+                  </NavItem>
+                ) : (
+                  <NavItem to="/caregiver/matchpage">
+                    <Icon src="/src/assets/icons/icon_매칭관리.png" alt="" />
+                    매칭관리
+                  </NavItem>
+                )}
 
                 <NavItem to="/" onClick={handleLogout}>
                   <Icon src="/src/assets/icons/icon_로그아웃.png" alt="" />
