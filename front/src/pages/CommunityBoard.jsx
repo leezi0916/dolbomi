@@ -6,7 +6,7 @@ import { ClipLoader } from 'react-spinners';
 import styled from 'styled-components';
 import useUserStore from '../store/userStore';
 import Paging from '../components/Paging';
-
+// 안쓰는 게시판이 되어버렸지만 일단 놔두세요. css export 해둔게 있어서 바쁜거 끝나면 정리할 예정
 const CommunityBoard = () => {
   const userId = useUserStore((state) => state.user?.userId);
 

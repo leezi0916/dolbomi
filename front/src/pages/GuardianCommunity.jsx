@@ -10,6 +10,9 @@ import Paging from '../components/Paging';
 const GuardianCommunity = () => {
   const userId = useUserStore((state) => state.user?.userId);
 
+  const ROLE = 'G';
+  const STATUS = 'Y';
+
   const [error, setError] = useState(null);
   const [communityList, setCommunityList] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -34,7 +37,7 @@ const GuardianCommunity = () => {
   useEffect(() => {
     const loadCommunity = async () => {
       try {
-        const community = await commuService.getCommunity();
+        const community = await commuService.getCommunity(STATUS, ROLE);
         console.log(community);
         setCommunityList(community);
       } catch (error) {
@@ -65,7 +68,7 @@ const GuardianCommunity = () => {
     <Page>
       <PageInfo>
         <BoardMenu>
-          <NowBoard> 간병 게시판</NowBoard>
+          <NowBoard> 보호자 게시판</NowBoard>
         </BoardMenu>
         <BoardTop>
           <Left>총 {communityList.length}건</Left>
@@ -84,7 +87,7 @@ const GuardianCommunity = () => {
         </BoardTop>
         <BoardItemTop>
           <div>No</div>
-          <div>제목</div>
+          <div style={{ flex: '2' }}>제목</div>
           <div>작성자</div>
           <div>작성 일자</div>
           <div>조회수</div>
@@ -92,7 +95,7 @@ const GuardianCommunity = () => {
         {currentList.map((community) => (
           <BoardItem key={community.no} to={`/community/detail/${community.no}`}>
             <div>{community.no}</div>
-            <div>{community.title}</div>
+            <div style={{ flex: '2' }}>{community.title}</div>
             <div>{community.name}</div>
             <div>{community.create_date}</div>
             <div>{community.count}</div>
@@ -170,7 +173,7 @@ const Left = styled.div`
 const Right = styled.div`
   display: flex;
   justify-content: flex-end;
-  flex: 4;
+  flex: 5;
   padding-right: 10px;
   gap: 6px;
 `;

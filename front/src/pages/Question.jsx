@@ -7,10 +7,10 @@ import styled from 'styled-components';
 import useUserStore from '../store/userStore';
 import Paging from '../components/Paging';
 
-const CareGiverCommunity = () => {
+const Question = () => {
   const userId = useUserStore((state) => state.user?.userId);
 
-  const ROLE = 'C';
+  const ROLE = 'Q';
   const STATUS = 'Y';
 
   const [error, setError] = useState(null);
@@ -68,7 +68,7 @@ const CareGiverCommunity = () => {
     <Page>
       <PageInfo>
         <BoardMenu>
-          <NowBoard> 간병 게시판</NowBoard>
+          <NowBoard> 1:1 문의사항 </NowBoard>
         </BoardMenu>
         <BoardTop>
           <Left>총 {communityList.length}건</Left>
@@ -203,4 +203,4 @@ export const BorderDiv = styled.div`
   border-top: 1px solid ${({ theme }) => theme.colors.gray[3]};
 `;
 
-export default CareGiverCommunity;
+export default Question;
