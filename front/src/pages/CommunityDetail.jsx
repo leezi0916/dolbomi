@@ -80,7 +80,7 @@ const CommunityDetail = () => {
                   <ul>
                     <li>
                       <img src="/src/assets/icons/icon_수정.png" alt="" />
-                      <LinkLi to={`/community/free/update/${communityDetail?.no}`}>수정</LinkLi>
+                      <LinkLi to={`/community/update/${communityDetail?.no}`}>수정</LinkLi>
                     </li>
                     <li>
                       <img src="/src/assets/icons/icon_삭제.png" alt="" />

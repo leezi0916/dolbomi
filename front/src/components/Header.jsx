@@ -25,13 +25,10 @@ const Header = () => {
   return (
     <HeaderContainer>
       <HeaderWrapper>
-        
-        <Logo to={userStatus? "/":"/caregiver"}>
-        <img src="/src/assets/mainImg/logo.png" />
-        {SITE_CONFIG.name}
-      </Logo>
-      
-
+        <Logo to={userStatus ? '/' : '/caregiver'}>
+          <img src="/src/assets/mainImg/logo.png" />
+          {SITE_CONFIG.name}
+        </Logo>
 
         {/* 모바일환경에서의 nav */}
 
@@ -62,16 +59,16 @@ const Header = () => {
           {userStatus ? (
             <>
               <NavItemCenter to="/guardian/caregiverlist">간병사 모집</NavItemCenter>
-              <NavItemCenter to="/community/free">간병게시판</NavItemCenter>
+              <NavItemCenter to="/community/guardian">보호자 게시판</NavItemCenter>
             </>
           ) : (
             <>
               <NavItemCenter to="/caregiver/hirelist">돌봄대상자 모집</NavItemCenter>
-              <NavItemCenter to="/community/free">돌봄 게시판</NavItemCenter>
+              <NavItemCenter to="/community/caregiver">간병 게시판</NavItemCenter>
             </>
           )}
 
-          <NavItemCenter to="/community/free">1:1 문의</NavItemCenter>
+          <NavItemCenter to="/question">1:1 문의</NavItemCenter>
         </DesktopNav>
         {/* 
         <GridEmptyDiv></GridEmptyDiv> */}
