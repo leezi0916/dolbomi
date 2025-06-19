@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
+import { Pagination, Stack } from '@mui/material';
 import Paging from '../components/Paging';
 
 const writtenData = [
