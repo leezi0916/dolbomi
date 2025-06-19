@@ -40,8 +40,12 @@ import GuardianSupportBoard from './pages/GuardianSupportBoard';
 import ResumeManagement from './pages/ResumeManagement';
 import ScrollToTop from './utils/scrollToTop';
 import HistoryManageMent from './pages/HistoryManageMent';
+
 import ReceivedReviews from './pages/ReceivedReviews';
 import WrittenReviews from './pages/WrittenReviews';
+import MatchToCaregiver from './pages/MatchToCaregiver';
+import MatchToPatient from './pages/MatchToPatient';
+import MyResume from './pages/MyResume';
 
 function AppRoutes() {
   const navigate = useNavigate();
@@ -70,6 +74,9 @@ function AppRoutes() {
           <Route path="/caregiver/resumemanagement" element={<ResumeManagement />} />
           <Route path="/caregiver/review" element={<ReceivedReviews />} />
 
+          <Route path="/caregiver/matchpage" element={<MatchToPatient />} />
+          <Route path="/myresume/:resumeNo" element={<MyResume />} />
+
           {/* 보호자 */}
           <Route path="/guardian" element={<GuardianMainPage />} />
           <Route path="/guardian/caregiverlist" element={<CaregiverList />} />
@@ -79,7 +86,7 @@ function AppRoutes() {
           <Route path="/guardian/patientregisteration" element={<PatientRegisteration />} />
           <Route path="/guardian/review" element={<WrittenReviews />} />
           <Route path="/review" element={<ReviewModal />} />
-
+          <Route path="/guardian/matchpage" element={<MatchToCaregiver />} />
           <Route path="/guardian/hireDetail/:hiringNo" element={<HireDetailMine />} />
           <Route path="/guardian/careGiverSupportBorad" element={<CareGiverSupportBoard />} />
 

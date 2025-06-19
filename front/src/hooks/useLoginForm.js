@@ -49,7 +49,7 @@ export const useLoginForm = () => {
       toast.success('로그인 성공!');
       navigate('/');
     } catch (error) {
-      toast.error('로그인 중 문제가 발생하였습니다.');
+      toast.error('아이디 또는 비밀번호 불일치');
       console.error('로그인 에러 : ', error);
     } finally {
       setIsLoading(false);

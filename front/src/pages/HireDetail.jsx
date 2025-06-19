@@ -7,18 +7,13 @@ import { SubmitButton } from '../styles/common/Button';
 import { FaPlus } from 'react-icons/fa6';
 import { media } from '../styles/MediaQueries';
 import { useNavigate } from 'react-router-dom';
-import {
-  Input,
-  InputGroup,
-  Title,
-} from '../styles/Auth.styles';
+import { Input, InputGroup, Title } from '../styles/Auth.styles';
 import useUserStore from '../store/userStore';
 import { hiringService } from '../api/hiring';
 import { useParams } from 'react-router-dom';
 
 import { guardianHiringForm } from '../hooks/guardianHiringForm';
 import Paging from '../components/Paging';
-
 
 const HireDetail = () => {
   const navigate = useNavigate();
@@ -48,151 +43,150 @@ const HireDetail = () => {
     getJobOpening();
   }, [user]);
 
-
   return (
     <HireRegistSection>
       <HireContainer>
         <HireHead>
           <HireHeadTitle>돌봄대상자 정보</HireHeadTitle>
         </HireHead>
-        <form >
-        <ContentWrapper>
-          <div>
-            <ProfilImageWrapper>
-              <img src={profileImage} alt="프로필 이미지" />
-            </ProfilImageWrapper>
-            <ChatButton>
-              <img src={chatImage} alt="프로필 이미지" />1 : 1 채팅하기
-            </ChatButton>
-          </div>
-          <Divider>
-            <InputRow>
+        <form>
+          <ContentWrapper>
+            <div>
+              <ProfilImageWrapper>
+                <img src={profileImage} alt="프로필 이미지" />
+              </ProfilImageWrapper>
+              <ChatButton>
+                <img src={chatImage} alt="프로필 이미지" />1 : 1 채팅하기
+              </ChatButton>
+            </div>
+            <Divider>
+              <InputRow>
+                <InputGroup>
+                  <Label>이름</Label>
+                  <Input type="text" id="patName" value={jobOpening?.patName} readOnly />
+                </InputGroup>
+                <InputGroup>
+                  <Label>나이</Label>
+                  <Input type="text" id="age" value={jobOpening?.patAge} readOnly />
+                </InputGroup>
+              </InputRow>
+              <RadioGroup>
+                <Label>성별</Label>
+                <RadioWrapper checked={currentGender === 'M'}>
+                  {/* checked prop 전달 */}
+                  <input
+                    type="radio"
+                    id="M"
+                    name="gender"
+                    value="M"
+                    checked={currentGender === 'M'} // watch 값으로 제어
+                    {...register('gender')} // register만 남김
+                    readOnly
+                  />
+                  <label htmlFor="M">남성</label>
+                </RadioWrapper>
+                <RadioWrapper checked={currentGender === 'F'}>
+                  {/* checked prop 전달 */}
+                  <input
+                    type="radio"
+                    id="F"
+                    name="gender"
+                    value="F"
+                    checked={currentGender === 'F'} // watch 값으로 제어
+                    {...register('gender')} // register만 남김
+                    readOnly
+                  />
+                  <label htmlFor="F">여성</label>
+                </RadioWrapper>
+              </RadioGroup>
               <InputGroup>
-                <Label>이름</Label>
-                <Input type="text" id="userName" value={jobOpening?.patName} readOnly />
+                <Label>보호자 전화번호</Label>
+                <Input type="text" value={jobOpening?.phone} readOnly />
               </InputGroup>
               <InputGroup>
-                <Label>나이</Label>
-                <Input type="text" id="age" value={jobOpening?.patAge} readOnly />
+                <Label>주소</Label>
+                <Input type="text" id="patAddress" value={jobOpening?.patAddress} readOnly />
               </InputGroup>
-            </InputRow>
-            <RadioGroup>
-              <Label>성별</Label>
-              <RadioWrapper checked={currentGender === 'M'}>
-                {/* checked prop 전달 */}
-                <input
-                  type="radio"
-                  id="M"
-                  name="gender"
-                  value="M"
-                  checked={currentGender === 'M'} // watch 값으로 제어
-                  {...register('gender')} // register만 남김
-                  readOnly
-                />
-                <label htmlFor="M">남성</label>
-              </RadioWrapper>
-              <RadioWrapper checked={currentGender === 'F'}>
-                {/* checked prop 전달 */}
-                <input
-                  type="radio"
-                  id="F"
-                  name="gender"
-                  value="F"
-                  checked={currentGender === 'F'} // watch 값으로 제어
-                  {...register('gender')} // register만 남김
-                  readOnly
-                />
-                <label htmlFor="F">여성</label>
-              </RadioWrapper>
-            </RadioGroup>
-            <InputGroup>
-              <Label>보호자 전화번호</Label>
-              <Input type="text" value={jobOpening?.phone} readOnly />
-            </InputGroup>
-            <InputGroup>
-              <Label>주소</Label>
-              <Input type="text" id="patAddress" value={jobOpening?.patAddress} readOnly />
-            </InputGroup>
-            <InputRow>
-              <InputGroup>
-                <Label>키</Label>
-                <Input type="text" value={jobOpening?.patHeight} readOnly />
-              </InputGroup>
-              <InputGroup>
-                <Label>몸무게</Label>
-                <Input type="text" value={jobOpening?.patWeight} readOnly />
-              </InputGroup>
-            </InputRow>
-          </Divider>
-        </ContentWrapper>
-        <ContentWrapper>
-          <DiseaseGroup>
-            <Label>보유한 질병</Label>
-            <DiseaseInputDiv>
-              <div>치매</div>
-              <div>고혈압</div>
-              <div>당뇨</div>
-            </DiseaseInputDiv>
-          </DiseaseGroup>
-        </ContentWrapper>
-        <HireBottom>
-          <HireBottomTitle>채용 정보</HireBottomTitle>
-        </HireBottom>
-        <ContentWrapper1>
-          <HireContent>
-            <Label>제목</Label>
-            <Input type="text" id="hiring_title" {...register('hiring_title')} />
-            <InputRow>
-              <InputGroup>
-                <Label>지급 금액 (시급)</Label>
-                <Input type="text" id="account" {...register('account')} />
-              </InputGroup>
-              <InputGroup>
-                <Label>시작일</Label>
-                <Input type="date" id="startDate" {...register('startDate')} />
-              </InputGroup>
+              <InputRow>
+                <InputGroup>
+                  <Label>키</Label>
+                  <Input type="text" value={jobOpening?.patHeight} readOnly />
+                </InputGroup>
+                <InputGroup>
+                  <Label>몸무게</Label>
+                  <Input type="text" value={jobOpening?.patWeight} readOnly />
+                </InputGroup>
+              </InputRow>
+            </Divider>
+          </ContentWrapper>
+          <ContentWrapper>
+            <DiseaseGroup>
+              <Label>보유한 질병</Label>
+              <DiseaseInputDiv>
+                <div>치매</div>
+                <div>고혈압</div>
+                <div>당뇨</div>
+              </DiseaseInputDiv>
+            </DiseaseGroup>
+          </ContentWrapper>
+          <HireBottom>
+            <HireBottomTitle>채용 정보</HireBottomTitle>
+          </HireBottom>
+          <ContentWrapper1>
+            <HireContent>
+              <Label>제목</Label>
+              <Input type="text" id="hiring_title" {...register('hiring_title')} />
+              <InputRow>
+                <InputGroup>
+                  <Label>지급 금액 (시급)</Label>
+                  <Input type="text" id="account" {...register('account')} />
+                </InputGroup>
+                <InputGroup>
+                  <Label>시작일</Label>
+                  <Input type="date" id="startDate" {...register('startDate')} />
+                </InputGroup>
 
+                <InputGroup>
+                  <Label>종료일</Label>
+                  <Input type="date" id="endDate" {...register('endDate')} />
+                </InputGroup>
+                <InputGroup>
+                  <Label>모집 인원수 설정</Label>
+                  <Input type="number" id="maxApplicants" {...register('maxApplicants')} />
+                </InputGroup>
+              </InputRow>
+              <Label>내용</Label>
+              <Content type="text" id="hiringContent" {...register('hiringContent')} />
+              <RadioGroup>
+                <Label>숙식 제공 여부</Label>
+                <RadioWrapper>
+                  <input type="radio" id="careStatus" {...register('careStatus')} name="careStatus" />
+                  <label htmlFor="careStatus">0</label>
+                </RadioWrapper>
+                <RadioWrapper>
+                  <input
+                    type="radio"
+                    id="careStatus"
+                    {...register('careStatus')}
+                    name="careStatus"
+                    value="careStatus"
+                    readOnly
+                  />
+                  <label htmlFor="careStatus">X</label>
+                </RadioWrapper>
+              </RadioGroup>
               <InputGroup>
-                <Label>종료일</Label>
-                <Input type="date" id="endDate" {...register('endDate')} />
+                <Label>숙소 정보</Label>
+                {/* 클릭 가능한 div */}
+                <RoomImage>
+                  <Plus />
+                </RoomImage>
+                <input type="file" style={{ display: 'none' }} />
               </InputGroup>
-              <InputGroup>
-                <Label>모집 인원수 설정</Label>
-                <Input type="number" id="maxApplicants" {...register('maxApplicants')} />
-              </InputGroup>
-            </InputRow>
-            <Label>내용</Label>
-            <Content type="text" id="hiringContent" {...register('hiringContent')} />
-            <RadioGroup>
-              <Label>숙식 제공 여부</Label>
-              <RadioWrapper>
-                <input type="radio" id="careStatus" {...register('careStatus')} name="careStatus" />
-                <label htmlFor="careStatus">0</label>
-              </RadioWrapper>
-              <RadioWrapper>
-                <input
-                  type="radio"
-                  id="careStatus"
-                  {...register('careStatus')}
-                  name="careStatus"
-                  value="careStatus"
-                  readOnly
-                />
-                <label htmlFor="careStatus">X</label>
-              </RadioWrapper>
-            </RadioGroup>
-            <InputGroup>
-              <Label>숙소 정보</Label>
-              {/* 클릭 가능한 div */}
-              <RoomImage>
-                <Plus />
-              </RoomImage>
-              <input type="file" style={{ display: 'none' }} />
-            </InputGroup>
-          </HireContent>
-        </ContentWrapper1>
+            </HireContent>
+          </ContentWrapper1>
         </form>
-        <Paging></Paging>
+        {/* <Paging></Paging> */}
         <ButtonGroup>
           <BackButton onClick={() => navigate(-1)}>이전</BackButton>
           <SubmitButton1>신청하기</SubmitButton1>
