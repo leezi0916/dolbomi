@@ -7,7 +7,7 @@ import { ClipLoader } from 'react-spinners';
 import useUserStore from '../store/userStore';
 
 const CreateCommuBoardForm = () => {
-  const userId = useUserStore((state) => state.user?.user_id);
+  const userId = useUserStore((state) => state.user?.userId);
 
   const [error, setError] = useState(null);
   const [communityDetail, setCommunityDetail] = useState([]);
@@ -174,7 +174,7 @@ const TextInput = styled.textarea`
   resize: none;
   margin: 10px;
 `;
-const FileBox = styled.div`
+export const FileBox = styled.div`
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -183,7 +183,7 @@ const FileBox = styled.div`
   padding: 0 10px;
   margin-bottom: 10px;
 `;
-const FileTitle = styled(Left)`
+export const FileTitle = styled(Left)`
   font-size: ${({ theme }) => theme.fontSizes.base};
   font-weight: ${({ theme }) => theme.fontWeights.bold};
   padding: 10px;
