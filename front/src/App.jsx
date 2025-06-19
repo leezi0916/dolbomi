@@ -45,7 +45,11 @@ import MatchToPatient from './pages/MatchToPatient';
 import MatchToCaregiver from './pages/MatchToCaregiver';
 =======
 import HistoryManageMent from './pages/HistoryManageMent';
+<<<<<<< HEAD
 >>>>>>> 2517e43a5489e27f951dc0d74badc5c0c0f27e05
+=======
+import MyWrittenReview from './pages/MyWrittenReview';
+>>>>>>> a95edd5f918d05d8841ddcc9165fff7fc9a0a01c
 
 function AppRoutes() {
   const navigate = useNavigate();
@@ -72,8 +76,13 @@ function AppRoutes() {
           <Route path="/caregiver/guardianSupportBoard" element={<GuardianSupportBoard />} />
 
           <Route path="/caregiver/resumemanagement" element={<ResumeManagement />} />
+<<<<<<< HEAD
           <Route path="/myresume/:resumeNo" element={<MyResume />} />
           <Route path="/caregiver/matchpage" element={<MatchToPatient />} />
+=======
+          <Route path="/caregiver/review" />
+
+>>>>>>> a95edd5f918d05d8841ddcc9165fff7fc9a0a01c
           {/* 보호자 */}
           <Route path="/guardian" element={<GuardianMainPage />} />
           <Route path="/guardian/caregiverlist" element={<CaregiverList />} />
@@ -81,7 +90,11 @@ function AppRoutes() {
           <Route path="/guardian/patient" element={<Patient />} />
           <Route path="/guardian/patient/:id" element={<PatientUpdate />} />
           <Route path="/guardian/patientregisteration" element={<PatientRegisteration />} />
+<<<<<<< HEAD
           <Route path="/guardian/matchpage" element={<MatchToCaregiver />} />
+=======
+          <Route path="/guardian/review" element={<MyWrittenReview />} />
+>>>>>>> a95edd5f918d05d8841ddcc9165fff7fc9a0a01c
           <Route path="/review" element={<ReviewModal />} />
 
           <Route path="/guardian/hireDetail/:hiringNo" element={<HireDetailMine />} />
@@ -113,8 +126,6 @@ function AppRoutes() {
 }
 
 function App() {
-  // const { userStatus } = useUserStore();
-
   return (
     <>
       <ThemeProvider theme={theme}>
