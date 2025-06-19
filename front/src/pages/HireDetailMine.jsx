@@ -64,14 +64,13 @@ const HireDetail = () => {
     <>
       <Wrapper>
         <ImageStack>
-          {/* {proposerList.map((list, index) => (
+       {proposerList.slice(0, 3).map((list, index) => (
             <ProfileImg
               key={index}
               src={list.profileImage}
               style={{ left: `${index * 20}px`, zIndex: proposerList.length - index }}
             />
-          ))} */}
-          <ProfileImg src="/src/assets/images/cargiver.png"></ProfileImg>
+          ))}
         </ImageStack>
 
         <NewTitle>지원현황 {proposerList.length}명</NewTitle>

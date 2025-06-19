@@ -15,8 +15,9 @@ import {
 import useUserStore from '../store/userStore';
 import { hiringService } from '../api/hiring';
 import { useParams } from 'react-router-dom';
-import Supportstatus from '../components/Supportstatus';
+
 import { guardianHiringForm } from '../hooks/guardianHiringForm';
+import Paging from '../components/Paging';
 
 
 const HireDetail = () => {
@@ -54,7 +55,7 @@ const HireDetail = () => {
         <HireHead>
           <HireHeadTitle>돌봄대상자 정보</HireHeadTitle>
         </HireHead>
-        {/* <form > */}
+        <form >
         <ContentWrapper>
           <div>
             <ProfilImageWrapper>
@@ -190,7 +191,8 @@ const HireDetail = () => {
             </InputGroup>
           </HireContent>
         </ContentWrapper1>
-        {/* </form> */}
+        </form>
+        <Paging></Paging>
         <ButtonGroup>
           <BackButton onClick={() => navigate(-1)}>이전</BackButton>
           <SubmitButton1>신청하기</SubmitButton1>
