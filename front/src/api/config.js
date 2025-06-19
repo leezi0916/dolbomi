@@ -41,6 +41,7 @@ export const API_ENDPOINTS = {
 
   RESUME: {
     BASE: '/resume',
+    DETAIL: (resumeNo) => `/resume?resume_no=${resumeNo}`,
     MYRESUME: (userNo) => `resume?user_no=${userNo}`,
   },
 
@@ -65,10 +66,10 @@ export const API_ENDPOINTS = {
 
   CAREGIVERPROPOSER: {
     BASE: '/caregiverproposer',
-    LIST: (job_opening_no) => `/caregiverproposer?caregiverproposer=${job_opening_no}`,
+    LIST: (hiringNo) => `/caregiverproposer?hiring_no=${hiringNo}`,
   },
   PATERPROPOSER: {
-    BASE: '/resume',
-    LIST: (resume_no) => `/patproposer?patproposer=${resume_no}`,
+    BASE: '/patproposer',
+    LIST: (resumeNo) => `/patproposer?resume_no=${resumeNo}`,
   },
 };
