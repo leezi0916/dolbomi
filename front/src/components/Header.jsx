@@ -25,10 +25,13 @@ const Header = () => {
   return (
     <HeaderContainer>
       <HeaderWrapper>
-        <Logo to="/">
-          <img src="/src/assets/mainImg/logo.png" />
-          {SITE_CONFIG.name}
-        </Logo>
+        
+        <Logo to={userStatus? "/":"/caregiver"}>
+        <img src="/src/assets/mainImg/logo.png" />
+        {SITE_CONFIG.name}
+      </Logo>
+      
+
 
         {/* 모바일환경에서의 nav */}
 
@@ -50,21 +53,29 @@ const Header = () => {
 
           <Nav>
             <NavItem to="/products">돌봄대상자 모집</NavItem>
-            <NavItem to="/question">소통</NavItem>
+            <NavItem to="/question">간병사 모집</NavItem>
           </Nav>
         </MobileMenu>
 
         {/* pc환경에서의 nav */}
         <DesktopNav>
           {userStatus ? (
-            <NavItem to="/guardian/caregiverlist">간병사 모집</NavItem>
+            <>
+              <NavItemCenter to="/guardian/caregiverlist">간병사 모집</NavItemCenter>
+              <NavItemCenter to="/community/free">간병게시판</NavItemCenter>
+            </>
           ) : (
-            <NavItem to="/caregiver/hirelist">돌봄대상자 모집</NavItem>
+            <>
+              <NavItemCenter to="/caregiver/hirelist">돌봄대상자 모집</NavItemCenter>
+              <NavItemCenter to="/community/free">돌봄 게시판</NavItemCenter>
+            </>
           )}
 
-          <NavItem to="/community/free">소통</NavItem>
+          <NavItemCenter to="/community/free">1:1 문의</NavItemCenter>
         </DesktopNav>
-        <GridEmptyDiv></GridEmptyDiv>
+        {/* 
+        <GridEmptyDiv></GridEmptyDiv> */}
+
         <DesktopUserMenu>
           <img src="/src/assets/icons/icon_알림.png" alt="" />
           <img src="/src/assets/icons/icon_채팅알림.png" alt="" />
@@ -187,26 +198,26 @@ const HeaderWrapper = styled.div`
   //최소크기
   display: flex;
   justify-content: space-between;
+  margin: 0 auto;
   max-width: 1250px;
   height: 80px;
   position: relative;
 
   ${media.md`
     display: grid;
-    margin: 0 auto;
-    grid-template-columns: 1fr 1fr 1fr 2fr;
+    grid-template-columns: 0.4fr 1fr  1fr;
   `}
   ${media.lg`
-    grid-template-columns: 1fr 1fr 1.5fr 2fr;
+    grid-template-columns: 0.4fr 1fr  1fr;
   `}
 `;
 
-const GridEmptyDiv = styled.div`
-  display: none;
-  ${media.md`
-    display: block;
-  `}
-`;
+// const GridEmptyDiv = styled.div`
+//   display: none;
+//   ${media.md`
+//     display: block;
+//   `}
+// `;
 
 const Logo = styled(Link)`
   display: flex;
@@ -222,7 +233,7 @@ const Logo = styled(Link)`
     margin: 5px;
 
     ${media.md`
-      margin-right: 20px;
+      
   `}
   }
 
@@ -281,6 +292,21 @@ const NavItem = styled(Link)`
 
   ${media.lg`
    font-size: ${({ theme }) => theme.fontSizes.base}; 
+  
+  `}
+`;
+
+const NavItemCenter = styled(Link)`
+  font-size: ${({ theme }) => theme.fontSizes.sm};
+  font-weight: ${({ theme }) => theme.fontWeights.bold};
+
+  &:hover {
+    color: ${({ theme }) => theme.colors.primary};
+  }
+
+  ${media.lg`
+   font-size: ${({ theme }) => theme.fontSizes.lg}; 
+   margin-right : ${({ theme }) => theme.spacing[4]}
   `}
 `;
 
