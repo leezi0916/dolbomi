@@ -50,6 +50,7 @@ export const guardianHiringForm = () => {
     setValue,
     formState: { errors, isSubmitting }, //유효성 에러및 제출중 상태
     watch, // watch 함수를 추가로 가져옵니다.
+    reset
   } = useForm({
     resolver: yupResolver(guardianSchema), // yup스키마와 연결
     mode: 'onChange',
@@ -69,6 +70,7 @@ export const guardianHiringForm = () => {
     errors,
     isSubmitting,
     setValue,
+    reset,
     watch, // watch 함수를 반환합니다.
   };
 };

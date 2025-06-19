@@ -3,47 +3,54 @@ import React, { useEffect, useState } from 'react';
 import { proposerSevice } from '../api/propose.js';
 import useUserStatusStore from '../store/userStatusStore.js';
 import styled from 'styled-components';
-
+import useUserStore from '../store/userStore.js';
+import { useNavigate } from 'react-router-dom';
 
 const Supportstatus = () => {
+  const {user} = useUserStore();
   const [proposerList, setproposerList] = useState([]);
   const { userStatus } = useUserStatusStore();
-
+  const navigator = useNavigate();
 
   useEffect(() => {
     const fetchList = async () => {
+      
+      console.log(userStatus);
+
       if (userStatus) {
-        // 간병인 구직글의 돌봄지원자 지원현황 => 돌봄지원자일때
+        //돌봄대상자ver() : 내 구인서에 대한 간병인지원현황
+        // 매개변수값 : 구인서의 pk를 넘기자
         const getList = await proposerSevice.getguardianLists(1);
         setproposerList(getList);
-        // 돌봄대상자 구인글의 간병인 지원현황 => 간병사일때
+        console.log(getList)
+        
       } else {
+        // 간병인ver : 내 구직서(이력서)에 대한 돌봄대상자지원현황
+        // 매개변수값 : 구직서의 pk를 넘기자
         const getList = await proposerSevice.getcareGiverLists(1);
         setproposerList(getList);
       }
     };
-  
+
     fetchList();
   }, [userStatus]); // ✅ 여기만 의존
 
-
   return (
     <Wrapper>
-    <ImageStack>
-      {proposerList.map((list, index) => (
-        <ProfileImg
-          key={index}
-          src={list.image}
-          style={{ left: `${index * 20}px`, zIndex: proposerList.length - index }}
-        />
-      ))}
-    </ImageStack>
+      <ImageStack>
+        {proposerList.map((list, index) => (
+          <ProfileImg
+            key={index}
+            src={list.profileImage}
+            style={{ left: `${index * 20}px`, zIndex: proposerList.length - index }}
+          />
+        ))}
+      </ImageStack>
 
-    <NewTitle>지원현황 {proposerList.length}명</NewTitle>
-    <ActionButton>확인하기</ActionButton>
-  </Wrapper>
-);
-
+      <NewTitle>지원현황 {proposerList.length}명</NewTitle>
+      <ActionButton  onClick={() => navigator('/supportBorad')}>확인하기</ActionButton>
+    </Wrapper>
+  );
 };
 
 export default Supportstatus;
@@ -53,13 +60,13 @@ const Wrapper = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 20px;
+  padding: 50px;
   gap: 50px;
+  margin: 20px auto;
   margin-top: 30px;
   border: 1px solid ${({ theme }) => theme.colors.gray[5]};
-  box-shadow: ${({ theme }) => theme.shadows.base};
-  
-
+  border-radius: ${({ theme }) => theme.borderRadius.md};
+  box-shadow: ${({ theme }) => theme.shadows.md};
 `;
 
 const ImageStack = styled.div`
@@ -67,7 +74,6 @@ const ImageStack = styled.div`
   height: 50px;
   width: 20%;
   margin-bottom: 16px;
-
 `;
 
 const ProfileImg = styled.img`
@@ -85,15 +91,15 @@ const ProfileImg = styled.img`
 `;
 
 const NewTitle = styled.h2`
-width: 20%;
- font-size: ${({ theme }) => theme.fontSizes['4xl']};
+  width: 20%;
+  font-size: ${({ theme }) => theme.fontSizes['3xl']};
   margin-bottom: 10px;
 `;
 
 const ActionButton = styled.button`
   width: 200px;
 
-  background-color: ${({ theme }) => theme.colors.primary };
+  background-color: ${({ theme }) => theme.colors.primary};
   color: white;
   padding: 10px 20px;
   border-radius: 8px;
@@ -104,4 +110,3 @@ const ActionButton = styled.button`
     opacity: 0.9;
   }
 `;
-
