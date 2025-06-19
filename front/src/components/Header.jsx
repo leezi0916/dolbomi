@@ -9,7 +9,6 @@ import { useNavigate } from 'react-router-dom';
 import useUserStatusStore from '../store/userStatusStore';
 const Header = () => {
   const { user, isAuthenticated } = useUserStore();
-
   const { userStatus, setUserStatus } = useUserStatusStore();
 
   const [isHovering, setIsHovering] = useState(false);
@@ -151,7 +150,7 @@ const Header = () => {
                   리뷰페이지
                 </NavItem>
 
-                <NavItem to="/">
+                <NavItem to="/history-management">
                   <Icon src="/src/assets/icons/icon_매칭관리.png" alt="" />
                   매칭관리
                 </NavItem>

@@ -2,7 +2,8 @@
   "resume": [
     {
       "resume_no": 1,
-      "user_name": "김길동",
+      "user_no": "lkj",
+      "user_name": "이지묵",
       "gender": "F",
       "age": 65,
       "account": 15000,
@@ -75,20 +76,28 @@
       "gender": "F",
       "age": 63,
       "account": 15000,
-      "address": "전북, 전주시",
+      "address": "강원, 속초",
       "license": true,
       "profile_image": "https://i.pinimg.com/736x/19/a1/33/19a133d18c3b0c8b83dea31b159074c1.jpg",
-      "id": "c170"
+      "resume_title": "dsd",
+      "care_status": "Y",
+      "score": "4.5",
+      "id": "54eb"
     },
     {
       "resume_no": 8,
-      "user_name": "장동건",
-      "gender": "M",
-      "age": 61,
-      "account": 16500,
-      "address": "충남, 천안시",
-      "license": false,
-      "profile_image": "https://i.pinimg.com/736x/19/a1/33/19a133d18c3b0c8b83dea31b159074c1.jpg"
+      "user_no": "lkj",
+      "user_name": "이지묵",
+      "gender": "F",
+      "age": 65,
+      "account": 15000,
+      "address": "강원, 속초",
+      "license": true,
+      "profile_image": "https://i.pinimg.com/736x/19/a1/33/19a133d18c3b0c8b83dea31b159074c1.jpg",
+      "resume_title": "dsd",
+      "care_status": "Y",
+      "score": "4.5",
+      "id": "54eb"
     }
   ],
   "hiring": [
@@ -201,6 +210,18 @@
       "name": "김유하",
       "title": "테스트테스트.",
       "create_date": "2025-11-09",
+      "count": "4"
+    }
+  ],
+  "community_detail": [
+    {
+      "no": "1",
+      "board_detail": "낚엿쥬",
+      "id": "84a6"
+    },
+    {
+      "no": "2",
+      "id": "e2c5",
       "count": "4",
       "board_detail": "테스트 중입니당",
       "src": [
@@ -211,7 +232,7 @@
   "users": [
     {
       "user_no": 1,
-      "id": "ac77",
+      "id": 1,
       "user_id": "admin",
       "user_pwd": "a1234",
       "user_name": "이지묵",
@@ -223,7 +244,7 @@
     },
     {
       "user_no": 1,
-      "id": "5b3b",
+      "id": 2,
       "user_id": "user01",
       "user_pwd": "pass01",
       "user_name": "관리자",
@@ -246,7 +267,7 @@
       ]
     },
     {
-      "id": "2170",
+      "id": 3,
       "user_id": "dbgk9311",
       "user_pwd": "dbgk9311",
       "user_name": "유하",
@@ -269,9 +290,6 @@
       "email": "user0@naver.com"
     },
     {
-      "id": "3090"
-    },
-    {
       "id": "00ca",
       "email": "a@a.com",
       "address": "서울시관악구",
@@ -283,15 +301,39 @@
       "user_id": "wlstjr2001"
     },
     {
-      "id": "7f4e",
-      "email": "aa@a.com",
-      "address": "서울시관악",
-      "phone": "01012341234",
+      "id": "9289",
+      "email": "leezi0916@naver.com",
+      "address": "별내동ㅇㄹㄴㅁㄹㅇㄴㅁ",
+      "phone": "01083281182",
       "gender": "M",
-      "age": 21,
-      "user_pwd": "qwe213",
-      "user_name": "김김김",
-      "user_id": "wlstjr2001"
+      "age": 26,
+      "user_pwd": "wlanr1506!",
+      "user_name": "이지묵",
+      "user_id": "leezi0916",
+      "user_no": "lkj",
+      "licenses": [
+        {
+          "license_name": "기사 자격증",
+          "license_publisher": "경찰청",
+          "license_date": "2025-05-10"
+        },
+        {
+          "license_name": "기사 자격증",
+          "license_publisher": "경찰청",
+          "license_date": "2025-05-10"
+        }
+      ]
+    },
+    {
+      "id": "fef9",
+      "email": "a@a.com",
+      "address": "서울시관악",
+      "phone": "01011112222",
+      "gender": "M",
+      "age": 12,
+      "user_pwd": "qwe123",
+      "user_name": "김진만",
+      "user_id": "qwe123"
     }
   ],
   "reviews": [
