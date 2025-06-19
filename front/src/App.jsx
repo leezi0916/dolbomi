@@ -96,7 +96,7 @@ function AppRoutes() {
 
 
           <Route path="/hireDetail/:hiringNo" element={<HireDetail />} />
-=
+
           <Route path="/resumeDetail/:resumeNo" element={<ResumeDetail />} />
           <Route path="/report/:patNo" element={<ReportMain />} />
           <Route path="/report/:patNo/detail/:reportNo" element={<ReportDetail />} />

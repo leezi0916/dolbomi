@@ -550,6 +550,20 @@
       "address": "전북, 전주시",
       "license": true,
       "profile_image": "/src/assets/profileImg/img_간병인.png"
+    },
+    {
+      "id": 4,
+      "propposer_no": 4,
+      "hiring_no": 1,
+      "caregiver_no": 1,
+      "status": "W",
+      "user_name": "송가인",
+      "gender": "F",
+      "age": 63,
+      "account": 15000,
+      "address": "전북, 전주시",
+      "license": true,
+      "profile_image": "/src/assets/profileImg/img_간병인.png"
     }
   ],
   "patproposer": [
