@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Container, Section } from '../styles/common/Container';
 import profileImage from '../assets/images/cargiver.png'; // 프로필 이미지 경로
 import styled from 'styled-components';
@@ -6,157 +6,253 @@ import { Input, InputGroup, Title } from '../styles/Auth.styles';
 import { media } from '../styles/MediaQueries';
 import { SubmitButton } from '../styles/common/Button';
 
-import { useParams } from 'react-router-dom';
-import { FaPlus } from 'react-icons/fa6';
-import chatImage from '../assets/icons/icon_채팅아이콘.png'; // 채팅 이미지 경로
 import { useResumeForm } from '../hooks/useResumeForm';
-<<<<<<< HEAD
+import { useParams } from 'react-router-dom';
+import { proposerSevice } from '../api/propose';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-function ResumeDetail() {
-  const navigate = useNavigate();
-  const [activeTab, setActiveTab] = useState('info');
+import useUserStore from '../store/userStore';
+import { resumeService } from '../api/resume';
 
-  const handleTabChange = (tab) => {
-    setActiveTab(tab);
-  };
-=======
-import Paging from '../components/Paging';
-import { useNavigate } from 'react-router-dom';
+const ResumeDetailMine = () => {
+  const {user} = useUserStore();
+  const {
+    register,
+    handleSubmit,
+    errors,
+    licenseList,
+    handleLicenseChange,
+  } = useResumeForm();
 
-function ResumeDetail() {
-  const navigate = useNavigate();
-  const { resumeNo } = useParams();
-  const { register, handleSubmit, errors, licenseList, handleLicenseChange, user } = useResumeForm();
->>>>>>> 2517e43a5489e27f951dc0d74badc5c0c0f27e05
+  const {resumeNo} = useParams();
+  const [proposerList, setproposerList] = useState([]);
+  const navigate = useNavigate(); 
+
+  useEffect(() => {
+    if (!user) {
+      alert('로그인 후 이용해주세요');
+      // navigate('/guardian');
+    }
+    
+    // 이력서의 번호로 가져온다 (resumeNo)
+     const getResume = async () => {
+      const getOneResum = await 
+      resumeService.getOneResumeById(1);
+      console.log(getOneResum);
+
+     }
+
+   // 구인글을 가져온다. => 신청테이블에서 이력서의 번호로(resumeNo) 구인글을 가져온다
+    const getList = async () => {
+      const list = await proposerSevice.getguardianLists(1);
+      setproposerList(list);
+    };
+    getList();
+  }, [user]);
+
   return (
+    <>
+      <Wrapper>
+        <ImageStack>
+           {proposerList.slice(0, 3).map((list, index) => (
+            
+            <ProfileImg
+              key={index}
+              src={list.profileImage}
+              style={{ left: `${index * 20}px`, zIndex: proposerList.length - index }}
+            />
+          ))} 
+
+        </ImageStack>
+
+        <NewTitle>지원현황 {proposerList.length}명</NewTitle>
+        <ActionButton type='button' onClick={() => navigate('/caregiver/guardianSupportBoard')}>확인하기</ActionButton>
+      </Wrapper>
+ 
     <HireRegistSection>
       <HireContainer>
         <HireHead>
-          <HireHeadTitle>간병사 정보</HireHeadTitle>
+          <HireHeadTitle>이력서</HireHeadTitle>
         </HireHead>
 
-        {/* <form onSubmit={handleSubmit}> */}
-        <ContentWrapper>
-          <div>
-            <ProfilImageWrapper>
-              <img src={profileImage} alt="프로필 이미지" />
-            </ProfilImageWrapper>
-            <ChatButton>
-              <img src={chatImage} alt="프로필 이미지" />1 : 1 채팅하기
-            </ChatButton>
-          </div>
-          <Divider>
-            <InputRow>
+        <form onSubmit={handleSubmit}>
+          <ContentWrapper>
+            <div>
+              <ProfilImageWrapper>
+                <img src={profileImage} alt="프로필 이미지" />
+              </ProfilImageWrapper>
+            </div>
+            <Divider>
+              <InputRow>
+                <InputGroup>
+                  <Label>이름</Label>
+                  <Input type="text" value={user?.userName || ''} readOnly />
+                </InputGroup>
+                <InputGroup>
+                  <Label>나이</Label>
+                  <Input type="text" value={user?.age || ''} readOnly />
+                </InputGroup>
+              </InputRow>
+              <RadioGroup>
+                <Label>성별</Label>
+                <RadioWrapper>
+                  <input type="radio" id="male" name="gender" value="M" checked={user?.gender === 'M'} readOnly />
+                  <label htmlFor="male">남성</label>
+                </RadioWrapper>
+                <RadioWrapper>
+                  <input type="radio" id="female" name="gender" value="F" checked={user?.gender === 'F'} readOnly />
+                  <label htmlFor="female">여성</label>
+                </RadioWrapper>
+              </RadioGroup>
               <InputGroup>
-                <Label>이름</Label>
-                <Input type="text" value={'김지원'} readOnly />
+                <Label>전화번호</Label>
+                <Input type="text" value={user?.phone || ''} readOnly />
               </InputGroup>
               <InputGroup>
-                <Label>나이</Label>
-                <Input type="text" value={'35'} readOnly />
+                <Label>주소</Label>
+                <Input type="text" value={user?.address || ''} readOnly />
               </InputGroup>
-            </InputRow>
-            <RadioGroup>
-              <Label>성별</Label>
-              <RadioWrapper>
-                <input type="radio" id="male" name="gender" value="M" readOnly />
-                <label htmlFor="male">남성</label>
-              </RadioWrapper>
-              <RadioWrapper>
-                <input type="radio" id="female" name="gender" value="F" readOnly />
-                <label htmlFor="female">여성</label>
-              </RadioWrapper>
-            </RadioGroup>
-            <InputGroup>
-              <Label>전화번호</Label>
-              <Input type="text" value={'010111111111'} readOnly />
-            </InputGroup>
-            <InputGroup>
-              <Label>주소</Label>
-              <Input type="text" value={'강원도 강릉시 ~~~'} readOnly />
-            </InputGroup>
-          </Divider>
-        </ContentWrapper>
+            </Divider>
+          </ContentWrapper>
+          <input type="hidden" {...register('licenseList')}></input>
+          {licenseList.map((license, index) => (
+            <ContentWrapper2>
+              <LicenseGroup>
+                <Label>자격증 명</Label>
+                <LicenseInput
+                  type="text"
+                  value={license.licenseName}
+                  onChange={(e) => handleLicenseChange(index, 'licenseName', e.target.value)}
+                />
+              </LicenseGroup>
+              <LicenseGroup>
+                <Label>발행처</Label>
+                <LicenseInput
+                  type="text"
+                  value={license.licensePublisher}
+                  onChange={(e) => handleLicenseChange(index, 'licensePublisher', e.target.value)}
+                />
+              </LicenseGroup>
+              <LicenseGroup>
+                <Label>발행일</Label>
+                <LicenseInput
+                  type="date"
+                  value={license.licenseDate}
+                  onChange={(e) => handleLicenseChange(index, 'licenseDate', e.target.value)}
+                />
+              </LicenseGroup>
+            </ContentWrapper2>
+          ))}
 
-        <ContentWrapper2>
-          <LicenseGroup>
-            <Label>자격증 명</Label>
-            <LicenseInput type="text" value={'운전면허증'} readOnly />
-          </LicenseGroup>
-          <LicenseGroup>
-            <Label>발행처</Label>
-            <LicenseInput type="text" value={'서울시청'} readOnly />
-          </LicenseGroup>
-          <LicenseGroup>
-            <Label>발행일</Label>
-            <LicenseInput type="date" value={'2025-12-20'} readOnly />
-          </LicenseGroup>
-        </ContentWrapper2>
-
-        <HireBottom>
-          <HireBottomTitle onClick={() => handleTabChange('info')} active={activeTab === 'info'}>
-            지원 정보
-          </HireBottomTitle>
-
-          <HireBottomTitle onClick={() => handleTabChange('review')} active={activeTab === 'review'}>
-            리뷰
-          </HireBottomTitle>
-        </HireBottom>
-        {activeTab === 'info' && (
+          <HireBottom>
+            <HireBottomTitle>채용 정보</HireBottomTitle>
+          </HireBottom>
           <ContentWrapper1>
             <HireContent>
               <Label>제목</Label>
-              <Input value={'지원합니다'} readOnly />
-
+              <Input {...register('resumeTitle')} placeholder="제목" />
+              <p>{errors.resumeTitle?.message}</p>
               <Label>내용</Label>
-              <Content value={'지원합니다'} readOnly />
-
+              <Content {...register('resumeContent')} placeholder="내용" />
+              <p>{errors.resumeContent?.message}</p>
               <RadioGroup>
                 <RadioContainer>
                   <Label>숙식 가능</Label>
                   <RadioWrapper>
-                    <input type="radio" value="Y" checked readOnly />
+                    <input type="radio" value="Y" {...register('provide_Hope')} />
                   </RadioWrapper>
                   <Label>숙식 불가</Label>
                   <RadioWrapper>
-                    <input type="radio" value="N" readOnly />
+                    <input type="radio" value="N" {...register('provide_Hope')} />
                   </RadioWrapper>
+                  <p>{errors.provide_hope?.message}</p>
                 </RadioContainer>
                 <AccountGroup>
                   <InputGroup>
                     <Label>희망 금액</Label>
-                    <Input value={'12000'} readOnly />
+                    <Input {...register('desiredAccount')} placeholder="희망 금액" />
+                    <p>{errors.desiredAccount?.message}</p>
                   </InputGroup>
                 </AccountGroup>
               </RadioGroup>
             </HireContent>
           </ContentWrapper1>
-<<<<<<< HEAD
-        )}
-
-        {activeTab === 'review' && <ContentWrapper1>리뷰 내용입니다 (예: 별점, 텍스트 등)</ContentWrapper1>}
-
-        <ButtonGroup>
-          <BackButton onClick={() => navigate(-1)}>이전</BackButton>
-          <SubmitButton1 type="submit">신청하기</SubmitButton1>
-        </ButtonGroup>
-        {/* </form> */}
-=======
-          <Paging></Paging>
 
           <ButtonGroup>
             <BackButton>이전</BackButton>
-            <SubmitButton1 type="submit">삭제하기</SubmitButton1>
-            <SubmitButton1 type="submit" onClick={() => navigate(`/`)}>수정하기</SubmitButton1>
+            <SubmitButton1 type="submit">모집종료</SubmitButton1>
+            <SubmitButton1 type="button" >수정/삭제하기</SubmitButton1>
           </ButtonGroup>
+          
         </form>
->>>>>>> 2517e43a5489e27f951dc0d74badc5c0c0f27e05
       </HireContainer>
     </HireRegistSection>
+    </>
   );
-}
+};
+
+/* ======== 지원자 현황  ========*/
+const Wrapper = styled.div`
+  width: 80%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 50px;
+  gap: 50px;
+  margin: 20px auto;
+  margin-top: 30px;
+  border: 1px solid ${({ theme }) => theme.colors.gray[5]};
+  border-radius: ${({ theme }) => theme.borderRadius.md};
+  box-shadow: ${({ theme }) => theme.shadows.md};
+`;
+const ImageStack = styled.div`
+  position: relative;
+  height: 50px;
+  width: 20%;
+  margin-bottom: 16px;
+`;
+
+const ProfileImg = styled.img`
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  object-fit: cover;
+  position: absolute;
+  border: 2px solid white;
+  transition: transform 0.2s;
+
+  &:hover {
+    transform: scale(1.05);
+  } 
+
+ 
+    
+`;
+
+/* ======== main   ========*/
 
 const HireRegistSection = styled(Section)``;
+const NewTitle = styled.h2`
+  width: 20%;
+  font-size: ${({ theme }) => theme.fontSizes['3xl']};
+  margin-bottom: 10px;
+`;
+
+const ActionButton = styled.button`
+  width: 200px;
+
+  background-color: ${({ theme }) => theme.colors.primary};
+  color: white;
+  padding: 10px 20px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+
+  &:hover {
+    opacity: 0.9;
+  }
+`;
+
 
 const HireContainer = styled(Container)`
   width: 80%;
@@ -186,11 +282,10 @@ const ContentWrapper = styled.div`
   gap: ${({ theme }) => theme.spacing[6]}; /* 이미지와 입력 필드 그룹 사이 간격 */
   justify-content: space-around;
   ${media.md`
-
-flex-direction: row;
-padding: ${({ theme }) => theme.spacing[8]}; /* 큰 화면에서 패딩 증가 */
-gap: ${({ theme }) => theme.spacing[10]}; /* 큰 화면에서 간격 증가 */
-`}
+    flex-direction: row;
+    padding: ${({ theme }) => theme.spacing[8]}; /* 큰 화면에서 패딩 증가 */
+    gap: ${({ theme }) => theme.spacing[10]}; /* 큰 화면에서 간격 증가 */
+  `}
 `;
 
 const ProfilImageWrapper = styled.div`
@@ -212,11 +307,10 @@ const ProfilImageWrapper = styled.div`
   }
 
   ${media.md`
-
-width: 200px;
-height: 200px;
-align-self: flex-start; /* 큰 화면에서는 상단 정렬 */
-`}
+    width: 200px;
+    height: 200px;
+    align-self: flex-start; /* 큰 화면에서는 상단 정렬 */
+  `}
 `;
 
 const InputRow = styled.div`
@@ -225,9 +319,9 @@ const InputRow = styled.div`
   gap: ${({ theme }) => theme.spacing[5]};
 
   ${media.md`
-
-flex-direction: row;
-`}
+    
+    flex-direction: row;
+  `}
 `;
 
 const Label = styled.label`
@@ -305,8 +399,6 @@ const HireBottom = styled.div`
 `;
 const HireBottomTitle = styled(Title)`
   margin: 0;
-  color: ${({ active, theme }) => (active ? theme.colors.black1 : theme.colors.gray[3])};
-  cursor: pointer;
 `;
 
 const HireContent = styled.div`
@@ -323,11 +415,10 @@ const ContentWrapper1 = styled.div`
   gap: ${({ theme }) => theme.spacing[6]}; /* 이미지와 입력 필드 그룹 사이 간격 */
   justify-content: space-around;
   ${media.md`
-
-flex-direction: row;
-padding: ${({ theme }) => theme.spacing[6]}; /* 큰 화면에서 패딩 증가 */
-gap: ${({ theme }) => theme.spacing[10]}; /* 큰 화면에서 간격 증가 */
-`}
+    flex-direction: row;
+    padding: ${({ theme }) => theme.spacing[6]}; /* 큰 화면에서 패딩 증가 */
+    gap: ${({ theme }) => theme.spacing[10]}; /* 큰 화면에서 간격 증가 */
+  `}
 `;
 
 const Content = styled.textarea`
@@ -344,11 +435,9 @@ const Content = styled.textarea`
 const ButtonGroup = styled.div`
   display: flex;
   width: 100%;
-  max-width: 800px;
-  justify-content: center;
+  padding: 64px;
   gap: ${({ theme }) => theme.spacing[3]};
-  margin: 0 auto;
-  padding: ${({ theme }) => theme.spacing[8]} 0;
+  justify-content: center;
 `;
 
 const BackButton = styled.button`
@@ -385,11 +474,10 @@ const ContentWrapper2 = styled.div`
   width: 100%;
   margin: 0 auto;
   ${media.md`
-
-flex-direction: row; 
-gap: ${({ theme }) => theme.spacing[5]};
-padding : ${({ theme }) => theme.spacing[3]};
-`}
+    flex-direction: row; 
+    gap: ${({ theme }) => theme.spacing[5]};
+    padding : ${({ theme }) => theme.spacing[3]};
+  `}
 `;
 
 //변경(contentWrapper2 -> gridWrapper)인혜작성
@@ -401,12 +489,11 @@ const GridWrapper = styled.div`
   padding-top: ${({ theme }) => theme.spacing[3]};
 
   ${media.lg`
-
-display: grid;
-grid-template-columns: repeat(5,1fr);
-justify-content: center;
-gap: 4px;
-`}
+  display: grid;
+  grid-template-columns: repeat(5,1fr);
+  justify-content: center;
+  gap: 4px;
+  `}
 `;
 
 //인혜작성 시간나면 고치자
@@ -439,17 +526,14 @@ const LicenseAdd = styled.button`
 
   // 인혜 작성(반응형)
   ${media.lg`
-<<<<<<< HEAD
-
-=======
->>>>>>> 2517e43a5489e27f951dc0d74badc5c0c0f27e05
-span {
-width: 50px;
-}
-padding: 0;
-background-color:white; 
-margin-top: ${({ theme }) => theme.spacing[6]};
-`}
+  with
+  span {
+    width: 50px;
+  }
+  padding: 0;
+  background-color:white; 
+  margin-top: ${({ theme }) => theme.spacing[6]};
+  `}
 `;
 
 const LicenseDelete = styled.button`
@@ -462,34 +546,4 @@ const LicenseDelete = styled.button`
   padding: 0;
   margin-top: ${({ theme }) => theme.spacing[6]};
 `;
-const ChatButton = styled.button`
-  border: 1px solid ${({ theme, $error }) => ($error ? theme.colors.error : theme.colors.gray[5])};
-  border-radius: ${({ theme }) => theme.borderRadius.sm};
-  width: 25%;
-  font-size: ${({ theme }) => theme.fontSizes.md};
-  font-weight: ${({ theme }) => theme.fontWeights.medium};
-  margin-top: ${({ theme }) => theme.spacing[6]};
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: ${({ theme }) => theme.spacing[2]};
-  img {
-    width: 33px;
-    height: 33px;
-  }
-`;
-
-const TabsWrapper = styled.div`
-  font-size: ${({ theme }) => theme.fontSizes.xl};
-  margin: ${({ theme }) => theme.spacing[3]} 0 ${({ theme }) => theme.spacing[5]};
-`;
-
-const Tab = styled.span`
-  font-weight: ${({ active, theme }) => (active ? theme.fontWeights.bold : theme.fontWeights.regular)};
-  color: ${({ active, theme }) => (active ? theme.colors.black1 : theme.colors.gray[3])};
-  cursor: pointer;
-  margin: 0 ${({ theme }) => theme.spacing[1]};
-`;
-
-export default ResumeDetail;
+export default ResumeDetailMine;

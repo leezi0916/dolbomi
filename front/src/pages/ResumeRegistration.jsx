@@ -13,14 +13,13 @@ const ResumeRegistration = () => {
   const {
     register,
     handleSubmit,
-
     errors,
     licenseList,
     handleLicenseChange,
-
     user,
   } = useResumeForm();
-  console.log(user);
+
+
   return (
     <HireRegistSection>
       <HireContainer>
