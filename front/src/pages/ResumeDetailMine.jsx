@@ -54,15 +54,15 @@ const ResumeDetailMine = () => {
     <>
       <Wrapper>
         <ImageStack>
-          {/* {proposerList.map((list, index) => (
+           {proposerList.slice(0, 3).map((list, index) => (
             
             <ProfileImg
               key={index}
               src={list.profileImage}
               style={{ left: `${index * 20}px`, zIndex: proposerList.length - index }}
             />
-          ))} */}
-          <ProfileImg src="/src/assets/images/pat.png"></ProfileImg>
+          ))} 
+
         </ImageStack>
 
         <NewTitle>지원현황 {proposerList.length}명</NewTitle>
@@ -180,8 +180,10 @@ const ResumeDetailMine = () => {
 
           <ButtonGroup>
             <BackButton>이전</BackButton>
-            <SubmitButton1 type="submit">저장하기</SubmitButton1>
+            <SubmitButton1 type="submit">모집종료</SubmitButton1>
+            <SubmitButton1 type="button" >수정/삭제하기</SubmitButton1>
           </ButtonGroup>
+          
         </form>
       </HireContainer>
     </HireRegistSection>
@@ -190,7 +192,6 @@ const ResumeDetailMine = () => {
 };
 
 /* ======== 지원자 현황  ========*/
-
 const Wrapper = styled.div`
   width: 80%;
   display: flex;

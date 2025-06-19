@@ -1,6 +1,6 @@
 import React from 'react';
 import { Container, Section } from '../styles/common/Container';
-import profileImage from '../assets/images/pat.png'; // 프로필 이미지 경로
+import profileImage from '../assets/images/cargiver.png'; // 프로필 이미지 경로
 import styled from 'styled-components';
 import { Input, InputGroup, Title } from '../styles/Auth.styles';
 import { media } from '../styles/MediaQueries';
@@ -10,7 +10,11 @@ import { useParams } from 'react-router-dom';
 import { FaPlus } from 'react-icons/fa6';
 
 import { useResumeForm } from '../hooks/useResumeForm';
+import Paging from '../components/Paging';
+import { useNavigate } from 'react-router-dom';
+
 function ResumeDetail() {
+  const navigate = useNavigate();
   const { resumeNo } = useParams();
   const { register, handleSubmit, errors, licenseList, handleLicenseChange, user } = useResumeForm();
   return (
@@ -120,11 +124,12 @@ function ResumeDetail() {
               </RadioGroup>
             </HireContent>
           </ContentWrapper1>
+          <Paging></Paging>
 
           <ButtonGroup>
             <BackButton>이전</BackButton>
             <SubmitButton1 type="submit">삭제하기</SubmitButton1>
-            <SubmitButton1 type="submit">수정하기</SubmitButton1>
+            <SubmitButton1 type="submit" onClick={() => navigate(`/`)}>수정하기</SubmitButton1>
           </ButtonGroup>
         </form>
       </HireContainer>
