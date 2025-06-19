@@ -5,6 +5,7 @@ import { toast } from 'react-toastify';
 import { ClipLoader } from 'react-spinners';
 import styled from 'styled-components';
 import useUserStore from '../store/userStore';
+import Paging from '../components/Paging';
 
 const CommunityBoard = () => {
   const userId = useUserStore((state) => state.user?.userId);
@@ -12,6 +13,23 @@ const CommunityBoard = () => {
   const [error, setError] = useState(null);
   const [communityList, setCommunityList] = useState([]);
   const [loading, setLoading] = useState(true);
+
+  const [currentPage, setCurrentPage] = useState(1);
+  const ITEMS_PER_PAGE = 10;
+  const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+  const endIndex = startIndex + ITEMS_PER_PAGE;
+  const currentList = communityList.slice(startIndex, endIndex);
+  const totalPage = Math.ceil(communityList.length / ITEMS_PER_PAGE);
+
+  const chagneCurrentPage = (value) => {
+    setCurrentPage(value);
+  };
+
+  const [sortOption, setSortOption] = useState('');
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }, [currentPage]);
 
   useEffect(() => {
     const loadCommunity = async () => {
@@ -55,12 +73,12 @@ const CommunityBoard = () => {
         <BoardTop>
           <Left>총 {communityList.length}건</Left>
           <Right>
-            <Drop>
-              <option value="" disabled selected hidden>
+            <Drop value={sortOption} onChange={(e) => setSortOption(e.target.value)}>
+              <option value="" disabled hidden>
                 -- 작성일순/조회순 --
               </option>
-              <option value="">작성일</option>
-              <option value="">조회순</option>
+              <option value="date">작성일</option>
+              <option value="views">조회순</option>
             </Drop>
             <Input type="text" />
             <SearchBtn>검색</SearchBtn>
@@ -74,7 +92,7 @@ const CommunityBoard = () => {
           <div>작성 일자</div>
           <div>조회수</div>
         </BoardItemTop>
-        {communityList.map((community) => (
+        {currentList.map((community) => (
           <BoardItem key={community.no} to={`/community/free/detail/${community.no}`}>
             <div>{community.no}</div>
             <div>{community.title}</div>
@@ -84,6 +102,7 @@ const CommunityBoard = () => {
           </BoardItem>
         ))}
         <BorderDiv></BorderDiv>
+        <Paging totalPage={totalPage} currentPage={currentPage} chagneCurrentPage={chagneCurrentPage} />
       </PageInfo>
     </Page>
   );
