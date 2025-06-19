@@ -15,8 +15,9 @@ import {
 import useUserStore from '../store/userStore';
 import { hiringService } from '../api/hiring';
 import { useParams } from 'react-router-dom';
+import Supportstatus from '../components/Supportstatus';
+import { guardianHiringForm } from '../hooks/guardianHiringForm';
 
-import {guardianHiringForm }from '../hooks/guardianHiringForm';
 
 const HireDetail = () => {
   const navigate = useNavigate();
@@ -30,8 +31,8 @@ const HireDetail = () => {
 
   //수정중
   useEffect(() => {
-    console.log(user)
-    
+    console.log(user);
+
     if (!user) {
       alert('로그인 후 이용해주세요');
       // navigate('/guardian');
@@ -45,7 +46,6 @@ const HireDetail = () => {
 
     getJobOpening();
   }, [user]);
-
 
 
   return (
@@ -68,17 +68,16 @@ const HireDetail = () => {
             <InputRow>
               <InputGroup>
                 <Label>이름</Label>
-                <Input type="text" id="userName" value={jobOpening?.userName} readOnly />
+                <Input type="text" id="userName" value={jobOpening?.patName} readOnly />
               </InputGroup>
               <InputGroup>
                 <Label>나이</Label>
-                <Input type="text" id="age"  readOnly />
+                <Input type="text" id="age" value={jobOpening?.patAge} readOnly />
               </InputGroup>
             </InputRow>
             <RadioGroup>
-            <Label>성별</Label>
+              <Label>성별</Label>
               <RadioWrapper checked={currentGender === 'M'}>
-                {' '}
                 {/* checked prop 전달 */}
                 <input
                   type="radio"
@@ -104,24 +103,23 @@ const HireDetail = () => {
                 />
                 <label htmlFor="F">여성</label>
               </RadioWrapper>
-
             </RadioGroup>
             <InputGroup>
               <Label>보호자 전화번호</Label>
-              <Input type="text"  readOnly />
+              <Input type="text" value={jobOpening?.phone} readOnly />
             </InputGroup>
             <InputGroup>
               <Label>주소</Label>
-              <Input type="text" id='address'value={'address'}readOnly />
+              <Input type="text" id="patAddress" value={jobOpening?.patAddress} readOnly />
             </InputGroup>
             <InputRow>
               <InputGroup>
                 <Label>키</Label>
-                <Input type="text" value={'pat'} readOnly />
+                <Input type="text" value={jobOpening?.patHeight} readOnly />
               </InputGroup>
               <InputGroup>
                 <Label>몸무게</Label>
-                <Input type="text" value={''} readOnly />
+                <Input type="text" value={jobOpening?.patWeight} readOnly />
               </InputGroup>
             </InputRow>
           </Divider>
@@ -142,7 +140,7 @@ const HireDetail = () => {
         <ContentWrapper1>
           <HireContent>
             <Label>제목</Label>
-            <Input type="text" id="title" {...register('title')}/>
+            <Input type="text" id="hiring_title" {...register('hiring_title')} />
             <InputRow>
               <InputGroup>
                 <Label>지급 금액 (시급)</Label>
@@ -150,7 +148,7 @@ const HireDetail = () => {
               </InputGroup>
               <InputGroup>
                 <Label>시작일</Label>
-                <Input type="date" id="startDate" {...register('startDate')}  />
+                <Input type="date" id="startDate" {...register('startDate')} />
               </InputGroup>
 
               <InputGroup>
@@ -163,16 +161,23 @@ const HireDetail = () => {
               </InputGroup>
             </InputRow>
             <Label>내용</Label>
-            <Content type="text" id="content" {...register('content')}/>
+            <Content type="text" id="hiringContent" {...register('hiringContent')} />
             <RadioGroup>
               <Label>숙식 제공 여부</Label>
               <RadioWrapper>
-                <input type="radio" id="care_status" {...register('careStatus')} name="care_status"   />
-                <label htmlFor="care_status">0</label>
+                <input type="radio" id="careStatus" {...register('careStatus')} name="careStatus" />
+                <label htmlFor="careStatus">0</label>
               </RadioWrapper>
               <RadioWrapper>
-                <input type="radio" id="care_status" {...register('careStatus')} name="care_status"  value="care_status" readOnly />
-                <label htmlFor="care_status">X</label>
+                <input
+                  type="radio"
+                  id="careStatus"
+                  {...register('careStatus')}
+                  name="careStatus"
+                  value="careStatus"
+                  readOnly
+                />
+                <label htmlFor="careStatus">X</label>
               </RadioWrapper>
             </RadioGroup>
             <InputGroup>

@@ -22,14 +22,14 @@ const Login = () => {
   return (
     <AuthContainer>
       <LoginSection>
-        <LoginTitle>로그인</LoginTitle>
+        <LoginTitle>{/* 로그인 */}</LoginTitle>
         <LogoWrap>
           <LogoImg src="logo.png" />
           <LogoImg src="dolbomi.png" />
         </LogoWrap>
         <LoginInputContainer>
-          <form onSubmit={handleSubmit(onSubmit)}>
-            <InputGroup>
+          <LoginForm onSubmit={handleSubmit(onSubmit)}>
+            <LoginInputGroup>
               <LoginLabel htmlFor="userId">아이디</LoginLabel>
               <InputWrapper>
                 <Icon src="/src/assets/icons/icon_아이디.png" alt="" />
@@ -42,8 +42,8 @@ const Login = () => {
                 />
               </InputWrapper>
               {errors.userId && <ErrorMessage>{errors.userId.message}</ErrorMessage>}
-            </InputGroup>
-            <InputGroup>
+            </LoginInputGroup>
+            <LoginInputGroup>
               <LoginLabel htmlFor="userPwd">비밀번호</LoginLabel>
               <InputWrapper>
                 <Icon src="/src/assets/icons/icon_비밀번호.png" alt="" />
@@ -56,7 +56,7 @@ const Login = () => {
                 />
               </InputWrapper>
               {errors.userPwd && <ErrorMessage>{errors.userPwd.message}</ErrorMessage>}
-            </InputGroup>
+            </LoginInputGroup>
             <LoginButtonGroup>
               <Button type="submit" disabled={isLoading}>
                 {isLoading ? '로그인 중...' : '로그인'}
@@ -74,14 +74,14 @@ const Login = () => {
             <GoogleLogoContainer>
               <GoogleLogo />
             </GoogleLogoContainer>
-          </form>
+          </LoginForm>
         </LoginInputContainer>
       </LoginSection>
     </AuthContainer>
   );
 };
 const LoginTitle = styled(Title)`
-  font-size: ${({ theme }) => theme.fontSizes['4xl']};
+  /* font-size: ${({ theme }) => theme.fontSizes['4xl']}; */
 `;
 
 const LoginSection = styled.div`
@@ -91,6 +91,12 @@ const LoginSection = styled.div`
   background-color: white;
   box-shadow: ${({ theme }) => theme.shadows.base};
   padding: ${({ theme }) => theme.spacing[8]};
+`;
+
+const LoginForm = styled.form`
+  display: flex;
+  flex-direction: column;
+  gap: ${({ theme }) => theme.spacing[5]};
 `;
 
 const LogoImg = styled.img`
@@ -105,8 +111,12 @@ const LogoWrap = styled.div`
   padding-bottom: ${({ theme }) => theme.spacing[8]};
 `;
 
+const LoginInputGroup = styled(InputGroup)`
+  gap: ${({ theme }) => theme.spacing[2]};
+`;
+
 const LoginLabel = styled(Label)`
-  font-size: ${({ theme }) => theme.fontSizes['2xl']};
+  font-size: ${({ theme }) => theme.fontSizes.xl};
   font-weight: ${({ theme }) => theme.fontWeights.bold};
 `;
 
@@ -131,7 +141,7 @@ const GoogleLogo = styled(FcGoogle)`
   height: 70px;
   border: 1px solid ${({ theme }) => theme.colors.gray[500]};
   border-radius: 100%;
-  padding: 10px;
+  padding: ${({ theme }) => theme.spacing[3]};
 `;
 
 const GoogleLogoContainer = styled.div`

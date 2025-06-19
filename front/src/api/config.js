@@ -17,7 +17,7 @@ export const API_ENDPOINTS = {
   // },
   COMMUNITY: {
     BASE: '/community', // 게시판 리스트 등
-    DETAIL: (no) => `/community?no=${no}`, // 특정 게시글 상세
+    DETAIL: (no) => `/community?no=${no}`, // 특정 게시글
   },
 
   USERS: {
@@ -42,6 +42,7 @@ export const API_ENDPOINTS = {
   RESUME: {
     BASE: '/resume',
     DETAIL: (resumeNo) => `/resume?resume_no=${resumeNo}`,
+    MYRESUME: (userNo) => `resume?user_no=${userNo}`,
   },
 
   PATIENT: {
@@ -58,7 +59,9 @@ export const API_ENDPOINTS = {
   },
 
   REPORT: {
-    BASE: (patNo) => `/report?pat_no=${patNo}`,
+    BASE: `/report`,
+    PROFILE: (patNo) => `/report?pat_no=${patNo}`,
+    SEARCH: (reportNo) => `/report?report_no=${reportNo}`,
   },
 
   CAREGIVERPROPOSER: {

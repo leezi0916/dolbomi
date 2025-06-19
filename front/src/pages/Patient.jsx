@@ -7,7 +7,6 @@ import useUserStore from '../store/userStore';
 import { useEffect } from 'react';
 import { ProfileImg } from '../styles/common/Profile';
 import { patientService } from '../api/patient';
-import { userService } from '../api/users';
 
 const Patient = () => {
   const { user } = useUserStore();
@@ -22,7 +21,6 @@ const Patient = () => {
       }
 
       try {
-        
         const patientsList = await patientService.getPatients(user.userNo);
 
         setUserpatients(patientsList);
