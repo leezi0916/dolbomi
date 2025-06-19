@@ -5,9 +5,10 @@ import { toast } from 'react-toastify';
 import { ClipLoader } from 'react-spinners';
 import styled from 'styled-components';
 import useUserStore from '../store/userStore';
+import theme from '../styles/theme';
 
 const CommunityBoard = () => {
-  const userId = useUserStore((state) => state.user?.user_id);
+  const userId = useUserStore((state) => state.user?.userId);
 
   const [error, setError] = useState(null);
   const [communityList, setCommunityList] = useState([]);
@@ -30,7 +31,7 @@ const CommunityBoard = () => {
     };
 
     loadCommunity();
-  }, []);
+  }, [userId]);
 
   if (loading) {
     return (
@@ -55,9 +56,15 @@ const CommunityBoard = () => {
         <BoardTop>
           <Left>총 {communityList.length}건</Left>
           <Right>
+            <Drop>
+              <option value="" disabled selected hidden>
+                -- 작성일순/조회순 --
+              </option>
+              <option value="">작성일</option>
+              <option value="">조회순</option>
+            </Drop>
             <Input type="text" />
-            <Input type="text" />
-            {userId ? <Btn to="/community/free/create">글쓰기</Btn> : null}
+            {userId && <Btn to="/community/free/create">글쓰기</Btn>}
           </Right>
         </BoardTop>
         <BoardItemTop>
@@ -112,6 +119,12 @@ const BoardTop = styled.div`
   display: flex;
   padding: 5px 0;
   border-bottom: 1px solid ${({ theme }) => theme.colors.gray[3]};
+`;
+const Drop = styled.select`
+  min-width: 20%;
+  border: 1px solid ${({ theme }) => theme.colors.gray[5]};
+  border-radius: 4px;
+  padding: 2px 4px;
 `;
 export const Input = styled.input`
   border: 1px solid ${({ theme }) => theme.colors.gray[5]};
