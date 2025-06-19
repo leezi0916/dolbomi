@@ -8,7 +8,7 @@ import { BiSolidPhoneCall } from 'react-icons/bi';
 import { toast } from 'react-toastify';
 import { jobSeekingService } from '../api/jobSeeking';
 import { reviewService } from '../api/reviews';
-
+import { useNavigate } from 'react-router-dom';
 const GuardianMainPage = () => {
   const [resumeLiset, setResumeLiset] = useState([]);
   const [reviewList, setReviewList] = useState([]);
@@ -30,6 +30,8 @@ const GuardianMainPage = () => {
 
     loadResumeList();
   }, []);
+
+  const navigate = useNavigate();
 
   // 이름 첫글자 O 처리하기
   const maskName = (name) => {
@@ -96,7 +98,7 @@ const GuardianMainPage = () => {
                       <span>지역</span> {resume.address}
                     </CardRegionText>
                   </CardBottomTextSection>
-                  <CardButton>상세보기</CardButton>
+                  <CardButton onClick={() => navigate(`/resumeDetail/${resume.resumeNo}`)}>상세보기</CardButton>
                 </CardBottomContent>
               </Card>
             ))}

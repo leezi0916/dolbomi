@@ -11,10 +11,10 @@ import { jobSeekingService } from '../api/jobSeeking';
 
 // 유효성 스키마
 const resumeSchema = yup.object().shape({
-  resume_title: yup.string().required('제목을 입력해주세요'),
-  resume_content: yup.string().required('내용을 입력해주세요'),
-  desired_account: yup.number().typeError('숫자로 입력해주세요').required('희망 금액을 입력해주세요'),
-  provide_hope: yup.string().required('숙식 여부를 선택해주세요'),
+  resumeTitle: yup.string().required('제목을 입력해주세요'),
+  resumeContent: yup.string().required('내용을 입력해주세요'),
+  account: yup.number().typeError('숫자로 입력해주세요').required('희망 금액을 입력해주세요'),
+  careStatus: yup.string().required('숙식 여부를 선택해주세요'),
 });
 
 export const useResumeForm = () => {
@@ -22,7 +22,7 @@ export const useResumeForm = () => {
 
   const navigate = useNavigate();
 
-  const [licenseList, setLicenseList] = useState([{ licenseName: '', licensPublisher: '', licenseDate: '' }]);
+  const [licenseList, setLicenseList] = useState([{ licenseName: '', licensePublisher: '', licenseDate: '' }]);
 
   const {
     register,
