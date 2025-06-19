@@ -6,22 +6,73 @@ import { Input, InputGroup, Title } from '../styles/Auth.styles';
 import { media } from '../styles/MediaQueries';
 import { SubmitButton } from '../styles/common/Button';
 
-import { useParams } from 'react-router-dom';
-import { FaPlus } from 'react-icons/fa6';
-
 import { useResumeForm } from '../hooks/useResumeForm';
-import Paging from '../components/Paging';
+import { useParams } from 'react-router-dom';
+import { proposerSevice } from '../api/propose';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import useUserStore from '../store/userStore';
+import { resumeService } from '../api/resume';
 
-function ResumeDetail() {
-  const navigate = useNavigate();
-  const { resumeNo } = useParams();
-  const { register, handleSubmit, errors, licenseList, handleLicenseChange, user } = useResumeForm();
+const ResumeDetailMine = () => {
+  const {user} = useUserStore();
+  const {
+    register,
+    handleSubmit,
+    errors,
+    licenseList,
+    handleLicenseChange,
+  } = useResumeForm();
+
+  const {resumeNo} = useParams();
+  const [proposerList, setproposerList] = useState([]);
+  const navigate = useNavigate(); 
+
+  useEffect(() => {
+    if (!user) {
+      alert('로그인 후 이용해주세요');
+      // navigate('/guardian');
+    }
+    
+    // 이력서의 번호로 가져온다 (resumeNo)
+     const getResume = async () => {
+      const getOneResum = await 
+      resumeService.getOneResumeById(1);
+      console.log(getOneResum);
+
+     }
+
+   // 구인글을 가져온다. => 신청테이블에서 이력서의 번호로(resumeNo) 구인글을 가져온다
+    const getList = async () => {
+      const list = await proposerSevice.getguardianLists(1);
+      setproposerList(list);
+    };
+    getList();
+  }, [user]);
+
   return (
+    <>
+      <Wrapper>
+        <ImageStack>
+           {proposerList.slice(0, 3).map((list, index) => (
+            
+            <ProfileImg
+              key={index}
+              src={list.profileImage}
+              style={{ left: `${index * 20}px`, zIndex: proposerList.length - index }}
+            />
+          ))} 
+
+        </ImageStack>
+
+        <NewTitle>지원현황 {proposerList.length}명</NewTitle>
+        <ActionButton type='button' onClick={() => navigate('/caregiver/guardianSupportBoard')}>확인하기</ActionButton>
+      </Wrapper>
+ 
     <HireRegistSection>
       <HireContainer>
         <HireHead>
-          <HireHeadTitle>이력서 상세/수정</HireHeadTitle>
+          <HireHeadTitle>이력서</HireHeadTitle>
         </HireHead>
 
         <form onSubmit={handleSubmit}>
@@ -99,45 +150,109 @@ function ResumeDetail() {
           <ContentWrapper1>
             <HireContent>
               <Label>제목</Label>
-              <Input placeholder="제목" />
-
+              <Input {...register('resumeTitle')} placeholder="제목" />
+              <p>{errors.resumeTitle?.message}</p>
               <Label>내용</Label>
-              <Content placeholder="내용" />
-
+              <Content {...register('resumeContent')} placeholder="내용" />
+              <p>{errors.resumeContent?.message}</p>
               <RadioGroup>
                 <RadioContainer>
                   <Label>숙식 가능</Label>
                   <RadioWrapper>
-                    <input type="radio" value="Y" />
+                    <input type="radio" value="Y" {...register('provide_Hope')} />
                   </RadioWrapper>
                   <Label>숙식 불가</Label>
                   <RadioWrapper>
-                    <input type="radio" value="N" />
+                    <input type="radio" value="N" {...register('provide_Hope')} />
                   </RadioWrapper>
+                  <p>{errors.provide_hope?.message}</p>
                 </RadioContainer>
                 <AccountGroup>
                   <InputGroup>
                     <Label>희망 금액</Label>
-                    <Input placeholder="희망 금액" />
+                    <Input {...register('desiredAccount')} placeholder="희망 금액" />
+                    <p>{errors.desiredAccount?.message}</p>
                   </InputGroup>
                 </AccountGroup>
               </RadioGroup>
             </HireContent>
           </ContentWrapper1>
-          <Paging></Paging>
 
           <ButtonGroup>
             <BackButton>이전</BackButton>
-            <SubmitButton1 type="submit">삭제하기</SubmitButton1>
-            <SubmitButton1 type="submit" onClick={() => navigate(`/`)}>수정하기</SubmitButton1>
+            <SubmitButton1 type="submit">모집종료</SubmitButton1>
+            <SubmitButton1 type="button" >수정/삭제하기</SubmitButton1>
           </ButtonGroup>
+          
         </form>
       </HireContainer>
     </HireRegistSection>
+    </>
   );
-}
+};
+
+/* ======== 지원자 현황  ========*/
+const Wrapper = styled.div`
+  width: 80%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 50px;
+  gap: 50px;
+  margin: 20px auto;
+  margin-top: 30px;
+  border: 1px solid ${({ theme }) => theme.colors.gray[5]};
+  border-radius: ${({ theme }) => theme.borderRadius.md};
+  box-shadow: ${({ theme }) => theme.shadows.md};
+`;
+const ImageStack = styled.div`
+  position: relative;
+  height: 50px;
+  width: 20%;
+  margin-bottom: 16px;
+`;
+
+const ProfileImg = styled.img`
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  object-fit: cover;
+  position: absolute;
+  border: 2px solid white;
+  transition: transform 0.2s;
+
+  &:hover {
+    transform: scale(1.05);
+  } 
+
+ 
+    
+`;
+
+/* ======== main   ========*/
 
 const HireRegistSection = styled(Section)``;
+const NewTitle = styled.h2`
+  width: 20%;
+  font-size: ${({ theme }) => theme.fontSizes['3xl']};
+  margin-bottom: 10px;
+`;
+
+const ActionButton = styled.button`
+  width: 200px;
+
+  background-color: ${({ theme }) => theme.colors.primary};
+  color: white;
+  padding: 10px 20px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+
+  &:hover {
+    opacity: 0.9;
+  }
+`;
+
 
 const HireContainer = styled(Container)`
   width: 80%;
@@ -167,11 +282,10 @@ const ContentWrapper = styled.div`
   gap: ${({ theme }) => theme.spacing[6]}; /* 이미지와 입력 필드 그룹 사이 간격 */
   justify-content: space-around;
   ${media.md`
-
-flex-direction: row;
-padding: ${({ theme }) => theme.spacing[8]}; /* 큰 화면에서 패딩 증가 */
-gap: ${({ theme }) => theme.spacing[10]}; /* 큰 화면에서 간격 증가 */
-`}
+    flex-direction: row;
+    padding: ${({ theme }) => theme.spacing[8]}; /* 큰 화면에서 패딩 증가 */
+    gap: ${({ theme }) => theme.spacing[10]}; /* 큰 화면에서 간격 증가 */
+  `}
 `;
 
 const ProfilImageWrapper = styled.div`
@@ -193,11 +307,10 @@ const ProfilImageWrapper = styled.div`
   }
 
   ${media.md`
-
-width: 200px;
-height: 200px;
-align-self: flex-start; /* 큰 화면에서는 상단 정렬 */
-`}
+    width: 200px;
+    height: 200px;
+    align-self: flex-start; /* 큰 화면에서는 상단 정렬 */
+  `}
 `;
 
 const InputRow = styled.div`
@@ -206,9 +319,9 @@ const InputRow = styled.div`
   gap: ${({ theme }) => theme.spacing[5]};
 
   ${media.md`
-
-flex-direction: row;
-`}
+    
+    flex-direction: row;
+  `}
 `;
 
 const Label = styled.label`
@@ -302,11 +415,10 @@ const ContentWrapper1 = styled.div`
   gap: ${({ theme }) => theme.spacing[6]}; /* 이미지와 입력 필드 그룹 사이 간격 */
   justify-content: space-around;
   ${media.md`
-
-flex-direction: row;
-padding: ${({ theme }) => theme.spacing[6]}; /* 큰 화면에서 패딩 증가 */
-gap: ${({ theme }) => theme.spacing[10]}; /* 큰 화면에서 간격 증가 */
-`}
+    flex-direction: row;
+    padding: ${({ theme }) => theme.spacing[6]}; /* 큰 화면에서 패딩 증가 */
+    gap: ${({ theme }) => theme.spacing[10]}; /* 큰 화면에서 간격 증가 */
+  `}
 `;
 
 const Content = styled.textarea`
@@ -323,11 +435,9 @@ const Content = styled.textarea`
 const ButtonGroup = styled.div`
   display: flex;
   width: 100%;
-  max-width: 800px;
-  justify-content: center;
+  padding: 64px;
   gap: ${({ theme }) => theme.spacing[3]};
-  margin: 0 auto;
-  padding: ${({ theme }) => theme.spacing[8]} 0;
+  justify-content: center;
 `;
 
 const BackButton = styled.button`
@@ -364,11 +474,10 @@ const ContentWrapper2 = styled.div`
   width: 100%;
   margin: 0 auto;
   ${media.md`
-
-flex-direction: row; 
-gap: ${({ theme }) => theme.spacing[5]};
-padding : ${({ theme }) => theme.spacing[3]};
-`}
+    flex-direction: row; 
+    gap: ${({ theme }) => theme.spacing[5]};
+    padding : ${({ theme }) => theme.spacing[3]};
+  `}
 `;
 
 //변경(contentWrapper2 -> gridWrapper)인혜작성
@@ -380,12 +489,11 @@ const GridWrapper = styled.div`
   padding-top: ${({ theme }) => theme.spacing[3]};
 
   ${media.lg`
-
-display: grid;
-grid-template-columns: repeat(5,1fr);
-justify-content: center;
-gap: 4px;
-`}
+  display: grid;
+  grid-template-columns: repeat(5,1fr);
+  justify-content: center;
+  gap: 4px;
+  `}
 `;
 
 //인혜작성 시간나면 고치자
@@ -418,13 +526,14 @@ const LicenseAdd = styled.button`
 
   // 인혜 작성(반응형)
   ${media.lg`
-span {
-width: 50px;
-}
-padding: 0;
-background-color:white; 
-margin-top: ${({ theme }) => theme.spacing[6]};
-`}
+  with
+  span {
+    width: 50px;
+  }
+  padding: 0;
+  background-color:white; 
+  margin-top: ${({ theme }) => theme.spacing[6]};
+  `}
 `;
 
 const LicenseDelete = styled.button`
@@ -437,4 +546,4 @@ const LicenseDelete = styled.button`
   padding: 0;
   margin-top: ${({ theme }) => theme.spacing[6]};
 `;
-export default ResumeDetail;
+export default ResumeDetailMine;

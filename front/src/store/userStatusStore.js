@@ -4,9 +4,9 @@ import { persist } from 'zustand/middleware';
 const useUserStatusStore = create(
   persist(
     (set) => ({
-      userStatus: false,
+      userStatus: true,
 
-      // 간병인은 false / 보호자는 ture
+      // 보호자은 true / 간병인는 false
       setUserStatus: (status) =>
         set(() => ({
           userStatus: status,

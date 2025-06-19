@@ -34,7 +34,7 @@ const Tags = ({tags, setTags}) => {
           질병 입력
         </DiseaseBtn>
         <TagsUl id="tags">
-          {tags.map((tag, index) => (
+          {tags?.map((tag, index) => (
             <li key={index}>
               <span>{tag}</span>
               <span onClick={() => removeTags(index)}>

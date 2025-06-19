@@ -69,7 +69,7 @@ const Header = () => {
           <img src="/src/assets/icons/icon_알림.png" alt="" />
           <img src="/src/assets/icons/icon_채팅알림.png" alt="" />
           <ToggleWrap>
-            {/* 간병인은 true / 보호자는 false */}
+            {/* 간병인은 false / 보호자는 true */}
             <ToggleItem
               $userStatus={!userStatus}
               onClick={() => {
@@ -130,25 +130,30 @@ const Header = () => {
                 )}
 
                 {userStatus ? (
-                  <NavItem to="/hireDetail/hiringNo">
+                  <NavItem to="/guardian/hire-registration">
                     <Icon src="/src/assets/icons/icon_이력서등록.png" alt="" />
                     돌봄대상자 신청
                   </NavItem>
                 ) : (
-                  <NavItem to="/">
-                    <Icon src="/src/assets/icons/icon_간병사신청.png" alt="" />
-                    간병사 신청
-                  </NavItem>
+                  ''
                 )}
 
-                <NavItem to="/">
+                <NavItem to="/history-management">
                   <Icon src="/src/assets/icons/icon_내역관리.png" alt="" />
                   내역관리
                 </NavItem>
-                <NavItem to="/">
-                  <Icon src="/src/assets/icons/icon_리뷰페이지.png" alt="" />
-                  리뷰페이지
-                </NavItem>
+
+                {userStatus ? (
+                  <NavItem to="/">
+                    <Icon src="/src/assets/icons/icon_리뷰페이지.png" alt="" />
+                    내가쓴리뷰
+                  </NavItem>
+                ) : (
+                  <NavItem to="/">
+                    <Icon src="/src/assets/icons/icon_리뷰페이지.png" alt="" />
+                    받은리뷰
+                  </NavItem>
+                )}
 
                 <NavItem to="/">
                   <Icon src="/src/assets/icons/icon_매칭관리.png" alt="" />

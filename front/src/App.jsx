@@ -31,8 +31,16 @@ import ReportMain from './pages/ReportMain';
 import CreateCommuBoardForm from './pages/CreateCommuBoardForm';
 import UpdateCommuBoardForm from './pages/UpdateCommuBoardForm';
 import ReviewModal from './components/ReviewModal';
+
+import HireDetailMine from './pages/HireDetailMine';
+import CareGiverSupportBoard from './pages/CareGiverSupportBoard';
+import ResumeDetailMine from './pages/ResumeDetailMine';
+import GuardianSupportBoard from './pages/GuardianSupportBoard';
+
 import ResumeManagement from './pages/ResumeManagement';
 import ScrollToTop from './utils/scrollToTop';
+import HistoryManageMent from './pages/HistoryManageMent';
+import MyWrittenReview from './pages/MyWrittenReview';
 
 function AppRoutes() {
   const navigate = useNavigate();
@@ -40,7 +48,7 @@ function AppRoutes() {
 
   useEffect(() => {
     if (location.pathname === '/') {
-      navigate('/caregiver');
+      navigate('/guardian');
     }
   }, [location, navigate]);
 
@@ -48,14 +56,18 @@ function AppRoutes() {
     <>
       <Layout>
         <ScrollToTop />
-
         <Routes>
           {/* 간병인 */}
           <Route path="/caregiver" element={<CareGiverMainPage />} />
           <Route path="/caregiver/hirelist" element={<HireList />} />
           <Route path="/caregiver/resumeregistration" element={<ResumeRegistration />} />
           <Route path="/caregiver/reportform/:patNo" element={<ReportForm />} />
+
+          <Route path="/caregiver/resumeDetail/:resumeNo" element={<ResumeDetailMine />} />
+          <Route path="/caregiver/guardianSupportBoard" element={<GuardianSupportBoard />} />
+
           <Route path="/caregiver/resumemanagement" element={<ResumeManagement />} />
+          <Route path="/caregiver/review" />
 
           {/* 보호자 */}
           <Route path="/guardian" element={<GuardianMainPage />} />
@@ -64,7 +76,11 @@ function AppRoutes() {
           <Route path="/guardian/patient" element={<Patient />} />
           <Route path="/guardian/patient/:id" element={<PatientUpdate />} />
           <Route path="/guardian/patientregisteration" element={<PatientRegisteration />} />
+          <Route path="/guardian/review" element={<MyWrittenReview />} />
           <Route path="/review" element={<ReviewModal />} />
+
+          <Route path="/guardian/hireDetail/:hiringNo" element={<HireDetailMine />} />
+          <Route path="/guardian/careGiverSupportBorad" element={<CareGiverSupportBoard />} />
 
           {/* 공용 */}
           <Route path="/community/free/create" element={<CreateCommuBoardForm />} />
@@ -77,10 +93,14 @@ function AppRoutes() {
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<SignUp />} />
           <Route path="/myprofile" element={<MyProfile />} />
+
+
           <Route path="/hireDetail/:hiringNo" element={<HireDetail />} />
+
           <Route path="/resumeDetail/:resumeNo" element={<ResumeDetail />} />
           <Route path="/report/:patNo" element={<ReportMain />} />
           <Route path="/report/:patNo/detail/:reportNo" element={<ReportDetail />} />
+          <Route path="/history-management" element={<HistoryManageMent />} />
         </Routes>
       </Layout>
     </>
@@ -88,8 +108,6 @@ function AppRoutes() {
 }
 
 function App() {
-  // const { userStatus } = useUserStore();
-
   return (
     <>
       <ThemeProvider theme={theme}>

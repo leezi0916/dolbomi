@@ -108,6 +108,7 @@ export const NotesTexttarea = styled.textarea`
   width: 100%;
   border: 1px solid ${({ theme }) => theme.colors.gray[5]};
   border-radius: 4px;
+  resize: none;
 `;
 
 export const SubmitBtn = styled(Button)`
