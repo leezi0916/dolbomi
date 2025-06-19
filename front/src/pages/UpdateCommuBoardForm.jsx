@@ -76,14 +76,6 @@ const UpdateCommuBoardForm = () => {
     return <div>게시글을 찾을 수 없습니다.</div>;
   }
 
-  // <Icons src="/src/assets/icons/icon_작성자.png" alt="" />
-  //           <Left style={{ fontSize: theme.fontSizes.sm }}>{userProfile.name}</Left>
-  //           <Right>
-  //             <Icons src="/src/assets/icons/icon_조회수.png" alt="" />
-  //             <div style={{ paddingRight: '10px' }}>{userProfile.count}</div>
-  //             <Icons src="/src/assets/icons/icon_작성일자.png" alt="" />
-  //             <div style={{ paddingRight: '10px' }}>{userProfile.create_date}</div>
-
   return (
     <Page>
       <PageInfo>
@@ -212,7 +204,7 @@ const FileBox = styled.div`
   padding: 0 10px;
   margin-bottom: 10px;
 `;
-const FileTitle = styled(Left)`
+export const FileTitle = styled(Left)`
   font-size: ${({ theme }) => theme.fontSizes.base};
   font-weight: ${({ theme }) => theme.fontWeights.bold};
   padding: 10px;
