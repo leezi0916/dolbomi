@@ -13,6 +13,7 @@ import chatImage from '../assets/icons/icon_채팅아이콘.png'; // 채팅 이�
 
 import Paging from '../components/Paging';
 import { useNavigate } from 'react-router-dom';
+import PatientSelectModal from '../components/PatientSelectModal';
 
 function ResumeDetail() {
   const navigate = useNavigate();
@@ -23,6 +24,19 @@ function ResumeDetail() {
 
   const handleTabChange = (tab) => {
     setActiveTab(tab);
+  };
+
+  const [isModalOpen, setModalOpen] = useState(false);
+
+  const handleOpenModal = () => setModalOpen(true);
+  const handleCloseModal = () => setModalOpen(false);
+  const handleSubmitModal = () => {
+    const confirm = window.confirm('돌봄 대상자를 신청하시겠습니까?');
+    if (confirm) {
+      console.log('간병신청 완료');
+      setModalOpen(false);
+      navigate('/guardian/matchpage'); // 원하는 경로로 이동
+    }
   };
   return (
     <HireRegistSection>
@@ -138,7 +152,10 @@ function ResumeDetail() {
 
         <ButtonGroup>
           <BackButton onClick={() => navigate(-1)}>이전</BackButton>
-          <SubmitButton1 type="submit">신청하기</SubmitButton1>
+          <SubmitButton1 type="button" onClick={handleOpenModal}>
+            신청하기
+          </SubmitButton1>
+          {isModalOpen && <PatientSelectModal onClose={handleCloseModal} onSubmit={handleSubmitModal} />}
         </ButtonGroup>
         {/* </form> */}
       </HireContainer>

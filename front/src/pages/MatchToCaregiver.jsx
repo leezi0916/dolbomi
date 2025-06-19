@@ -3,7 +3,11 @@ import { Section } from '../styles/common/Container';
 import styled from 'styled-components';
 import SearchBar from '../components/SearchBar';
 import profileImage from '../assets/images/pat.png'; // 프로필 이미지 경로
+import profileImage1 from '../assets/images/cargiver.png'; // 프로필 이미지 경로
+import { useNavigate } from 'react-router-dom';
 const MatchToCaregiver = () => {
+  const navigate = useNavigate();
+
   const [activeTab, setActiveTab] = useState('matching');
 
   const handleTabChange = (tab) => {
@@ -35,26 +39,27 @@ const MatchToCaregiver = () => {
           <>
             <ProfileCardPair>
               <ProfileCard type="patient">
-                <ProfileImage src={profileImage} alt="환자" />
+                <ProfileImage src={profileImage1} alt="간병인" />
                 <ProfileInfo>
                   <UserName>박영희 님</UserName>
                   <UserAge>나이 50세(여)</UserAge>
                   <ButtonRow>
                     <ReportButton>신고</ReportButton>
-                    <InfoButton>간병인 정보</InfoButton>
+                    {/*경로 바꿔야함  */}
+                    <InfoButton onClick={() => navigate('/resumeDetail/1')}>간병인 정보</InfoButton>
                   </ButtonRow>
                 </ProfileInfo>
-                <ProfileImage src={profileImage} alt="간병인" />
+                <ProfileImage src={profileImage} alt="환자" />
                 <ProfileInfo>
                   <UserName>박영희 님</UserName>
                   <UserAge>나이 80세(여)</UserAge>
-                  <CareLogButton>간병일지</CareLogButton>
+                  <CareLogButton onClick={() => navigate('/report/1')}>간병일지</CareLogButton>
                 </ProfileInfo>
               </ProfileCard>
             </ProfileCardPair>
             <ProfileCardPair>
               <ProfileCard type="patient">
-                <ProfileImage src={profileImage} alt="환자" />
+                <ProfileImage src={profileImage1} alt="간병인" />
                 <ProfileInfo>
                   <UserName>박영희 님</UserName>
                   <UserAge>나이 50세(여)</UserAge>
@@ -63,7 +68,7 @@ const MatchToCaregiver = () => {
                     <InfoButton onClick={''}>간병인 정보</InfoButton>
                   </ButtonRow>
                 </ProfileInfo>
-                <ProfileImage src={profileImage} alt="간병인" />
+                <ProfileImage src={profileImage} alt="환자" />
                 <ProfileInfo>
                   <UserName>박영희 님</UserName>
                   <UserAge>나이 80세(여)</UserAge>
@@ -77,16 +82,16 @@ const MatchToCaregiver = () => {
         {activeTab === 'matched' && (
           <ProfileCardPair>
             <ProfileCard type="patient">
-              <ProfileImage src={profileImage} alt="환자" />
+              <ProfileImage src={profileImage1} alt="간병인" />
               <ProfileInfo>
                 <UserName>박영희 님</UserName>
                 <UserAge>나이 50세(여)</UserAge>
                 <ButtonRow>
                   <ReportButton>신고</ReportButton>
-                  <InfoButton>간병인 정보</InfoButton>
+                  <InfoButton onClick={() => NavigationPreloadManager}>간병인 정보</InfoButton>
                 </ButtonRow>
               </ProfileInfo>
-              <ProfileImage src={profileImage} alt="간병인" />
+              <ProfileImage src={profileImage} alt="환자" />
               <ProfileInfo>
                 <UserName>박영희 님</UserName>
                 <UserAge>나이 70세(여)</UserAge>
