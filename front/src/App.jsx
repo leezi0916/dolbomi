@@ -31,6 +31,7 @@ import ReportMain from './pages/ReportMain';
 import CreateCommuBoardForm from './pages/CreateCommuBoardForm';
 import UpdateCommuBoardForm from './pages/UpdateCommuBoardForm';
 import ReviewModal from './components/ReviewModal';
+import ScrollToTop from './utils/scrollToTop';
 
 function AppRoutes() {
   const navigate = useNavigate();
@@ -45,6 +46,7 @@ function AppRoutes() {
   return (
     <>
       <Layout>
+        <ScrollToTop />
         <Routes>
           {/* 간병인 */}
           <Route path="/caregiver" element={<CareGiverMainPage />} />
