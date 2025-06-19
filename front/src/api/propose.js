@@ -1,6 +1,6 @@
 import api from './axios';
 import { API_ENDPOINTS } from './config';
-import { snakeToCamel, camelToSnake } from '../utils/formatData';
+import { snakeToCamel } from '../utils/formatData';
 
 export const proposerSevice = {
   getcareGiverLists: async (hiringNo) => {
