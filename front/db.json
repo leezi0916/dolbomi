@@ -253,27 +253,12 @@
       "id": "dbgk9311",
       "name": "김유하",
       "title": "테스트테스트.",
-      "create_date": "2025-11-09",
-
-      "count": "4"
-    }
-  ],
-  "community_detail": [
-    {
-      "no": "1",
-      "board_detail": "낚엿쥬",
-      "id": "84a6"
-    },
-    {
-      "no": "2",
-
-      "id": "e2c5",
-
       "count": "4",
-      "board_detail": "테스트 중입니당",
+      "create_date": "2025-11-09",
       "src": ["/img_s3/연습용이미지(2).jpg"]
     }
   ],
+
   "users": [
     {
       "user_no": 1,
