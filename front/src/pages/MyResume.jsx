@@ -8,24 +8,14 @@ import { SubmitButton } from '../styles/common/Button';
 import { FaPlus } from 'react-icons/fa6';
 
 import { useResumeForm } from '../hooks/useResumeForm';
-
-const ResumeRegistration = () => {
-  const {
-    register,
-    handleSubmit,
-
-    errors,
-    licenseList,
-    handleLicenseChange,
-
-    user,
-  } = useResumeForm();
+const MyResume = () => {
+  const { register, handleSubmit, errors, licenseList, handleLicenseChange, user } = useResumeForm();
   console.log(user);
   return (
     <HireRegistSection>
       <HireContainer>
         <HireHead>
-          <HireHeadTitle>이력서 작성</HireHeadTitle>
+          <HireHeadTitle>이력서 상세/수정</HireHeadTitle>
         </HireHead>
 
         <form onSubmit={handleSubmit}>
@@ -118,7 +108,7 @@ const ResumeRegistration = () => {
                   <RadioWrapper>
                     <input type="radio" value="N" {...register('careStatus')} />
                   </RadioWrapper>
-                  <p>{errors.provide_hope?.message}</p>
+                  <p>{errors.careStatus?.message}</p>
                 </RadioContainer>
                 <AccountGroup>
                   <InputGroup>
@@ -133,7 +123,8 @@ const ResumeRegistration = () => {
 
           <ButtonGroup>
             <BackButton>이전</BackButton>
-            <SubmitButton1 type="submit">저장하기</SubmitButton1>
+            <SubmitButton1 type="submit">삭제하기</SubmitButton1>
+            <SubmitButton1 type="submit">수정하기</SubmitButton1>
           </ButtonGroup>
         </form>
       </HireContainer>
@@ -171,10 +162,10 @@ const ContentWrapper = styled.div`
   gap: ${({ theme }) => theme.spacing[6]}; /* 이미지와 입력 필드 그룹 사이 간격 */
   justify-content: space-around;
   ${media.md`
-    flex-direction: row;
-    padding: ${({ theme }) => theme.spacing[8]}; /* 큰 화면에서 패딩 증가 */
-    gap: ${({ theme }) => theme.spacing[10]}; /* 큰 화면에서 간격 증가 */
-  `}
+flex-direction: row;
+padding: ${({ theme }) => theme.spacing[8]}; /* 큰 화면에서 패딩 증가 */
+gap: ${({ theme }) => theme.spacing[10]}; /* 큰 화면에서 간격 증가 */
+`}
 `;
 
 const ProfilImageWrapper = styled.div`
@@ -196,10 +187,10 @@ const ProfilImageWrapper = styled.div`
   }
 
   ${media.md`
-    width: 200px;
-    height: 200px;
-    align-self: flex-start; /* 큰 화면에서는 상단 정렬 */
-  `}
+width: 200px;
+height: 200px;
+align-self: flex-start; /* 큰 화면에서는 상단 정렬 */
+`}
 `;
 
 const InputRow = styled.div`
@@ -208,9 +199,9 @@ const InputRow = styled.div`
   gap: ${({ theme }) => theme.spacing[5]};
 
   ${media.md`
-    
-    flex-direction: row;
-  `}
+
+flex-direction: row;
+`}
 `;
 
 const Label = styled.label`
@@ -304,10 +295,10 @@ const ContentWrapper1 = styled.div`
   gap: ${({ theme }) => theme.spacing[6]}; /* 이미지와 입력 필드 그룹 사이 간격 */
   justify-content: space-around;
   ${media.md`
-    flex-direction: row;
-    padding: ${({ theme }) => theme.spacing[6]}; /* 큰 화면에서 패딩 증가 */
-    gap: ${({ theme }) => theme.spacing[10]}; /* 큰 화면에서 간격 증가 */
-  `}
+flex-direction: row;
+padding: ${({ theme }) => theme.spacing[6]}; /* 큰 화면에서 패딩 증가 */
+gap: ${({ theme }) => theme.spacing[10]}; /* 큰 화면에서 간격 증가 */
+`}
 `;
 
 const Content = styled.textarea`
@@ -324,9 +315,11 @@ const Content = styled.textarea`
 const ButtonGroup = styled.div`
   display: flex;
   width: 100%;
-  padding: 64px;
-  gap: ${({ theme }) => theme.spacing[3]};
+  max-width: 800px;
   justify-content: center;
+  gap: ${({ theme }) => theme.spacing[3]};
+  margin: 0 auto;
+  padding: ${({ theme }) => theme.spacing[8]} 0;
 `;
 
 const BackButton = styled.button`
@@ -363,10 +356,10 @@ const ContentWrapper2 = styled.div`
   width: 100%;
   margin: 0 auto;
   ${media.md`
-    flex-direction: row; 
-    gap: ${({ theme }) => theme.spacing[5]};
-    padding : ${({ theme }) => theme.spacing[3]};
-  `}
+flex-direction: row; 
+gap: ${({ theme }) => theme.spacing[5]};
+padding : ${({ theme }) => theme.spacing[3]};
+`}
 `;
 
 //변경(contentWrapper2 -> gridWrapper)인혜작성
@@ -378,11 +371,11 @@ const GridWrapper = styled.div`
   padding-top: ${({ theme }) => theme.spacing[3]};
 
   ${media.lg`
-  display: grid;
-  grid-template-columns: repeat(5,1fr);
-  justify-content: center;
-  gap: 4px;
-  `}
+display: grid;
+grid-template-columns: repeat(5,1fr);
+justify-content: center;
+gap: 4px;
+`}
 `;
 
 //인혜작성 시간나면 고치자
@@ -415,14 +408,14 @@ const LicenseAdd = styled.button`
 
   // 인혜 작성(반응형)
   ${media.lg`
-  with
-  span {
-    width: 50px;
-  }
-  padding: 0;
-  background-color:white; 
-  margin-top: ${({ theme }) => theme.spacing[6]};
-  `}
+
+span {
+width: 50px;
+}
+padding: 0;
+background-color:white; 
+margin-top: ${({ theme }) => theme.spacing[6]};
+`}
 `;
 
 const LicenseDelete = styled.button`
@@ -435,4 +428,4 @@ const LicenseDelete = styled.button`
   padding: 0;
   margin-top: ${({ theme }) => theme.spacing[6]};
 `;
-export default ResumeRegistration;
+export default MyResume;

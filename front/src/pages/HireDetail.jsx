@@ -89,7 +89,7 @@ const HireDetail = () => {
             <InputRow>
               <InputGroup>
                 <Label>이름</Label>
-                <Input type="text" id="userName" value={jobOpening?.patName} readOnly />
+                <Input type="text" id="patName" value={jobOpening?.patName} readOnly />
               </InputGroup>
               <InputGroup>
                 <Label>나이</Label>

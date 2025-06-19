@@ -33,6 +33,9 @@ import UpdateCommuBoardForm from './pages/UpdateCommuBoardForm';
 import ReviewModal from './components/ReviewModal';
 import ResumeManagement from './pages/ResumeManagement';
 import ScrollToTop from './utils/scrollToTop';
+import MyResume from './pages/MyResume';
+import MatchToPatient from './pages/MatchToPatient';
+import MatchToCaregiver from './pages/MatchToCaregiver';
 
 function AppRoutes() {
   const navigate = useNavigate();
@@ -40,7 +43,7 @@ function AppRoutes() {
 
   useEffect(() => {
     if (location.pathname === '/') {
-      navigate('/caregiver');
+      navigate('/guardian');
     }
   }, [location, navigate]);
 
@@ -56,7 +59,8 @@ function AppRoutes() {
           <Route path="/caregiver/resumeregistration" element={<ResumeRegistration />} />
           <Route path="/caregiver/reportform/:patNo" element={<ReportForm />} />
           <Route path="/caregiver/resumemanagement" element={<ResumeManagement />} />
-
+          <Route path="/myresume/:resumeNo" element={<MyResume />} />
+          <Route path="/caregiver/matchpage" element={<MatchToPatient />} />
           {/* 보호자 */}
           <Route path="/guardian" element={<GuardianMainPage />} />
           <Route path="/guardian/caregiverlist" element={<CaregiverList />} />
@@ -64,6 +68,7 @@ function AppRoutes() {
           <Route path="/guardian/patient" element={<Patient />} />
           <Route path="/guardian/patient/:id" element={<PatientUpdate />} />
           <Route path="/guardian/patientregisteration" element={<PatientRegisteration />} />
+          <Route path="/guardian/matchpage" element={<MatchToCaregiver />} />
           <Route path="/review" element={<ReviewModal />} />
 
           {/* 공용 */}

@@ -7,6 +7,7 @@ import SearchBar from '../components/SearchBar';
 import { IoCheckmarkOutline } from 'react-icons/io5';
 import { ClipLoader } from 'react-spinners';
 import { jobSeekingService } from '../api/jobSeeking';
+import { useNavigate } from 'react-router-dom';
 
 const CaregiverList = () => {
   const [caregiverLists, setCaregiverLists] = useState([]);
@@ -21,7 +22,7 @@ const CaregiverList = () => {
 
   //검색창
   const [keyword, setKeyword] = useState('');
-
+  const navigate = useNavigate();
   // 1. 컴포넌트가 처음 마운트될 때 전체 리스트를 불러옵니다.
   useEffect(() => {
     loadHireLists(false); // 초기 로딩 시에는 필터 없이 전체 데이터 요청
@@ -171,7 +172,7 @@ const CaregiverList = () => {
       ) : (
         <HireListSection>
           {caregiverLists.map((resume) => (
-            <HireListCard key={resume.resumeNo}>
+            <HireListCard onClick={() => navigate(`/resumeDetail/${resume.resumeNo}`)} key={resume.resumeNo}>
               <CardHeader>
                 <ProfileImage src={resume.profileImage || profileImage} alt="프로필" />
                 <HeaderContent>

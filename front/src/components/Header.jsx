@@ -123,7 +123,7 @@ const Header = () => {
                     돌봄대상자 관리
                   </NavItem>
                 ) : (
-                  <NavItem to="/">
+                  <NavItem to="/caregiver/resumemanagement">
                     <Icon src="/src/assets/icons/icon_이력서등록.png" alt="" />
                     이력서 등록
                   </NavItem>
@@ -150,10 +150,17 @@ const Header = () => {
                   리뷰페이지
                 </NavItem>
 
-                <NavItem to="/">
-                  <Icon src="/src/assets/icons/icon_매칭관리.png" alt="" />
-                  매칭관리
-                </NavItem>
+                {userStatus ? (
+                  <NavItem to="/guardian/matchpage">
+                    <Icon src="/src/assets/icons/icon_매칭관리.png" alt="" />
+                    매칭관리
+                  </NavItem>
+                ) : (
+                  <NavItem to="/caregiver/matchpage">
+                    <Icon src="/src/assets/icons/icon_매칭관리.png" alt="" />
+                    매칭관리
+                  </NavItem>
+                )}
 
                 <NavItem to="/" onClick={handleLogout}>
                   <Icon src="/src/assets/icons/icon_로그아웃.png" alt="" />
