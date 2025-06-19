@@ -29,11 +29,6 @@ const HireDetail = () => {
   useEffect(() => {
     console.log(user);
 
-    if (!user) {
-      alert('로그인 후 이용해주세요');
-      // navigate('/guardian');
-    }
-
     const getJobOpening = async () => {
       const getOneJobOpening = await hiringService.getHirngById(Number(hiringNo));
       console.log(getOneJobOpening);
@@ -41,7 +36,7 @@ const HireDetail = () => {
     };
 
     getJobOpening();
-  }, [user]);
+  }, []);
 
   return (
     <HireRegistSection>

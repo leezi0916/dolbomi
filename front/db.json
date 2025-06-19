@@ -328,19 +328,7 @@
       "user_pwd": "wlanr1506!",
       "user_name": "이지묵",
       "user_id": "leezi0916",
-      "user_no": "lkj",
-      "licenses": [
-        {
-          "license_name": "기사 자격증",
-          "license_publisher": "경찰청",
-          "license_date": "2025-05-10"
-        },
-        {
-          "license_name": "기사 자격증",
-          "license_publisher": "경찰청",
-          "license_date": "2025-05-10"
-        }
-      ]
+      "user_no": "lkj"
     }
   ],
   "reviews": [

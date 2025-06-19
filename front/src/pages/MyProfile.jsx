@@ -79,7 +79,7 @@ const MyProfile = () => {
       }
     };
     loadProfile();
-  }, [userId]);
+  }, []);
 
   const { validateAndSubmit, updating } = useUserUpdateForm({ profile });
 
