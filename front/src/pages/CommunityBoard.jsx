@@ -79,7 +79,7 @@ const CommunityBoard = () => {
             <div>{community.no}</div>
             <div>{community.title}</div>
             <div>{community.name}</div>
-            <div>{community.createDate}</div>
+            <div>{community.create_date}</div>
             <div>{community.count}</div>
           </BoardItem>
         ))}
