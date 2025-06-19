@@ -6,28 +6,24 @@ import { Input, InputGroup, Title } from '../styles/Auth.styles';
 import { media } from '../styles/MediaQueries';
 import { SubmitButton } from '../styles/common/Button';
 
-import { useParams } from 'react-router-dom';
+// import { useParams } from 'react-router-dom';
 import { FaPlus } from 'react-icons/fa6';
 import chatImage from '../assets/icons/icon_채팅아이콘.png'; // 채팅 이미지 경로
-import { useResumeForm } from '../hooks/useResumeForm';
-<<<<<<< HEAD
-import { useNavigate } from 'react-router-dom';
-function ResumeDetail() {
-  const navigate = useNavigate();
-  const [activeTab, setActiveTab] = useState('info');
+// import { useResumeForm } from '../hooks/useResumeForm';
 
-  const handleTabChange = (tab) => {
-    setActiveTab(tab);
-  };
-=======
 import Paging from '../components/Paging';
 import { useNavigate } from 'react-router-dom';
 
 function ResumeDetail() {
   const navigate = useNavigate();
-  const { resumeNo } = useParams();
-  const { register, handleSubmit, errors, licenseList, handleLicenseChange, user } = useResumeForm();
->>>>>>> 2517e43a5489e27f951dc0d74badc5c0c0f27e05
+  // const { resumeNo } = useParams();
+  // const { register, handleSubmit, errors, licenseList, handleLicenseChange, user } = useResumeForm();
+
+  const [activeTab, setActiveTab] = useState('info');
+
+  const handleTabChange = (tab) => {
+    setActiveTab(tab);
+  };
   return (
     <HireRegistSection>
       <HireContainer>
@@ -131,26 +127,20 @@ function ResumeDetail() {
               </RadioGroup>
             </HireContent>
           </ContentWrapper1>
-<<<<<<< HEAD
         )}
 
-        {activeTab === 'review' && <ContentWrapper1>리뷰 내용입니다 (예: 별점, 텍스트 등)</ContentWrapper1>}
+        {activeTab === 'review' && (
+          <ContentWrapper1>
+            리뷰 내용입니다 (예: 별점, 텍스트 등)
+            <Paging></Paging>
+          </ContentWrapper1>
+        )}
 
         <ButtonGroup>
           <BackButton onClick={() => navigate(-1)}>이전</BackButton>
           <SubmitButton1 type="submit">신청하기</SubmitButton1>
         </ButtonGroup>
         {/* </form> */}
-=======
-          <Paging></Paging>
-
-          <ButtonGroup>
-            <BackButton>이전</BackButton>
-            <SubmitButton1 type="submit">삭제하기</SubmitButton1>
-            <SubmitButton1 type="submit" onClick={() => navigate(`/`)}>수정하기</SubmitButton1>
-          </ButtonGroup>
-        </form>
->>>>>>> 2517e43a5489e27f951dc0d74badc5c0c0f27e05
       </HireContainer>
     </HireRegistSection>
   );
@@ -439,10 +429,7 @@ const LicenseAdd = styled.button`
 
   // 인혜 작성(반응형)
   ${media.lg`
-<<<<<<< HEAD
 
-=======
->>>>>>> 2517e43a5489e27f951dc0d74badc5c0c0f27e05
 span {
 width: 50px;
 }
