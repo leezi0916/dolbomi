@@ -8,15 +8,9 @@ import { FaPlus } from 'react-icons/fa6';
 import { media } from '../styles/MediaQueries';
 import { useNavigate } from 'react-router-dom';
 import {
-  AuthContainer,
-  Button,
   Input,
   InputGroup,
   Title,
-  Form,
-  AuthLink,
-  ErrorMessage,
-  InputContainer,
 } from '../styles/Auth.styles';
 import useUserStore from '../store/userStore';
 import { hiringService } from '../api/hiring';
@@ -34,6 +28,7 @@ const HireDetail = () => {
 
   const currentGender = watch('patGender');
 
+  //수정중
   useEffect(() => {
     console.log(user)
     

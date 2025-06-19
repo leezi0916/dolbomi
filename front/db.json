@@ -8,9 +8,15 @@
       "account": 15000,
       "address": "강원, 속초",
       "license": true,
-      "profile_image": "https://i.pinimg.com/736x/19/a1/33/19a133d18c3b0c8b83dea31b159074c1.jpg",
+      "profile_image": "/src/assets/profileImg/img_간병인.png",
 
-      "id": "54eb"
+      "id": "54eb",
+      "resume_Title": "test1",
+      "resume_content": "test1",
+      "create_date": "2025-07-01",
+      "update_date": "",
+      "care_status": "N",
+      "status": "Y"
     },
     {
       "resume_no": 2,
@@ -105,7 +111,24 @@
       "account": 15000,
       "pat_address": "강원도",
       "profile_image": "https://i.pinimg.com/736x/ba/ca/a0/bacaa0c3434602bc8e7d6a99db91b372.jpg",
-      "care_status": "N"
+      "care_status": "N",
+      "user_no": 5,
+      "hiring_title": "제목",
+      "hiring_content": "내용입니다.",
+      "end_date": "2025-07-31",
+      "start_date": "2025-07-01",
+      "max_applicants": 5,
+      "room_imge": "",
+      "satatus": "Y",
+      "create_date": "2025-07-01",
+      "update_date": "",
+      "id": "0b56",
+      "pat_height": 162,
+      "pat_weight": 52,
+      "pat_content": "당뇨합병증",
+      "status": "Y",
+      "phone": "01022222222",
+      "tags": ["당뇨"]
     },
     {
       "hiring_no": 2,
@@ -337,8 +360,8 @@
       "pat_address": "서울시 강남구",
       "pat_age": 60,
       "pat_gender": "F",
-      "pat_height": 162.5,
-      "pat_weight": 52.5,
+      "pat_height": 162,
+      "pat_weight": 52,
       "pat_content": "당뇨합병증",
       "phone": "01022222222",
       "status": "Y"
@@ -357,9 +380,7 @@
       "pat_content": "당뇨합병증",
       "status": "Y",
       "phone": "01022222222",
-      "tags": [
-        "당뇨"
-      ]
+      "tags": ["당뇨"]
     },
     {
       "id": "3",
@@ -403,9 +424,7 @@
       "pat_weight": 65.4,
       "pat_content": "거동이 불편함",
       "phone": "01011111111",
-      "tags": [
-        "골절"
-      ]
+      "tags": ["골절"]
     },
     {
       "id": "6",
@@ -419,9 +438,7 @@
       "pat_weight": "65",
       "pat_content": "",
       "phone": "01022222222",
-      "tags": [
-        "당뇨"
-      ]
+      "tags": ["당뇨"]
     },
     {
       "id": "7",
@@ -435,10 +452,7 @@
       "pat_weight": "40",
       "pat_content": "",
       "phone": "01022222222",
-      "tags": [
-        "당뇨",
-        "고혈압"
-      ]
+      "tags": ["당뇨", "고혈압"]
     }
   ],
   "report": [
@@ -469,26 +483,44 @@
     {
       "id": 1,
       "propposer_no": 1,
-      "job_opening_no": 1,
+      "hiring_no": 1,
       "caregiver_no": 1,
       "status": "W",
-      "image": "/src/assets/images/pat.png"
+      "user_name": "송가인",
+      "gender": "F",
+      "age": 63,
+      "account": 15000,
+      "address": "전북, 전주시",
+      "license": true,
+      "profile_image": "/src/assets/profileImg/img_간병인.png"
     },
     {
       "id": 2,
       "propposer_no": 2,
-      "job_opening_no": 1,
-      "caregiver_no": 2,
+      "hiring_no": 1,
+      "caregiver_no": 1,
       "status": "W",
-      "image": "/src/assets/images/pat.png"
+      "user_name": "송가인",
+      "gender": "F",
+      "age": 63,
+      "account": 15000,
+      "address": "전북, 전주시",
+      "license": true,
+      "profile_image": "/src/assets/profileImg/img_간병인.png"
     },
     {
       "id": 3,
       "propposer_no": 3,
-      "job_opening_no": 3,
-      "caregiver_no": 3,
+      "hiring_no": 1,
+      "caregiver_no": 1,
       "status": "W",
-      "image": "/src/assets/images/pat.png"
+      "user_name": "송가인",
+      "gender": "F",
+      "age": 63,
+      "account": 15000,
+      "address": "전북, 전주시",
+      "license": true,
+      "profile_image": "/src/assets/profileImg/img_간병인.png"
     }
   ],
   "patproposer": [
@@ -496,10 +528,20 @@
       "id": 1,
       "propposer_no": 1,
       "resume_no": 1,
-      "guardian_no": 2,
-      "pat_no": 1,
+      "guardian_no": 1,
+      "pat_no": 5,
       "status": "W",
-      "image": "/src/assets/profileImg/img_환자소.png"
+
+      "profile_image": "/src/assets/profileImg/img_환자소.png",
+      "pat_name": "이환자",
+      "pat_age": 70,
+      "pat_address": "서울시 강남구 역삼",
+      "pat_gender": "F",
+      "pat_height": 160.1,
+      "pat_weight": 65.4,
+      "pat_content": "거동이 불편함",
+      "phone": "01011111111",
+      "tags": ["골절"]
     },
     {
       "id": 2,
@@ -508,7 +550,17 @@
       "guardian_no": 3,
       "pat_no": 1,
       "status": "W",
-      "image": "/src/assets/profileImg/img_환자소.png"
+
+      "profile_image": "/src/assets/profileImg/img_환자소.png",
+      "pat_name": "이환자",
+      "pat_age": 70,
+      "pat_address": "서울시 강남구 역삼",
+      "pat_gender": "F",
+      "pat_height": 160.1,
+      "pat_weight": 65.4,
+      "pat_content": "거동이 불편함",
+      "phone": "01011111111",
+      "tags": ["골절"]
     },
     {
       "id": 3,
@@ -517,7 +569,17 @@
       "guardian_no": 4,
       "pat_no": 1,
       "status": "W",
-      "image": "/src/assets/profileImg/img_환자소.png"
+
+      "profile_image": "/src/assets/profileImg/img_환자소.png",
+      "pat_name": "이환자",
+      "pat_age": 70,
+      "pat_address": "서울시 강남구 역삼",
+      "pat_gender": "F",
+      "pat_height": 160.1,
+      "pat_weight": 65.4,
+      "pat_content": "거동이 불편함",
+      "phone": "01011111111",
+      "tags": ["골절"]
     },
     {
       "id": 4,
@@ -526,7 +588,17 @@
       "guardian_no": 5,
       "pat_no": 1,
       "status": "W",
-      "image": "/src/assets/profileImg/img_환자소.png"
+
+      "profile_image": "/src/assets/profileImg/img_환자소.png",
+      "pat_name": "이환자",
+      "pat_age": 70,
+      "pat_address": "서울시 강남구 역삼",
+      "pat_gender": "F",
+      "pat_height": 160.1,
+      "pat_weight": 65.4,
+      "pat_content": "거동이 불편함",
+      "phone": "01011111111",
+      "tags": ["골절"]
     }
   ]
 }

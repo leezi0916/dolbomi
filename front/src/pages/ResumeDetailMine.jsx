@@ -1,230 +1,190 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { Container, Section } from '../styles/common/Container';
-import profileImage from '../assets/images/pat.png'; // 프로필 이미지 경로
-import chatImage from '../assets/icons/icon_채팅아이콘.png'; // 채팅 이미지 경로
+import profileImage from '../assets/images/cargiver.png'; // 프로필 이미지 경로
 import styled from 'styled-components';
-import { SubmitButton } from '../styles/common/Button';
-import { FaPlus } from 'react-icons/fa6';
-import { media } from '../styles/MediaQueries';
-import { useNavigate } from 'react-router-dom';
 import { Input, InputGroup, Title } from '../styles/Auth.styles';
-import useUserStore from '../store/userStore';
-import { hiringService } from '../api/hiring';
+import { media } from '../styles/MediaQueries';
+import { SubmitButton } from '../styles/common/Button';
+
+import { useResumeForm } from '../hooks/useResumeForm';
 import { useParams } from 'react-router-dom';
-import { guardianHiringForm } from '../hooks/guardianHiringForm';
-import { proposerSevice } from '../api/propose.js';
+import { proposerSevice } from '../api/propose';
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import useUserStore from '../store/userStore';
+import { resumeService } from '../api/resume';
 
-const HireDetail = () => {
-  const navigate = useNavigate();
-  const { hiringNo } = useParams();
-  const { user } = useUserStore();
-  const [jobOpening, setJobOpening] = useState();
+const ResumeDetailMine = () => {
+  const {user} = useUserStore();
+  const {
+    register,
+    handleSubmit,
+    errors,
+    licenseList,
+    handleLicenseChange,
+  } = useResumeForm();
+
+  const {resumeNo} = useParams();
   const [proposerList, setproposerList] = useState([]);
-
-  const { register, handleSubmit, errors, isSubmitting, watch, setValue, reset } = guardianHiringForm();
-
-  // 수정중
-  const currentGender = watch('patGender');
+  const navigate = useNavigate(); 
 
   useEffect(() => {
     if (!user) {
       alert('로그인 후 이용해주세요');
       // navigate('/guardian');
     }
-    // 구인글의 번호로 가져온다 (hiringNo)
-    const getJobOpening = async () => {
-      const getOneJobOpening = await hiringService.getHirngById(1);
-      setJobOpening(getOneJobOpening);
-    };
-    getJobOpening();
+    
+    // 이력서의 번호로 가져온다 (resumeNo)
+     const getResume = async () => {
+      const getOneResum = await 
+      resumeService.getOneResumeById(1);
+      console.log(getOneResum);
 
-    // 구직글을 가져온다. => 신청테이블에서 구인글의 번호로(hiringNo) 구직글을 가져온다
+     }
+
+   // 구인글을 가져온다. => 신청테이블에서 이력서의 번호로(resumeNo) 구인글을 가져온다
     const getList = async () => {
-      const list = await proposerSevice.getcareGiverLists(1);
+      const list = await proposerSevice.getguardianLists(1);
       setproposerList(list);
     };
     getList();
   }, [user]);
-
-  useEffect(() => {
-    if (jobOpening) {
-      reset({
-        patName: jobOpening.patName || '',
-        patAge: jobOpening.patAge || '',
-        patGender: jobOpening.patGender || '',
-        patAddress: jobOpening.patAddress || '',
-        patHeight: jobOpening.patHeight || '',
-        patWeight: jobOpening.patWeight || '',
-        phone: jobOpening.phone || '',
-      });
-    }
-  }, [jobOpening]);
 
   return (
     <>
       <Wrapper>
         <ImageStack>
           {/* {proposerList.map((list, index) => (
+            
             <ProfileImg
               key={index}
               src={list.profileImage}
               style={{ left: `${index * 20}px`, zIndex: proposerList.length - index }}
             />
           ))} */}
-          <ProfileImg src="/src/assets/images/cargiver.png"></ProfileImg>
+          <ProfileImg src="/src/assets/images/pat.png"></ProfileImg>
         </ImageStack>
 
         <NewTitle>지원현황 {proposerList.length}명</NewTitle>
-        <ActionButton type="button" onClick={() => navigate('/guardian/careGiverSupportBorad')}>
-          확인하기
-        </ActionButton>
+        <ActionButton type='button' onClick={() => navigate('/caregiver/guardianSupportBoard')}>확인하기</ActionButton>
       </Wrapper>
-
+ 
+    <HireRegistSection>
       <HireContainer>
         <HireHead>
-          <HireHeadTitle>돌봄대상자 정보</HireHeadTitle>
+          <HireHeadTitle>이력서</HireHeadTitle>
         </HireHead>
-        <form>
+
+        <form onSubmit={handleSubmit}>
           <ContentWrapper>
             <div>
               <ProfilImageWrapper>
                 <img src={profileImage} alt="프로필 이미지" />
               </ProfilImageWrapper>
-              <ChatButton>
-                <img src={chatImage} alt="프로필 이미지" />1 : 1 채팅하기
-              </ChatButton>
             </div>
             <Divider>
               <InputRow>
                 <InputGroup>
                   <Label>이름</Label>
-                  <Input type="text" id="patName" {...register('patName')} readOnly />
+                  <Input type="text" value={user?.userName || ''} readOnly />
                 </InputGroup>
                 <InputGroup>
                   <Label>나이</Label>
-                  <Input type="text" id="patAge" {...register('patAge')} readOnly />
+                  <Input type="text" value={user?.age || ''} readOnly />
                 </InputGroup>
               </InputRow>
               <RadioGroup>
                 <Label>성별</Label>
-                <RadioWrapper checked={currentGender === 'M'}>
-                  {' '}
-                  {/* checked prop 전달 */}
-                  <input
-                    type="radio"
-                    id="M"
-                    name="patGender"
-                    value="M"
-                    checked={currentGender === 'M'} // watch 값으로 제어
-                    {...register('patGender')} // register만 남김
-                    readOnly
-                  />
-                  <label htmlFor="M">남성</label>
+                <RadioWrapper>
+                  <input type="radio" id="male" name="gender" value="M" checked={user?.gender === 'M'} readOnly />
+                  <label htmlFor="male">남성</label>
                 </RadioWrapper>
-                <RadioWrapper checked={currentGender === 'F'}>
-                  {/* checked prop 전달 */}
-                  <input
-                    type="radio"
-                    id="F"
-                    name="patGender"
-                    value="F"
-                    checked={currentGender === 'F'} // watch 값으로 제어
-                    {...register('patGender')} // register만 남김
-                    readOnly
-                  />
-                  <label htmlFor="F">여성</label>
+                <RadioWrapper>
+                  <input type="radio" id="female" name="gender" value="F" checked={user?.gender === 'F'} readOnly />
+                  <label htmlFor="female">여성</label>
                 </RadioWrapper>
               </RadioGroup>
               <InputGroup>
-                <Label>보호자 전화번호</Label>
-                <Input type="text" id="phone" {...register('phone')} readOnly />
+                <Label>전화번호</Label>
+                <Input type="text" value={user?.phone || ''} readOnly />
               </InputGroup>
               <InputGroup>
                 <Label>주소</Label>
-                <Input type="text" id="patAddress" {...register('patAddress')} readOnly />
+                <Input type="text" value={user?.address || ''} readOnly />
               </InputGroup>
-              <InputRow>
-                <InputGroup>
-                  <Label>키</Label>
-                  <Input type="text" id="patHeight" {...register('patHeight')} readOnly />
-                </InputGroup>
-                <InputGroup>
-                  <Label>몸무게</Label>
-                  <Input type="text" id="patWeight" {...register('patWeight')} readOnly />
-                </InputGroup>
-              </InputRow>
             </Divider>
           </ContentWrapper>
-          <ContentWrapper>
-            <DiseaseGroup>
-              <Label>보유한 질병</Label>
-              <DiseaseInputDiv>
-                <TagsUl id="tags">
-                  {jobOpening?.tags.map((tag, index) => (
-                    <li key={index}>
-                      <span>{tag}</span>
-                    </li>
-                  ))}
-                </TagsUl>
-              </DiseaseInputDiv>
-            </DiseaseGroup>
-          </ContentWrapper>
+          <input type="hidden" {...register('licenseList')}></input>
+          {licenseList.map((license, index) => (
+            <ContentWrapper2>
+              <LicenseGroup>
+                <Label>자격증 명</Label>
+                <LicenseInput
+                  type="text"
+                  value={license.licenseName}
+                  onChange={(e) => handleLicenseChange(index, 'licenseName', e.target.value)}
+                />
+              </LicenseGroup>
+              <LicenseGroup>
+                <Label>발행처</Label>
+                <LicenseInput
+                  type="text"
+                  value={license.licensePublisher}
+                  onChange={(e) => handleLicenseChange(index, 'licensePublisher', e.target.value)}
+                />
+              </LicenseGroup>
+              <LicenseGroup>
+                <Label>발행일</Label>
+                <LicenseInput
+                  type="date"
+                  value={license.licenseDate}
+                  onChange={(e) => handleLicenseChange(index, 'licenseDate', e.target.value)}
+                />
+              </LicenseGroup>
+            </ContentWrapper2>
+          ))}
+
           <HireBottom>
             <HireBottomTitle>채용 정보</HireBottomTitle>
           </HireBottom>
           <ContentWrapper1>
             <HireContent>
               <Label>제목</Label>
-              <Input type="text" id="hiringTitle" {...register('hiringTitle')} />
-              <InputRow>
-                <InputGroup>
-                  <Label>지급 금액 (시급)</Label>
-                  <Input type="text" id="account" {...register('account')} />
-                </InputGroup>
-                <InputGroup>
-                  <Label>시작일</Label>
-                  <Input type="date" id="startDate" {...register('startDate')} />
-                </InputGroup>
-
-                <InputGroup>
-                  <Label>종료일</Label>
-                  <Input type="date" id="endDate" {...register('endDate')} />
-                </InputGroup>
-                <InputGroup>
-                  <Label>모집 인원수 설정</Label>
-                  <Input type="number" id="maxApplicants" {...register('maxApplicants')} />
-                </InputGroup>
-              </InputRow>
+              <Input {...register('resumeTitle')} placeholder="제목" />
+              <p>{errors.resumeTitle?.message}</p>
               <Label>내용</Label>
-              <Content type="text" id="hiringContent" {...register('hiringContent')} />
+              <Content {...register('resumeContent')} placeholder="내용" />
+              <p>{errors.resumeContent?.message}</p>
               <RadioGroup>
-                <Label>숙식 제공 여부</Label>
-                <RadioWrapper>
-                  <input type="radio" id="careStatus" {...register('careStatus')} />
-                  <label htmlFor="careStatus">0</label>
-                </RadioWrapper>
-                <RadioWrapper>
-                  <input type="radio" id="careStatus" {...register('careStatus')} readOnly />
-                  <label htmlFor="careStatus">X</label>
-                </RadioWrapper>
+                <RadioContainer>
+                  <Label>숙식 가능</Label>
+                  <RadioWrapper>
+                    <input type="radio" value="Y" {...register('provide_Hope')} />
+                  </RadioWrapper>
+                  <Label>숙식 불가</Label>
+                  <RadioWrapper>
+                    <input type="radio" value="N" {...register('provide_Hope')} />
+                  </RadioWrapper>
+                  <p>{errors.provide_hope?.message}</p>
+                </RadioContainer>
+                <AccountGroup>
+                  <InputGroup>
+                    <Label>희망 금액</Label>
+                    <Input {...register('desiredAccount')} placeholder="희망 금액" />
+                    <p>{errors.desiredAccount?.message}</p>
+                  </InputGroup>
+                </AccountGroup>
               </RadioGroup>
-              <InputGroup>
-                <Label>숙소 정보</Label>
-                {/* 클릭 가능한 div */}
-                <RoomImage>
-                  <Plus />
-                </RoomImage>
-                <input type="file" style={{ display: 'none' }} />
-              </InputGroup>
             </HireContent>
           </ContentWrapper1>
+
+          <ButtonGroup>
+            <BackButton>이전</BackButton>
+            <SubmitButton1 type="submit">저장하기</SubmitButton1>
+          </ButtonGroup>
         </form>
-        <ButtonGroup>
-          <BackButton onClick={() => navigate(-1)}>이전</BackButton>
-          <SubmitButton1>모집종료</SubmitButton1>
-          <SubmitButton1>수정하기</SubmitButton1>
-        </ButtonGroup>
       </HireContainer>
+    </HireRegistSection>
     </>
   );
 };
@@ -262,7 +222,10 @@ const ProfileImg = styled.img`
 
   &:hover {
     transform: scale(1.05);
-  }
+  } 
+
+ 
+    
 `;
 
 /* ======== main   ========*/
@@ -289,6 +252,7 @@ const ActionButton = styled.button`
   }
 `;
 
+
 const HireContainer = styled(Container)`
   width: 80%;
   border-radius: ${({ theme }) => theme.borderRadius.md};
@@ -308,24 +272,6 @@ const HireHead = styled.div`
 const HireHeadTitle = styled(Title)`
   margin: 0;
   font-size: ${({ theme }) => theme.fontSizes['3xl']};
-`;
-
-const ChatButton = styled.button`
-  border: 1px solid ${({ theme, $error }) => ($error ? theme.colors.error : theme.colors.gray[5])};
-  border-radius: ${({ theme }) => theme.borderRadius.sm};
-  width: 25%;
-  font-size: ${({ theme }) => theme.fontSizes.md};
-  font-weight: ${({ theme }) => theme.fontWeights.medium};
-  margin-top: ${({ theme }) => theme.spacing[6]};
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: ${({ theme }) => theme.spacing[2]};
-  img {
-    width: 33px;
-    height: 33px;
-  }
 `;
 
 const ContentWrapper = styled.div`
@@ -386,7 +332,7 @@ const Label = styled.label`
 
 const RadioGroup = styled.div`
   display: flex;
-  gap: ${({ theme }) => theme.spacing[6]};
+  gap: ${({ theme }) => theme.spacing[5]};
   align-items: center;
   text-align: center;
   margin-bottom: ${({ theme }) => theme.spacing[3]};
@@ -445,36 +391,6 @@ const Divider = styled.div`
   gap: ${({ theme }) => theme.spacing[6]};
 `;
 
-const DiseaseGroup = styled(InputGroup)`
-  width: 100%;
-  padding: 0 ${({ theme }) => theme.spacing[16]};
-
-  input {
-    width: 100%;
-    border: none;
-  }
-`;
-const DiseaseInputDiv = styled.div`
-  border: 1px solid ${({ theme }) => theme.colors.gray[5]};
-  border-radius: ${({ theme }) => theme.borderRadius.md};
-  height: 55px;
-  display: flex;
-  gap: ${({ theme }) => theme.spacing[8]};
-  padding: 0 ${({ theme }) => theme.spacing[10]};
-  text-align: center;
-  align-items: center;
-  max-width: 800px;
-  div {
-    width: 80px;
-    height: 32px;
-    align-items: center;
-    display: flex;
-    justify-content: center;
-    background-color: ${({ theme }) => theme.colors.gray[5]};
-    border-radius: ${({ theme }) => theme.borderRadius.sm};
-    color: white;
-  }
-`;
 const HireBottom = styled.div`
   width: 100%;
   display: flex;
@@ -515,18 +431,6 @@ const Content = styled.textarea`
   margin-bottom: ${({ theme }) => theme.spacing[3]};
 `;
 
-const RoomImage = styled.div`
-  padding: ${({ theme }) => theme.spacing[3]};
-  width: 50%;
-  height: 200px;
-  background-color: ${({ theme }) => theme.colors.gray[5]};
-  border-radius: ${({ theme }) => theme.borderRadius.md};
-  cursor: 'pointer';
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
-
 const ButtonGroup = styled.div`
   display: flex;
   width: 100%;
@@ -552,33 +456,93 @@ const SubmitButton1 = styled(SubmitButton)`
   color: white;
 `;
 
-const Plus = styled(FaPlus)`
-  width: 30px;
-  height: 30px;
-  color: white;
-`;
-
-export const TagsUl = styled.ul`
+const LicenseGroup = styled.div`
   display: flex;
-  flex-wrap: wrap;
-  padding: 0;
-  margin: 8px 0 0 0;
-
-  li {
-    min-width: 80px;
-    height: 32px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: ${({ theme }) => theme.colors.primary};
-    padding: 0 ${({ theme }) => theme.spacing[3]};
-    font-size: ${({ theme }) => theme.fontSizes.base};
-    list-style: none;
-    border-radius: 4px;
-    margin: 0 8px 8px 0;
-    background: ${({ theme }) => theme.colors.gray[5]};
-    gap: ${({ theme }) => theme.spacing[2]};
-  }
+  flex-direction: column;
+  width: 100%;
+  gap: ${({ theme }) => theme.spacing[1]};
 `;
 
-export default HireDetail;
+const LicenseInput = styled(Input)``;
+
+//기존
+const ContentWrapper2 = styled.div`
+  display: flex;
+  flex-direction: column; /* 작은 화면에서 세로로 쌓이도록 */
+  max-width: 800px;
+  width: 100%;
+  margin: 0 auto;
+  ${media.md`
+    flex-direction: row; 
+    gap: ${({ theme }) => theme.spacing[5]};
+    padding : ${({ theme }) => theme.spacing[3]};
+  `}
+`;
+
+//변경(contentWrapper2 -> gridWrapper)인혜작성
+const GridWrapper = styled.div`
+  width: 80%;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  padding-top: ${({ theme }) => theme.spacing[3]};
+
+  ${media.lg`
+  display: grid;
+  grid-template-columns: repeat(5,1fr);
+  justify-content: center;
+  gap: 4px;
+  `}
+`;
+
+//인혜작성 시간나면 고치자
+const Div = styled.div`
+  width: 66px;
+`;
+
+const AccountGroup = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: end;
+`;
+
+const RadioContainer = styled.div`
+  display: flex;
+  width: 55%;
+  gap: ${({ theme }) => theme.spacing[5]};
+  align-items: center;
+`;
+
+const LicenseAdd = styled.button`
+  display: flex;
+  border-radius: 4px;
+  align-items: center;
+  margin-top: ${({ theme }) => theme.spacing[2]};
+  justify-content: center;
+  background-color: ${({ theme }) => theme.colors.gray[5]};
+
+  color: black;
+
+  // 인혜 작성(반응형)
+  ${media.lg`
+  with
+  span {
+    width: 50px;
+  }
+  padding: 0;
+  background-color:white; 
+  margin-top: ${({ theme }) => theme.spacing[6]};
+  `}
+`;
+
+const LicenseDelete = styled.button`
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  span {
+    width: 50px;
+  }
+  padding: 0;
+  margin-top: ${({ theme }) => theme.spacing[6]};
+`;
+export default ResumeDetailMine;

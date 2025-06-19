@@ -14,7 +14,6 @@ const Patient = () => {
   const [userPatients, setUserpatients] = useState();
   const navigate = useNavigate();
 
-
   useEffect(() => {
     const fetchAll = async () => {
       if (!user) {
@@ -23,8 +22,8 @@ const Patient = () => {
       }
 
       try {
-
-        const patientsList = await patientService.getPatients(user.user_no);
+        
+        const patientsList = await patientService.getPatients(user.userNo);
 
         setUserpatients(patientsList);
       } catch (err) {
