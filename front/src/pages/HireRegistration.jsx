@@ -58,17 +58,15 @@ const HireRegistration = () => {
               </ProfilImageWrapper>
             </div>
             <Divider>
-           
               <InputGroup>
-                <InputGroup>
-                  <Label>이름</Label>
-                  <Input type="text" value={'김옥순'} />
-                </InputGroup>
-                <InputGroup>
-                  <Label>나이</Label>
-                  <Input type="text" value={'85'} />
-                </InputGroup>
+                <Label>이름</Label>
+                <Input type="text" value={'김옥순'} />
               </InputGroup>
+              <InputGroup>
+                <Label>나이</Label>
+                <Input type="text" value={'85'} />
+              </InputGroup>
+
               <RadioGroup>
                 <Label>성별</Label>
                 <RadioWrapper>
@@ -253,7 +251,6 @@ const ProfilImageWrapper = styled.div`
   `}
 `;
 
-
 const InputRow = styled.div`
   display: flex;
   flex-direction: column;
@@ -275,7 +272,7 @@ const InputGird = styled.div`
     grid-template-columns: repeat(auto-fill, minmax(20%, auto));
     
   `}
-`
+`;
 
 const Label = styled.label`
   font-size: ${({ theme }) => theme.fontSizes.sm};
