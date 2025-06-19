@@ -46,6 +46,8 @@ import WrittenReviews from './pages/WrittenReviews';
 import MatchToCaregiver from './pages/MatchToCaregiver';
 import MatchToPatient from './pages/MatchToPatient';
 import MyResume from './pages/MyResume';
+import CareGiverCommunity from './pages/CareGiverCommunity';
+import GuardianCommunity from './pages/GuardianCommunity';
 
 function AppRoutes() {
   const navigate = useNavigate();
@@ -91,10 +93,12 @@ function AppRoutes() {
           <Route path="/guardian/careGiverSupportBorad" element={<CareGiverSupportBoard />} />
 
           {/* 공용 */}
-          <Route path="/community/free/create" element={<CreateCommuBoardForm />} />
+          <Route path="/community/create" element={<CreateCommuBoardForm />} />
           <Route path="/community/free" element={<CommunityBoard />} />
-          <Route path="/community/free/detail/:no" element={<CommunityDetail />} />
-          <Route path="/community/free/update/:no" element={<UpdateCommuBoardForm />} />
+          <Route path="/community/detail/:no" element={<CommunityDetail />} />
+          <Route path="/community/guardian" element={<GuardianCommunity />} />
+          <Route path="/community/caregiver" element={<CareGiverCommunity />} />
+          <Route path="/community/update/:no" element={<UpdateCommuBoardForm />} />
           <Route path="/community/question" element={<CommunityQuestion />} />
           <Route path="/community/notice" element={<NoticeBoard />} />
 

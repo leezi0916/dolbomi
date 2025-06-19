@@ -7,7 +7,7 @@ import styled from 'styled-components';
 import useUserStore from '../store/userStore';
 import Paging from '../components/Paging';
 
-const CommunityBoard = () => {
+const GuardianCommunity = () => {
   const userId = useUserStore((state) => state.user?.userId);
 
   const [error, setError] = useState(null);
@@ -200,4 +200,4 @@ export const BorderDiv = styled.div`
   border-top: 1px solid ${({ theme }) => theme.colors.gray[3]};
 `;
 
-export default CommunityBoard;
+export default GuardianCommunity;
