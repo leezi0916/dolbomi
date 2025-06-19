@@ -138,7 +138,7 @@ const Header = () => {
                   ''
                 )}
 
-                <NavItem to="/">
+                <NavItem to="/history-management">
                   <Icon src="/src/assets/icons/icon_내역관리.png" alt="" />
                   내역관리
                 </NavItem>
@@ -155,7 +155,7 @@ const Header = () => {
                   </NavItem>
                 )}
 
-                <NavItem to="/history-management">
+                <NavItem to="/">
                   <Icon src="/src/assets/icons/icon_매칭관리.png" alt="" />
                   매칭관리
                 </NavItem>

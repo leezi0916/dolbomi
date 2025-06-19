@@ -40,6 +40,7 @@ import GuardianSupportBoard from './pages/GuardianSupportBoard';
 import ResumeManagement from './pages/ResumeManagement';
 import ScrollToTop from './utils/scrollToTop';
 import HistoryManageMent from './pages/HistoryManageMent';
+import MyWrittenReview from './pages/MyWrittenReview';
 
 function AppRoutes() {
   const navigate = useNavigate();
@@ -66,6 +67,7 @@ function AppRoutes() {
           <Route path="/caregiver/guardianSupportBoard" element={<GuardianSupportBoard />} />
 
           <Route path="/caregiver/resumemanagement" element={<ResumeManagement />} />
+          <Route path="/caregiver/review" />
 
           {/* 보호자 */}
           <Route path="/guardian" element={<GuardianMainPage />} />
@@ -74,6 +76,7 @@ function AppRoutes() {
           <Route path="/guardian/patient" element={<Patient />} />
           <Route path="/guardian/patient/:id" element={<PatientUpdate />} />
           <Route path="/guardian/patientregisteration" element={<PatientRegisteration />} />
+          <Route path="/guardian/review" element={<MyWrittenReview />} />
           <Route path="/review" element={<ReviewModal />} />
 
           <Route path="/guardian/hireDetail/:hiringNo" element={<HireDetailMine />} />
@@ -105,8 +108,6 @@ function AppRoutes() {
 }
 
 function App() {
-  // const { userStatus } = useUserStore();
-
   return (
     <>
       <ThemeProvider theme={theme}>
