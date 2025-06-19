@@ -150,7 +150,7 @@ const Header = () => {
                   리뷰페이지
                 </NavItem>
 
-                <NavItem to="/">
+                <NavItem to="/history-management">
                   <Icon src="/src/assets/icons/icon_매칭관리.png" alt="" />
                   매칭관리
                 </NavItem>

@@ -33,6 +33,7 @@ import UpdateCommuBoardForm from './pages/UpdateCommuBoardForm';
 import ReviewModal from './components/ReviewModal';
 import ResumeManagement from './pages/ResumeManagement';
 import ScrollToTop from './utils/scrollToTop';
+import HistoryManageMent from './pages/HistoryManageMent';
 
 function AppRoutes() {
   const navigate = useNavigate();
@@ -40,7 +41,7 @@ function AppRoutes() {
 
   useEffect(() => {
     if (location.pathname === '/') {
-      navigate('/caregiver');
+      navigate('/guardian');
     }
   }, [location, navigate]);
 
@@ -48,7 +49,6 @@ function AppRoutes() {
     <>
       <Layout>
         <ScrollToTop />
-
         <Routes>
           {/* 간병인 */}
           <Route path="/caregiver" element={<CareGiverMainPage />} />
@@ -81,6 +81,7 @@ function AppRoutes() {
           <Route path="/resumeDetail/:resumeNo" element={<ResumeDetail />} />
           <Route path="/report/:patNo" element={<ReportMain />} />
           <Route path="/report/:patNo/detail/:reportNo" element={<ReportDetail />} />
+          <Route path="/history-management" element={<HistoryManageMent />} />
         </Routes>
       </Layout>
     </>

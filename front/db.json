@@ -2,24 +2,21 @@
   "resume": [
     {
       "resume_no": 1,
-      "user_no": "lkj8",
-      "user_name": "김길동",
+      "user_no": "lkj",
+      "user_name": "이지묵",
       "gender": "F",
       "age": 65,
       "account": 15000,
       "address": "강원, 속초",
       "license": true,
       "profile_image": "https://i.pinimg.com/736x/19/a1/33/19a133d18c3b0c8b83dea31b159074c1.jpg",
-
       "resume_title": "dsd",
       "care_status": "Y",
       "score": "4.5",
-
       "id": "54eb"
     },
     {
       "resume_no": 2,
-      "user_no": "lkj7",
       "user_name": "이순신",
       "gender": "M",
       "age": 70,
@@ -31,7 +28,6 @@
     },
     {
       "resume_no": 3,
-      "user_no": "lkj6",
       "user_name": "박영희",
       "gender": "F",
       "age": 58,
@@ -43,7 +39,6 @@
     },
     {
       "resume_no": 4,
-      "user_no": "lkj5",
       "user_name": "최철수",
       "gender": "M",
       "age": 62,
@@ -55,7 +50,6 @@
     },
     {
       "resume_no": 5,
-      "user_no": "lkj4",
       "user_name": "한지민",
       "gender": "F",
       "age": 60,
@@ -67,7 +61,6 @@
     },
     {
       "resume_no": 6,
-      "user_no": "lkj3",
       "user_name": "정해인",
       "gender": "M",
       "age": 55,
@@ -79,59 +72,20 @@
     },
     {
       "resume_no": 7,
-      "user_no": "lkj2",
       "user_name": "송가인",
       "gender": "F",
       "age": 63,
       "account": 15000,
-      "address": "전북, 전주시",
+      "address": "강원, 속초",
       "license": true,
       "profile_image": "https://i.pinimg.com/736x/19/a1/33/19a133d18c3b0c8b83dea31b159074c1.jpg",
-      "id": "c170"
+      "resume_title": "dsd",
+      "care_status": "Y",
+      "score": "4.5",
+      "id": "54eb"
     },
     {
       "resume_no": 8,
-      "user_no": "lkj1",
-      "user_name": "장동건",
-      "gender": "M",
-      "age": 61,
-      "account": 16500,
-      "address": "충남, 천안시",
-      "license": false,
-      "profile_image": "https://i.pinimg.com/736x/19/a1/33/19a133d18c3b0c8b83dea31b159074c1.jpg"
-    },
-    {
-      "resume_no": 1,
-      "user_no": "lkj",
-      "user_name": "이지묵",
-      "gender": "F",
-      "age": 65,
-      "account": 15000,
-      "address": "강원, 속초",
-      "license": true,
-      "profile_image": "https://i.pinimg.com/736x/19/a1/33/19a133d18c3b0c8b83dea31b159074c1.jpg",
-      "resume_title": "dsd",
-      "care_status": "Y",
-      "score": "4.5",
-      "id": "54eb"
-    },
-    {
-      "resume_no": 1,
-      "user_no": "lkj",
-      "user_name": "이지묵",
-      "gender": "F",
-      "age": 65,
-      "account": 15000,
-      "address": "강원, 속초",
-      "license": true,
-      "profile_image": "https://i.pinimg.com/736x/19/a1/33/19a133d18c3b0c8b83dea31b159074c1.jpg",
-      "resume_title": "dsd",
-      "care_status": "Y",
-      "score": "4.5",
-      "id": "54eb"
-    },
-    {
-      "resume_no": 1,
       "user_no": "lkj",
       "user_name": "이지묵",
       "gender": "F",
@@ -236,7 +190,6 @@
       "care_status": "Y"
     }
   ],
-
   "community": [
     {
       "no": "1",
@@ -319,7 +272,6 @@
       "address": "서울 강남구 강남역",
       "email": "user0@naver.com"
     },
-
     {
       "id": "00ca",
       "email": "a@a.com",
@@ -354,6 +306,17 @@
           "license_date": "2025-05-10"
         }
       ]
+    },
+    {
+      "id": "fef9",
+      "email": "a@a.com",
+      "address": "서울시관악",
+      "phone": "01011112222",
+      "gender": "M",
+      "age": 12,
+      "user_pwd": "qwe123",
+      "user_name": "김진만",
+      "user_id": "qwe123"
     }
   ],
   "reviews": [
