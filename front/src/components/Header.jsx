@@ -123,7 +123,7 @@ const Header = () => {
                     돌봄대상자 관리
                   </NavItem>
                 ) : (
-                  <NavItem to="/">
+                  <NavItem to="/caregiver/resumemanagement">
                     <Icon src="/src/assets/icons/icon_이력서등록.png" alt="" />
                     이력서 등록
                   </NavItem>

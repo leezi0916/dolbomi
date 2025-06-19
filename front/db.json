@@ -2,32 +2,24 @@
   "resume": [
     {
       "resume_no": 1,
-      "user_no": "lkj",
-      "user_name": "이지묵",
+      "user_no": "lkj8",
+      "user_name": "김길동",
       "gender": "F",
       "age": 65,
       "account": 15000,
       "address": "강원, 속초",
       "license": true,
-<<<<<<< HEAD
       "profile_image": "https://i.pinimg.com/736x/19/a1/33/19a133d18c3b0c8b83dea31b159074c1.jpg",
+
       "resume_title": "dsd",
       "care_status": "Y",
-=======
-
-      "profile_image": "/src/assets/profileImg/img_간병인.png",
-      "resume_Title": "test1",
-      "resume_content": "test1",
-      "create_date": "2025-07-01",
-      "update_date": "",
-      "care_status": "N",
-      "status": "Y",
->>>>>>> 2517e43a5489e27f951dc0d74badc5c0c0f27e05
       "score": "4.5",
+
       "id": "54eb"
-},
+    },
     {
       "resume_no": 2,
+      "user_no": "lkj7",
       "user_name": "이순신",
       "gender": "M",
       "age": 70,
@@ -39,6 +31,7 @@
     },
     {
       "resume_no": 3,
+      "user_no": "lkj6",
       "user_name": "박영희",
       "gender": "F",
       "age": 58,
@@ -50,6 +43,7 @@
     },
     {
       "resume_no": 4,
+      "user_no": "lkj5",
       "user_name": "최철수",
       "gender": "M",
       "age": 62,
@@ -61,6 +55,7 @@
     },
     {
       "resume_no": 5,
+      "user_no": "lkj4",
       "user_name": "한지민",
       "gender": "F",
       "age": 60,
@@ -72,6 +67,7 @@
     },
     {
       "resume_no": 6,
+      "user_no": "lkj3",
       "user_name": "정해인",
       "gender": "M",
       "age": 55,
@@ -83,21 +79,18 @@
     },
     {
       "resume_no": 7,
+      "user_no": "lkj2",
       "user_name": "송가인",
       "gender": "F",
       "age": 63,
       "account": 15000,
-      "address": "강원, 속초",
+      "address": "전북, 전주시",
       "license": true,
       "profile_image": "https://i.pinimg.com/736x/19/a1/33/19a133d18c3b0c8b83dea31b159074c1.jpg",
-      "resume_title": "dsd",
-      "care_status": "Y",
-      "score": "4.5",
-      "id": "54eb"
+      "id": "c170"
     },
     {
       "resume_no": 8,
-<<<<<<< HEAD
       "user_no": "lkj1",
       "user_name": "장동건",
       "gender": "M",
@@ -107,10 +100,9 @@
       "license": false,
       "profile_image": "https://i.pinimg.com/736x/19/a1/33/19a133d18c3b0c8b83dea31b159074c1.jpg"
     },
+
     {
       "resume_no": 10,
-=======
->>>>>>> 2517e43a5489e27f951dc0d74badc5c0c0f27e05
       "user_no": "lkj",
       "user_name": "이지묵",
       "gender": "F",
@@ -122,11 +114,8 @@
       "resume_title": "dsd",
       "care_status": "Y",
       "score": "4.5",
-<<<<<<< HEAD
       "id": "2313"
-=======
-      "id": "54eb"
->>>>>>> 2517e43a5489e27f951dc0d74badc5c0c0f27e05
+      
     }
   ],
   "hiring": [
@@ -139,24 +128,7 @@
       "account": 15000,
       "pat_address": "강원도",
       "profile_image": "https://i.pinimg.com/736x/ba/ca/a0/bacaa0c3434602bc8e7d6a99db91b372.jpg",
-      "care_status": "N",
-      "user_no": 5,
-      "hiring_title": "제목",
-      "hiring_content": "내용입니다.",
-      "end_date": "2025-07-31",
-      "start_date": "2025-07-01",
-      "max_applicants": 5,
-      "room_imge": "",
-      "satatus": "Y",
-      "create_date": "2025-07-01",
-      "update_date": "",
-      "id": "0b56",
-      "pat_height": 162,
-      "pat_weight": 52,
-      "pat_content": "당뇨합병증",
-      "status": "Y",
-      "phone": "01022222222",
-      "tags": ["당뇨"]
+      "care_status": "N"
     },
     {
       "hiring_no": 2,
@@ -236,6 +208,7 @@
       "care_status": "Y"
     }
   ],
+
   "community": [
     {
       "no": "1",
@@ -245,18 +218,15 @@
       "create_date": "2025-11-08",
       "count": "5",
       "board_detail": "없음",
-      "src": [
-        "/img_s3/연습용img.jpg",
-        "/img_s3/연습용이미지(1).jpg"
-      ]
+      "src": ["/img_s3/연습용img.jpg", "/img_s3/연습용이미지(1).jpg"]
     },
     {
       "no": "2",
       "id": "dbgk9311",
       "name": "김유하",
       "title": "테스트테스트.",
-<<<<<<< HEAD
       "create_date": "2025-11-09",
+
       "count": "4"
     }
   ],
@@ -268,20 +238,14 @@
     },
     {
       "no": "2",
+
       "id": "e2c5",
+
       "count": "4",
       "board_detail": "테스트 중입니당",
-      "src": [
-        "/img_s3/연습용이미지(2).jpg"
-      ]
-=======
-      "count": "4",
-      "create_date": "2025-11-09",
       "src": ["/img_s3/연습용이미지(2).jpg"]
->>>>>>> 2517e43a5489e27f951dc0d74badc5c0c0f27e05
     }
   ],
-
   "users": [
     {
       "user_no": 1,
@@ -342,6 +306,7 @@
       "address": "서울 강남구 강남역",
       "email": "user0@naver.com"
     },
+
     {
       "id": "00ca",
       "email": "a@a.com",
@@ -376,17 +341,6 @@
           "license_date": "2025-05-10"
         }
       ]
-    },
-    {
-      "id": "fef9",
-      "email": "a@a.com",
-      "address": "서울시관악",
-      "phone": "01011112222",
-      "gender": "M",
-      "age": 12,
-      "user_pwd": "qwe123",
-      "user_name": "김진만",
-      "user_id": "qwe123"
     }
   ],
   "reviews": [
@@ -437,8 +391,8 @@
       "pat_address": "서울시 강남구",
       "pat_age": 60,
       "pat_gender": "F",
-      "pat_height": 162,
-      "pat_weight": 52,
+      "pat_height": 162.5,
+      "pat_weight": 52.5,
       "pat_content": "당뇨합병증",
       "phone": "01022222222",
       "status": "Y"
@@ -457,9 +411,7 @@
       "pat_content": "당뇨합병증",
       "status": "Y",
       "phone": "01022222222",
-      "tags": [
-        "당뇨"
-      ]
+      "tags": ["당뇨"]
     },
     {
       "id": "3",
@@ -503,9 +455,7 @@
       "pat_weight": 65.4,
       "pat_content": "거동이 불편함",
       "phone": "01011111111",
-      "tags": [
-        "골절"
-      ]
+      "tags": ["골절"]
     },
     {
       "id": "6",
@@ -519,39 +469,21 @@
       "pat_weight": "65",
       "pat_content": "",
       "phone": "01022222222",
-      "tags": [
-        "당뇨"
-      ]
+      "tags": ["당뇨"]
     },
     {
       "id": "7",
       "pat_no": 7,
       "guardian_no": 5,
-      "pat_name": "강환자",
+      "pat_name": "김겅강",
       "pat_age": 70,
       "pat_address": "서울시 강남구",
-      "pat_gender": "F",
+      "pat_gender": "M",
       "pat_height": "160",
       "pat_weight": "40",
       "pat_content": "",
       "phone": "01022222222",
-      "tags": [
-        "당뇨",
-        "고혈압"
-      ]
-    },
-    {
-      "id": "63d4",
-      "guardian_no": 5,
-      "pat_name": "김할멈",
-      "pat_age": 90,
-      "pat_address": "강원도 강릉시",
-      "pat_gender": "F",
-      "pat_height": "160",
-      "pat_weight": "50",
-      "pat_content": "",
-      "phone": "01083281182",
-      "tags": []
+      "tags": ["당뇨", "고혈압"]
     }
   ],
   "report": [
@@ -582,58 +514,26 @@
     {
       "id": 1,
       "propposer_no": 1,
-      "hiring_no": 1,
+      "job_opening_no": 1,
       "caregiver_no": 1,
       "status": "W",
-      "user_name": "송가인",
-      "gender": "F",
-      "age": 63,
-      "account": 15000,
-      "address": "전북, 전주시",
-      "license": true,
-      "profile_image": "/src/assets/profileImg/img_간병인.png"
+      "image": "/src/assets/images/pat.png"
     },
     {
       "id": 2,
       "propposer_no": 2,
-      "hiring_no": 1,
-      "caregiver_no": 1,
+      "job_opening_no": 1,
+      "caregiver_no": 2,
       "status": "W",
-      "user_name": "송가인",
-      "gender": "F",
-      "age": 63,
-      "account": 15000,
-      "address": "전북, 전주시",
-      "license": true,
-      "profile_image": "/src/assets/profileImg/img_간병인.png"
+      "image": "/src/assets/images/pat.png"
     },
     {
       "id": 3,
       "propposer_no": 3,
-      "hiring_no": 1,
-      "caregiver_no": 1,
+      "job_opening_no": 3,
+      "caregiver_no": 3,
       "status": "W",
-      "user_name": "송가인",
-      "gender": "F",
-      "age": 63,
-      "account": 15000,
-      "address": "전북, 전주시",
-      "license": true,
-      "profile_image": "/src/assets/profileImg/img_간병인.png"
-    },
-    {
-      "id": 4,
-      "propposer_no": 4,
-      "hiring_no": 1,
-      "caregiver_no": 1,
-      "status": "W",
-      "user_name": "송가인",
-      "gender": "F",
-      "age": 63,
-      "account": 15000,
-      "address": "전북, 전주시",
-      "license": true,
-      "profile_image": "/src/assets/profileImg/img_간병인.png"
+      "image": "/src/assets/images/pat.png"
     }
   ],
   "patproposer": [
@@ -641,20 +541,10 @@
       "id": 1,
       "propposer_no": 1,
       "resume_no": 1,
-      "guardian_no": 1,
-      "pat_no": 5,
+      "guardian_no": 2,
+      "pat_no": 1,
       "status": "W",
-
-      "profile_image": "/src/assets/profileImg/img_환자소.png",
-      "pat_name": "이환자",
-      "pat_age": 70,
-      "pat_address": "서울시 강남구 역삼",
-      "pat_gender": "F",
-      "pat_height": 160.1,
-      "pat_weight": 65.4,
-      "pat_content": "거동이 불편함",
-      "phone": "01011111111",
-      "tags": ["골절"]
+      "image": "/src/assets/profileImg/img_환자소.png"
     },
     {
       "id": 2,
@@ -663,17 +553,7 @@
       "guardian_no": 3,
       "pat_no": 1,
       "status": "W",
-
-      "profile_image": "/src/assets/profileImg/img_환자소.png",
-      "pat_name": "이환자",
-      "pat_age": 70,
-      "pat_address": "서울시 강남구 역삼",
-      "pat_gender": "F",
-      "pat_height": 160.1,
-      "pat_weight": 65.4,
-      "pat_content": "거동이 불편함",
-      "phone": "01011111111",
-      "tags": ["골절"]
+      "image": "/src/assets/profileImg/img_환자소.png"
     },
     {
       "id": 3,
@@ -682,17 +562,7 @@
       "guardian_no": 4,
       "pat_no": 1,
       "status": "W",
-
-      "profile_image": "/src/assets/profileImg/img_환자소.png",
-      "pat_name": "이환자",
-      "pat_age": 70,
-      "pat_address": "서울시 강남구 역삼",
-      "pat_gender": "F",
-      "pat_height": 160.1,
-      "pat_weight": 65.4,
-      "pat_content": "거동이 불편함",
-      "phone": "01011111111",
-      "tags": ["골절"]
+      "image": "/src/assets/profileImg/img_환자소.png"
     },
     {
       "id": 4,
@@ -701,17 +571,7 @@
       "guardian_no": 5,
       "pat_no": 1,
       "status": "W",
-
-      "profile_image": "/src/assets/profileImg/img_환자소.png",
-      "pat_name": "이환자",
-      "pat_age": 70,
-      "pat_address": "서울시 강남구 역삼",
-      "pat_gender": "F",
-      "pat_height": 160.1,
-      "pat_weight": 65.4,
-      "pat_content": "거동이 불편함",
-      "phone": "01011111111",
-      "tags": ["골절"]
+      "image": "/src/assets/profileImg/img_환자소.png"
     }
   ]
 }
