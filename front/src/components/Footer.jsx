@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { SITE_CONFIG } from '../config/site'
+import { SITE_CONFIG } from '../config/site';
 import { media } from '../styles/MediaQueries';
 import { Link } from 'react-router-dom';
 
@@ -9,12 +9,11 @@ const Footer = () => {
     <FooterContainer>
       <FooterWrapper>
         <FooterSection>
-        <Logo to="/">
-          <img src="/public/logo.png" />
-          {SITE_CONFIG.name}
-        </Logo>
+          <Logo to="/">
+            <img src="/public/logo.png" />
+            {SITE_CONFIG.name}
+          </Logo>
         </FooterSection>
-
 
         <FooterSection>
           <FooterTitle>고객센터</FooterTitle>
@@ -24,7 +23,7 @@ const Footer = () => {
             <p>운영시간: {SITE_CONFIG.contact.runtime}</p>
           </FooterContent>
         </FooterSection>
-        
+
         <FooterSection>
           <FooterTitle>회사정보</FooterTitle>
           <FooterContent>
@@ -33,7 +32,7 @@ const Footer = () => {
             <p>사업자등록번호: {SITE_CONFIG.info.company_number}</p>
           </FooterContent>
         </FooterSection>
-        
+
         <FooterSection>
           <FooterTitle>이용약관</FooterTitle>
           <FooterContent>
@@ -56,7 +55,7 @@ const FooterWrapper = styled.div`
   max-width: 1280px;
   margin: 0 auto;
   display: flex;
-  justify-content: space-between;
+  justify-content: space-around;
 `;
 
 const FooterSection = styled.div`
