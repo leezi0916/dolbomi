@@ -115,7 +115,6 @@
       "care_status": "Y",
       "score": "4.5",
       "id": "2313"
-      
     }
   ],
   "hiring": [
@@ -243,6 +242,7 @@
 
       "count": "4",
       "board_detail": "테스트 중입니당",
+
       "src": ["/img_s3/연습용이미지(2).jpg"]
     }
   ],
