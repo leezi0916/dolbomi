@@ -144,12 +144,12 @@ const Header = () => {
                 </NavItem>
 
                 {userStatus ? (
-                  <NavItem to="/">
+                  <NavItem to="/guardian/review">
                     <Icon src="/src/assets/icons/icon_리뷰페이지.png" alt="" />
                     내가쓴리뷰
                   </NavItem>
                 ) : (
-                  <NavItem to="/">
+                  <NavItem to="/caregiver/review">
                     <Icon src="/src/assets/icons/icon_리뷰페이지.png" alt="" />
                     받은리뷰
                   </NavItem>
