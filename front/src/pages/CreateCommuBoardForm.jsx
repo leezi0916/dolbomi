@@ -5,6 +5,7 @@ import { commuService } from '../api/community';
 import { toast } from 'react-toastify';
 import { ClipLoader } from 'react-spinners';
 import useUserStore from '../store/userStore';
+import { Icons } from './CommunityDetail';
 
 const CreateCommuBoardForm = () => {
   const userId = useUserStore((state) => state.user?.userId);
@@ -83,7 +84,10 @@ const CreateCommuBoardForm = () => {
           {userName && <UserName key={userName.no}>{userName.name}</UserName>}
           <TextInput type="text" placeholder="내용을 입력해 주세요" />
           <FileBox>
-            <FileTitle>사진</FileTitle>
+            <FileTitle>
+              <Icons src="/src/assets/icons/icon_사진.png" alt="" />
+              <FileTitle>사진</FileTitle>
+            </FileTitle>
             <InputFile>
               {images.map((img) => (
                 <ImgBox key={img.id}>
