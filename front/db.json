@@ -224,7 +224,8 @@
       "count": "5",
       "board_detail": "없음",
       "src": ["/img_s3/연습용img.jpg", "/img_s3/연습용이미지(1).jpg"],
-      "status": "Y"
+      "status": "Y",
+      "question_status": null
     },
     {
       "no": "2",
@@ -249,7 +250,8 @@
       "count": "4",
       "board_detail": "테스트 중입니당",
       "src": ["/img_s3/연습용이미지(2).jpg"],
-      "status": "Y"
+      "status": "Y",
+      "question_status": null
     },
     {
       "no": "3",
@@ -261,7 +263,8 @@
       "count": "5",
       "board_detail": "없음",
       "src": ["/img_s3/연습용img.jpg", "/img_s3/연습용이미지(1).jpg"],
-      "status": "Y"
+      "status": "Y",
+      "question_status": null
     },
     {
       "no": "4",
@@ -273,10 +276,24 @@
       "count": "4",
       "board_detail": "테스트 중입니당",
       "src": ["/img_s3/연습용이미지(2).jpg"],
-      "status": "Y"
+      "status": "Y",
+      "question_status": null
     },
     {
       "no": "5",
+      "id": "dbgk93",
+      "name": "김유",
+      "role": "Q",
+      "title": "테스트테스트.",
+      "create_date": "2025-11-09",
+      "count": "4",
+      "board_detail": "테스트 중입니당",
+      "src": ["/img_s3/연습용이미지(2).jpg"],
+      "status": "Y",
+      "question_status": "Y"
+    },
+    {
+      "no": "6",
       "id": "dbgk9311",
       "name": "김유하",
       "role": "Q",
@@ -285,7 +302,21 @@
       "count": "4",
       "board_detail": "테스트 중입니당",
       "src": ["/img_s3/연습용이미지(2).jpg"],
-      "status": "Y"
+      "status": "Y",
+      "question_status": "Y"
+    },
+    {
+      "no": "7",
+      "id": "gk9311",
+      "name": "김하",
+      "role": "Q",
+      "title": "테스트테스트.",
+      "create_date": "2025-11-09",
+      "count": "4",
+      "board_detail": "테스트 중입니당 question_status는 응답을 했는지 안했는지 확인하는것/Role이 Q인 것만 빼고 안쓰므로 Q가 아닌 것들은 null표시함. Y는 완료 N는 대기",
+      "src": ["/img_s3/연습용이미지(2).jpg"],
+      "status": "Y",
+      "question_status": "Y"
     }
   ],
   "users": [
