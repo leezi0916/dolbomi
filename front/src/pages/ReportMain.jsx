@@ -44,7 +44,7 @@ const ReportMain = () => {
         setAllReport(reports);
 
         setReportList(
-          reports.filter((report) => {
+          reports.reverse().filter((report) => {
             const date = dateFilter ? report.createDate.startsWith(dateFilter) : true;
             const author = authorFilter ? report.careGiverNo.toString() === authorFilter : true;
             return date && author;
@@ -119,12 +119,12 @@ const ReportMain = () => {
           <div>작성자</div>
           <div>작성 일자</div>
         </BoardItemTop>
-        {reportList.reverse().map((report) => (
+        {reportList.map((report) => (
           <BoardItem key={report.reportNo} to={`/report/${patNo}/detail/${report.reportNo}`} state={{ report }}>
             <div>{report.reportNo}</div>
             <div>{report.reportTitle}</div>
             <div>{report.careGiverNo}</div>
-            <div>{report.createDate}</div>
+            <div>{report.createDate.slice(0, 10)}</div>
           </BoardItem>
         ))}
 
