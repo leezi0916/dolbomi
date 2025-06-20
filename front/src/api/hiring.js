@@ -1,5 +1,5 @@
 // 구인 API
-import { snakeToCamel } from '../../utils/formatData';
+import { snakeToCamel } from '../utils/formatData';
 import api from './axios';
 import { API_ENDPOINTS } from './config';
 
@@ -20,9 +20,9 @@ export const hiringService = {
   },
 
   //세부 구인목록가져오기
-  getHirngById: async (id) => {
+  getHirngById: async (hiringNo) => {
     try {
-      const { data } = await api.get(API_ENDPOINTS.HIRING.DETAIL(id));
+      const { data } = await api.get(API_ENDPOINTS.HIRING.DETAIL(hiringNo));
 
       return snakeToCamel(data[0]);
     } catch (error) {

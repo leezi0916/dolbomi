@@ -7,6 +7,7 @@ import { media } from '../styles/MediaQueries';
 import { BiSolidPhoneCall } from 'react-icons/bi';
 import { hiringService } from '../api/hiring';
 import { toast } from 'react-toastify';
+import { useNavigate } from 'react-router-dom';
 
 const CareGiverMainPage = () => {
   const [jobOpeningList, setJobOpeningList] = useState([]);
@@ -38,6 +39,8 @@ const CareGiverMainPage = () => {
 
     return name;
   };
+
+  const navigate = useNavigate();
 
   return (
     <>
@@ -86,7 +89,7 @@ const CareGiverMainPage = () => {
                   <CardRegion>
                     <span>지역</span> {user.patAddress}
                   </CardRegion>
-                  <CardButton>상세보기</CardButton>
+                  <CardButton onClick={() => navigate(`/hireDetail/${user.hiringNo}`)}>상세보기</CardButton>
                 </CardBottomContent>
               </Card>
             ))}
@@ -119,7 +122,7 @@ const CareGiverMainPage = () => {
                   <CardRegion>
                     <span>지역</span> {user.patAddress}
                   </CardRegion>
-                  <CardButton>상세보기</CardButton>
+                  <CardButton onClick={() => navigate(`/hireDetail/${user.hiringNo}`)}>상세보기</CardButton>
                 </CardBottomContent>
               </Card>
             ))}

@@ -5,6 +5,7 @@ import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { Page, PageInfo } from './CommunityBoard';
 import { ClipLoader } from 'react-spinners';
+import { Icons } from './CommunityDetail';
 
 const UpdateCommuBoardForm = () => {
   const [error, setError] = useState(null);
@@ -84,17 +85,23 @@ const UpdateCommuBoardForm = () => {
         <PageBody>
           <TitleInput type="text" value={userProfile.title} placeholder="제목을 입력해 주세요" />
           <BodyTop>
+            <Icons src="/src/assets/icons/icon_작성자.png" alt="" />
             <UserName>{userProfile.name}</UserName>
             <Right>
-              <div>{userProfile.count}</div>
-              <div>{userProfile.createDate}</div>
-              <div style={{ width: '40px' }}>설정</div>
+              <Icons src="/src/assets/icons/icon_조회수.png" alt="" />
+              <div style={{ paddingRight: '10px' }}>{userProfile.count}</div>
+              <Icons src="/src/assets/icons/icon_작성일자.png" alt="" />
+              <div style={{ paddingRight: '10px' }}>{userProfile.create_date}</div>
             </Right>
           </BodyTop>
 
           <TextInput type="text" value={userProfile.board_detail} placeholder="내용을 입력해 주세요" />
           <FileBox>
-            <FileTitle>사진</FileTitle>
+            <FileTitle>
+              <Icons src="/src/assets/icons/icon_사진.png" alt="" />
+              <div>사진</div>
+            </FileTitle>
+
             <InputFile>
               {images.map((img) => (
                 <ImgBox key={img.id}>
@@ -167,22 +174,20 @@ const PageBody = styled.div`
 const TitleInput = styled.input`
   width: 100%;
   font-size: ${({ theme }) => theme.fontSizes.lg};
-  padding: 0 10px 10px;
+  padding: 0 10px;
 `;
 const BodyTop = styled.div`
   width: 100%;
   display: flex;
-  padding: 0px 10px 10px;
+  padding: 10px;
   border-bottom: 1px solid ${({ theme }) => theme.colors.gray[4]};
 `;
 const UserName = styled(Left)`
-  width: 100%;
   font-size: ${({ theme }) => theme.fontSizes.sm};
   padding: 0 10px;
 `;
 const Right = styled.div`
   display: flex;
-  gap: 16px;
 `;
 const TextInput = styled.textarea`
   width: 100%;
@@ -199,7 +204,7 @@ const FileBox = styled.div`
   padding: 0 10px;
   margin-bottom: 10px;
 `;
-const FileTitle = styled(Left)`
+export const FileTitle = styled(Left)`
   font-size: ${({ theme }) => theme.fontSizes.base};
   font-weight: ${({ theme }) => theme.fontWeights.bold};
   padding: 10px;
