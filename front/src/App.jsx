@@ -46,6 +46,7 @@ import WrittenReviews from './pages/WrittenReviews';
 import MatchToCaregiver from './pages/MatchToCaregiver';
 import MatchToPatient from './pages/MatchToPatient';
 import MyResume from './pages/MyResume';
+import ContactPage from './pages/ContactPage';
 
 function AppRoutes() {
   const navigate = useNavigate();
@@ -108,6 +109,8 @@ function AppRoutes() {
           <Route path="/report/:patNo" element={<ReportMain />} />
           <Route path="/report/:patNo/detail/:reportNo" element={<ReportDetail />} />
           <Route path="/history-management" element={<HistoryManageMent />} />
+
+          <Route path="/contact" element={<ContactPage />} />
         </Routes>
       </Layout>
     </>
