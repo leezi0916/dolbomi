@@ -22,7 +22,7 @@ const ReportDetail = () => {
 
   const handleSubmit = async () => {
     try {
-      const save = await reportService.addReports(report);
+      const save = await reportService.modifyReports(report);
       console.log(save); //확인용
     } catch (error) {
       console.error(error);
