@@ -66,7 +66,7 @@ const CloseButton = styled.button`
   background: transparent;
   border: none;
   cursor: pointer;
-
+  border-radius: ${({ theme }) => theme.borderRadius.md};
   img {
     width: 20px;
     height: 20px;
@@ -147,7 +147,7 @@ const SubmitButton = styled.button`
   padding: 14px;
   font-weight: bold;
   border: none;
-  border-radius: 4px;
+  border-radius: ${({ theme }) => theme.borderRadius.md};
   cursor: pointer;
 `;
 

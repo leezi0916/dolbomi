@@ -55,7 +55,7 @@ const SearchInputContainer = styled.div`
   width: 100%;
   max-width: 400px; /* 이미지와 유사한 최대 너비 설정 */
   border: 1px solid #ccc; /* 테두리 색상 */
-  border-radius: 4px; /* 모서리 둥글게 */
+  border-radius: ${({ theme }) => theme.borderRadius.md};
   overflow: hidden; /* 내부 요소가 넘치지 않도록 */
   background-color: white; /* 배경색 */
 `;
@@ -76,7 +76,6 @@ const KeywordInput = styled.input`
 const SearchButton = styled.button`
   background-color: ${({ theme }) => theme.colors.primary};
   color: white;
-  border: none;
 
   cursor: pointer;
   display: flex;

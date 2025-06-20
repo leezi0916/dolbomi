@@ -99,7 +99,6 @@
       "profile_image": "https://i.pinimg.com/736x/19/a1/33/19a133d18c3b0c8b83dea31b159074c1.jpg",
       "id": "fafb"
     },
-
     {
       "resume_no": 10,
       "user_no": "lkj",
@@ -234,6 +233,19 @@
       "role": "G",
       "title": "테스트테스트.",
       "create_date": "2025-11-09",
+
+      "count": "4"
+    }
+  ],
+  "community_detail": [
+    {
+      "no": "1",
+      "board_detail": "낚엿쥬",
+      "id": "84a6"
+    },
+    {
+      "no": "2",
+      "id": "e2c5",
       "count": "4",
       "board_detail": "테스트 중입니당",
       "src": ["/img_s3/연습용이미지(2).jpg"],
@@ -357,19 +369,7 @@
       "user_pwd": "wlanr1506!",
       "user_name": "이지묵",
       "user_id": "leezi0916",
-      "user_no": "lkj",
-      "licenses": [
-        {
-          "license_name": "기사 자격증",
-          "license_publisher": "경찰청",
-          "license_date": "2025-05-10"
-        },
-        {
-          "license_name": "기사 자격증",
-          "license_publisher": "경찰청",
-          "license_date": "2025-05-10"
-        }
-      ]
+      "user_no": "lkj"
     }
   ],
   "reviews": [

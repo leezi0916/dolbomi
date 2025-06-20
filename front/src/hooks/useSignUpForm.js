@@ -4,6 +4,7 @@ import * as yup from 'yup';
 import { userService } from '../api/users';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
 
 //회원가입 폼의 유효성 검사 스키마
 const signUpSchema = yup.object().shape({
@@ -54,10 +55,16 @@ const signUpSchema = yup.object().shape({
 export const useSignUpForm = () => {
   const navigate = useNavigate();
 
+  //아이디 중복 검사
+  const [isIdChecked, setIsIdChecked] = useState(false); // 아이디 중복확인 완료 여부
+  const [idCheckMessage, setIdCheckMessage] = useState('');
+
   //react-hook-form으로 폼 상태 초기화및 유효성 검사
   const {
     register,
     handleSubmit,
+    setError,
+    clearErrors,
     formState: { errors, isSubmitting }, //유효성 에러및 제출중 상태
     watch, // watch 함수를 추가로 가져옵니다.
   } = useForm({
@@ -70,14 +77,40 @@ export const useSignUpForm = () => {
     },
   });
 
-  const onSubmit = async (data) => {
-    try {
-      //중복이메일 체크
-      // setError('email', {}) // 이 부분은 주석 처리 또는 제거
+  const userId = watch('userId'); //현재 입력된 아이디를 감시
 
+  const checkUserId = async () => {
+    if (!userId || userId.length < 5) {
+      //아마 훅폼으로 이미 유효성 검사할텐데 중복확인시에도 유효성 체크 할려는듯
+      setIdCheckMessage('아이디는 최소 5자 이상 입력해주세요');
+      return;
+    }
+    try {
+      const res = await userService.checkUserId(userId);
+      if (res.available) {
+        setIdCheckMessage('사용 가능한 아이디입니다.');
+        setIsIdChecked(true);
+        clearErrors('userId'); //유효성 오류 제거
+      } else {
+        setIdCheckMessage('이미 사용 중인 아이디입니다.');
+        setIsIdChecked(false);
+        setError('userId', { message: '이미 사용 중인 아이디입니다.' });
+      }
+    } catch (err) {
+      setIdCheckMessage('중복 확인 중 오류가 발생했습니다.');
+      setIsIdChecked(false);
+    }
+  };
+
+  const onSubmit = async (data) => {
+    if (!isIdChecked) {
+      toast.error('아이디 중복을 확인을 해주세요.');
+      return;
+    }
+
+    try {
       //회원가입API호출
       await userService.signUp(data);
-
       toast.success('회원가입 완료!');
       navigate('/login');
     } catch (error) {
@@ -93,5 +126,7 @@ export const useSignUpForm = () => {
     errors,
     isSubmitting,
     watch, // watch 함수를 반환합니다.
+    checkUserId,
+    idCheckMessage,
   };
 };

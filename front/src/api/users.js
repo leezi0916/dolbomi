@@ -16,6 +16,13 @@ export const userService = {
       throw error;
     }
   },
+
+  //아이디 중복 검사
+  checkUserId: async (userId) => {
+    const res = await api.get(API_ENDPOINTS.USERS.PROFILE(userId));
+    return { available: res.data.length === 0 }; //배열이 비어있으면 사용 가능하다는 뜻
+  },
+
   //회원가입
   signUp: async (userData) => {
     try {
