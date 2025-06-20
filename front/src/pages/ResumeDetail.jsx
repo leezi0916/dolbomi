@@ -153,7 +153,7 @@ function ResumeDetail() {
         <ButtonGroup>
           <BackButton onClick={() => navigate(-1)}>이전</BackButton>
           <SubmitButton1 type="button" onClick={handleOpenModal}>
-            신청하기
+            간병 신청
           </SubmitButton1>
           {isModalOpen && <PatientSelectModal onClose={handleCloseModal} onSubmit={handleSubmitModal} />}
         </ButtonGroup>
