@@ -232,24 +232,11 @@
       "id": "dbgk9311",
       "name": "김유하",
       "role": "G",
-      "title": "테스트테스트.",
-      "create_date": "2025-11-09",
-
-      "count": "4"
-    }
-  ],
-  "community_detail": [
-    {
-      "no": "1",
-      "board_detail": "낚엿쥬",
-      "id": "84a6"
-    },
-    {
-      "no": "2",
-      "id": "e2c5",
-      "count": "4",
-      "board_detail": "테스트 중입니당",
-      "src": ["/img_s3/연습용이미지(2).jpg"],
+      "title": "게임 추천합니다.",
+      "create_date": "2025-11-08",
+      "count": "5",
+      "board_detail": "없음",
+      "src": ["/img_s3/연습용img.jpg", "/img_s3/연습용이미지(1).jpg"],
       "status": "Y",
       "question_status": null
     },
