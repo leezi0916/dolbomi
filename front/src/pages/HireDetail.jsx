@@ -29,11 +29,6 @@ const HireDetail = () => {
   useEffect(() => {
     console.log(user);
 
-    if (!user) {
-      alert('로그인 후 이용해주세요');
-      // navigate('/guardian');
-    }
-
     const getJobOpening = async () => {
       const getOneJobOpening = await hiringService.getHirngById(Number(hiringNo));
       console.log(getOneJobOpening);
@@ -41,7 +36,7 @@ const HireDetail = () => {
     };
 
     getJobOpening();
-  }, [user]);
+  }, []);
 
   return (
     <HireRegistSection>
@@ -221,7 +216,7 @@ const HireHeadTitle = styled(Title)`
 
 const ChatButton = styled.button`
   border: 1px solid ${({ theme, $error }) => ($error ? theme.colors.error : theme.colors.gray[5])};
-  border-radius: ${({ theme }) => theme.borderRadius.sm};
+  border-radius: ${({ theme }) => theme.borderRadius.md};
   width: 25%;
   font-size: ${({ theme }) => theme.fontSizes.md};
   font-weight: ${({ theme }) => theme.fontWeights.medium};
@@ -446,7 +441,7 @@ const ButtonGroup = styled.div`
 
 const BackButton = styled.button`
   border: 1px solid ${({ theme, $error }) => ($error ? theme.colors.error : theme.colors.gray[5])};
-  border-radius: ${({ theme }) => theme.borderRadius.sm};
+  border-radius: ${({ theme }) => theme.borderRadius.md};
   width: 25%;
   font-size: ${({ theme }) => theme.fontSizes.md};
   font-weight: ${({ theme }) => theme.fontWeights.medium};
@@ -455,7 +450,7 @@ const BackButton = styled.button`
 const SubmitButton1 = styled(SubmitButton)`
   width: 65%;
   border: 1px solid ${({ theme, $error }) => ($error ? theme.colors.error : theme.colors.gray[5])};
-  border-radius: ${({ theme }) => theme.borderRadius.sm};
+  border-radius: ${({ theme }) => theme.borderRadius.md};
   font-size: ${({ theme }) => theme.fontSizes.md};
   font-weight: ${({ theme }) => theme.fontWeights.medium};
   color: white;

@@ -63,7 +63,7 @@ export const API_ENDPOINTS = {
   REPORT: {
     BASE: `/report`,
     PROFILE: (patNo) => `/report?pat_no=${patNo}`,
-    SEARCH: (reportNo) => `/report?report_no=${reportNo}`,
+    SEARCH: (reportNo) => `/report/report_no=${reportNo}`,
   },
 
   CAREGIVERPROPOSER: {
