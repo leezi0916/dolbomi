@@ -15,7 +15,6 @@ const HireRegistration = () => {
     inputRef.current?.click(); // 파일 선택창 열기
   };
 
-
   const handleFileChange = (e) => {
     const file = e.target.files?.[0];
     if (file) {
@@ -32,7 +31,7 @@ const HireRegistration = () => {
     <HireRegistSection>
       <HireContainer>
         <HireHead>
-          <HireHeadTitle>돌봄대상자 신청</HireHeadTitle>
+          <HireHeadTitle>구인 등록</HireHeadTitle>
 
           <SelectBox>
             <option value="">돌봄대상자 선택</option>
