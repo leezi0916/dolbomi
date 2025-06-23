@@ -18,7 +18,7 @@ import { useSignUpForm } from '../hooks/useSignUpForm';
 
 const SignUp = () => {
   // watch 함수를 useSignUpForm 훅에서 가져옵니다.
-  const { register, handleSubmit, errors, isSubmitting, watch } = useSignUpForm();
+  const { register, handleSubmit, errors, isSubmitting, watch, checkUserId, idCheckMessage } = useSignUpForm();
 
   // 'gender' 필드의 현재 값을 watch하여 라디오 버튼의 checked 상태를 제어합니다.
   const currentGender = watch('gender');
@@ -102,9 +102,14 @@ const SignUp = () => {
                     $error={errors.userId}
                   />
 
-                  <CheckDuplicateButton onClick={handleClick}>중복확인</CheckDuplicateButton>
+                  <CheckDuplicateButton type="button" onClick={checkUserId}>
+                    중복확인
+                  </CheckDuplicateButton>
                 </Row>
                 {errors.userId && <ErrorMessage>{errors.userId.message}</ErrorMessage>}
+                {idCheckMessage && !errors.userId && (
+                  <p style={{ color: 'green', marginTop: '4px' }}>{idCheckMessage}</p>
+                )}
               </InputGroup>
 
               <InputGroup>

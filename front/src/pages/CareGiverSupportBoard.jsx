@@ -45,7 +45,7 @@ const SupportBoard = () => {
     };
 
     fetchList();
-  }, []); 
+  }, []);
 
   // 이름 첫글자 O 처리하기
   const maskName = (name) => {
@@ -60,45 +60,45 @@ const SupportBoard = () => {
 
   return (
     <>
-        {/* 보호자ver => 간병사 지원목록 */ }
-        <>
-          <NewCantainer>
-            <NewTitle>간병사 지원목록</NewTitle>
-            <CardWrap>
-              <JobSeekingCardSection>
-                <GridContainer>
-                  {proposerList.map((resume) => (
-                    <HiringCard key={resume.propposerNo}>
-                      <HiringCardTopContent>
-                        <HiringCardImage src={resume.profileImage} />
-                        <HiringCardTextGroup>
-                          <HiringCardTitle>
-                            {maskName(resume.userName)} <span>간병사 </span>
-                          </HiringCardTitle>
-                          <HiringCardText>
-                            나이: {resume.age}세({resume.gender == 'M' ? '남' : '여'})
-                          </HiringCardText>
-                          <CardText>시급: {resume.account}원</CardText>
-                        </HiringCardTextGroup>
-                      </HiringCardTopContent>
-                      <HiringCardBottomContent>
-                        <CardBottomTextSection>
-                          <CardRegionText>
-                            <span>자격증</span> {resume.license === true ? 'O' : 'X'}
-                          </CardRegionText>
-                          <CardRegionText>
-                            <span>지역</span> {resume.address}
-                          </CardRegionText>
-                        </CardBottomTextSection>
-                        <CardButton>상세보기</CardButton>
-                      </HiringCardBottomContent>
-                    </HiringCard>
-                  ))}
-                </GridContainer>
-              </JobSeekingCardSection>
-            </CardWrap>
-          </NewCantainer>
-        </>
+      {/* 보호자ver => 간병사 지원목록 */}
+      <>
+        <NewCantainer>
+          <NewTitle>간병사 지원목록</NewTitle>
+          <CardWrap>
+            <JobSeekingCardSection>
+              <GridContainer>
+                {proposerList.map((resume) => (
+                  <HiringCard key={resume.propposerNo}>
+                    <HiringCardTopContent>
+                      <HiringCardImage src={resume.profileImage} />
+                      <HiringCardTextGroup>
+                        <HiringCardTitle>
+                          {maskName(resume.userName)} <span>간병사 </span>
+                        </HiringCardTitle>
+                        <HiringCardText>
+                          나이: {resume.age}세({resume.gender == 'M' ? '남' : '여'})
+                        </HiringCardText>
+                        <CardText>시급: {resume.account}원</CardText>
+                      </HiringCardTextGroup>
+                    </HiringCardTopContent>
+                    <HiringCardBottomContent>
+                      <CardBottomTextSection>
+                        <CardRegionText>
+                          <span>자격증</span> {resume.license === true ? 'O' : 'X'}
+                        </CardRegionText>
+                        <CardRegionText>
+                          <span>지역</span> {resume.address}
+                        </CardRegionText>
+                      </CardBottomTextSection>
+                      <CardButton>상세보기</CardButton>
+                    </HiringCardBottomContent>
+                  </HiringCard>
+                ))}
+              </GridContainer>
+            </JobSeekingCardSection>
+          </CardWrap>
+        </NewCantainer>
+      </>
     </>
   );
 };
