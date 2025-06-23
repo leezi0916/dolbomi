@@ -13,6 +13,7 @@ import chatImage from '../assets/icons/icon_채팅아이콘.png'; // 채팅 이�
 
 import Paging from '../components/Paging';
 import { useNavigate } from 'react-router-dom';
+import PatientSelectModal from '../components/PatientSelectModal';
 
 function ResumeDetail() {
   const navigate = useNavigate();
@@ -23,6 +24,19 @@ function ResumeDetail() {
 
   const handleTabChange = (tab) => {
     setActiveTab(tab);
+  };
+
+  const [isModalOpen, setModalOpen] = useState(false);
+
+  const handleOpenModal = () => setModalOpen(true);
+  const handleCloseModal = () => setModalOpen(false);
+  const handleSubmitModal = () => {
+    const confirm = window.confirm('돌봄 대상자를 신청하시겠습니까?');
+    if (confirm) {
+      console.log('간병신청 완료');
+      setModalOpen(false);
+      navigate('/guardian/matchpage'); // 원하는 경로로 이동
+    }
   };
   return (
     <HireRegistSection>
@@ -138,7 +152,10 @@ function ResumeDetail() {
 
         <ButtonGroup>
           <BackButton onClick={() => navigate(-1)}>이전</BackButton>
-          <SubmitButton1 type="submit">신청하기</SubmitButton1>
+          <SubmitButton1 type="button" onClick={handleOpenModal}>
+            간병 신청
+          </SubmitButton1>
+          {isModalOpen && <PatientSelectModal onClose={handleCloseModal} onSubmit={handleSubmitModal} />}
         </ButtonGroup>
         {/* </form> */}
       </HireContainer>
@@ -343,7 +360,7 @@ const ButtonGroup = styled.div`
 
 const BackButton = styled.button`
   border: 1px solid ${({ theme, $error }) => ($error ? theme.colors.error : theme.colors.gray[5])};
-  border-radius: ${({ theme }) => theme.borderRadius.sm};
+  border-radius: ${({ theme }) => theme.borderRadius.md};
   width: 25%;
   font-size: ${({ theme }) => theme.fontSizes.md};
   font-weight: ${({ theme }) => theme.fontWeights.medium};
@@ -352,7 +369,7 @@ const BackButton = styled.button`
 const SubmitButton1 = styled(SubmitButton)`
   width: 65%;
   border: 1px solid ${({ theme, $error }) => ($error ? theme.colors.error : theme.colors.gray[5])};
-  border-radius: ${({ theme }) => theme.borderRadius.sm};
+  border-radius: ${({ theme }) => theme.borderRadius.md};
   font-size: ${({ theme }) => theme.fontSizes.md};
   font-weight: ${({ theme }) => theme.fontWeights.medium};
   color: white;
@@ -419,7 +436,7 @@ const RadioContainer = styled.div`
 
 const LicenseAdd = styled.button`
   display: flex;
-  border-radius: 4px;
+  border-radius: ${({ theme }) => theme.borderRadius.md};
   align-items: center;
   margin-top: ${({ theme }) => theme.spacing[2]};
   justify-content: center;
@@ -443,6 +460,7 @@ const LicenseDelete = styled.button`
   display: flex;
   gap: 10px;
   align-items: center;
+  border-radius: ${({ theme }) => theme.borderRadius.md};
   span {
     width: 50px;
   }
@@ -451,7 +469,7 @@ const LicenseDelete = styled.button`
 `;
 const ChatButton = styled.button`
   border: 1px solid ${({ theme, $error }) => ($error ? theme.colors.error : theme.colors.gray[5])};
-  border-radius: ${({ theme }) => theme.borderRadius.sm};
+  border-radius: ${({ theme }) => theme.borderRadius.md};
   width: 25%;
   font-size: ${({ theme }) => theme.fontSizes.md};
   font-weight: ${({ theme }) => theme.fontWeights.medium};

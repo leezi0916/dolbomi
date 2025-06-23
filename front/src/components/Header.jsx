@@ -25,13 +25,10 @@ const Header = () => {
   return (
     <HeaderContainer>
       <HeaderWrapper>
-        
-        <Logo to={userStatus? "/":"/caregiver"}>
-        <img src="/src/assets/mainImg/logo.png" />
-        {SITE_CONFIG.name}
-      </Logo>
-      
-
+        <Logo to={userStatus ? '/' : '/caregiver'}>
+          <img src="/src/assets/mainImg/logo.png" />
+          {SITE_CONFIG.name}
+        </Logo>
 
         {/* 모바일환경에서의 nav */}
 
@@ -62,16 +59,20 @@ const Header = () => {
           {userStatus ? (
             <>
               <NavItemCenter to="/guardian/caregiverlist">간병사 모집</NavItemCenter>
-              <NavItemCenter to="/community/free">보호자게시판</NavItemCenter>
+
+              <NavItemCenter to="/community/guardian">보호자 게시판</NavItemCenter>
+
             </>
           ) : (
             <>
               <NavItemCenter to="/caregiver/hirelist">돌봄대상자 모집</NavItemCenter>
-              <NavItemCenter to="/community/free">간병인게시판</NavItemCenter>
+
+              <NavItemCenter to="/community/caregiver">간병 게시판</NavItemCenter>
+
             </>
           )}
 
-          <NavItemCenter to="/community/free">1:1 문의</NavItemCenter>
+          <NavItemCenter to="/question/full">1:1 문의</NavItemCenter>
         </DesktopNav>
         {/* 
         <GridEmptyDiv></GridEmptyDiv> */}
@@ -149,10 +150,16 @@ const Header = () => {
                   ''
                 )}
 
-                <NavItem to="/history-management">
-                  <Icon src="/src/assets/icons/icon_내역관리.png" alt="" />
-                  내역관리
-                </NavItem>
+                {userStatus ? (
+                  <NavItem to="/guardian/jobopening-management">
+                    <Icon src="/src/assets/icons/icon_내역관리.png" alt="" />내 구인글 관리
+                  </NavItem>
+                ) : (
+                  <NavItem to="/caregiver/post-management">
+                    <Icon src="/src/assets/icons/icon_내역관리.png" alt="" />
+                    나의 지원현황
+                  </NavItem>
+                )}
 
                 {userStatus ? (
                   <NavItem to="/guardian/review">

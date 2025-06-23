@@ -13,18 +13,17 @@ const CommunityDetail = () => {
   const userId = useUserStore((state) => state.user?.userId);
   // 수정하기 버튼 때문에 추가
   const [error, setError] = useState(null);
-  const [communityDetail, setCommunityDetail] = useState([]);
+  const [communityDetail, setCommunityDetail] = useState(null);
   const [loading, setLoading] = useState(true);
   const { no } = useParams();
-
-  const userProfile = communityDetail.find((info) => info.no === no);
 
   useEffect(() => {
     const loadCommunity = async () => {
       try {
         const community = await commuService.getCommunityDetail(no);
         console.log(community);
-        setCommunityDetail(community);
+
+        setCommunityDetail(community?.[0]);
       } catch (error) {
         console.error(error);
         const errorMessage = '목록을 불러오는데 실패했습니다.';
@@ -65,23 +64,23 @@ const CommunityDetail = () => {
         </PageTop>
         <PageBody>
           <Left style={{ fontSize: theme.fontSizes.lg, fontWeight: theme.fontWeights.medium, padding: '0 10px' }}>
-            {userProfile.title}
+            {communityDetail?.title}
           </Left>
           <BodyTop>
             <Icons src="/src/assets/icons/icon_작성자.png" alt="" />
-            <Left style={{ fontSize: theme.fontSizes.sm }}>{userProfile.name}</Left>
+            <Left style={{ fontSize: theme.fontSizes.sm }}>{communityDetail?.name}</Left>
             <Right>
               <Icons src="/src/assets/icons/icon_조회수.png" alt="" />
-              <div style={{ paddingRight: '10px' }}>{userProfile.count}</div>
+              <div style={{ paddingRight: '10px' }}>{communityDetail?.count}</div>
               <Icons src="/src/assets/icons/icon_작성일자.png" alt="" />
-              <div style={{ paddingRight: '10px' }}>{userProfile.create_date}</div>
-              {userProfile.id === userId ? (
+              <div style={{ paddingRight: '10px' }}>{communityDetail?.create_date}</div>
+              {communityDetail?.id === userId ? (
                 <MenuBox>
                   <img src="/src/assets/icons/icon_설정메뉴.png" alt="" />
                   <ul>
                     <li>
                       <img src="/src/assets/icons/icon_수정.png" alt="" />
-                      <LinkLi to={`/community/free/update/${userProfile.no}`}>수정</LinkLi>
+                      <LinkLi to={`/community/update/${communityDetail?.no}`}>수정</LinkLi>
                     </li>
                     <li>
                       <img src="/src/assets/icons/icon_삭제.png" alt="" />
@@ -93,20 +92,22 @@ const CommunityDetail = () => {
               {/* 수정삭제 메뉴아이콘 로그인 한 사람만 뜨게 하기/원래있던 수정하기 버튼 삭제 */}
             </Right>
           </BodyTop>
-          <BodyText>{userProfile.board_detail}</BodyText>
-          <FileBox>
-            <FileTitle>
-              <Icons src="/src/assets/icons/icon_사진.png" alt="" />
-              <div>사진</div>
-            </FileTitle>
-            <InputFile>
-              {userProfile.src.map((src, index) => (
-                <ImgBox key={index}>
-                  <img src={src} alt="preview" style={{ width: '100%', aspectRatio: '4 / 3', borderRadius: '4px' }} />
-                </ImgBox>
-              ))}
-            </InputFile>
-          </FileBox>
+          <BodyText>{communityDetail?.board_detail}</BodyText>
+          {communityDetail.src && (
+            <FileBox>
+              <FileTitle>
+                <Icons src="/src/assets/icons/icon_사진.png" alt="" />
+                <div>사진</div>
+              </FileTitle>
+              <InputFile>
+                {communityDetail.src?.map((src, index) => (
+                  <ImgBox key={index}>
+                    <img src={src} alt="preview" style={{ width: '100%', aspectRatio: '4 / 3', borderRadius: '4px' }} />
+                  </ImgBox>
+                ))}
+              </InputFile>
+            </FileBox>
+          )}
           <CommentBox>
             <CommentInput type="text" />
             <CommentButton>댓글 작성</CommentButton>

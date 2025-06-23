@@ -16,7 +16,6 @@ import PatientUpdate from './pages/PatientUpdate';
 import ReportDetail from './pages/ReportDetail';
 import ReportForm from './pages/ReportForm';
 import CommunityDetail from './pages/CommunityDetail';
-import CommunityQuestion from './pages/CommunityQuestion';
 import NoticeBoard from './pages/NoticeBoard';
 import CaregiverList from './pages/CaregiverList';
 import HireRegistration from './pages/HireRegistration';
@@ -38,18 +37,26 @@ import CareGiverSupportBoard from './pages/CareGiverSupportBoard';
 
 import ResumeDetailMine from './pages/ResumeDetailMine';
 
-
 import ResumeManagement from './pages/ResumeManagement';
 import ScrollToTop from './utils/scrollToTop';
-import HistoryManageMent from './pages/HistoryManageMent';
 
 import ReceivedReviews from './pages/ReceivedReviews';
 import WrittenReviews from './pages/WrittenReviews';
 import MatchToCaregiver from './pages/MatchToCaregiver';
 import MatchToPatient from './pages/MatchToPatient';
 import MyResume from './pages/MyResume';
+
 import HireDetailShow from './pages/HireDetailShow';
 import CareGviverProfile from './pages/CareGiverProfile';
+
+import ContactPage from './pages/ContactPage';
+import CareGiverCommunity from './pages/CareGiverCommunity';
+import GuardianCommunity from './pages/GuardianCommunity';
+import PostManagement from './pages/PostManageMent';
+import JobOpeningManagement from './pages/JobOpeningManagement';
+import QuestionFull from './pages/question/QuestionFull';
+import QuestionCreate from './pages/question/QuestionCreate';
+import QuestionHistory from './pages/question/QuestionHistory';
 
 function AppRoutes() {
   const navigate = useNavigate();
@@ -75,8 +82,6 @@ function AppRoutes() {
           <Route path="/caregiver/reportform/:patNo" element={<ReportForm />} />
 
           <Route path="/caregiver/resumeDetail/:resumeNo" element={<ResumeDetailMine />} />
-         
-
 
           <Route path="/caregiver/resumemanagement" element={<ResumeManagement />} />
           <Route path="/caregiver/review" element={<ReceivedReviews />} />
@@ -85,6 +90,7 @@ function AppRoutes() {
 
           <Route path="/myresume/:resumeNo" element={<MyResume />} />
 
+          <Route path="/caregiver/post-management" element={<PostManagement />} />
           {/* 보호자 */}
           <Route path="/guardian" element={<GuardianMainPage />} />
           <Route path="/guardian/caregiverlist" element={<CaregiverList />} />
@@ -98,12 +104,17 @@ function AppRoutes() {
           <Route path="/guardian/hireDetail/:hiringNo" element={<HireDetailMine />} />
           <Route path="/guardian/careGiverSupportBorad" element={<CareGiverSupportBoard />} />
 
+          <Route path="/guardian/jobopening-management" element={<JobOpeningManagement />} />
           {/* 공용 */}
-          <Route path="/community/free/create" element={<CreateCommuBoardForm />} />
+          <Route path="/community/create" element={<CreateCommuBoardForm />} />
           <Route path="/community/free" element={<CommunityBoard />} />
-          <Route path="/community/free/detail/:no" element={<CommunityDetail />} />
-          <Route path="/community/free/update/:no" element={<UpdateCommuBoardForm />} />
-          <Route path="/community/question" element={<CommunityQuestion />} />
+          <Route path="/community/detail/:no" element={<CommunityDetail />} />
+          <Route path="/community/guardian" element={<GuardianCommunity />} />
+          <Route path="/community/caregiver" element={<CareGiverCommunity />} />
+          <Route path="/community/update/:no" element={<UpdateCommuBoardForm />} />
+          <Route path="/question/full" element={<QuestionFull />} />
+          <Route path="/question/history" element={<QuestionHistory />} />
+          <Route path="/question/create" element={<QuestionCreate />} />
           <Route path="/community/notice" element={<NoticeBoard />} />
 
           <Route path="/login" element={<Login />} />
@@ -116,9 +127,12 @@ function AppRoutes() {
           <Route path="/resumeDetail/:resumeNo" element={<ResumeDetail />} />
           <Route path="/report/:patNo" element={<ReportMain />} />
           <Route path="/report/:patNo/detail/:reportNo" element={<ReportDetail />} />
+
           <Route path="/test" element={<HireDetailShow />} />
 
-          <Route path="/history-management" element={<HistoryManageMent />} />
+
+
+          <Route path="/contact" element={<ContactPage />} />
         </Routes>
       </Layout>
     </>

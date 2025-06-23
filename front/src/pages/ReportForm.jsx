@@ -2,21 +2,57 @@ import React, { useRef, useState } from 'react';
 import styled from 'styled-components';
 import { Section } from '../styles/common/Container';
 import { ButtonText, SubmitButton } from '../styles/common/Button';
-import { useParams, useLocation } from 'react-router-dom';
+import { useParams, useLocation, Navigate } from 'react-router-dom';
+import { reportService } from '../api/report';
+import useUserStore from '../store/userStore';
+import { toast } from 'react-toastify';
 
 const ReportForm = () => {
   const { patNo } = useParams();
   const patName = useLocation().state;
   const [count, setCount] = useState(1);
+  const [error, setError] = useState(null);
+  const { user } = useUserStore();
 
+  const [formData, setFormData] = useState({
+    careGiverNo: user.userNo,
+    patNo: patNo,
+  });
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+
+    setFormData({
+      ...formData,
+      [name]: value,
+    });
+  };
+
+  const handleSubmit = async () => {
+    try {
+      const save = await reportService.addReports(formData);
+      console.log(save); //확인용
+    } catch (error) {
+      console.error(error);
+      const errorMessage = '리뷰를 불러오는데 실패했습니다.';
+      setError(errorMessage);
+      toast.error(errorMessage);
+    } finally {
+      Navigate(`/report/${formData.patNo}`);
+    }
+  };
+
+  if (error) {
+    return null;
+  }
   return (
     <Wrap>
       <MainTitle>진단 일지 등록 / 수정</MainTitle>
       <br />
-      <form>
+      <form id="report">
         <TopContainer>
           <Top>
-            <Input placeholder="제목" />
+            <Input name="reportTitle" placeholder="제목" value={formData.reportTitle} onChange={handleChange} />
             <Name>{patName}</Name>
             <Name>{new Date().toISOString().slice(0, 10)}</Name>
           </Top>
@@ -29,8 +65,18 @@ const ReportForm = () => {
               </Contents>
             </Header>
             <Body>
-              <Input placeholder="소제목 : " />
-              <MainInput />
+              <Input
+                name={`subTitle${index}`}
+                placeholder="소제목"
+                value={formData[`subTitle${index}`] || ''}
+                onChange={handleChange}
+              />
+              <MainInput
+                name={`content${index}`}
+                placeholder="내용"
+                value={formData[`content${index}`] || ''}
+                onChange={handleChange}
+              />
             </Body>
           </Container>
         ))}
@@ -43,7 +89,7 @@ const ReportForm = () => {
       <Line />
       <br />
       <Buttons>
-        <Btn onClick="">
+        <Btn onClick={handleSubmit}>
           <ButtonText>등록</ButtonText>
         </Btn>
       </Buttons>

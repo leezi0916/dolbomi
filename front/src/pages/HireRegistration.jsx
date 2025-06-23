@@ -50,15 +50,14 @@ const HireRegistration = () => {
             </div>
             <Divider>
               <InputGroup>
-                <InputGroup>
-                  <Label>이름</Label>
-                  <Input type="text" value={'김옥순'} />
-                </InputGroup>
-                <InputGroup>
-                  <Label>나이</Label>
-                  <Input type="text" value={'85'} />
-                </InputGroup>
+                <Label>이름</Label>
+                <Input type="text" value={'김옥순'} />
               </InputGroup>
+              <InputGroup>
+                <Label>나이</Label>
+                <Input type="text" value={'85'} />
+              </InputGroup>
+
               <RadioGroup>
                 <Label>성별</Label>
                 <RadioWrapper>
@@ -432,7 +431,7 @@ const ButtonGroup = styled.div`
 
 const BackButton = styled.button`
   border: 1px solid ${({ theme, $error }) => ($error ? theme.colors.error : theme.colors.gray[5])};
-  border-radius: ${({ theme }) => theme.borderRadius.sm};
+  border-radius: ${({ theme }) => theme.borderRadius.md};
   width: 25%;
   font-size: ${({ theme }) => theme.fontSizes.md};
   font-weight: ${({ theme }) => theme.fontWeights.medium};
@@ -441,7 +440,7 @@ const BackButton = styled.button`
 const SubmitButton1 = styled(SubmitButton)`
   width: 65%;
   border: 1px solid ${({ theme, $error }) => ($error ? theme.colors.error : theme.colors.gray[5])};
-  border-radius: ${({ theme }) => theme.borderRadius.sm};
+  border-radius: ${({ theme }) => theme.borderRadius.md};
   font-size: ${({ theme }) => theme.fontSizes.md};
   font-weight: ${({ theme }) => theme.fontWeights.medium};
   color: white;

@@ -192,7 +192,7 @@ const InfoButton = styled.button`
   height: 50px;
   background-color: ${({ theme }) => theme.colors.secondary}; /* 주황색 */
   color: ${({ theme }) => theme.colors.white};
-  border: none;
+  border-radius: ${({ theme }) => theme.borderRadius.md};
   padding: ${({ theme }) => `${theme.spacing[2]} ${theme.spacing[4]}`};
   border-radius: ${({ theme }) => theme.borderRadius.md};
   cursor: pointer;
@@ -218,5 +218,6 @@ const CareLogButton = styled(InfoButton)`
   /* 필요하다면 여기에서 추가 스타일을 정의할 수 있습니다. */
   margin-top: ${({ theme }) => theme.spacing[2]}; /* 나이 아래 버튼 간격 */
   align-self: flex-start; /* 왼쪽 정렬 */
+  border-radius: ${({ theme }) => theme.borderRadius.md};
 `;
 export default MatchToPatient;

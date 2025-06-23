@@ -4,14 +4,14 @@ import styled from 'styled-components';
 import SearchBar from '../components/SearchBar';
 import profileImage from '../assets/images/pat.png'; // 프로필 이미지 경로
 import useUserStore from '../store/userStore';
-
 import { matchingService } from '../api/matching';
 import { patientService } from '../api/patient';
 import { useNavigate } from 'react-router-dom';
 
 const MatchToCaregiver = () => {
   const { user } = useUserStore();
-  const [activeTab, setActiveTab] = useState('matching');
+
+const [activeTab, setActiveTab] = useState('matching');
   const [caregiverList, setCareGiverList] = useState([]);
   const [userPatients, setUserpatients] = useState([]);
  
@@ -92,6 +92,7 @@ const MatchToCaregiver = () => {
         {activeTab === 'matching' && (
           <>
             <ProfileCardPair>
+
               <RightLineDiv>
                 {userPatients?.map((pat) => (
                   <ProfileCard key={pat.patNo} type="patient" onMouseEnter={() => getCareGiver(pat.patNo)}>
@@ -130,12 +131,12 @@ const MatchToCaregiver = () => {
                   </>
                 ))}
               </div>
-            </ProfileCardPair>
+</ProfileCardPair>
           </>
         )}
 
         {activeTab === 'matched' && (
-        
+      
           <>
             {caregiverList.map((care) => (
               <EndProfileCard key={care.caregiverNo}>
@@ -163,6 +164,7 @@ const MatchToCaregiver = () => {
               </EndProfileCard>
             ))}
           </>
+
         )}
       </MatchSection>
     </>
@@ -309,7 +311,7 @@ const InfoButton = styled.button`
   border: none;
   padding: ${({ theme }) => `${theme.spacing[2]} ${theme.spacing[8]}`};
   margin: ${({ theme }) => theme.spacing[3]} 0;
-  border-radius: ${({ theme }) => theme.borderRadius.md};
+border-radius: ${({ theme }) => theme.borderRadius.md};
   cursor: pointer;
   font-weight: ${({ theme }) => theme.fontWeights.bold};
   white-space: nowrap; /* 버튼 텍스트가 줄바꿈되지 않도록 */
@@ -384,4 +386,5 @@ const CareLogButton = styled.button`
   font-weight: ${({ theme }) => theme.fontWeights.bold};
   white-space: nowrap;
 `;
+
 export default MatchToCaregiver;
