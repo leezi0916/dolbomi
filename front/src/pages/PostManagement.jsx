@@ -171,7 +171,7 @@ const PostManagement = () => {
             <th>신청 날짜</th>
             <th>작성자</th>
             <th>모집 상태</th>
-            <th>삭제</th>
+            <th>내역 삭제</th>
           </tr>
         </THead>
         <TBody>
@@ -185,7 +185,11 @@ const PostManagement = () => {
                 {item.status}
               </td>
               <td>
-                <FaTimes style={{ cursor: 'pointer' }} />
+                {item.status === '모집 중' ? (
+                  <span style={{ fontSize: 20, color: 'gray' }}>-</span>
+                ) : (
+                  <FaTimes size={20} style={{ cursor: 'pointer' }} />
+                )}
               </td>
             </tr>
           ))}
