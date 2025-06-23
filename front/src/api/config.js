@@ -23,6 +23,7 @@ export const API_ENDPOINTS = {
     BASE: '/community',
     LIST: (status, role) => `/community?status=${status}&role=${role}`, // 게시판 리스트 등
     DETAIL: (no) => `/community?no=${no}`, // 특정 게시글
+    QUESTION: (status, role, id) => `/community?status=${status}&role=${role}&id=${id}`,
   },
 
   USERS: {
