@@ -11,6 +11,7 @@ const Header = () => {
   const { user, isAuthenticated } = useUserStore();
   const { userStatus, setUserStatus } = useUserStatusStore();
 
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isHovering, setIsHovering] = useState(false);
   const logout = useUserStore((state) => state.logout);
 
@@ -21,6 +22,7 @@ const Header = () => {
     localStorage.removeItem('user-storage'); // persist 저장소 삭제
     alert('로그아웃 되었습니다.');
     navigate('/'); // 홈으로 이동
+    setIsMenuOpen(false);
   };
   return (
     <HeaderContainer>
@@ -32,26 +34,131 @@ const Header = () => {
 
         {/* 모바일환경에서의 nav */}
 
-        <MenuButton />
+        <MenuButton onClick={() => setIsMenuOpen(!isMenuOpen)} />
 
-        <MobileMenu>
-          {isAuthenticated ? (
-            <UserProfile>
-              <UserName> {user?.userName}님</UserName>
-            </UserProfile>
+        <MobileMenu $isOpen={isMenuOpen}>
+          {!isAuthenticated ? (
+            <UserMenu>
+              <NavItem to="/login" onClick={() => setIsMenuOpen(false)}>
+                로그인
+              </NavItem>
+              <NavItem to="/signup" onClick={() => setIsMenuOpen(false)}>
+                회원가입
+              </NavItem>
+            </UserMenu>
           ) : (
             <>
-              <UserMenu>
-                <NavItem to="/login">로그인</NavItem>
-                <NavItem to="/signup">회원가입</NavItem>
-              </UserMenu>
+              <UserProfile>
+                <UserName> {user?.userName}님</UserName>
+              </UserProfile>
+
+              <Nav>
+                <MobileToggleWrap>
+                  {/* 간병인은 true / 보호자는 false */}
+                  <ToggleItem
+                    $userStatus={!userStatus}
+                    onClick={() => {
+                      setUserStatus(false); // 상태 설정
+                      navigate('/caregiver'); // 페이지 이동
+                    }}
+                  >
+                    간병인
+                  </ToggleItem>
+                  <ToggleItem
+                    $userStatus={userStatus}
+                    onClick={() => {
+                      setUserStatus(true); // 상태 설정
+                      navigate('/guardian'); // 페이지 이동
+                    }}
+                  >
+                    보호자
+                  </ToggleItem>
+                </MobileToggleWrap>
+                <NavItem to="/myprofile" onClick={() => setIsMenuOpen(false)}>
+                  <Icon src="/src/assets/icons/icon_개인정보홈.png" alt="" /> 개인정보홈
+                </NavItem>
+
+                {userStatus ? (
+                  <NavItem to="/guardian/patient" onClick={() => setIsMenuOpen(false)}>
+                    <Icon src="/src/assets/icons/icon_돌봄대상자관리.png" alt="" />
+                    돌봄대상자 관리
+                  </NavItem>
+                ) : (
+                  <NavItem to="/caregiver/resumemanagement" onClick={() => setIsMenuOpen(false)}>
+                    <Icon src="/src/assets/icons/icon_이력서등록.png" alt="" />
+                    이력서 등록
+                  </NavItem>
+                )}
+
+                {userStatus ? (
+                  <NavItem to="/guardian/hire-registration" onClick={() => setIsMenuOpen(false)}>
+                    <Icon src="/src/assets/icons/icon_이력서등록.png" alt="" />
+                    돌봄대상자 신청
+                  </NavItem>
+                ) : (
+                  ''
+                )}
+
+                <NavItem to="/history-management" onClick={() => setIsMenuOpen(false)}>
+                  <Icon src="/src/assets/icons/icon_내역관리.png" alt="" />
+                  내역관리
+                </NavItem>
+
+                {userStatus ? (
+                  <NavItem to="/guardian/review" onClick={() => setIsMenuOpen(false)}>
+                    <Icon src="/src/assets/icons/icon_리뷰페이지.png" alt="" />
+                    내가쓴리뷰
+                  </NavItem>
+                ) : (
+                  <NavItem to="/caregiver/review" onClick={() => setIsMenuOpen(false)}>
+                    <Icon src="/src/assets/icons/icon_리뷰페이지.png" alt="" />
+                    받은리뷰
+                  </NavItem>
+                )}
+
+                {userStatus ? (
+                  <NavItem to="/guardian/matchpage" onClick={() => setIsMenuOpen(false)}>
+                    <Icon src="/src/assets/icons/icon_매칭관리.png" alt="" />
+                    매칭관리
+                  </NavItem>
+                ) : (
+                  <NavItem to="/caregiver/matchpage" onClick={() => setIsMenuOpen(false)}>
+                    <Icon src="/src/assets/icons/icon_매칭관리.png" alt="" />
+                    매칭관리
+                  </NavItem>
+                )}
+
+                <NavItem to="/" onClick={handleLogout}>
+                  <Icon src="/src/assets/icons/icon_로그아웃.png" alt="" />
+                  로그아웃
+                </NavItem>
+                <Nav2>
+                  {userStatus ? (
+                    <>
+                      <NavItem to="/guardian/caregiverlist" onClick={() => setIsMenuOpen(false)}>
+                        간병사 모집
+                      </NavItem>
+                      <NavItem to="/community/guardian" onClick={() => setIsMenuOpen(false)}>
+                        보호자 게시판
+                      </NavItem>
+                    </>
+                  ) : (
+                    <>
+                      <NavItem to="/caregiver/hirelist" onClick={() => setIsMenuOpen(false)}>
+                        돌봄대상자 모집
+                      </NavItem>
+                      <NavItem to="/community/caregiver" onClick={() => setIsMenuOpen(false)}>
+                        간병 게시판
+                      </NavItem>
+                    </>
+                  )}
+                  <NavItem to="/question/full" onClick={() => setIsMenuOpen(false)}>
+                    1:1 문의
+                  </NavItem>
+                </Nav2>
+              </Nav>
             </>
           )}
-
-          <Nav>
-            <NavItem to="/products">돌봄대상자 모집</NavItem>
-            <NavItem to="/question">간병사 모집</NavItem>
-          </Nav>
         </MobileMenu>
 
         {/* pc환경에서의 nav */}
@@ -206,6 +313,7 @@ const HeaderWrapper = styled.div`
   max-width: 1250px;
   height: 80px;
   position: relative;
+  padding-left: 3%;
 
   ${media.md`
     display: grid;
@@ -227,7 +335,7 @@ const Logo = styled(Link)`
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: ${({ theme }) => theme.fontSizes.sm};
+  font-size: ${({ theme }) => theme.fontSizes.xl};
   font-weight: ${({ theme }) => theme.fontWeights.bold};
   color: ${({ theme }) => theme.colors.primary};
 
@@ -235,15 +343,7 @@ const Logo = styled(Link)`
     width: 60px;
     height: 60px;
     margin: 5px;
-
-    ${media.md`
-      
-  `}
   }
-
-  ${media.md`
-    font-size: ${({ theme }) => theme.fontSizes.xl};;
-  `}
 `;
 
 const DesktopNav = styled.nav`
@@ -301,17 +401,18 @@ const NavItem = styled(Link)`
 `;
 
 const NavItemCenter = styled(Link)`
-  font-size: ${({ theme }) => theme.fontSizes.sm};
+  font-size: ${({ theme }) => theme.fontSizes.md};
+  margin-right: ${({ theme }) => theme.spacing[4]};
   font-weight: ${({ theme }) => theme.fontWeights.bold};
 
   &:hover {
     color: ${({ theme }) => theme.colors.primary};
   }
 
-  ${media.lg`
+  /* ${media.lg`
    font-size: ${({ theme }) => theme.fontSizes.lg}; 
    margin-right : ${({ theme }) => theme.spacing[4]}
-  `}
+  `} */
 `;
 
 //menuNav dropdown
@@ -355,8 +456,8 @@ const MobileMenu = styled.div`
   position: fixed;
   top: 0;
   right: 0;
-  width: 100%;
-  max-width: 400px;
+  width: 80%;
+  max-width: 320px;
   height: 100vh;
   background: ${({ theme }) => theme.colors.white};
   transform: translateX(${({ $isOpen }) => ($isOpen ? '0' : '100%')});
@@ -396,4 +497,15 @@ const UserName = styled.span`
   color: ${({ theme }) => theme.colors.gray[800]};
 `;
 
+const MobileToggleWrap = styled(ToggleWrap)`
+  margin: 0 auto;
+`;
+
+const Nav2 = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding-top: 10px;
+  box-shadow: 0 -0.5px 0 ${({ theme }) => theme.colors.gray[3]};
+`;
 export default Header;
