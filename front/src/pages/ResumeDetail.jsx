@@ -29,6 +29,7 @@ import PatientSelectModal from '../components/PatientSelectModal';
 import { useParams } from 'react-router-dom';
 import { jobSeekingService } from '../api/jobSeeking';
 import { reviewService } from '../api/reviews';
+import { userService } from '../api/users';
 function ResumeDetail() {
   const [activeTab, setActiveTab] = useState('info');
   const ITEMS_PER_PAGE = 4;
@@ -39,6 +40,9 @@ function ResumeDetail() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
+
+  //이건 만약 dto로 유저정보+자격증 까지 불러오지 않고 get을 한번 더 보낼려면~
+  // const [userInfo, setUserInfo] = useState(null);
 
   /*작성자의 리뷰를 갖고오는 코드 */
   useEffect(() => {
@@ -67,6 +71,22 @@ function ResumeDetail() {
     setCurrentPage(value);
   };
 
+  //이것도 마찬가지로 유저정보 + 이력서 갖고오는 기능
+  // useEffect(() => {
+  //   const fetchUserInfo = async () => {
+  //     if (!resumeData?.userNo) return;
+
+  //     try {
+  //       const data = await userService.getUserProfile(resumeData.userNo);
+  //       setUserInfo(data[0]); // userService.getUserProfile이 배열 반환 시
+  //     } catch (err) {
+  //       console.error('유저 정보 불러오기 실패:', err);
+  //     }
+  //   };
+
+  //   fetchUserInfo();
+  // }, [resumeData?.userNo]);
+
   /*이력서 정보를 갖고오는 (유저 정보 담아서) */
   useEffect(() => {
     const fetchResume = async () => {
@@ -88,6 +108,7 @@ function ResumeDetail() {
     setActiveTab(tab);
   };
 
+  /*아 */
   const [isModalOpen, setModalOpen] = useState(false);
 
   const handleOpenModal = () => setModalOpen(true);
@@ -223,7 +244,7 @@ function ResumeDetail() {
                     <CardTopContent>
                       <CardImage src={review.profileImage} />
                       <CardTextGroup>
-                        <CardTitle>{review.userName} 간병사</CardTitle>
+                        <CardTitle>{review.userName} 돌봄대상자</CardTitle>
                         <CardText>
                           나이 {review.age}세({review.gender === 'male' ? '남' : '여'})
                         </CardText>

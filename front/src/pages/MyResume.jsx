@@ -1,6 +1,6 @@
 import React from 'react';
 import { Container, Section } from '../styles/common/Container';
-import profileImage from '../assets/images/pat.png'; // 프로필 이미지 경로
+import profileImage from '../assets/profileImg/img_간병인.png'; // 프로필 이미지 경로
 import styled from 'styled-components';
 import { Input, InputGroup, Title } from '../styles/Auth.styles';
 import { media } from '../styles/MediaQueries';
@@ -8,11 +8,28 @@ import { SubmitButton } from '../styles/common/Button';
 import { FaPlus } from 'react-icons/fa6';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useResumeForm } from '../hooks/useResumeForm';
+import { jobSeekingService } from '../api/jobSeeking';
 const MyResume = () => {
   const navigate = useNavigate();
   const { resumeNo } = useParams();
   const { register, handleSubmit, errors, licenseList, handleLicenseChange, user } = useResumeForm();
   console.log(user);
+
+  const handleDelete = async () => {
+    if (!resumeNo) return;
+
+    const confirmDelete = window.confirm('정말로 이력서를 삭제하시겠습니까?');
+    if (!confirmDelete) return;
+
+    try {
+      await jobSeekingService.deleteResume(resumeNo);
+      alert('이력서가 삭제되었습니다.');
+      navigate('/caregiver/resumemanagement'); // 홈 또는 원하는 페이지로 이동
+    } catch (error) {
+      console.error('이력서 삭제 실패:', error);
+      alert('삭제 중 오류가 발생했습니다.');
+    }
+  };
   return (
     <HireRegistSection>
       <HireContainer>
@@ -127,7 +144,9 @@ const MyResume = () => {
             <BackButton type="button" onClick={() => navigate(-1)}>
               이전
             </BackButton>
-            <SubmitButton1 type="submit">삭제하기</SubmitButton1>
+            <SubmitButton1 type="button" onClick={handleDelete}>
+              삭제하기
+            </SubmitButton1>
             <SubmitButton1 type="submit">수정하기</SubmitButton1>
           </ButtonGroup>
         </form>

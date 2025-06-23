@@ -40,15 +40,19 @@ export const useResumeForm = () => {
     try {
       const parsedState = JSON.parse(storedData);
       const user = parsedState.state.user;
-      const userId = user?.userId;
+      const userNo = user?.userNo;
 
-      if (userId) {
+      if (userNo) {
         userService
-          .getUserProfile(userId)
+          .getUserProfile(userNo)
           .then((data) => {
             const userData = data[0];
             setUser(userData);
             // 자격증 정보는 이력서에서 항상 직접 입력하므로 여기서 설정하지 않음
+            //등록 페이지일 때만 user.licenses로 자격증 리스트 초기화
+            if (!resumeNo && userData.licenses?.length > 0) {
+              setLicenseList(userData.licenses);
+            }
           })
           .catch((err) => {
             console.error('유저 정보 가져오기 실패:', err);
@@ -86,11 +90,6 @@ export const useResumeForm = () => {
     })();
   }, [resumeNo, reset]);
 
-  // 자격증 입력값 변경 처리 (컴포넌트에서 필요하면)
-  const handleLicenseChange = (index, field, value) => {
-    setLicenseList((prev) => prev.map((lic, i) => (i === index ? { ...lic, [field]: value } : lic)));
-  };
-
   // 제출 핸들러
   const onSubmit = async (formData) => {
     if (!user) return;
@@ -98,7 +97,6 @@ export const useResumeForm = () => {
     const payload = {
       ...formData,
       userNo: user.userNo,
-      licenses: licenseList,
     };
 
     try {
@@ -110,7 +108,7 @@ export const useResumeForm = () => {
         toast.success('이력서가 저장되었습니다!');
       }
 
-      navigate('/');
+      navigate('/caregiver/resumemanagement');
     } catch (error) {
       console.error('이력서 저장/수정 실패:', error);
       toast.error('이력서 저장 중 문제가 발생했습니다.');
@@ -124,6 +122,5 @@ export const useResumeForm = () => {
     user,
     licenseList,
     setLicenseList,
-    handleLicenseChange,
   };
 };

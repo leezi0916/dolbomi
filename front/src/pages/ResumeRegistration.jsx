@@ -10,16 +10,8 @@ import { FaPlus } from 'react-icons/fa6';
 import { useResumeForm } from '../hooks/useResumeForm';
 
 const ResumeRegistration = () => {
-  const {
-    register,
-    handleSubmit,
-    errors,
-    licenseList,
-    handleLicenseChange,
-    user,
-  } = useResumeForm();
-
-
+  const { register, handleSubmit, errors, licenseList, handleLicenseChange, user } = useResumeForm();
+  console.log(user);
   return (
     <HireRegistSection>
       <HireContainer>

@@ -76,6 +76,7 @@ export const API_ENDPOINTS = {
   PROPOSER: {
     BASE: '/proposer',
     LIST: (hiringNo) => `/proposer?hiring_no=${hiringNo}`,
+    CANCEL: (hiringNo, caregiverNo) => `/proposer/${hiringNo}/${caregiverNo}`,
   },
 
   MATCHING: {
