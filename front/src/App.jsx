@@ -57,6 +57,8 @@ import JobOpeningManagement from './pages/JobOpeningManagement';
 import QuestionFull from './pages/question/QuestionFull';
 import QuestionCreate from './pages/question/QuestionCreate';
 import QuestionHistory from './pages/question/QuestionHistory';
+import PrivacyPolicy from './pages/legal/PrivacyPolicy';
+import TermsOfService from './pages/legal/TermsOfService';
 
 function AppRoutes() {
   const navigate = useNavigate();
@@ -127,6 +129,9 @@ function AppRoutes() {
           <Route path="/resumeDetail/:resumeNo" element={<ResumeDetail />} />
           <Route path="/report/:patNo" element={<ReportMain />} />
           <Route path="/report/:patNo/detail/:reportNo" element={<ReportDetail />} />
+
+          <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+          <Route path="/terms-of-service" element={<TermsOfService />} />
 
           <Route path="/test" element={<HireDetailShow />} />
 

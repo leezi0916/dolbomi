@@ -11,6 +11,8 @@ import {
   SubmitBtn,
   Img,
   NewTitle,
+  BtnWrap,
+  BackBtn
 } from '../styles/PatientRegistration';
 import { Label, Input, InputGroup } from '../styles/Auth.styles';
 import { usepatientRegistrationForm } from '../hooks/usePatientRegistrationForm';
@@ -46,7 +48,7 @@ const PatientRegistration = () => {
     try {
       await patientService.postNewPatient({
         // user가 있는 경우 user_no 저장해야함 아래의 숫자는 로그인한 user_no로 작성해주세요
-        guardianNo: user ? 5 : '',
+        guardianNo: user ? 1 : '',
         patName: data.patName,
         patAge: data.patAge,
         patAddress: data.patAddress,
@@ -140,7 +142,12 @@ const PatientRegistration = () => {
               <NotesTexttarea id="notes" className="textarea-field" rows="5" {...register('patContent')} />
             </InputGroup>
 
+            <BtnWrap>
+            <BackBtn type="button" onClick={() => navigate(-1)}>이전</BackBtn>
             <SubmitBtn type="submit">등록</SubmitBtn>
+       
+            </BtnWrap>
+  
           </GridForm>
         </FromWrap>
       </AuthContainer>

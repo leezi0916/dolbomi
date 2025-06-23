@@ -11,6 +11,8 @@ import {
   NotesTexttarea,
   SubmitBtn,
   Img,
+  BackBtn,
+  BtnWrap
 } from '../styles/PatientRegistration';
 import { Label, Input, InputGroup } from '../styles/Auth.styles';
 import { usepatientRegistrationForm } from '../hooks/usePatientRegistrationForm';
@@ -169,12 +171,13 @@ const PatientUpdate = () => {
               <Label htmlFor="patContent">환자 특이사항</Label>
               <NotesTexttarea id="notes" className="textarea-field" rows="5" {...register('patContent')} />
             </InputGroup>
-            <GridInerContainer>
+            <BtnWrap>
+                <BackBtn type="button" onClick={() => navigate(-1)}>이전</BackBtn>
               <SubmitBtn type="submit">수정</SubmitBtn>
               <SubmitBtn type="button" onClick={() => deletePatient(id)}>
                 삭제
               </SubmitBtn>
-            </GridInerContainer>
+            </BtnWrap>
           </GridForm>
         </FromWrap>
       </AuthContainer>
