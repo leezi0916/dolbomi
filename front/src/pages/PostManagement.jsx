@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import { FaTimes } from 'react-icons/fa';
 import Paging from '../components/Paging';
+import theme from '../styles/theme';
 
 const appliedData = [
   {
@@ -141,14 +142,17 @@ const appliedData = [
   },
 ];
 
+// 몇개씩 보여줄지
 const ITEMS_PER_PAGE = 10;
 
-const HistoryManageMent = () => {
+const PostManagement = () => {
   const [currentPage, setCurrentPage] = useState(1);
 
+  const data = appliedData;
   const offset = (currentPage - 1) * ITEMS_PER_PAGE;
-  const totalPage = Math.ceil(appliedData.length / ITEMS_PER_PAGE);
+  const totalPage = Math.ceil(data.length / ITEMS_PER_PAGE);
 
+  // 자식에게 물려주는 currentPage 변경시 값 추적 함수
   const chagneCurrentPage = (value) => {
     setCurrentPage(value);
   };
@@ -160,7 +164,7 @@ const HistoryManageMent = () => {
       </Header>
 
       <Table>
-        <thead>
+        <THead>
           <tr>
             <th>No</th>
             <th>제목</th>
@@ -169,27 +173,23 @@ const HistoryManageMent = () => {
             <th>모집 상태</th>
             <th>삭제</th>
           </tr>
-        </thead>
-        <tbody>
-          {appliedData.slice(offset, offset + ITEMS_PER_PAGE).map((item) => (
+        </THead>
+        <TBody>
+          {data.slice(offset, offset + ITEMS_PER_PAGE).map((item) => (
             <tr key={item.no}>
               <td>{item.no}</td>
-              <td className="left-align">{item.title}</td>
+              <td>{item.title}</td>
               <td>{item.date}</td>
               <td>{item.match}</td>
-              <td
-                style={{
-                  color: item.status === '모집 중' ? theme.colors.success : theme.colors.gray[4],
-                }}
-              >
+              <td style={{ color: item.status === '모집 중' ? theme.colors.success : theme.colors.gray[4] }}>
                 {item.status}
               </td>
               <td>
-                <DeleteIcon />
+                <FaTimes style={{ cursor: 'pointer' }} />
               </td>
             </tr>
           ))}
-        </tbody>
+        </TBody>
       </Table>
 
       <Paging totalPage={totalPage} currentPage={currentPage} chagneCurrentPage={chagneCurrentPage} />
@@ -197,7 +197,7 @@ const HistoryManageMent = () => {
   );
 };
 
-export default HistoryManageMent;
+export default PostManagement;
 
 const Wrapper = styled.div`
   padding: ${({ theme }) => theme.spacing[10]};
@@ -217,43 +217,65 @@ const Title = styled.h2`
 
 const Table = styled.table`
   width: 100%;
-  border-collapse: collapse;
+  border-collapse: separate;
+  border-spacing: 0 8px;
   margin-top: ${({ theme }) => theme.spacing[6]};
+`;
 
-  th,
-  td {
-    padding: ${({ theme }) => theme.spacing[3]} ${({ theme }) => theme.spacing[2]};
-    text-align: center;
-    vertical-align: middle;
-    font-size: ${({ theme }) => theme.fontSizes.sm};
-    color: ${({ theme }) => theme.colors.gray[2]};
-    border-bottom: 1px solid ${({ theme }) => theme.colors.gray[4]};
+const THead = styled.thead`
+  tr {
+    background-color: ${({ theme }) => theme.colors.third};
+    box-shadow: ${({ theme }) => theme.shadows.base};
+    border-radius: ${({ theme }) => theme.borderRadius.lg};
+    overflow: hidden;
   }
 
   th {
-    background-color: ${({ theme }) => theme.colors.third};
-    color: ${({ theme }) => theme.colors.gray[1]};
+    padding: ${({ theme }) => theme.spacing[4]} ${({ theme }) => theme.spacing[3]};
+    text-align: center;
     font-weight: ${({ theme }) => theme.fontWeights.semibold};
-    font-size: ${({ theme }) => theme.fontSizes.base};
+    font-size: ${({ theme }) => theme.fontSizes.lg};
+    color: ${({ theme }) => theme.colors.black1};
+    white-space: nowrap;
+    letter-spacing: 0.5px;
+    background-color: transparent;
   }
 
-  tbody tr:hover {
-    background-color: ${({ theme }) => theme.colors.gray[5]};
+  th:first-child {
+    padding-left: ${({ theme }) => theme.spacing[5]};
   }
 
-  .left-align {
-    text-align: left;
+  th:last-child {
+    padding-right: ${({ theme }) => theme.spacing[5]};
   }
 `;
 
-const DeleteIcon = styled(FaTimes)`
-  color: ${({ theme }) => theme.colors.gray[3]};
-  cursor: pointer;
-  font-size: 18px;
-  transition: all 0.2s ease-in-out;
+const TBody = styled.tbody`
+  tr {
+    background-color: ${({ theme }) => theme.colors.white};
+    /* box-shadow: ${({ theme }) => theme.shadows.sm}; */
+    border-radius: ${({ theme }) => theme.borderRadius.lg};
+    transition: all 0.2s ease-in-out;
 
-  &:hover {
-    color: ${({ theme }) => theme.colors.danger};
-    transform: scale(1.1);
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: ${({ theme }) => theme.shadows.md};
+    }
+
+    td {
+      padding: ${({ theme }) => theme.spacing[3]} ${({ theme }) => theme.spacing[2]};
+      text-align: center;
+      font-size: ${({ theme }) => theme.fontSizes.sm};
+      color: ${({ theme }) => theme.colors.black3};
+
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      max-width: 160px;
+    }
+
+    td:last-child {
+      color: ${({ theme }) => theme.colors.danger};
+    }
   }
 `;

@@ -38,7 +38,6 @@ import GuardianSupportBoard from './pages/GuardianSupportBoard';
 
 import ResumeManagement from './pages/ResumeManagement';
 import ScrollToTop from './utils/scrollToTop';
-import HistoryManageMent from './pages/HistoryManageMent';
 
 import ReceivedReviews from './pages/ReceivedReviews';
 import WrittenReviews from './pages/WrittenReviews';
@@ -49,6 +48,8 @@ import ContactPage from './pages/ContactPage';
 import CareGiverCommunity from './pages/CareGiverCommunity';
 import GuardianCommunity from './pages/GuardianCommunity';
 import Question from './pages/Question';
+import PostManagement from './pages/PostManageMent';
+import JobOpeningManagement from './pages/JobOpeningManagement';
 
 function AppRoutes() {
   const navigate = useNavigate();
@@ -80,6 +81,7 @@ function AppRoutes() {
           <Route path="/caregiver/matchpage" element={<MatchToPatient />} />
           <Route path="/myresume/:resumeNo" element={<MyResume />} />
 
+          <Route path="/caregiver/post-management" element={<PostManagement />} />
           {/* 보호자 */}
           <Route path="/guardian" element={<GuardianMainPage />} />
           <Route path="/guardian/caregiverlist" element={<CaregiverList />} />
@@ -93,6 +95,7 @@ function AppRoutes() {
           <Route path="/guardian/hireDetail/:hiringNo" element={<HireDetailMine />} />
           <Route path="/guardian/careGiverSupportBorad" element={<CareGiverSupportBoard />} />
 
+          <Route path="/guardian/jobopening-management" element={<JobOpeningManagement />} />
           {/* 공용 */}
           <Route path="/community/create" element={<CreateCommuBoardForm />} />
           <Route path="/community/free" element={<CommunityBoard />} />
@@ -112,7 +115,6 @@ function AppRoutes() {
           <Route path="/resumeDetail/:resumeNo" element={<ResumeDetail />} />
           <Route path="/report/:patNo" element={<ReportMain />} />
           <Route path="/report/:patNo/detail/:reportNo" element={<ReportDetail />} />
-          <Route path="/history-management" element={<HistoryManageMent />} />
 
           <Route path="/contact" element={<ContactPage />} />
         </Routes>

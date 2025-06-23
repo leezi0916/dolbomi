@@ -146,10 +146,16 @@ const Header = () => {
                   ''
                 )}
 
-                <NavItem to="/history-management">
-                  <Icon src="/src/assets/icons/icon_내역관리.png" alt="" />
-                  내역관리
-                </NavItem>
+                {userStatus ? (
+                  <NavItem to="/guardian/jobopening-management">
+                    <Icon src="/src/assets/icons/icon_내역관리.png" alt="" />내 구인글 관리
+                  </NavItem>
+                ) : (
+                  <NavItem to="/caregiver/post-management">
+                    <Icon src="/src/assets/icons/icon_내역관리.png" alt="" />
+                    나의 지원현황
+                  </NavItem>
+                )}
 
                 {userStatus ? (
                   <NavItem to="/guardian/review">
