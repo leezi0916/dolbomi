@@ -6,9 +6,11 @@ import { Input, InputGroup, Title } from '../styles/Auth.styles';
 import { media } from '../styles/MediaQueries';
 import { SubmitButton } from '../styles/common/Button';
 import { FaPlus } from 'react-icons/fa6';
-
+import { useNavigate, useParams } from 'react-router-dom';
 import { useResumeForm } from '../hooks/useResumeForm';
 const MyResume = () => {
+  const navigate = useNavigate();
+  const { resumeNo } = useParams();
   const { register, handleSubmit, errors, licenseList, handleLicenseChange, user } = useResumeForm();
   console.log(user);
   return (
@@ -122,7 +124,9 @@ const MyResume = () => {
           </ContentWrapper1>
 
           <ButtonGroup>
-            <BackButton>이전</BackButton>
+            <BackButton type="button" onClick={() => navigate(-1)}>
+              이전
+            </BackButton>
             <SubmitButton1 type="submit">삭제하기</SubmitButton1>
             <SubmitButton1 type="submit">수정하기</SubmitButton1>
           </ButtonGroup>

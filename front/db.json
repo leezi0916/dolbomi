@@ -149,6 +149,11 @@
           "license_name": "운전면허증",
           "license_publisher": "서울시청",
           "license_date": "2025-12-20"
+        },
+        {
+          "license_name": "운전면허증",
+          "license_publisher": "서울시청",
+          "license_date": "2025-12-20"
         }
       ]
     }
@@ -351,27 +356,21 @@
       "user_id": "admin",
       "user_pwd": "a1234",
       "user_name": "이지묵",
-      "age": 19,
-      "gender": "M",
-      "phone": "01012345678",
-      "address": "별내동dsafsdafas",
+      "age": "26",
+      "gender": "F",
+      "phone": "01012345679",
+      "address": "경기도 남양주시 별내동",
       "email": "admin@diamelo.com",
       "profile_image": "/src/assets/profileImg/img_간병인.png",
       "licenses": [
         {
-          "license_name": "운전면허 1종",
-          "license_publisher": "경찰청",
-          "license_date": "2025-05-10"
-        },
-        {
-          "license_name": "기사 자격증",
-          "license_publisher": "경찰청",
-          "license_date": "2025-05-10"
+          "license_name": "정보처리기사",
+          "license_publisher": "따고싶네",
+          "license_date": "2025-07-25"
         }
       ]
     },
     {
-
       "user_no": 2,
       "id": 2,
       "user_id": "user01",
@@ -396,11 +395,9 @@
       ]
     },
     {
-
       "user_no": 3,
       "id": 3,
-
-"user_id": "dbgk9311",
+      "user_id": "dbgk9311",
       "user_pwd": "dbgk9311",
       "user_name": "유하",
       "age": 30,
@@ -432,7 +429,6 @@
       "user_pwd": "qwe123",
       "user_name": "김김김",
       "user_id": "wlstjr2001"
- 
     },
     {
       "id": "9289",
@@ -473,6 +469,7 @@
       "profile_image": "https://i.pinimg.com/736x/32/5c/ff/325cff33a4ed1d703fe740f796ee33ed.jpg",
       "id": "7e23"
     },
+
     {
       "review_no": 2,
       "user_no": 2,
@@ -517,7 +514,7 @@
       "status": "Y"
     },
     {
-      "id":2,
+      "id": 2,
       "pat_no": 2,
       "guardian_no": 5,
       "profile_image": "/src/assets/profileImg/img_환자소.png",
@@ -655,7 +652,6 @@
       "address": "전북, 전주시",
       "license": true,
       "profile_image": "/src/assets/profileImg/img_간병인.png"
-
     },
     {
       "id": "2",
@@ -671,7 +667,6 @@
       "address": "전북, 전주시",
       "license": true,
       "profile_image": "/src/assets/profileImg/img_간병인.png"
-      
     },
     {
       "id": "3",
@@ -680,7 +675,6 @@
       "caregiver_no": 1,
       "job_opening_no": 3,
       "status": "W",
-
       "user_name": "송가인",
       "gender": "F",
       "age": 63,
@@ -688,7 +682,7 @@
       "address": "전북, 전주시",
       "license": true,
       "profile_image": "/src/assets/profileImg/img_간병인.png"
-   },
+    },
     {
       "id": "4",
       "propposer_no": 4,
@@ -703,158 +697,142 @@
       "license": true,
       "profile_image": "/src/assets/profileImg/img_간병인.png"
     }
-
   ],
-
   "matching": [
     {
       "mat_no": 1,
-      "caregiver_no" : 1,
-      "pat_no" : 1,
-      "pat_name" :"이순자",
-      "pat_gender" :"F",
-      "pat_age" : 60,
-      "review_no" : 1,
-      "status" : "Y",
-
-      "user_id" : "간병인1",
-      "user_name" : "이길동",
-      "user_age" : "30",
-      "gender" : "F",
-      "profile_image" :"/src/assets/profileImg/img_간병인.png"
+      "caregiver_no": 1,
+      "pat_no": 1,
+      "pat_name": "이순자",
+      "pat_gender": "F",
+      "pat_age": 60,
+      "review_no": 1,
+      "status": "Y",
+      "user_id": "간병인1",
+      "user_name": "이길동",
+      "user_age": "30",
+      "gender": "F",
+      "profile_image": "/src/assets/profileImg/img_간병인.png"
     },
     {
       "mat_no": 2,
-      "caregiver_no" : 2,
-      "pat_no" : 1,
-      "pat_name" :"이순자",
-      "pat_gender" :"F",
-      "pat_age" : 60,
-      "review_no" : 1,
-      "status" : "Y",
-
-      "user_id" : "간병인2",
-      "user_name" : "강길동",
-      "user_age" : "50",
-      "gender" : "F",
-      "profile_image" :"/src/assets/profileImg/img_간병인.png"
+      "caregiver_no": 2,
+      "pat_no": 1,
+      "pat_name": "이순자",
+      "pat_gender": "F",
+      "pat_age": 60,
+      "review_no": 1,
+      "status": "Y",
+      "user_id": "간병인2",
+      "user_name": "강길동",
+      "user_age": "50",
+      "gender": "F",
+      "profile_image": "/src/assets/profileImg/img_간병인.png"
     },
     {
       "mat_no": 3,
-      "caregiver_no" : 3,
-      "pat_no" : 1,
-      "pat_name" :"이순자",
-      "pat_gender" :"F",
-      "pat_age" : 60,
-      "review_no" : 1,
-      "status" : "Y",
-
-      "user_id" : "간병인3",
-      "user_name" : "김길동",
-      "user_age" : "50",
-      "gender" : "F",
-      "profile_image" :"/src/assets/profileImg/img_간병인.png"
+      "caregiver_no": 3,
+      "pat_no": 1,
+      "pat_name": "이순자",
+      "pat_gender": "F",
+      "pat_age": 60,
+      "review_no": 1,
+      "status": "Y",
+      "user_id": "간병인3",
+      "user_name": "김길동",
+      "user_age": "50",
+      "gender": "F",
+      "profile_image": "/src/assets/profileImg/img_간병인.png"
     },
     {
       "mat_no": 1,
-      "caregiver_no" : 1,
-      "pat_no" : 3,
-      "pat_name" :"김건강",
-      "pat_gender" :"M",
-      "pat_age" : 70,
-      "review_no" : 1,
-      "status" : "Y",
-
-
-      "user_id" : "간병인1",
-      "user_name" : "이길동",
-      "user_age" : "50",
-      "gender" : "F",
-      "profile_image" :"/src/assets/profileImg/img_간병인.png"
+      "caregiver_no": 1,
+      "pat_no": 3,
+      "pat_name": "김건강",
+      "pat_gender": "M",
+      "pat_age": 70,
+      "review_no": 1,
+      "status": "Y",
+      "user_id": "간병인1",
+      "user_name": "이길동",
+      "user_age": "50",
+      "gender": "F",
+      "profile_image": "/src/assets/profileImg/img_간병인.png"
     },
     {
       "mat_no": 2,
-      "caregiver_no" : 2,
-      "pat_no" : 3,
-      "pat_name" :"김건강",
-      "pat_gender" :"M",
-      "pat_age" : 70,
-      "review_no" : 1,
-      "status" : "Y",
-
-
-      "user_id" : "간병인2",
-      "user_name" : "강길동",
-      "user_age" : "50",
-      "gender" : "F",
-      "profile_image" :"/src/assets/profileImg/img_간병인.png"
+      "caregiver_no": 2,
+      "pat_no": 3,
+      "pat_name": "김건강",
+      "pat_gender": "M",
+      "pat_age": 70,
+      "review_no": 1,
+      "status": "Y",
+      "user_id": "간병인2",
+      "user_name": "강길동",
+      "user_age": "50",
+      "gender": "F",
+      "profile_image": "/src/assets/profileImg/img_간병인.png"
     },
     {
       "mat_no": 3,
-      "caregiver_no" : 3,
-      "pat_no" : 3,
-      "pat_name" :"김건강",
-      "pat_gender" :"M",
-      "pat_age" : 70,
-      "review_no" : 1,
-      "status" : "Y",
-
-
-      "user_id" : "간병인3",
-      "user_name" : "간병인3",
-      "user_age" : "60",
-      "gender" : "M",
-      "profile_image" :"/src/assets/profileImg/img_간병인.png"
+      "caregiver_no": 3,
+      "pat_no": 3,
+      "pat_name": "김건강",
+      "pat_gender": "M",
+      "pat_age": 70,
+      "review_no": 1,
+      "status": "Y",
+      "user_id": "간병인3",
+      "user_name": "간병인3",
+      "user_age": "60",
+      "gender": "M",
+      "profile_image": "/src/assets/profileImg/img_간병인.png"
     },
     {
       "mat_no": 3,
-      "caregiver_no" : 4,
-      "pat_no" : 3,
-      "pat_name" :"김건강",
-      "pat_gender" :"M",
-      "pat_age" : 70,
-      "review_no" : 1,
-      "status" : "Y",
-
-      "user_id" : "간병인4",
-      "user_name" : "간병인4",
-      "user_age" : "50",
-      "gender" : "M",
-      "profile_image" :"/src/assets/profileImg/img_간병인.png"
+      "caregiver_no": 4,
+      "pat_no": 3,
+      "pat_name": "김건강",
+      "pat_gender": "M",
+      "pat_age": 70,
+      "review_no": 1,
+      "status": "Y",
+      "user_id": "간병인4",
+      "user_name": "간병인4",
+      "user_age": "50",
+      "gender": "M",
+      "profile_image": "/src/assets/profileImg/img_간병인.png"
     },
     {
       "mat_no": 3,
-      "caregiver_no" : 5,
-      "pat_no" : 3,
-      "pat_name" :"김건강",
-      "pat_gender" :"M",
-      "pat_age" : 70,
-      "review_no" : 1,
-      "status" : "Y",
-
-      "user_id" : "간병인4",
-      "user_name" : "간병인4",
-      "user_age" : "30",
-      "gender" : "M",
-      "profile_image" :"/src/assets/profileImg/img_간병인.png"
+      "caregiver_no": 5,
+      "pat_no": 3,
+      "pat_name": "김건강",
+      "pat_gender": "M",
+      "pat_age": 70,
+      "review_no": 1,
+      "status": "Y",
+      "user_id": "간병인4",
+      "user_name": "간병인4",
+      "user_age": "30",
+      "gender": "M",
+      "profile_image": "/src/assets/profileImg/img_간병인.png"
     },
-
     {
       "mat_no": 3,
-      "caregiver_no" : 5,
-      "pat_no" : 3,
-      "pat_name" :"김건강",
-      "pat_gender" :"M",
-      "pat_age" : 70,
-      "review_no" : 1,
-      "status" : "N",
-
-
-      "user_id" : "간병인4",
-      "user_name" : "간병인4",
-      "user_age" : "30",
-      "gender" : "M",
-      "profile_image" :"/src/assets/profileImg/img_간병인.png"
+      "caregiver_no": 5,
+      "pat_no": 3,
+      "pat_name": "김건강",
+      "pat_gender": "M",
+      "pat_age": 70,
+      "review_no": 1,
+      "status": "N",
+      "user_id": "간병인4",
+      "user_name": "간병인4",
+      "user_age": "30",
+      "gender": "M",
+      "profile_image": "/src/assets/profileImg/img_간병인.png"
     }
   ]
 }

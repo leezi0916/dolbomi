@@ -155,7 +155,7 @@ const HireDetail = () => {
                 <Label>숙식 제공 여부</Label>
                 <RadioWrapper>
                   <input type="radio" id="careStatus" {...register('careStatus')} name="careStatus" />
-                  <label htmlFor="careStatus">0</label>
+                  <label htmlFor="careStatus">가능</label>
                 </RadioWrapper>
                 <RadioWrapper>
                   <input
@@ -166,7 +166,7 @@ const HireDetail = () => {
                     value="careStatus"
                     readOnly
                   />
-                  <label htmlFor="careStatus">X</label>
+                  <label htmlFor="careStatus">불가능</label>
                 </RadioWrapper>
               </RadioGroup>
               <InputGroup>
