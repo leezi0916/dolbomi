@@ -24,7 +24,7 @@ const HireDetailShow = () => {
 
   const handleTabChange = (tab) => {
     setActiveTab(tab);
-    
+    setCurrentPage(1);
   };
 
   const { register, handleSubmit, errors, isSubmitting, watch, setValue } = guardianHiringForm();
@@ -42,7 +42,6 @@ const HireDetailShow = () => {
 
     const getJobOpening = async () => {
       const getOneJobOpening = await hiringService.getHirngById(Number(hiringNo));
-      
       console.log(getOneJobOpening);
       setJobOpening(getOneJobOpening);
     };

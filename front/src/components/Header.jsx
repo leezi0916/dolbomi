@@ -258,6 +258,7 @@ const Logo = styled(Link)`
 
 const DesktopNav = styled.nav`
   display: none;
+
   ${media.md`
     display: flex;
     align-items: center;
@@ -311,17 +312,17 @@ const NavItem = styled(Link)`
 `;
 
 const NavItemCenter = styled(Link)`
-  font-size: ${({ theme }) => theme.fontSizes.sm};
+  font-size: ${({ theme }) => theme.fontSizes.md};
   font-weight: ${({ theme }) => theme.fontWeights.bold};
 
   &:hover {
     color: ${({ theme }) => theme.colors.primary};
   }
 
-  ${media.lg`
+  /* ${media.lg`
    font-size: ${({ theme }) => theme.fontSizes.lg}; 
    margin-right : ${({ theme }) => theme.spacing[4]}
-  `}
+  `} */
 `;
 
 //menuNav dropdown
