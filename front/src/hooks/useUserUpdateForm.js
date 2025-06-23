@@ -11,11 +11,6 @@ const updateSchema = yup.object().shape({
     .matches(/^[가-힣]+$/, '이름은 한글만 입력 가능합니다.')
     .max(4, '이름은 최대 4자까지만 입력 가능합니다.'),
 
-  userPwd: yup
-    .string()
-    .required('비밀번호를 입력하세요.')
-    .matches(/^(?=.*[a-zA-Z]).{5,}$/, '비밀번호는 영문자를 포함해 5자 이상이어야 합니다.'),
-
   age: yup
     .number()
     .typeError('나이는 숫자여야 합니다.')
@@ -71,7 +66,13 @@ const useUserUpdateForm = ({ profile }) => {
         ...(licensesChanged ? { licenses: licenseList } : {}),
       };
 
-      await userService.updateUserProfile(profile.userId, updatedData);
+      // 여기 userNo 사용! (profile.userNo 또는 profile.user_no)
+      const userNo = profile.userNo || profile.user_no;
+      if (!userNo) {
+        throw new Error('사용자 번호(userNo)가 없습니다.');
+      }
+
+      await userService.updateUserProfile(userNo, updatedData);
 
       toast.success('회원정보가 성공적으로 수정되었습니다.');
     } catch (err) {
