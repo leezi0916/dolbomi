@@ -5,7 +5,7 @@ import { styled } from 'styled-components';
 // 절대 다른 사람이 만든 컴포넌트 말없이 수정 ㄴㄴ 당신 책임
 
 export const Button = styled.button`
-  border-radius: ${({ theme }) => theme.borderRadius.sm};
+  border-radius: ${({ theme }) => theme.borderRadius.md};
   background: ${({ theme }) => theme.colors.primary};
 `;
 
@@ -14,7 +14,7 @@ export const AddButton = styled.button``;
 export const DeleteButton = styled.button``;
 
 export const SubmitButton = styled.button`
-  border-radius: ${({ theme }) => theme.borderRadius.sm};
+  border-radius: ${({ theme }) => theme.borderRadius.md};
   background: ${({ theme }) => theme.colors.primary};
 `;
 

@@ -540,17 +540,6 @@
       "update_date": "2025-07-01",
       "status": "Y",
       "id": "0347"
-    },
-    {
-      "id": "d030",
-      "care_giver_no": 1,
-      "pat_no": "1",
-      "report_title": "1",
-      "sub_title0": "2",
-      "content0": "3",
-      "create_date": "2025-06-19T06:58:57.201Z",
-      "update_date": "2025-06-19T06:58:57.201Z",
-      "status": "Y"
     }
   ],
   "caregiverproposer": [
