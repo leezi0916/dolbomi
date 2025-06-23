@@ -62,12 +62,12 @@ const Header = () => {
           {userStatus ? (
             <>
               <NavItemCenter to="/guardian/caregiverlist">간병사 모집</NavItemCenter>
-              <NavItemCenter to="/community/free">간병게시판</NavItemCenter>
+              <NavItemCenter to="/community/free">보호자게시판</NavItemCenter>
             </>
           ) : (
             <>
               <NavItemCenter to="/caregiver/hirelist">돌봄대상자 모집</NavItemCenter>
-              <NavItemCenter to="/community/free">돌봄 게시판</NavItemCenter>
+              <NavItemCenter to="/community/free">간병인게시판</NavItemCenter>
             </>
           )}
 

@@ -16,6 +16,15 @@ export const userService = {
       throw error;
     }
   },
+  getCareGiverProfile: async (userNo) => {
+    try {
+      const { data } = await api.get(API_ENDPOINTS.USERS.CAREPROFILE(Number(userNo)));
+      return snakeToCamel(data[0]);
+    } catch (error) {
+      console.error('프로필 조회 실패:', error.response?.data?.message || error.message);
+      throw error;
+    }
+  },
   //회원가입
   signUp: async (userData) => {
     try {

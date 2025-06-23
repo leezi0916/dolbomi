@@ -13,12 +13,19 @@ import { hiringService } from '../api/hiring';
 import { useParams } from 'react-router-dom';
 
 import { guardianHiringForm } from '../hooks/guardianHiringForm';
+import ReceivedReviews from './ReceivedReviews';
 
-const HireDetail = () => {
+const HireDetailShow = () => {
   const navigate = useNavigate();
   const { hiringNo } = useParams();
   const { user } = useUserStore();
   const [jobOpening, setJobOpening] = useState();
+  const [activeTab, setActiveTab] = useState('resume');
+
+  const handleTabChange = (tab) => {
+    setActiveTab(tab);
+    
+  };
 
   const { register, handleSubmit, errors, isSubmitting, watch, setValue } = guardianHiringForm();
 
@@ -35,6 +42,7 @@ const HireDetail = () => {
 
     const getJobOpening = async () => {
       const getOneJobOpening = await hiringService.getHirngById(Number(hiringNo));
+      
       console.log(getOneJobOpening);
       setJobOpening(getOneJobOpening);
     };
@@ -48,7 +56,7 @@ const HireDetail = () => {
         <HireHead>
           <HireHeadTitle>돌봄대상자 정보</HireHeadTitle>
         </HireHead>
-        <form>
+        <div>
           <ContentWrapper>
             <div>
               <ProfilImageWrapper>
@@ -118,6 +126,7 @@ const HireDetail = () => {
               </InputRow>
             </Divider>
           </ContentWrapper>
+
           <ContentWrapper>
             <DiseaseGroup>
               <Label>보유한 질병</Label>
@@ -128,64 +137,79 @@ const HireDetail = () => {
               </DiseaseInputDiv>
             </DiseaseGroup>
           </ContentWrapper>
-          <HireBottom>
-            <HireBottomTitle>채용 정보</HireBottomTitle>
-          </HireBottom>
-          <ContentWrapper1>
-            <HireContent>
-              <Label>제목</Label>
-              <Input type="text" id="hiring_title" {...register('hiring_title')} />
-              <InputRow>
-                <InputGroup>
-                  <Label>지급 금액 (시급)</Label>
-                  <Input type="text" id="account" {...register('account')} />
-                </InputGroup>
-                <InputGroup>
-                  <Label>시작일</Label>
-                  <Input type="date" id="startDate" {...register('startDate')} />
-                </InputGroup>
+        </div>
 
-                <InputGroup>
-                  <Label>종료일</Label>
-                  <Input type="date" id="endDate" {...register('endDate')} />
-                </InputGroup>
-                <InputGroup>
-                  <Label>모집 인원수 설정</Label>
-                  <Input type="number" id="maxApplicants" {...register('maxApplicants')} />
-                </InputGroup>
-              </InputRow>
-              <Label>내용</Label>
-              <Content type="text" id="hiringContent" {...register('hiringContent')} />
-              <RadioGroup>
-                <Label>숙식 제공 여부</Label>
-                <RadioWrapper>
-                  <input type="radio" id="careStatus" {...register('careStatus')} name="careStatus" />
-                  <label htmlFor="careStatus">0</label>
-                </RadioWrapper>
-                <RadioWrapper>
-                  <input
-                    type="radio"
-                    id="careStatus"
-                    {...register('careStatus')}
-                    name="careStatus"
-                    value="careStatus"
-                    readOnly
-                  />
-                  <label htmlFor="careStatus">X</label>
-                </RadioWrapper>
-              </RadioGroup>
-              <InputGroup>
-                <Label>숙소 정보</Label>
-                {/* 클릭 가능한 div */}
-                <RoomImage>
-                  <Plus />
-                </RoomImage>
-                <input type="file" style={{ display: 'none' }} />
-              </InputGroup>
-            </HireContent>
-          </ContentWrapper1>
-        </form>
+        <NewContainer>
+          <TabsWrapper>
+            <Tab onClick={() => handleTabChange('resume')} active={activeTab === 'resume'}>
+              신청서
+            </Tab>
+            <Tab onClick={() => handleTabChange('review')} active={activeTab === 'review'}>
+              리뷰
+            </Tab>
+              <Line />
+          </TabsWrapper>
 
+          {activeTab === 'resume' ? (
+            <ContentWrapper1>
+              <HireContent>
+                <Label>제목</Label>
+                <Input type="text" id="hiring_title" {...register('hiring_title')} />
+                <InputRow>
+                  <InputGroup>
+                    <Label>지급 금액 (시급)</Label>
+                    <Input type="text" id="account" {...register('account')} />
+                  </InputGroup>
+                  <InputGroup>
+                    <Label>시작일</Label>
+                    <Input type="date" id="startDate" {...register('startDate')} />
+                  </InputGroup>
+
+                  <InputGroup>
+                    <Label>종료일</Label>
+                    <Input type="date" id="endDate" {...register('endDate')} />
+                  </InputGroup>
+                  <InputGroup>
+                    <Label>모집 인원수 설정</Label>
+                    <Input type="number" id="maxApplicants" {...register('maxApplicants')} />
+                  </InputGroup>
+                </InputRow>
+                <Label>내용</Label>
+                <Content type="text" id="hiringContent" {...register('hiringContent')} />
+                <RadioGroup>
+                  <Label>숙식 제공 여부</Label>
+                  <RadioWrapper>
+                    <input type="radio" id="careStatus" {...register('careStatus')} name="careStatus" />
+                    <label htmlFor="careStatus">0</label>
+                  </RadioWrapper>
+                  <RadioWrapper>
+                    <input
+                      type="radio"
+                      id="careStatus"
+                      {...register('careStatus')}
+                      name="careStatus"
+                      value="careStatus"
+                      readOnly
+                    />
+                    <label htmlFor="careStatus">X</label>
+                  </RadioWrapper>
+                </RadioGroup>
+                <InputGroup>
+                  <Label>숙소 정보</Label>
+                  {/* 클릭 가능한 div */}
+                  <RoomImage>
+                    <Plus />
+                  </RoomImage>
+                  <input type="file" style={{ display: 'none' }} />
+                </InputGroup>
+              </HireContent>
+            </ContentWrapper1>
+          ) : (
+        
+              <ReceivedReviews></ReceivedReviews>
+          
+          )}
+        </NewContainer>
         <ButtonGroup>
           <BackButton onClick={() => navigate(-1)}>이전</BackButton>
           <SubmitButton1>신청하기</SubmitButton1>
@@ -280,7 +304,6 @@ const InputRow = styled.div`
   gap: ${({ theme }) => theme.spacing[5]};
 
   ${media.md`
-    
     flex-direction: row;
   `}
 `;
@@ -465,4 +488,31 @@ const Plus = styled(FaPlus)`
   height: 30px;
   color: white;
 `;
-export default HireDetail;
+
+const NewContainer = styled(Container)`
+  padding: 0 ${({ theme }) => theme.spacing[8]};
+`;
+
+/* ======== tab  ========== */
+const TabsWrapper = styled.div`
+  text-align: start;
+  font-size: ${({ theme }) => theme.fontSizes.xl};
+  margin:${({ theme }) => theme.spacing[3]};
+`;
+
+const Tab = styled.span`
+  font-weight: ${({ active, theme }) => (active ? theme.fontWeights.bold : theme.fontWeights.regular)};
+  color: ${({ active, theme }) => (active ? theme.colors.primary : theme.colors.gray[3])};
+  cursor: pointer;
+  padding: 0 ${({ theme }) => theme.spacing[3]} ;
+  margin-right: ${({ theme }) => theme.spacing[5]};
+`;
+
+const Line = styled.hr`
+margin-top:${({ theme }) => theme.spacing[2]};
+height: 2px;
+border: none;
+background-color:${({ theme }) => theme.colors.gray[5]} ;
+`
+
+export default HireDetailShow;
