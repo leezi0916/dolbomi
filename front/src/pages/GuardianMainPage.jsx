@@ -9,6 +9,8 @@ import { toast } from 'react-toastify';
 import { jobSeekingService } from '../api/jobSeeking';
 import { reviewService } from '../api/reviews';
 import { useNavigate } from 'react-router-dom';
+import { MainMoveButton } from '../styles/common/Button';
+
 const GuardianMainPage = () => {
   const [resumeLiset, setResumeLiset] = useState([]);
   const [reviewList, setReviewList] = useState([]);
@@ -98,7 +100,7 @@ const GuardianMainPage = () => {
                       <span>지역</span> {resume.address}
                     </CardRegionText>
                   </CardBottomTextSection>
-                  <CardButton onClick={() => navigate(`/resumeDetail/${resume.resumeNo}`)}>상세보기</CardButton>
+                  <MainMoveButton onClick={() => navigate(`/resumeDetail/${resume.resumeNo}`)}>상세보기</MainMoveButton>
                 </CardBottomContent>
               </Card>
             ))}
@@ -409,17 +411,6 @@ export const CardRegionText = styled.span`
   ${media.sm`
     max-width: 120px; 
   `}
-`;
-
-// 버튼
-export const CardButton = styled.button`
-  align-self: flex-end;
-  padding: ${({ theme }) => theme.spacing[2]} ${({ theme }) => theme.spacing[4]};
-  background-color: ${({ theme }) => theme.colors.secondary};
-  color: ${({ theme }) => theme.colors.white};
-  font-weight: ${({ theme }) => theme.fontWeights.medium};
-  border-radius: ${({ theme }) => theme.borderRadius.md};
-  cursor: pointer;
 `;
 
 // ************* 중하단 패딩 섹션 *************

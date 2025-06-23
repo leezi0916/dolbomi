@@ -61,14 +61,12 @@ const Header = () => {
               <NavItemCenter to="/guardian/caregiverlist">간병사 모집</NavItemCenter>
 
               <NavItemCenter to="/community/guardian">보호자 게시판</NavItemCenter>
-
             </>
           ) : (
             <>
               <NavItemCenter to="/caregiver/hirelist">돌봄대상자 모집</NavItemCenter>
 
               <NavItemCenter to="/community/caregiver">간병 게시판</NavItemCenter>
-
             </>
           )}
 
@@ -139,15 +137,6 @@ const Header = () => {
                     <Icon src="/src/assets/icons/icon_이력서등록.png" alt="" />
                     이력서 등록
                   </NavItem>
-                )}
-
-                {userStatus ? (
-                  <NavItem to="/guardian/hire-registration">
-                    <Icon src="/src/assets/icons/icon_이력서등록.png" alt="" />
-                    돌봄대상자 신청
-                  </NavItem>
-                ) : (
-                  ''
                 )}
 
                 {userStatus ? (
