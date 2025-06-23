@@ -79,7 +79,7 @@ function AppRoutes() {
           <Route path="/caregiver/review" element={<ReceivedReviews />} />
 
           <Route path="/caregiver/matchpage" element={<MatchToPatient />} />
-          <Route path="/myresume/:resumeNo" element={<MyResume />} />
+          <Route path="/caregiver/myresume/:resumeNo" element={<MyResume />} />
 
           {/* 보호자 */}
           <Route path="/guardian" element={<GuardianMainPage />} />

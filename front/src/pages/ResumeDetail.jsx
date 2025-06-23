@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Container, Section } from '../styles/common/Container';
 import profileImage from '../assets/images/cargiver.png'; // 프로필 이미지 경로
 import styled from 'styled-components';
@@ -14,13 +14,33 @@ import chatImage from '../assets/icons/icon_채팅아이콘.png'; // 채팅 이�
 import Paging from '../components/Paging';
 import { useNavigate } from 'react-router-dom';
 import PatientSelectModal from '../components/PatientSelectModal';
-
+import { useParams } from 'react-router-dom';
+import { jobSeekingService } from '../api/jobSeeking';
 function ResumeDetail() {
   const navigate = useNavigate();
-  // const { resumeNo } = useParams();
   // const { register, handleSubmit, errors, licenseList, handleLicenseChange, user } = useResumeForm();
 
+  const { resumeNo } = useParams();
+  const [resumeData, setResumeData] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const [activeTab, setActiveTab] = useState('info');
+
+  useEffect(() => {
+    const fetchResume = async () => {
+      try {
+        const data = await jobSeekingService.getResume(resumeNo);
+        console.log(data);
+        setResumeData(data[0]);
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchResume();
+  }, [resumeNo]);
 
   const handleTabChange = (tab) => {
     setActiveTab(tab);
@@ -59,31 +79,31 @@ function ResumeDetail() {
             <InputRow>
               <InputGroup>
                 <Label>이름</Label>
-                <Input type="text" value={'김지원'} readOnly />
+                <Input type="text" value={resumeData?.userName || ''} readOnly />
               </InputGroup>
               <InputGroup>
                 <Label>나이</Label>
-                <Input type="text" value={'35'} readOnly />
+                <Input type="text" value={resumeData?.age || ''} readOnly />
               </InputGroup>
             </InputRow>
             <RadioGroup>
               <Label>성별</Label>
               <RadioWrapper>
-                <input type="radio" id="male" name="gender" value="M" readOnly />
+                <input type="radio" id="male" name="gender" value="M" readOnly checked={resumeData?.gender === 'M'} />
                 <label htmlFor="male">남성</label>
               </RadioWrapper>
               <RadioWrapper>
-                <input type="radio" id="female" name="gender" value="F" readOnly />
+                <input type="radio" id="female" name="gender" value="F" readOnly checked={resumeData?.gender === 'F'} />
                 <label htmlFor="female">여성</label>
               </RadioWrapper>
             </RadioGroup>
             <InputGroup>
               <Label>전화번호</Label>
-              <Input type="text" value={'010111111111'} readOnly />
+              <Input type="text" value={resumeData?.phone || ''} readOnly />
             </InputGroup>
             <InputGroup>
               <Label>주소</Label>
-              <Input type="text" value={'강원도 강릉시 ~~~'} readOnly />
+              <Input type="text" value={resumeData?.address || ''} readOnly />
             </InputGroup>
           </Divider>
         </ContentWrapper>
@@ -91,15 +111,15 @@ function ResumeDetail() {
         <ContentWrapper2>
           <LicenseGroup>
             <Label>자격증 명</Label>
-            <LicenseInput type="text" value={'운전면허증'} readOnly />
+            <LicenseInput type="text" value={resumeData?.licenses?.[0]?.licenseName || ''} readOnly />
           </LicenseGroup>
           <LicenseGroup>
             <Label>발행처</Label>
-            <LicenseInput type="text" value={'서울시청'} readOnly />
+            <LicenseInput type="text" value={resumeData?.licenses?.[0]?.licensePublisher || ''} readOnly />
           </LicenseGroup>
           <LicenseGroup>
             <Label>발행일</Label>
-            <LicenseInput type="date" value={'2025-12-20'} readOnly />
+            <LicenseInput type="date" value={resumeData?.licenses?.[0]?.licenseDate || ''} readOnly />
           </LicenseGroup>
         </ContentWrapper2>
 
@@ -116,26 +136,26 @@ function ResumeDetail() {
           <ContentWrapper1>
             <HireContent>
               <Label>제목</Label>
-              <Input value={'지원합니다'} readOnly />
+              <Input value={resumeData?.resumeTitle || ''} readOnly />
 
               <Label>내용</Label>
-              <Content value={'지원합니다'} readOnly />
+              <Content value={resumeData?.resumeContent || ''} readOnly />
 
               <RadioGroup>
                 <RadioContainer>
                   <Label>숙식 가능</Label>
                   <RadioWrapper>
-                    <input type="radio" value="Y" checked readOnly />
+                    <input type="radio" value="Y" checked={resumeData?.careStatus === 'Y'} readOnly />
                   </RadioWrapper>
                   <Label>숙식 불가</Label>
                   <RadioWrapper>
-                    <input type="radio" value="N" readOnly />
+                    <input type="radio" value="N" checked={resumeData?.careStatus === 'N'} readOnly />
                   </RadioWrapper>
                 </RadioContainer>
                 <AccountGroup>
                   <InputGroup>
                     <Label>희망 금액</Label>
-                    <Input value={'12000'} readOnly />
+                    <Input value={resumeData?.account || ''} readOnly />
                   </InputGroup>
                 </AccountGroup>
               </RadioGroup>
