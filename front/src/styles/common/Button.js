@@ -34,7 +34,7 @@ export const BackButton = styled.button`
 `;
 
 export const Button = styled.button`
-  border-radius: ${({ theme }) => theme.borderRadius.sm};
+  border-radius: ${({ theme }) => theme.borderRadius.md};
   background: ${({ theme }) => theme.colors.primary};
 `;
 
@@ -43,7 +43,7 @@ export const AddButton = styled.button``;
 export const DeleteButton = styled.button``;
 
 export const SubmitButton = styled.button`
-  border-radius: ${({ theme }) => theme.borderRadius.sm};
+  border-radius: ${({ theme }) => theme.borderRadius.md};
   background: ${({ theme }) => theme.colors.primary};
 `;
 
