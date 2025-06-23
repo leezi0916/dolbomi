@@ -25,6 +25,7 @@ import ResumeDetail from './pages/ResumeDetail';
 import GuardianMainPage from './pages/GuardianMainPage';
 import CareGiverMainPage from './pages/CareGiverMainPage';
 import { useEffect } from 'react';
+
 // import useUserStore from './store/userStore';
 import ReportMain from './pages/ReportMain';
 import CreateCommuBoardForm from './pages/CreateCommuBoardForm';
@@ -33,20 +34,26 @@ import ReviewModal from './components/ReviewModal';
 
 import HireDetailMine from './pages/HireDetailMine';
 import CareGiverSupportBoard from './pages/CareGiverSupportBoard';
+
 import ResumeDetailMine from './pages/ResumeDetailMine';
-import GuardianSupportBoard from './pages/GuardianSupportBoard';
 
 import ResumeManagement from './pages/ResumeManagement';
 import ScrollToTop from './utils/scrollToTop';
-import HistoryManageMent from './pages/HistoryManageMent';
 
 import ReceivedReviews from './pages/ReceivedReviews';
 import WrittenReviews from './pages/WrittenReviews';
 import MatchToCaregiver from './pages/MatchToCaregiver';
 import MatchToPatient from './pages/MatchToPatient';
 import MyResume from './pages/MyResume';
+
+import HireDetailShow from './pages/HireDetailShow';
+import CareGviverProfile from './pages/CareGiverProfile';
+
+import ContactPage from './pages/ContactPage';
 import CareGiverCommunity from './pages/CareGiverCommunity';
 import GuardianCommunity from './pages/GuardianCommunity';
+import PostManagement from './pages/PostManageMent';
+import JobOpeningManagement from './pages/JobOpeningManagement';
 import QuestionFull from './pages/question/QuestionFull';
 import QuestionCreate from './pages/question/QuestionCreate';
 import QuestionHistory from './pages/question/QuestionHistory';
@@ -71,18 +78,21 @@ function AppRoutes() {
           {/* 간병인 */}
           <Route path="/caregiver" element={<CareGiverMainPage />} />
           <Route path="/caregiver/hirelist" element={<HireList />} />
+
           <Route path="/caregiver/resumeregistration" element={<ResumeRegistration />} />
+
           <Route path="/caregiver/reportform/:patNo" element={<ReportForm />} />
 
           <Route path="/caregiver/resumeDetail/:resumeNo" element={<ResumeDetailMine />} />
-          <Route path="/caregiver/guardianSupportBoard" element={<GuardianSupportBoard />} />
 
           <Route path="/caregiver/resumemanagement" element={<ResumeManagement />} />
           <Route path="/caregiver/review" element={<ReceivedReviews />} />
 
           <Route path="/caregiver/matchpage" element={<MatchToPatient />} />
-          <Route path="/myresume/:resumeNo" element={<MyResume />} />
 
+          <Route path="/caregiver/myresume/:resumeNo" element={<MyResume />} />
+
+          <Route path="/caregiver/post-management" element={<PostManagement />} />
           {/* 보호자 */}
           <Route path="/guardian" element={<GuardianMainPage />} />
           <Route path="/guardian/caregiverlist" element={<CaregiverList />} />
@@ -96,6 +106,7 @@ function AppRoutes() {
           <Route path="/guardian/hireDetail/:hiringNo" element={<HireDetailMine />} />
           <Route path="/guardian/careGiverSupportBorad" element={<CareGiverSupportBoard />} />
 
+          <Route path="/guardian/jobopening-management" element={<JobOpeningManagement />} />
           {/* 공용 */}
           <Route path="/community/create" element={<CreateCommuBoardForm />} />
           <Route path="/community/free" element={<CommunityBoard />} />
@@ -110,17 +121,21 @@ function AppRoutes() {
 
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<SignUp />} />
-          <Route path="/myprofile" element={<MyProfile />} />
 
+          <Route path="/myprofile" element={<MyProfile />} />
+          <Route path="/caregiverProfile/:userNo" element={<CareGviverProfile />} />
           <Route path="/hireDetail/:hiringNo" element={<HireDetail />} />
 
           <Route path="/resumeDetail/:resumeNo" element={<ResumeDetail />} />
           <Route path="/report/:patNo" element={<ReportMain />} />
           <Route path="/report/:patNo/detail/:reportNo" element={<ReportDetail />} />
-          <Route path="/history-management" element={<HistoryManageMent />} />
 
           <Route path="/privacy-policy" element={<PrivacyPolicy />} />
           <Route path="/terms-of-service" element={<TermsOfService />} />
+
+          <Route path="/test" element={<HireDetailShow />} />
+
+          <Route path="/contact" element={<ContactPage />} />
         </Routes>
       </Layout>
     </>

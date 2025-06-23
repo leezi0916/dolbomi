@@ -11,82 +11,52 @@ import { Input, InputGroup, Title } from '../styles/Auth.styles';
 import useUserStore from '../store/userStore';
 import { hiringService } from '../api/hiring';
 import { useParams } from 'react-router-dom';
-import { guardianHiringForm } from '../hooks/guardianHiringForm';
-import { proposerSevice } from '../api/propose.js';
 
-const HireDetail = () => {
+import { guardianHiringForm } from '../hooks/guardianHiringForm';
+import ReceivedReviews from './ReceivedReviews';
+
+const HireDetailShow = () => {
   const navigate = useNavigate();
   const { hiringNo } = useParams();
   const { user } = useUserStore();
   const [jobOpening, setJobOpening] = useState();
-  const [proposerList, setproposerList] = useState([]);
+  const [activeTab, setActiveTab] = useState('resume');
 
-  const { register, handleSubmit, errors, isSubmitting, watch, setValue, reset } = guardianHiringForm();
+  const handleTabChange = (tab) => {
+    setActiveTab(tab);
+    
+  };
 
-  // 수정중
+  const { register, handleSubmit, errors, isSubmitting, watch, setValue } = guardianHiringForm();
+
   const currentGender = watch('patGender');
 
+  //수정중
   useEffect(() => {
+    console.log(user);
+
     if (!user) {
       alert('로그인 후 이용해주세요');
       // navigate('/guardian');
     }
-    // 구인글의 번호로 가져온다 (hiringNo)
+
     const getJobOpening = async () => {
-      const getOneJobOpening = await hiringService.getHirngById(1);
-      setJobOpening(getOneJobOpening);
+      const getOneJobOpening = await hiringService.getHirngById(Number(hiringNo));
       
       console.log(getOneJobOpening);
+      setJobOpening(getOneJobOpening);
     };
 
     getJobOpening();
-
-    // 구직글을 가져온다. => 신청테이블에서 구인글의 번호로(hiringNo) 구직글을 가져온다
-    const getList = async () => {
-      const list = await proposerSevice.getcareGiverLists(1);
-      setproposerList(list);
-    };
-    getList();
   }, [user]);
 
-  useEffect(() => {
-    if (jobOpening) {
-      reset({
-        patName: jobOpening.patName || '',
-        patAge: jobOpening.patAge || '',
-        patGender: jobOpening.patGender || '',
-        patAddress: jobOpening.patAddress || '',
-        patHeight: jobOpening.patHeight || '',
-        patWeight: jobOpening.patWeight || '',
-        phone: jobOpening.phone || '',
-      });
-    }
-  }, [jobOpening]);
-
   return (
-    <>
-      <Wrapper>
-        <ImageStack>
-          {proposerList.slice(0, 3).map((list, index) => (
-            <ProfileImg
-              key={index}
-              src={list.profileImage}
-              style={{ left: `${index * 20}px`, zIndex: proposerList.length - index }}
-            />
-          ))}
-        </ImageStack>
-
-        <NewTitle>지원현황 {proposerList.length}명</NewTitle>
-        <ActionButton type="button" onClick={() => navigate('/guardian/careGiverSupportBorad')}>
-          확인하기
-        </ActionButton>
-      </Wrapper>
-
+    <HireRegistSection>
       <HireContainer>
         <HireHead>
           <HireHeadTitle>돌봄대상자 정보</HireHeadTitle>
         </HireHead>
-        <form>
+        <div>
           <ContentWrapper>
             <div>
               <ProfilImageWrapper>
@@ -100,25 +70,24 @@ const HireDetail = () => {
               <InputRow>
                 <InputGroup>
                   <Label>이름</Label>
-                  <Input type="text" id="patName" {...register('patName')} readOnly />
+                  <Input type="text" id="patName" value={jobOpening?.patName} readOnly />
                 </InputGroup>
                 <InputGroup>
                   <Label>나이</Label>
-                  <Input type="text" id="patAge" {...register('patAge')} readOnly />
+                  <Input type="text" id="age" value={jobOpening?.patAge} readOnly />
                 </InputGroup>
               </InputRow>
               <RadioGroup>
                 <Label>성별</Label>
                 <RadioWrapper checked={currentGender === 'M'}>
-                  {' '}
                   {/* checked prop 전달 */}
                   <input
                     type="radio"
                     id="M"
-                    name="patGender"
+                    name="gender"
                     value="M"
                     checked={currentGender === 'M'} // watch 값으로 제어
-                    {...register('patGender')} // register만 남김
+                    {...register('gender')} // register만 남김
                     readOnly
                   />
                   <label htmlFor="M">남성</label>
@@ -128,10 +97,10 @@ const HireDetail = () => {
                   <input
                     type="radio"
                     id="F"
-                    name="patGender"
+                    name="gender"
                     value="F"
                     checked={currentGender === 'F'} // watch 값으로 제어
-                    {...register('patGender')} // register만 남김
+                    {...register('gender')} // register만 남김
                     readOnly
                   />
                   <label htmlFor="F">여성</label>
@@ -139,157 +108,118 @@ const HireDetail = () => {
               </RadioGroup>
               <InputGroup>
                 <Label>보호자 전화번호</Label>
-                <Input type="text" id="phone" {...register('phone')} readOnly />
+                <Input type="text" value={jobOpening?.phone} readOnly />
               </InputGroup>
               <InputGroup>
                 <Label>주소</Label>
-                <Input type="text" id="patAddress" {...register('patAddress')} readOnly />
+                <Input type="text" id="patAddress" value={jobOpening?.patAddress} readOnly />
               </InputGroup>
               <InputRow>
                 <InputGroup>
                   <Label>키</Label>
-                  <Input type="text" id="patHeight" {...register('patHeight')} readOnly />
+                  <Input type="text" value={jobOpening?.patHeight} readOnly />
                 </InputGroup>
                 <InputGroup>
                   <Label>몸무게</Label>
-                  <Input type="text" id="patWeight" {...register('patWeight')} readOnly />
+                  <Input type="text" value={jobOpening?.patWeight} readOnly />
                 </InputGroup>
               </InputRow>
             </Divider>
           </ContentWrapper>
+
           <ContentWrapper>
             <DiseaseGroup>
               <Label>보유한 질병</Label>
               <DiseaseInputDiv>
-                <TagsUl id="tags">
-                  {jobOpening?.tags?.map((tag, index) => (
-                    <li key={index}>
-                      <span>{tag}</span>
-                    </li>
-                  ))}
-                </TagsUl>
+                <div>치매</div>
+                <div>고혈압</div>
+                <div>당뇨</div>
               </DiseaseInputDiv>
             </DiseaseGroup>
           </ContentWrapper>
-          <HireBottom>
-            <HireBottomTitle>채용 정보</HireBottomTitle>
-          </HireBottom>
-          <ContentWrapper1>
-            <HireContent>
-              <Label>제목</Label>
-              <Input type="text" id="hiringTitle" {...register('hiringTitle')} />
-              <InputRow>
-                <InputGroup>
-                  <Label>지급 금액 (시급)</Label>
-                  <Input type="text" id="account" {...register('account')} />
-                </InputGroup>
-                <InputGroup>
-                  <Label>시작일</Label>
-                  <Input type="date" id="startDate" {...register('startDate')} />
-                </InputGroup>
+        </div>
 
+        <NewContainer>
+          <TabsWrapper>
+            <Tab onClick={() => handleTabChange('resume')} active={activeTab === 'resume'}>
+              신청서
+            </Tab>
+            <Tab onClick={() => handleTabChange('review')} active={activeTab === 'review'}>
+              리뷰
+            </Tab>
+              <Line />
+          </TabsWrapper>
+
+          {activeTab === 'resume' ? (
+            <ContentWrapper1>
+              <HireContent>
+                <Label>제목</Label>
+                <Input type="text" id="hiring_title" {...register('hiring_title')} />
+                <InputRow>
+                  <InputGroup>
+                    <Label>지급 금액 (시급)</Label>
+                    <Input type="text" id="account" {...register('account')} />
+                  </InputGroup>
+                  <InputGroup>
+                    <Label>시작일</Label>
+                    <Input type="date" id="startDate" {...register('startDate')} />
+                  </InputGroup>
+
+                  <InputGroup>
+                    <Label>종료일</Label>
+                    <Input type="date" id="endDate" {...register('endDate')} />
+                  </InputGroup>
+                  <InputGroup>
+                    <Label>모집 인원수 설정</Label>
+                    <Input type="number" id="maxApplicants" {...register('maxApplicants')} />
+                  </InputGroup>
+                </InputRow>
+                <Label>내용</Label>
+                <Content type="text" id="hiringContent" {...register('hiringContent')} />
+                <RadioGroup>
+                  <Label>숙식 제공 여부</Label>
+                  <RadioWrapper>
+                    <input type="radio" id="careStatus" {...register('careStatus')} name="careStatus" />
+                    <label htmlFor="careStatus">0</label>
+                  </RadioWrapper>
+                  <RadioWrapper>
+                    <input
+                      type="radio"
+                      id="careStatus"
+                      {...register('careStatus')}
+                      name="careStatus"
+                      value="careStatus"
+                      readOnly
+                    />
+                    <label htmlFor="careStatus">X</label>
+                  </RadioWrapper>
+                </RadioGroup>
                 <InputGroup>
-                  <Label>종료일</Label>
-                  <Input type="date" id="endDate" {...register('endDate')} />
+                  <Label>숙소 정보</Label>
+                  {/* 클릭 가능한 div */}
+                  <RoomImage>
+                    <Plus />
+                  </RoomImage>
+                  <input type="file" style={{ display: 'none' }} />
                 </InputGroup>
-                <InputGroup>
-                  <Label>모집 인원수 설정</Label>
-                  <Input type="number" id="maxApplicants" {...register('maxApplicants')} />
-                </InputGroup>
-              </InputRow>
-              <Label>내용</Label>
-              <Content type="text" id="hiringContent" {...register('hiringContent')} />
-              <RadioGroup>
-                <Label>숙식 제공 여부</Label>
-                <RadioWrapper>
-                  <input type="radio" id="careStatus" {...register('careStatus')} />
-                  <label htmlFor="careStatus">0</label>
-                </RadioWrapper>
-                <RadioWrapper>
-                  <input type="radio" id="careStatus" {...register('careStatus')} readOnly />
-                  <label htmlFor="careStatus">X</label>
-                </RadioWrapper>
-              </RadioGroup>
-              <InputGroup>
-                <Label>숙소 정보</Label>
-                {/* 클릭 가능한 div */}
-                <RoomImage>
-                  <Plus />
-                </RoomImage>
-                <input type="file" style={{ display: 'none' }} />
-              </InputGroup>
-            </HireContent>
-          </ContentWrapper1>
-        </form>
+              </HireContent>
+            </ContentWrapper1>
+          ) : (
+        
+              <ReceivedReviews></ReceivedReviews>
+          
+          )}
+        </NewContainer>
         <ButtonGroup>
           <BackButton onClick={() => navigate(-1)}>이전</BackButton>
-          <SubmitButton1>모집종료</SubmitButton1>
-          <SubmitButton1>수정하기</SubmitButton1>
+          <SubmitButton1>신청하기</SubmitButton1>
         </ButtonGroup>
       </HireContainer>
-    </>
+    </HireRegistSection>
   );
 };
 
-/* ======== 지원자 현황  ========*/
-
-const Wrapper = styled.div`
-  width: 80%;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 50px;
-  gap: 50px;
-  margin: 20px auto;
-  margin-top: 30px;
-  border: 1px solid ${({ theme }) => theme.colors.gray[5]};
-  border-radius: ${({ theme }) => theme.borderRadius.md};
-  box-shadow: ${({ theme }) => theme.shadows.md};
-`;
-const ImageStack = styled.div`
-  position: relative;
-  height: 50px;
-  width: 20%;
-  margin-bottom: 16px;
-`;
-
-const ProfileImg = styled.img`
-  width: 60px;
-  height: 60px;
-  border-radius: 50%;
-  object-fit: cover;
-  position: absolute;
-  border: 2px solid white;
-  transition: transform 0.2s;
-
-  &:hover {
-    transform: scale(1.05);
-  }
-`;
-
-/* ======== main   ========*/
-
 const HireRegistSection = styled(Section)``;
-const NewTitle = styled.h2`
-  width: 20%;
-  font-size: ${({ theme }) => theme.fontSizes['3xl']};
-  margin-bottom: 10px;
-`;
-
-const ActionButton = styled.button`
-  width: 200px;
-
-  background-color: ${({ theme }) => theme.colors.primary};
-  color: white;
-  padding: 10px 20px;
-  border-radius: 8px;
-  border: none;
-  cursor: pointer;
-
-  &:hover {
-    opacity: 0.9;
-  }
-`;
 
 const HireContainer = styled(Container)`
   width: 80%;
@@ -374,7 +304,6 @@ const InputRow = styled.div`
   gap: ${({ theme }) => theme.spacing[5]};
 
   ${media.md`
-    
     flex-direction: row;
   `}
 `;
@@ -560,27 +489,30 @@ const Plus = styled(FaPlus)`
   color: white;
 `;
 
-export const TagsUl = styled.ul`
-  display: flex;
-  flex-wrap: wrap;
-  padding: 0;
-  margin: 8px 0 0 0;
-
-  li {
-    min-width: 80px;
-    height: 32px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: ${({ theme }) => theme.colors.primary};
-    padding: 0 ${({ theme }) => theme.spacing[3]};
-    font-size: ${({ theme }) => theme.fontSizes.base};
-    list-style: none;
-    border-radius: 4px;
-    margin: 0 8px 8px 0;
-    background: ${({ theme }) => theme.colors.gray[5]};
-    gap: ${({ theme }) => theme.spacing[2]};
-  }
+const NewContainer = styled(Container)`
+  padding: 0 ${({ theme }) => theme.spacing[8]};
 `;
 
-export default HireDetail;
+/* ======== tab  ========== */
+const TabsWrapper = styled.div`
+  text-align: start;
+  font-size: ${({ theme }) => theme.fontSizes.xl};
+  margin:${({ theme }) => theme.spacing[3]};
+`;
+
+const Tab = styled.span`
+  font-weight: ${({ active, theme }) => (active ? theme.fontWeights.bold : theme.fontWeights.regular)};
+  color: ${({ active, theme }) => (active ? theme.colors.primary : theme.colors.gray[3])};
+  cursor: pointer;
+  padding: 0 ${({ theme }) => theme.spacing[3]} ;
+  margin-right: ${({ theme }) => theme.spacing[5]};
+`;
+
+const Line = styled.hr`
+margin-top:${({ theme }) => theme.spacing[2]};
+height: 2px;
+border: none;
+background-color:${({ theme }) => theme.colors.gray[5]} ;
+`
+
+export default HireDetailShow;
