@@ -40,13 +40,23 @@ export const jobSeekingService = {
     }
   },
 
-    // 특정 이력서 가져오기
-    getResume: async (resumeNo) => {
-      try {
-        await api.get(API_ENDPOINTS.RESUME.DETAIL(resumeNo));
-      } catch (error) {
-        console.log(error);
-        throw new Error('서버 통신 불량');
-      }
-    },
+  // 특정 이력서 가져오기
+  getResume: async (resumeNo) => {
+    try {
+      const { data } = await api.get(API_ENDPOINTS.RESUME.DETAIL(resumeNo));
+      return snakeToCamel(data);
+    } catch (error) {
+      console.log(error);
+      throw new Error('서버 통신 불량');
+    }
+  },
+
+  updateResume: async (resumeNo, resumeData) => {
+    try {
+      await api.put(API_ENDPOINTS.RESUME.UPDATE(resumeNo), camelToSnake(resumeData));
+    } catch (error) {
+      console.error(error);
+      throw new Error('서버 통신 불량');
+    }
+  },
 };

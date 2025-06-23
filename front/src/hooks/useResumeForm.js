@@ -1,11 +1,9 @@
-// hooks/useResumeForm.js
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { toast } from 'react-toastify';
-import { useNavigate } from 'react-router-dom';
-
+import { useNavigate, useParams } from 'react-router-dom';
 import { userService } from '../api/users';
 import { jobSeekingService } from '../api/jobSeeking';
 
@@ -19,14 +17,15 @@ const resumeSchema = yup.object().shape({
 
 export const useResumeForm = () => {
   const [user, setUser] = useState(null);
+  const [licenseList, setLicenseList] = useState([{ licenseName: '', licensePublisher: '', licenseDate: '' }]);
 
   const navigate = useNavigate();
-
-  const [licenseList, setLicenseList] = useState([{ licenseName: '', licensePublisher: '', licenseDate: '' }]);
+  const { resumeNo } = useParams();
 
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm({
     resolver: yupResolver(resumeSchema),
@@ -34,36 +33,25 @@ export const useResumeForm = () => {
   });
 
   // 유저 정보 불러오기
-
   useEffect(() => {
-    const storedData = localStorage.getItem('user-storage'); // 👈 zustand persist의 key
-    if (!storedData) {
-      console.warn('로컬스토리지에 user-storage 정보 없음');
-      return;
-    }
+    const storedData = localStorage.getItem('user-storage');
+    if (!storedData) return;
 
     try {
       const parsedState = JSON.parse(storedData);
       const user = parsedState.state.user;
       const userId = user?.userId;
 
-      console.log('저장된 유저 ID:', userId);
-
       if (userId) {
         userService
           .getUserProfile(userId)
           .then((data) => {
             const userData = data[0];
-            console.log('받은 유저 정보:', userData);
             setUser(userData);
-
-            if (userData.licenses && userData.licenses.length > 0) {
-              setLicenseList(userData.licenses);
-            }
+            // 자격증 정보는 이력서에서 항상 직접 입력하므로 여기서 설정하지 않음
           })
           .catch((err) => {
             console.error('유저 정보 가져오기 실패:', err);
-            setUser(null);
           });
       }
     } catch (e) {
@@ -71,49 +59,71 @@ export const useResumeForm = () => {
     }
   }, []);
 
-  // 자격증 입력 관리
+  // resumeNo가 있으면 이력서 데이터 불러와서 폼 초기화
+  useEffect(() => {
+    if (!resumeNo) return;
+
+    (async () => {
+      try {
+        const data = await jobSeekingService.getResume(resumeNo);
+        // data가 배열이라면 첫번째 객체 꺼내기
+        const resume = Array.isArray(data) ? data[0] : data;
+        console.log('불러온 이력서:', resume);
+
+        reset({
+          resumeTitle: resume.resumeTitle || '',
+          resumeContent: resume.resumeContent || '',
+          careStatus: resume.careStatus || '',
+          account: resume.account || '',
+        });
+
+        if (resume.licenses?.length > 0) {
+          setLicenseList(resume.licenses);
+        }
+      } catch (err) {
+        console.error('이력서 조회 실패:', err);
+      }
+    })();
+  }, [resumeNo, reset]);
+
+  // 자격증 입력값 변경 처리 (컴포넌트에서 필요하면)
   const handleLicenseChange = (index, field, value) => {
-    const updatedList = [...licenseList];
-    updatedList[index][field] = value;
-    setLicenseList(updatedList);
-  };
-
-  const addLicense = () => {
-    setLicenseList([...licenseList, { licenseName: '', licensPublisher: '', licenseDate: '' }]);
-  };
-
-  const removeLicense = (index) => {
-    setLicenseList(licenseList.filter((_, i) => i !== index));
+    setLicenseList((prev) => prev.map((lic, i) => (i === index ? { ...lic, [field]: value } : lic)));
   };
 
   // 제출 핸들러
   const onSubmit = async (formData) => {
-    try {
-      const payload = {
-        ...formData,
-        userNo: user.userNo,
-        licenses: licenseList,
-      };
-      console.log('전송 데이터:', payload);
+    if (!user) return;
 
-      await jobSeekingService.createResume(payload);
-      toast.success('이력서가 저장되었습니다!');
+    const payload = {
+      ...formData,
+      userNo: user.userNo,
+      licenses: licenseList,
+    };
+
+    try {
+      if (resumeNo) {
+        await jobSeekingService.updateResume(resumeNo, payload);
+        toast.success('이력서가 수정되었습니다!');
+      } else {
+        await jobSeekingService.postNewResume(payload); // API 함수명 그대로 사용
+        toast.success('이력서가 저장되었습니다!');
+      }
+
       navigate('/');
     } catch (error) {
-      console.error('이력서 저장 실패:', error);
+      console.error('이력서 저장/수정 실패:', error);
       toast.error('이력서 저장 중 문제가 발생했습니다.');
     }
   };
 
   return {
     register,
-    handleSubmit,
-    onSubmit,
+    handleSubmit: handleSubmit(onSubmit),
     errors,
     user,
     licenseList,
+    setLicenseList,
     handleLicenseChange,
-    addLicense,
-    removeLicense,
   };
 };

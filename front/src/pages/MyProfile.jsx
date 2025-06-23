@@ -305,6 +305,7 @@ const Form = styled(GridForm)`
 const Button = styled(SubmitBtn)`
   font-size: ${({ theme }) => theme.fontSizes.md};
   border-radius: ${({ theme }) => theme.borderRadius.md};
+  margin-bottom: 0px;
 `;
 
 const LicenseGroup = styled(InputGroup)`

@@ -113,6 +113,39 @@
       "care_status": "Y",
       "score": "4.5",
       "id": "2313"
+    },
+    {
+      "care_status": "N",
+      "account": 15000,
+      "resume_content": "ㅁㄴㅇㄹ",
+      "resume_title": "ㄴㅁㅇㄹ",
+      "user_no": 5,
+      "resume_no": 51,
+      "user_name": "박지묵",
+      "licenses": [
+        {
+          "license_name": "",
+          "license_publisher": "",
+          "license_date": ""
+        }
+      ],
+      "id": "51"
+    },
+    {
+      "resume_title": "지원합니다",
+      "resume_content": "간병 지원합니다",
+      "care_status": "Y",
+      "account": 12000,
+      "user_no": 1,
+      "user_name": "Adsa",
+      "licenses": [
+        {
+          "license_name": "운전면허증",
+          "license_publisher": "서울시청",
+          "license_date": "2025-12-20"
+        }
+      ],
+      "id": "52"
     }
   ],
   "hiring": [
@@ -389,7 +422,8 @@
     },
     {
       "user_no": 3,
-      "id": "3",
+
+      "id": 3,
       "user_id": "dbgk9311",
       "user_pwd": "dbgk9311",
       "user_name": "유하",
@@ -434,6 +468,18 @@
       "user_name": "이지묵",
       "user_id": "leezi0916",
       "user_no": "lkj"
+    },
+    {
+      "id": "6",
+      "email": "leezi0916@naver.com",
+      "address": "별내동ㅋㅋㅋㅋ",
+      "phone": "01083281182",
+      "gender": "M",
+      "age": 36,
+      "user_pwd": "easy123!",
+      "user_name": "이지원",
+      "user_id": "easy123",
+      "user_no": 6
     }
   ],
   "reviews": [
@@ -479,7 +525,22 @@
   ],
   "patient": [
     {
-      "id": "2",
+      "id": "1",
+      "guardian_no": 1,
+      "pat_no": 1,
+      "profile_image": "/src/assets/profileImg/img_환자소.png",
+      "pat_name": "김건희",
+      "pat_address": "서울시 강남구",
+      "pat_age": 60,
+      "pat_gender": "F",
+      "pat_height": 162.5,
+      "pat_weight": 52.5,
+      "pat_content": "당뇨합병증",
+      "phone": "01022222222",
+      "status": "Y"
+    },
+    {
+      "id": 2,
       "pat_no": 2,
       "guardian_no": 5,
       "profile_image": "/src/assets/profileImg/img_환자소.png",
@@ -495,6 +556,21 @@
       "tags": [
         "당뇨"
       ]
+    },
+    {
+      "id": "3",
+      "pat_no": 3,
+      "guardian_no": 1,
+      "profile_image": "/src/assets/profileImg/img_환자소.png",
+      "pat_name": "이건강",
+      "pat_address": "서울시 강남구",
+      "pat_age": 80,
+      "pat_gender": "F",
+      "pat_height": 162.5,
+      "pat_weight": 52.5,
+      "pat_content": "당뇨합병증",
+      "phone": "",
+      "status": "Y"
     },
     {
       "id": "4",
@@ -574,7 +650,7 @@
       "tags": [
         "치매"
       ]
-    }
+ }
   ],
   "report": [
     {
@@ -600,14 +676,40 @@
       "id": "0347"
     },
     {
-      "id": "d030",
+      "report_no": 3,
+      "care_giver_no": 2,
+      "pat_no": 1,
+      "report_title": "우우우우우우우우우우우우우",
+      "report_content": "특이사항:\n오늘 아침 혈압이 다소 높음.\n\n신체활동수준:\n거의 없음",
+      "create_date": "2025-07-01",
+      "update_date": "2025-07-01",
+      "status": "Y",
+      "id": "0347"
+    },
+    {
+      "id": "8b82",
       "care_giver_no": 1,
       "pat_no": "1",
-      "report_title": "1",
-      "sub_title0": "2",
-      "content0": "3",
-      "create_date": "2025-06-19T06:58:57.201Z",
-      "update_date": "2025-06-19T06:58:57.201Z",
+      "report_title": "ㅈㅈ",
+      "sub_title0": "1",
+      "content0": "1",
+      "sub_title1": "2",
+      "content1": "2",
+      "create_date": "2025-06-23T01:57:09.634Z",
+      "update_date": "2025-06-23T01:57:09.634Z",
+      "status": "Y"
+    },
+    {
+      "id": "6a50",
+      "care_giver_no": 1,
+      "pat_no": "1",
+      "report_title": "ㅈㅈ",
+      "sub_title0": "1",
+      "content0": "1",
+      "sub_title1": "2",
+      "content1": "2",
+      "create_date": "2025-06-23T01:58:14.898Z",
+      "update_date": "2025-06-23T01:58:14.898Z",
       "status": "Y"
     }
   ],
@@ -688,7 +790,7 @@
       "gender": "F",
       "profile_image": "/src/assets/profileImg/img_간병인.png",
       "id": "d6e6"
-    },
+ },
     {
       "mat_no": 2,
       "caregiver_no": 2,
@@ -720,7 +822,8 @@
       "gender": "F",
       "profile_image": "/src/assets/profileImg/img_간병인.png",
       "id": "40a9"
-    },
+
+ },
     {
       "mat_no": 1,
       "caregiver_no": 1,
@@ -734,9 +837,10 @@
       "user_name": "이길동",
       "user_age": "50",
       "gender": "F",
+
       "profile_image": "/src/assets/profileImg/img_간병인.png",
       "id": "226e"
-    },
+},
     {
       "mat_no": 2,
       "caregiver_no": 2,
@@ -752,7 +856,7 @@
       "gender": "F",
       "profile_image": "/src/assets/profileImg/img_간병인.png",
       "id": "b5f1"
-    },
+},
     {
       "mat_no": 3,
       "caregiver_no": 3,
@@ -768,7 +872,7 @@
       "gender": "M",
       "profile_image": "/src/assets/profileImg/img_간병인.png",
       "id": "d93e"
-    },
+},
     {
       "mat_no": 3,
       "caregiver_no": 4,
@@ -784,7 +888,7 @@
       "gender": "M",
       "profile_image": "/src/assets/profileImg/img_간병인.png",
       "id": "95a2"
-    },
+},
     {
       "mat_no": 3,
       "caregiver_no": 5,
@@ -800,7 +904,7 @@
       "gender": "M",
       "profile_image": "/src/assets/profileImg/img_간병인.png",
       "id": "cd4b"
-    },
+ },
     {
       "mat_no": 3,
       "caregiver_no": 5,
@@ -816,6 +920,6 @@
       "gender": "M",
       "profile_image": "/src/assets/profileImg/img_간병인.png",
       "id": "6bb5"
-    }
+}
   ]
 }

@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import Paging from '../components/Paging';
 import theme from '../styles/theme';
+import { MainSubmitButton } from '../styles/common/Button';
+import { useNavigate } from 'react-router-dom';
 
 const writtenData = [
   {
@@ -123,12 +125,14 @@ const JobOpeningManagement = () => {
   const offset = (currentPage - 1) * ITEMS_PER_PAGE;
   const totalPage = Math.ceil(writtenData.length / ITEMS_PER_PAGE);
 
+  const navigate = useNavigate();
+
   return (
     <Wrapper>
       <Header>
         <Title>내 구인글 관리</Title>
+        <MainSubmitButton onClick={() => navigate('/guardian/hire-registration')}>구인글 등록하기</MainSubmitButton>
       </Header>
-
       <Table>
         <THead>
           <tr>
@@ -167,7 +171,8 @@ const Wrapper = styled.div`
 
 const Header = styled.div`
   display: flex;
-  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
   gap: ${({ theme }) => theme.spacing[4]};
 `;
 

@@ -17,8 +17,8 @@ export const GridForm = styled.form`
 `;
 
 export const NewTitle = styled(Title)`
- text-align: left;
- padding: ${({ theme }) => theme.spacing[8]};
+  text-align: left;
+  padding: ${({ theme }) => theme.spacing[8]};
 `;
 
 export const Img = styled.img`
@@ -132,7 +132,7 @@ export const TagsUl = styled.ul`
   flex-wrap: wrap;
   padding: 0;
   margin: 8px 0 0 0;
-  
+
   li {
     width: auto;
     height: 32px;
@@ -141,13 +141,12 @@ export const TagsUl = styled.ul`
     justify-content: center;
     color: ${({ theme }) => theme.colors.primary};
     padding: 0 ${({ theme }) => theme.spacing[3]};
-    font-size:  ${({ theme }) => theme.fontSizes.base};
+    font-size: ${({ theme }) => theme.fontSizes.base};
     list-style: none;
     border-radius:  ${({ theme }) => theme.borderRadius.xl};
     margin: 0 8px 8px 0;
     background: ${({ theme }) => theme.colors.gray[5]};
-    gap:${({ theme }) => theme.spacing[2]} ;
-
+    gap: ${({ theme }) => theme.spacing[2]};
   }
 
 

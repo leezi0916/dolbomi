@@ -72,7 +72,7 @@ const HireRegistration = () => {
     setPatient(patient);
   };
 
-  const handleFileChange = (e) => {
+const handleFileChange = (e) => {
     const file = e.target.files?.[0];
     if (file) {
       console.log('선택된 파일:', file.name);
@@ -100,7 +100,7 @@ const HireRegistration = () => {
     <HireRegistSection>
       <HireContainer>
         <HireHead>
-          <HireHeadTitle>돌봄대상자 신청</HireHeadTitle>
+          <HireHeadTitle>구인 등록</HireHeadTitle>
 
           <SelectBox id="userPatients" value={selectPatientNo} onChange={(e) => getPatient(e.target.value)}>
             <option value="">돌봄대상자를 선택해주세요</option>

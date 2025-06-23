@@ -52,6 +52,7 @@ export const API_ENDPOINTS = {
     BASE: '/resume',
     DETAIL: (resumeNo) => `/resume?resume_no=${resumeNo}`,
     MYRESUME: (userNo) => `resume?user_no=${userNo}`,
+    UPDATE: (resumeNo) => `/resume/${resumeNo}`,
   },
 
   PATIENT: {
