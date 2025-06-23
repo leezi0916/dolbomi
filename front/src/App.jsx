@@ -47,9 +47,11 @@ import MyResume from './pages/MyResume';
 import ContactPage from './pages/ContactPage';
 import CareGiverCommunity from './pages/CareGiverCommunity';
 import GuardianCommunity from './pages/GuardianCommunity';
-import Question from './pages/Question';
 import PostManagement from './pages/PostManageMent';
 import JobOpeningManagement from './pages/JobOpeningManagement';
+import QuestionFull from './pages/question/QuestionFull';
+import QuestionCreate from './pages/question/QuestionCreate';
+import QuestionHistory from './pages/question/QuestionHistory';
 
 function AppRoutes() {
   const navigate = useNavigate();
@@ -103,7 +105,9 @@ function AppRoutes() {
           <Route path="/community/guardian" element={<GuardianCommunity />} />
           <Route path="/community/caregiver" element={<CareGiverCommunity />} />
           <Route path="/community/update/:no" element={<UpdateCommuBoardForm />} />
-          <Route path="/question" element={<Question />} />
+          <Route path="/question/full" element={<QuestionFull />} />
+          <Route path="/question/history" element={<QuestionHistory />} />
+          <Route path="/question/create" element={<QuestionCreate />} />
           <Route path="/community/notice" element={<NoticeBoard />} />
 
           <Route path="/login" element={<Login />} />

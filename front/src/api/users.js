@@ -16,6 +16,15 @@ export const userService = {
       throw error;
     }
   },
+
+  //아이디 중복 검사
+  checkUserId: async (userId) => {
+    const res = await api.get(API_ENDPOINTS.USERS.CHECK_ID, {
+      params: { userId },
+    });
+    return { available: res.data };
+  },
+
   //회원가입
   signUp: async (userData) => {
     try {
@@ -34,9 +43,13 @@ export const userService = {
 
   login: async (userId, userPwd) => {
     try {
+      //json-server용
       const { data } = await api.get(API_ENDPOINTS.USERS.LOGIN(userId, userPwd));
 
-      return snakeToCamel(data[0]); //
+      //백엔드 서버 용
+      // const { data } = await api.post(API_ENDPOINTS.USERS.LOGIN, { user_id: userId, user_pwd: userPwd });
+      return snakeToCamel(data[0]); // json-server 용
+      // return snakeToCamel(data); //서버용
     } catch (error) {
       if (error.response) {
         const message = error.response?.data?.message || '로그인에 실패했습니다.';

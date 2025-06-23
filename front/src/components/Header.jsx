@@ -68,7 +68,7 @@ const Header = () => {
             </>
           )}
 
-          <NavItemCenter to="/question">1:1 문의</NavItemCenter>
+          <NavItemCenter to="/question/full">1:1 문의</NavItemCenter>
         </DesktopNav>
         {/* 
         <GridEmptyDiv></GridEmptyDiv> */}
