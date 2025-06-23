@@ -4,6 +4,10 @@ const { VITE_JSON_SERVER_URL, VITE_SPRING_URL, VITE_API_TIMEOUT = 5000, VITE_API
 
 export const API_CONFIG = {
   BASE_URL: `${VITE_JSON_SERVER_URL}`, // Spring 들어가면 여기 변수만 VITE_SPRING_URL로 변경해야함
+
+  // 회원가입 로그인 기능 추가하느라 url 변경함..
+  // BASE_URL: `${VITE_SPRING_URL}`,
+
   TIMEOUT: VITE_API_TIMEOUT,
   HEADERS: {
     'Content-Type': 'application/json',
@@ -23,10 +27,9 @@ export const API_ENDPOINTS = {
 
   USERS: {
     BASE: '/users',
-
+    CHECK_ID: 'users/check', //아이디 중복 검사
     PROFILE: (userId) => `/users?user_id=${userId}`,
-
-    // LOGIN: '/users/login' //실제에는 이렇게 해야함 아래는 JsonServer 사용시
+    // LOGIN: '/users/login', //실제에는 이렇게 해야함 아래는 JsonServer 사용시
     LOGIN: (userId, userPwd) => `/users?user_id=${userId}&user_pwd=${userPwd}`,
     DETAIL: (userId) => `/users?user_id=${userId}`,
     PROFILE_UPDATE: (userId) => `/users/${userId}`,

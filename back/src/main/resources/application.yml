@@ -5,7 +5,7 @@ spring:
   datasource:
     hikari:
       # 이부분은 본인 경로로 변경하셔야 됩니다
-      jdbc-url: jdbc:h2:tcp://localhost/file:/Users/jinseok/KH_Project/KH_Final_Project/back/tdb
+      jdbc-url: jdbc:h2:tcp://localhost/file:/Users/easymook/KH_Final_Project/back/tdb
       driver-class-name: org.h2.Driver
       username: sa
       password: 1234

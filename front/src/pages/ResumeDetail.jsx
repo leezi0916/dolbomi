@@ -360,7 +360,7 @@ const ButtonGroup = styled.div`
 
 const BackButton = styled.button`
   border: 1px solid ${({ theme, $error }) => ($error ? theme.colors.error : theme.colors.gray[5])};
-  border-radius: ${({ theme }) => theme.borderRadius.sm};
+  border-radius: ${({ theme }) => theme.borderRadius.md};
   width: 25%;
   font-size: ${({ theme }) => theme.fontSizes.md};
   font-weight: ${({ theme }) => theme.fontWeights.medium};
@@ -369,7 +369,7 @@ const BackButton = styled.button`
 const SubmitButton1 = styled(SubmitButton)`
   width: 65%;
   border: 1px solid ${({ theme, $error }) => ($error ? theme.colors.error : theme.colors.gray[5])};
-  border-radius: ${({ theme }) => theme.borderRadius.sm};
+  border-radius: ${({ theme }) => theme.borderRadius.md};
   font-size: ${({ theme }) => theme.fontSizes.md};
   font-weight: ${({ theme }) => theme.fontWeights.medium};
   color: white;
@@ -436,7 +436,7 @@ const RadioContainer = styled.div`
 
 const LicenseAdd = styled.button`
   display: flex;
-  border-radius: 4px;
+  border-radius: ${({ theme }) => theme.borderRadius.md};
   align-items: center;
   margin-top: ${({ theme }) => theme.spacing[2]};
   justify-content: center;
@@ -460,6 +460,7 @@ const LicenseDelete = styled.button`
   display: flex;
   gap: 10px;
   align-items: center;
+  border-radius: ${({ theme }) => theme.borderRadius.md};
   span {
     width: 50px;
   }
@@ -468,7 +469,7 @@ const LicenseDelete = styled.button`
 `;
 const ChatButton = styled.button`
   border: 1px solid ${({ theme, $error }) => ($error ? theme.colors.error : theme.colors.gray[5])};
-  border-radius: ${({ theme }) => theme.borderRadius.sm};
+  border-radius: ${({ theme }) => theme.borderRadius.md};
   width: 25%;
   font-size: ${({ theme }) => theme.fontSizes.md};
   font-weight: ${({ theme }) => theme.fontWeights.medium};
