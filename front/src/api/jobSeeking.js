@@ -40,7 +40,6 @@ export const jobSeekingService = {
     }
   },
 
-<<<<<<< HEAD
   // 특정 이력서 가져오기
   getResume: async (resumeNo) => {
     try {
@@ -60,15 +59,4 @@ export const jobSeekingService = {
       throw new Error('서버 통신 불량');
     }
   },
-=======
-    // 특정 이력서 가져오기
-    getResume: async (resumeNo) => {
-      try {
-        await api.get(API_ENDPOINTS.RESUME.DETAIL(resumeNo));
-      } catch (error) {
-        console.log(error);
-        throw new Error('서버 통신 불량');
-      }
-    },
->>>>>>> 5b440c01551deddba9d8bf580deb606790746534
 };
