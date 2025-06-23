@@ -16,7 +16,8 @@ export const API_ENDPOINTS = {
   //   BASE: '/products',
   // },
   COMMUNITY: {
-    BASE: '/community', // 게시판 리스트 등
+    BASE: '/community',
+    LIST: (status, role) => `/community?status=${status}&role=${role}`, // 게시판 리스트 등
     DETAIL: (no) => `/community?no=${no}`, // 특정 게시글
   },
 

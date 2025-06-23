@@ -6,9 +6,12 @@ import { ClipLoader } from 'react-spinners';
 import styled from 'styled-components';
 import useUserStore from '../store/userStore';
 import Paging from '../components/Paging';
-// 안쓰는 게시판이 되어버렸지만 일단 놔두세요. css export 해둔게 있어서 바쁜거 끝나면 정리할 예정
-const CommunityBoard = () => {
+
+const Question = () => {
   const userId = useUserStore((state) => state.user?.userId);
+
+  const ROLE = 'Q';
+  const STATUS = 'Y';
 
   const [error, setError] = useState(null);
   const [communityList, setCommunityList] = useState([]);
@@ -34,7 +37,7 @@ const CommunityBoard = () => {
   useEffect(() => {
     const loadCommunity = async () => {
       try {
-        const community = await commuService.getCommunity();
+        const community = await commuService.getCommunity(STATUS, ROLE);
         console.log(community);
         setCommunityList(community);
       } catch (error) {
@@ -65,7 +68,7 @@ const CommunityBoard = () => {
     <Page>
       <PageInfo>
         <BoardMenu>
-          <NowBoard> 간병 게시판</NowBoard>
+          <NowBoard> 1:1 문의사항 </NowBoard>
         </BoardMenu>
         <BoardTop>
           <Left>총 {communityList.length}건</Left>
@@ -84,7 +87,7 @@ const CommunityBoard = () => {
         </BoardTop>
         <BoardItemTop>
           <div>No</div>
-          <div>제목</div>
+          <div style={{ flex: '2' }}>제목</div>
           <div>작성자</div>
           <div>작성 일자</div>
           <div>조회수</div>
@@ -92,7 +95,7 @@ const CommunityBoard = () => {
         {currentList.map((community) => (
           <BoardItem key={community.no} to={`/community/detail/${community.no}`}>
             <div>{community.no}</div>
-            <div>{community.title}</div>
+            <div style={{ flex: '2' }}>{community.title}</div>
             <div>{community.name}</div>
             <div>{community.create_date}</div>
             <div>{community.count}</div>
@@ -170,7 +173,7 @@ const Left = styled.div`
 const Right = styled.div`
   display: flex;
   justify-content: flex-end;
-  flex: 4;
+  flex: 5;
   padding-right: 10px;
   gap: 6px;
 `;
@@ -200,4 +203,4 @@ export const BorderDiv = styled.div`
   border-top: 1px solid ${({ theme }) => theme.colors.gray[3]};
 `;
 
-export default CommunityBoard;
+export default Question;
