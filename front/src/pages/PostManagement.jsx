@@ -56,7 +56,7 @@ const appliedData = [
     period: '2025-07-01 ~ 2025-07-10',
     date: '2025-06-30',
     match: '환자 아이디',
-    status: '모집 마감',
+    status: '모집 중',
     applyStatus: '간병 종료',
   },
   {
@@ -188,7 +188,7 @@ const PostManagement = () => {
                 {item.status === '모집 중' ? (
                   <span style={{ fontSize: 20, color: 'gray' }}>-</span>
                 ) : (
-                  <FaTimes size={20} style={{ cursor: 'pointer' }} />
+                  <FaTimes size={20} style={{ cursor: 'pointer', verticalAlign: '-8px' }} />
                 )}
               </td>
             </tr>
