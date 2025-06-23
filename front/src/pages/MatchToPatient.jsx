@@ -3,12 +3,15 @@ import { Section } from '../styles/common/Container';
 import styled from 'styled-components';
 import SearchBar from '../components/SearchBar';
 import profileImage from '../assets/images/pat.png'; // 프로필 이미지 경로
+import { useNavigate } from 'react-router-dom';
 const MatchToPatient = () => {
   const [activeTab, setActiveTab] = useState('matching');
 
   const handleTabChange = (tab) => {
     setActiveTab(tab);
   };
+
+
   return (
     <>
       <HeadSection>
@@ -41,7 +44,7 @@ const MatchToPatient = () => {
                   <UserAge>나이 50세(여)</UserAge>
                 </ProfileInfo>
                 <ButtonRow>
-                  <InfoButton>환자 정보</InfoButton>
+                  <InfoButton >환자 정보</InfoButton>
                   <ReportButton>간병 종료</ReportButton>
                 </ButtonRow>
               </ProfileCard>

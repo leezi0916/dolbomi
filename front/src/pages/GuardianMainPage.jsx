@@ -458,7 +458,7 @@ export const ReviewTextBox = styled.div`
   color: ${({ theme }) => theme.colors.gray[1]};
   font-size: ${({ theme }) => theme.fontSizes.sm};
   padding: 10px;
-  border-radius: 6px;
+  border-radius: ${({ theme }) => theme.borderRadius.base};
 `;
 
 export const ReviewFooter = styled.div`

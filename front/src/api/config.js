@@ -28,12 +28,16 @@ export const API_ENDPOINTS = {
 
   USERS: {
     BASE: '/users',
+
     CHECK_ID: 'users/check', //아이디 중복 검사
     PROFILE: (userId) => `/users?user_id=${userId}`,
     // LOGIN: '/users/login', //실제에는 이렇게 해야함 아래는 JsonServer 사용시
+
     LOGIN: (userId, userPwd) => `/users?user_id=${userId}&user_pwd=${userPwd}`,
     DETAIL: (userId) => `/users?user_id=${userId}`,
     PROFILE_UPDATE: (userId) => `/users/${userId}`,
+    CAREPROFILE : (userNo) => `/users?user_no=${userNo}`,
+
   },
   REVIEWS: {
     BASE: '/reviews',
@@ -70,12 +74,14 @@ export const API_ENDPOINTS = {
     SEARCH: (reportNo) => `/report/report_no=${reportNo}`,
   },
 
-  CAREGIVERPROPOSER: {
-    BASE: '/caregiverproposer',
-    LIST: (hiringNo) => `/caregiverproposer?hiring_no=${hiringNo}`,
+  PROPOSER: {
+    BASE: '/proposer',
+    LIST: (hiringNo) => `/proposer?hiring_no=${hiringNo}`,
   },
-  PATERPROPOSER: {
-    BASE: '/patproposer',
-    LIST: (resumeNo) => `/patproposer?resume_no=${resumeNo}`,
-  },
+
+  MATCHING: {
+    BASE: '/matching',
+    LIST : (patNo, status) => `/matching?pat_no=${patNo}&status=${status}`,
+    ENDLIST : (status) => `/matching?status=${status}`
+  }
 };

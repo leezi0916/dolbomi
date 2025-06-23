@@ -3,17 +3,7 @@ import { Container, Section } from '../styles/common/Container';
 import profileImage from '../assets/images/pat.png'; // 프로필 이미지 경로
 import styled from 'styled-components';
 
-import {
-  AuthContainer,
-  Button,
-  Input,
-  InputGroup,
-  Title,
-  Form,
-  AuthLink,
-  ErrorMessage,
-  InputContainer,
-} from '../styles/Auth.styles';
+import { Input, InputGroup, Title } from '../styles/Auth.styles';
 import { media } from '../styles/MediaQueries';
 import { SubmitButton } from '../styles/common/Button';
 import { FaPlus } from 'react-icons/fa6';
@@ -24,6 +14,7 @@ const HireRegistration = () => {
   const handleDivClick = () => {
     inputRef.current?.click(); // 파일 선택창 열기
   };
+
 
   const handleFileChange = (e) => {
     const file = e.target.files?.[0];
@@ -102,9 +93,16 @@ const HireRegistration = () => {
             <DiseaseGroup>
               <Label>보유한 질병</Label>
               <DiseaseInputDiv>
-                <div>치매</div>
-                <div>고혈압</div>
-                <div>당뇨</div>
+                <TagsUl id="tags">
+                  <li>
+                    <span>치매</span>
+                  </li>
+                  {/* {jobOpening?.tags?.map((tag, index) => (
+                    <li key={index}>
+                      <span>{tag}</span>
+                    </li>
+                  ))} */}
+                </TagsUl>
               </DiseaseInputDiv>
             </DiseaseGroup>
           </ContentWrapper>
@@ -174,7 +172,7 @@ const HireRegistration = () => {
         </form>
         <ButtonGroup>
           <BackButton>이전</BackButton>
-          <SubmitButton1>신청하기</SubmitButton1>
+          <SubmitButton1>등록하기</SubmitButton1>
         </ButtonGroup>
       </HireContainer>
     </HireRegistSection>
@@ -452,5 +450,29 @@ const Plus = styled(FaPlus)`
   width: 30px;
   height: 30px;
   color: white;
+`;
+
+// ============= 태그 ========
+export const TagsUl = styled.ul`
+  display: flex;
+  flex-wrap: wrap;
+  padding: 0;
+  margin: 8px 0 0 0;
+
+  li {
+    min-width: 80px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: ${({ theme }) => theme.colors.white};
+    padding: 0 ${({ theme }) => theme.spacing[3]};
+    font-size: ${({ theme }) => theme.fontSizes.base};
+    list-style: none;
+    border-radius: 4px;
+    margin: 0 8px 8px 0;
+    background: ${({ theme }) => theme.colors.primary};
+    gap: ${({ theme }) => theme.spacing[2]};
+  }
 `;
 export default HireRegistration;

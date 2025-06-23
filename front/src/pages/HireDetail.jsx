@@ -13,7 +13,6 @@ import { hiringService } from '../api/hiring';
 import { useParams } from 'react-router-dom';
 
 import { guardianHiringForm } from '../hooks/guardianHiringForm';
-import Paging from '../components/Paging';
 
 const HireDetail = () => {
   const navigate = useNavigate();
@@ -181,7 +180,7 @@ const HireDetail = () => {
             </HireContent>
           </ContentWrapper1>
         </form>
-        {/* <Paging></Paging> */}
+
         <ButtonGroup>
           <BackButton onClick={() => navigate(-1)}>이전</BackButton>
           <SubmitButton1>신청하기</SubmitButton1>
