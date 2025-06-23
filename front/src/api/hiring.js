@@ -1,5 +1,5 @@
 // 구인 API
-import { snakeToCamel } from '../utils/formatData';
+import { snakeToCamel, camelToSnake } from '../utils/formatData';
 import api from './axios';
 import { API_ENDPOINTS } from './config';
 
@@ -22,7 +22,7 @@ export const hiringService = {
   //세부 구인목록가져오기
   getHirngById: async (hiringNo) => {
     try {
-      const { data } = await api.get(API_ENDPOINTS.HIRING.DETAIL(hiringNo));
+      const { data } = await api.post(API_ENDPOINTS.HIRING.DETAIL(hiringNo));
 
       return snakeToCamel(data[0]);
     } catch (error) {
@@ -34,4 +34,13 @@ export const hiringService = {
       throw new Error('서버 통신 불량');
     }
   },
+
+  postNewHiring : async (data) => {
+    try {
+      await api.post(API_ENDPOINTS.HIRING.BASE, camelToSnake(data));
+    } catch (error) {
+      console.log(error);
+      throw new Error('서버 통신 불량');
+    }
+  }
 };

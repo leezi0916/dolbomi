@@ -347,6 +347,7 @@ const Logo = styled(Link)`
 
 const DesktopNav = styled.nav`
   display: none;
+
   ${media.md`
     display: flex;
     align-items: center;
@@ -401,6 +402,7 @@ const NavItem = styled(Link)`
 
 const NavItemCenter = styled(Link)`
   font-size: ${({ theme }) => theme.fontSizes.md};
+
   margin-right: ${({ theme }) => theme.spacing[4]};
   font-weight: ${({ theme }) => theme.fontWeights.bold};
 
