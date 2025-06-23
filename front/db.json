@@ -113,6 +113,44 @@
       "care_status": "Y",
       "score": "4.5",
       "id": "2313"
+    },
+    {
+      "care_status": "N",
+      "account": 15000,
+      "resume_content": "ㅁㄴㅇㄹ",
+      "resume_title": "ㄴㅁㅇㄹ",
+      "user_no": 5,
+      "resume_no": 51,
+      "user_name": "박지묵",
+      "licenses": [
+        {
+          "license_name": "",
+          "license_publisher": "",
+          "license_date": ""
+        }
+      ],
+      "id": "51"
+    },
+    {
+      "id": "52",
+      "resumeNo": 52,
+      "user_no": 1,
+      "user_name": "이지묵",
+      "age": 35,
+      "gender": "F",
+      "phone": "01011111111",
+      "address": "강원도 강릉시 ~~~",
+      "resume_title": "지원합니다",
+      "resume_content": "간병 지원합니다",
+      "care_status": "Y",
+      "account": 12000,
+      "licenses": [
+        {
+          "license_name": "운전면허증",
+          "license_publisher": "서울시청",
+          "license_date": "2025-12-20"
+        }
+      ]
     }
   ],
   "hiring": [
@@ -407,6 +445,18 @@
       "user_name": "이지묵",
       "user_id": "leezi0916",
       "user_no": "lkj"
+    },
+    {
+      "id": "6",
+      "email": "leezi0916@naver.com",
+      "address": "별내동ㅋㅋㅋㅋ",
+      "phone": "01083281182",
+      "gender": "M",
+      "age": 36,
+      "user_pwd": "easy123!",
+      "user_name": "이지원",
+      "user_id": "easy123",
+      "user_no": 6
     }
   ],
   "reviews": [
