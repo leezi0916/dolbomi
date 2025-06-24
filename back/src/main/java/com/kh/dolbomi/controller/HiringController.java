@@ -1,6 +1,6 @@
 package com.kh.dolbomi.controller;
 
-import com.kh.dolbomi.dto.Create;
+
 import com.kh.dolbomi.dto.HiringDto;
 import com.kh.dolbomi.service.HiringService;
 import lombok.RequiredArgsConstructor;
@@ -8,7 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/users")
+@RequestMapping("/hireling")
 @RequiredArgsConstructor
 @CrossOrigin(origins = "http://localhost:5173")// 프론트와 백엔드 url이 다른것을 맞춰주기 위한 어노테이션
 public class HiringController {
