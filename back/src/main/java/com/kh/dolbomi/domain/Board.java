@@ -2,6 +2,8 @@ package com.kh.dolbomi.domain;
 
 import com.kh.dolbomi.enums.StatusEnum;
 import jakarta.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -43,6 +45,9 @@ public class Board {
 
     @Column(name = "ROLE", nullable = false, length = 1)
     private StatusEnum.Role role;
+
+
+
 
     @PrePersist
     public void prePersist() {

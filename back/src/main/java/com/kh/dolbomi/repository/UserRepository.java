@@ -10,5 +10,4 @@ public interface UserRepository {
     List<User> findByUserId(String userId);
     Optional<User> findById(Long userNo);
 
-    User findUserNo(Long userNo);
 }

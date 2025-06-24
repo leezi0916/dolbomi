@@ -1,12 +1,15 @@
 package com.kh.dolbomi.dto;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.kh.dolbomi.entity.Patient;
 import com.kh.dolbomi.entity.User;
-import com.kh.dolbomi.enums.StatusEnum;
-import lombok.*;
-
 import java.math.BigDecimal;
+import java.util.List;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
 public class PatientDto {
 
@@ -14,6 +17,7 @@ public class PatientDto {
     @Setter
     @AllArgsConstructor
     @NoArgsConstructor
+    @ToString
     public static class Create {
 
         private Long guardian_no;
@@ -26,6 +30,7 @@ public class PatientDto {
         private String pat_address;
         private String pat_content;
         private String status;
+        private List<String> diseaseTags;
 
         public Patient toEntity(User user) {
             return Patient.builder()
@@ -74,7 +79,7 @@ public class PatientDto {
                     .pat_name(patient.getPatName())
                     .pat_age(patient.getPatAge())
                     .pat_gender(patient.getPatGender())
-                    .pat_weight( patient.getPatWeight().intValue())
+                    .pat_weight(patient.getPatWeight().intValue())
                     .pat_height(patient.getPatHeight().intValue())
                     .pat_address(patient.getPatAddress())
                     .pat_content(patient.getPatContent())

@@ -34,4 +34,9 @@ public class DiseaseTag {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "DIS_NO", nullable = false)
     private Disease disease;
+
+    public void changePatient(Patient patient) {
+        this.patient = patient;
+        patient.getDiseaseTags().add(this);
+    }
 }

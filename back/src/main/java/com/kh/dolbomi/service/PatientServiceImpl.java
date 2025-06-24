@@ -2,37 +2,56 @@ package com.kh.dolbomi.service;
 
 
 import com.kh.dolbomi.dto.PatientDto;
-import com.kh.dolbomi.dto.UserDto;
+import com.kh.dolbomi.entity.Disease;
+import com.kh.dolbomi.entity.DiseaseTag;
 import com.kh.dolbomi.entity.Patient;
 import com.kh.dolbomi.entity.User;
+import com.kh.dolbomi.repository.DiseaseRepository;
 import com.kh.dolbomi.repository.PatientRepository;
 import com.kh.dolbomi.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
+import java.util.List;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
-
 @Service
 @RequiredArgsConstructor
 @Transactional
-public class PatientServiceImpl implements PatientService{
+public class PatientServiceImpl implements PatientService {
 
     private final PatientRepository patientRepository;
     private final UserRepository userRepository;
+    private final DiseaseRepository diseaseRepository;
 
     @Override
     public Long createPatient(PatientDto.Create createDto) {
 
-        User user = userRepository.findUserNo(createDto.getGuardian_no());
-        
+        User user = userRepository.findById(createDto.getGuardian_no())
+                .orElseThrow(() -> new IllegalArgumentException("유저가 존재하지 않습니다."));
+
         Patient patient = createDto.toEntity(user);
 
-        patientRepository.save(patient);
-        return patient.getPatNo();
+        if (createDto.getTags() != null && !createDto.getTags().isEmpty()) {
+            //tag가 왔다. ["kh","java","쉬움"]
+            for (String disName : createDto.getTags()) {
+
+                //tag를 이름으로 조회해서 없으면 새로 만들어라.
+                Disease disease = diseaseRepository.findByDisName(disName)
+                        .orElseGet(() -> diseaseRepository.save(Disease.builder()
+                                .disName(disName)
+                                .build()));
+
+                DiseaseTag diseaseTag = DiseaseTag.builder()
+                        .disease(disease)
+                        .build();
+
+                diseaseTag.changePatient(patient);
+            }
+        }
+
+        return patientRepository.save(patient).getPatNo();
     }
 
     @Override
@@ -45,7 +64,7 @@ public class PatientServiceImpl implements PatientService{
     @Override
     public PatientDto.Response getPatient(Long patNo) {
         Patient patient = patientRepository.findOne(patNo).
-                orElseThrow(()-> new EntityNotFoundException("조회된 회원이 없습니다."));
+                orElseThrow(() -> new EntityNotFoundException("조회된 회원이 없습니다."));
         return PatientDto.Response.toDetailDto(patient);
     }
 
