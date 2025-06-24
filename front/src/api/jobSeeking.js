@@ -8,7 +8,7 @@ export const jobSeekingService = {
   getResumeList: async () => {
     try {
       const { data } = await api.get(API_ENDPOINTS.RESUME.BASE);
-
+      console.log(data);
       return snakeToCamel(data);
     } catch (error) {
       if (error.response) {
@@ -53,7 +53,18 @@ export const jobSeekingService = {
 
   updateResume: async (resumeNo, resumeData) => {
     try {
-      await api.put(API_ENDPOINTS.RESUME.UPDATE(resumeNo), camelToSnake(resumeData));
+      await api.patch(API_ENDPOINTS.RESUME.UPDATE(resumeNo), camelToSnake(resumeData));
+    } catch (error) {
+      console.error(error);
+      throw new Error('서버 통신 불량');
+    }
+  },
+
+  deleteResume: async (resumeNo) => {
+    try {
+      // status 필드만 'N'으로 변경해서 PATCH 요청
+      //서버 로 넘어갈시 변경해야할거임
+      await api.patch(API_ENDPOINTS.RESUME.UPDATE(resumeNo), { status: 'N' });
     } catch (error) {
       console.error(error);
       throw new Error('서버 통신 불량');

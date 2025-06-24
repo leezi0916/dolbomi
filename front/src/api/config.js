@@ -30,12 +30,12 @@ export const API_ENDPOINTS = {
     BASE: '/users',
 
     CHECK_ID: 'users/check', //아이디 중복 검사
-    PROFILE: (userId) => `/users?user_id=${userId}`,
+    PROFILE: (userNo) => `/users?user_no=${userNo}`,
     // LOGIN: '/users/login', //실제에는 이렇게 해야함 아래는 JsonServer 사용시
 
     LOGIN: (userId, userPwd) => `/users?user_id=${userId}&user_pwd=${userPwd}`,
     DETAIL: (userId) => `/users?user_id=${userId}`,
-    PROFILE_UPDATE: (userId) => `/users/${userId}`,
+    PROFILE_UPDATE: (userNo) => `/users/${userNo}`,
     CAREPROFILE: (userNo) => `/users?user_no=${userNo}`,
   },
   REVIEWS: {
@@ -76,6 +76,7 @@ export const API_ENDPOINTS = {
   PROPOSER: {
     BASE: '/proposer',
     LIST: (hiringNo) => `/proposer?hiring_no=${hiringNo}`,
+    CANCEL: (hiringNo, caregiverNo) => `/proposer/${hiringNo}/${caregiverNo}`,
   },
 
   MATCHING: {

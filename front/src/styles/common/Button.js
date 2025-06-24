@@ -47,9 +47,7 @@ export const SubmitButton = styled.button`
   background: ${({ theme }) => theme.colors.primary};
 `;
 
-
 export const ButtonText = styled.p`
   color: ${({ theme }) => theme.colors.white};
   font-size: ${({ theme }) => theme.fontSizes.sm};
 `;
-

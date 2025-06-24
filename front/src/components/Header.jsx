@@ -7,6 +7,7 @@ import { GiHamburgerMenu } from 'react-icons/gi';
 import useUserStore from '../store/userStore';
 import { useNavigate } from 'react-router-dom';
 import useUserStatusStore from '../store/userStatusStore';
+import NotificationDropdown from './NotificationDropdown';
 const Header = () => {
   const { user, isAuthenticated } = useUserStore();
   const { userStatus, setUserStatus } = useUserStatusStore();
@@ -14,6 +15,9 @@ const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isHovering, setIsHovering] = useState(false);
   const logout = useUserStore((state) => state.logout);
+
+  // 알람창 열림,닫힘 여부
+  const [isNotiOpen, setIsNotiOpen] = useState(false);
 
   const navigate = useNavigate();
 
@@ -24,6 +28,12 @@ const Header = () => {
     navigate('/'); // 홈으로 이동
     setIsMenuOpen(false);
   };
+
+  // 알림창 닫음
+  const handleNotificationClose = () => {
+    setIsNotiOpen(false);
+  };
+
   return (
     <HeaderContainer>
       <HeaderWrapper>
@@ -183,8 +193,6 @@ const Header = () => {
         <GridEmptyDiv></GridEmptyDiv> */}
 
         <DesktopUserMenu>
-          <img src="/src/assets/icons/icon_알림.png" alt="" />
-          <img src="/src/assets/icons/icon_채팅알림.png" alt="" />
           <ToggleWrap>
             {/* 간병인은 true / 보호자는 false */}
             <ToggleItem
@@ -206,6 +214,21 @@ const Header = () => {
               보호자
             </ToggleItem>
           </ToggleWrap>
+
+          <div style={{ position: 'relative' }}>
+            <img
+              src="/src/assets/icons/icon_알림.png"
+              alt="알림"
+              onClick={(e) => {
+                // DOM까지 전달안함, 즉 아이콘 누를땐 handleNotificationClose() 실행 안됨
+                e.stopPropagation();
+                setIsNotiOpen((prev) => !prev);
+              }}
+              style={{ cursor: 'pointer' }}
+            />
+            {isNotiOpen && <NotificationDropdown onClose={() => handleNotificationClose()} />}
+          </div>
+          <img src="/src/assets/icons/icon_채팅알림.png" alt="" />
 
           {isAuthenticated ? (
             <NavItem onMouseEnter={() => setIsHovering(true)} style={{ cursor: 'pointer', padding: '5px' }}>
@@ -244,6 +267,15 @@ const Header = () => {
                     <Icon src="/src/assets/icons/icon_이력서등록.png" alt="" />
                     이력서 등록
                   </NavItem>
+                )}
+
+                {userStatus ? (
+                  <NavItem to="/guardian/hire-registration">
+                    <Icon src="/src/assets/icons/icon_이력서등록.png" alt="" />
+                    돌봄대상자 신청
+                  </NavItem>
+                ) : (
+                  ''
                 )}
 
                 {userStatus ? (

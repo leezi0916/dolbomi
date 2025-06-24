@@ -8,6 +8,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "PATIENT")
@@ -68,4 +70,7 @@ public class Patient {
         }
     }
 
+    //양방향 설정 환자 삭제시 관련 환자에 대한 질병태그들도 삭제
+    @OneToMany(mappedBy = "patient", cascade = CascadeType.ALL)
+    private List<DiseaseTag> diseaseTags = new ArrayList<>();
 }

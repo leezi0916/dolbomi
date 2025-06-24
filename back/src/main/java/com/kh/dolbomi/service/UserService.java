@@ -11,4 +11,5 @@ public interface UserService {
     UserDto.Response loginUser(String userId, String userPwd);
 
     User findUserNo(Long userNo);
+    UserDto.Response updateUser(Long userNo, UserDto.Update updateDto);
 }
