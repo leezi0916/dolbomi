@@ -38,4 +38,12 @@ public class UserController {
 
         return ResponseEntity.ok(currentUser);
     }
+
+    //회원 수정
+    @PatchMapping("/{userNo}")
+    public ResponseEntity<UserDto.Response> updateUser (@PathVariable Long userNo,
+                                                        @RequestBody UserDto.Update updateDto){
+
+        return ResponseEntity.ok(userService.updateUser(userNo, updateDto));
+    }
 }

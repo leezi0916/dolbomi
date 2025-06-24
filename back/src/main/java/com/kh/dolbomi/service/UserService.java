@@ -8,4 +8,5 @@ public interface UserService {
     Long createUser(UserDto.Create createDto);
     boolean isUserIdAvailable(String userId);
     UserDto.Response loginUser(String userId, String userPwd);
+    UserDto.Response updateUser(Long userNo, UserDto.Update updateDto);
 }
