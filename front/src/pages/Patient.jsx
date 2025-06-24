@@ -35,8 +35,7 @@ const Patient = () => {
       <AuthContainer>
         <Head>
           <Title>돌봄 대상자 목록</Title>
-          <MainSubmitBtn onClick={() => navigate('/guardian/patientregisteration')}>등록
-          </MainSubmitBtn>
+          <MainSubmitBtn onClick={() => navigate('/guardian/patientregisteration')}>등록</MainSubmitBtn>
         </Head>
 
         <CardWrap>
@@ -59,12 +58,8 @@ const Patient = () => {
               </ProfileDiv>
 
               <ButtonDiv>
-                <MainMoveBtn onClick={() => navigate(`/guardian/patient/${pat.patNo}`)}>
-                  관리
-                </MainMoveBtn>
-                <MainMoveBtn onClick={() => navigate(`/report/${pat.id}`, 1)}>
-                  일지
-                </MainMoveBtn>
+                <MainMoveBtn onClick={() => navigate(`/guardian/patient/${pat.patNo}`)}>관리</MainMoveBtn>
+                <MainMoveBtn onClick={() => navigate(`/report/${pat.id}`, 1)}>일지</MainMoveBtn>
               </ButtonDiv>
             </Card>
           ))}
@@ -93,13 +88,9 @@ const Head = styled.div`
   align-items: center;
 `;
 
-
-
 const MainMoveBtn = styled(MainMoveButton)`
   width: 100px;
-
-`
-
+`;
 const Card = styled.div`
   max-height: fit-content;
   box-shadow: ${({ theme }) => theme.shadows.base};

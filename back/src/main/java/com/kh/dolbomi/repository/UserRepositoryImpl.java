@@ -7,6 +7,7 @@ import jakarta.persistence.PersistenceContext;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public class UserRepositoryImpl implements UserRepository{
@@ -29,5 +30,17 @@ public class UserRepositoryImpl implements UserRepository{
         return em.createQuery("SELECT u FROM User u WHERE u.userId = :userId", User.class)
                 .setParameter("userId", userId)
                 .getResultList();
+    }
+
+    @Override
+    public Optional<User> findById(Long userNo) {
+        return Optional.ofNullable(em.find(User.class, userNo));
+    }
+
+    @Override
+    public User findUserNo(Long userNo) {
+
+        return em.find(User.class, userNo);
+
     }
 }

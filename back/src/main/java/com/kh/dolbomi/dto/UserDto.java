@@ -4,6 +4,8 @@ import com.kh.dolbomi.domain.User;
 import com.kh.dolbomi.enums.StatusEnum;
 import lombok.*;
 
+import java.util.List;
+
 public class UserDto {
 
     @Getter
@@ -74,5 +76,23 @@ public class UserDto {
                     .status(user.getStatus())
                     .build();
         }
+    }
+
+    @Getter
+    @Setter
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class Update {
+
+        //private String profileImage
+        private String user_name;
+        private Integer age;
+        private User.Gender gender;
+        private String phone;
+        private String email;
+        private String address;
+
+        // 자격증 여러 개를 받도록 리스트로 수정
+        private List<LicenseDto> licenses;
     }
 }

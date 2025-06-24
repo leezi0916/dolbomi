@@ -307,10 +307,7 @@
       "create_date": "2025-11-08",
       "count": "5",
       "board_detail": "없음",
-      "src": [
-        "/img_s3/연습용img.jpg",
-        "/img_s3/연습용이미지(1).jpg"
-      ],
+      "src": ["/img_s3/연습용img.jpg", "/img_s3/연습용이미지(1).jpg"],
       "status": "Y",
       "question_status": null
     },
@@ -323,10 +320,7 @@
       "create_date": "2025-11-08",
       "count": "5",
       "board_detail": "없음",
-      "src": [
-        "/img_s3/연습용img.jpg",
-        "/img_s3/연습용이미지(1).jpg"
-      ],
+      "src": ["/img_s3/연습용img.jpg", "/img_s3/연습용이미지(1).jpg"],
       "status": "Y",
       "question_status": null
     },
@@ -339,10 +333,7 @@
       "create_date": "2025-11-08",
       "count": "5",
       "board_detail": "없음",
-      "src": [
-        "/img_s3/연습용img.jpg",
-        "/img_s3/연습용이미지(1).jpg"
-      ],
+      "src": ["/img_s3/연습용img.jpg", "/img_s3/연습용이미지(1).jpg"],
       "status": "Y",
       "question_status": null
     },
@@ -355,9 +346,7 @@
       "create_date": "2025-11-09",
       "count": "4",
       "board_detail": "테스트 중입니당",
-      "src": [
-        "/img_s3/연습용이미지(2).jpg"
-      ],
+      "src": ["/img_s3/연습용이미지(2).jpg"],
       "status": "Y",
       "question_status": null
     },
@@ -370,9 +359,7 @@
       "create_date": "2025-11-09",
       "count": "4",
       "board_detail": "테스트 중입니당",
-      "src": [
-        "/img_s3/연습용이미지(2).jpg"
-      ],
+      "src": ["/img_s3/연습용이미지(2).jpg"],
       "status": "Y",
       "question_status": "Y"
     },
@@ -385,9 +372,7 @@
       "create_date": "2025-11-09",
       "count": "4",
       "board_detail": "테스트 중입니당",
-      "src": [
-        "/img_s3/연습용이미지(2).jpg"
-      ],
+      "src": ["/img_s3/연습용이미지(2).jpg"],
       "status": "Y",
       "question_status": "Y"
     },
@@ -400,9 +385,7 @@
       "create_date": "2025-11-09",
       "count": "4",
       "board_detail": "테스트 중입니당 question_status는 응답을 했는지 안했는지 확인하는것/Role이 Q인 것만 빼고 안쓰므로 Q가 아닌 것들은 null표시함. Y는 완료 N는 대기",
-      "src": [
-        "/img_s3/연습용이미지(2).jpg"
-      ],
+      "src": ["/img_s3/연습용이미지(2).jpg"],
       "status": "Y",
       "question_status": "Y"
     }
@@ -454,7 +437,7 @@
     },
     {
       "user_no": 3,
-      "id": "3",
+      "id": 3,
       "user_id": "dbgk9311",
       "user_pwd": "dbgk9311",
       "user_name": "유하",
@@ -584,9 +567,7 @@
       "pat_content": "당뇨합병증",
       "status": "Y",
       "phone": "01022222222",
-      "tags": [
-        "당뇨"
-      ]
+      "tags": ["당뇨"]
     },
     {
       "id": "3",
@@ -630,9 +611,7 @@
       "pat_weight": 65.4,
       "pat_content": "거동이 불편함",
       "phone": "01011111111",
-      "tags": [
-        "골절"
-      ]
+      "tags": ["골절"]
     },
     {
       "id": "6",
@@ -646,9 +625,7 @@
       "pat_weight": "65",
       "pat_content": "",
       "phone": "01022222222",
-      "tags": [
-        "당뇨"
-      ]
+      "tags": ["당뇨"]
     },
     {
       "id": "7",
@@ -662,10 +639,7 @@
       "pat_weight": "40",
       "pat_content": "",
       "phone": "01022222222",
-      "tags": [
-        "당뇨",
-        "고혈압"
-      ]
+      "tags": ["당뇨", "고혈압"]
     },
     {
       "id": "570d",
@@ -678,9 +652,7 @@
       "pat_weight": "49",
       "pat_content": "치매가 있습니다.",
       "phone": "01022222222",
-      "tags": [
-        "치매"
-      ]
+      "tags": ["치매"]
     }
   ],
   "report": [

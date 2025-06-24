@@ -3,7 +3,7 @@
 const { VITE_JSON_SERVER_URL, VITE_SPRING_URL, VITE_API_TIMEOUT = 5000, VITE_API_VERSION = 'v1' } = import.meta.env;
 
 export const API_CONFIG = {
-  BASE_URL: `${VITE_JSON_SERVER_URL}`, // Spring 들어가면 여기 변수만 VITE_SPRING_URL로 변경해야함
+  BASE_URL: `${VITE_SPRING_URL}`, // Spring 들어가면 여기 변수만 VITE_SPRING_URL로 변경해야함
 
   // 회원가입 로그인 기능 추가하느라 url 변경함..
   // BASE_URL: `${VITE_SPRING_URL}`,
@@ -57,8 +57,8 @@ export const API_ENDPOINTS = {
   PATIENT: {
     BASE: '/patient',
     DETAIL: (guardianNo) => `/patient?guardian_no=${guardianNo}`,
-    PATDETAIL: (patNo) => `/patient?pat_no=${patNo}`,
-    PUT: (patNo) => `/patient/${patNo}`,
+    PATDETAIL: (patNo) => `/patient/${patNo}`,
+    FETCH: (patNo) => `/patient/${patNo}`,
     DELETE: (patNo) => `/patient/${patNo}`,
   },
 
