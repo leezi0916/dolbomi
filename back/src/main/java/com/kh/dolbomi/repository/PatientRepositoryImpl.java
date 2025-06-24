@@ -7,6 +7,7 @@ import jakarta.persistence.PersistenceContext;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
     public class PatientRepositoryImpl implements PatientRepository {
@@ -26,6 +27,12 @@ import java.util.List;
                 .setParameter("userNo", userNo)
                 .getResultList();
 
+    }
+
+    @Override
+    public Optional<Patient> findById(Long patNo) {
+        Patient patient = em.find(Patient.class, patNo);
+        return Optional.ofNullable(patient);
     }
 
 }

@@ -8,6 +8,7 @@ import lombok.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
 
 
 public class HiringDto{
@@ -46,5 +47,70 @@ public class HiringDto{
         }
     }
 
+    @Getter
+    @AllArgsConstructor
+    @NoArgsConstructor
+    @Builder
+    public static class Response {
+        //구인 정보
+        private Long hiring_no;
+        private String hiring_title;
+        private String hiring_content;
+        private Integer account;
+        private LocalDateTime start_date;
+        private LocalDateTime end_date;
+        private Integer max_applicants;
+        private StatusEnum.CareStatus care_status;
+        private String room_image;
+
+        //환자 정보
+        private Long pat_no;
+        private String pat_name;
+        private Integer pat_age;
+        private String pat_gender;
+        private String pat_address;
+
+
+        // 보호자 정보
+        private String phone;
+
+        // 질병 리스트 (ex: ["치매", "당뇨"])
+        private List<String> disease_tag;
+
+    }
+
+    public static Response toDto(Hiring hiring) {
+        Patient patient = hiring.getPatient();
+        User user = hiring.getUser();
+
+        return Response.builder()
+                .hiring_no(hiring.getHiringNo())
+                .hiring_title(hiring.getHiringTitle())
+                .hiring_content(hiring.getHiringContent())
+                .account(hiring.getAccount())
+                .start_date(hiring.getStartDate())
+                .end_date(hiring.getEndDate())
+                .max_applicants(hiring.getMaxApplicants())
+                .care_status(hiring.getCareStatus())
+                .room_image(hiring.getRoomImage())
+
+                // 환자 정보
+                .pat_no(patient.getPatNo())
+                .pat_name(patient.getPatName())
+                .pat_age(patient.getPatAge())
+                .pat_gender(patient.getPatGender().name())
+                .pat_address(patient.getPatAddress())
+
+                // 보호자 정보
+                .phone(user.getPhone())
+
+                // 질병 정보 (List<String>)
+                .disease_tag(
+                        patient.getDiseaseTags().stream()
+                                .map(diseaseTag -> diseaseTag.getDisease().getDisName())
+                                .toList()
+                )
+                .build();
+    }
 }
 

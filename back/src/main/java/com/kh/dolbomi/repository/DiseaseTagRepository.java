@@ -1,0 +1,10 @@
+package com.kh.dolbomi.repository;
+
+import com.kh.dolbomi.entity.Disease;
+
+
+import java.util.List;
+
+public interface DiseaseTagRepository {
+    List<Disease> findDiseasesByPatientNo(Long patNo);
+}

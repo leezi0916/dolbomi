@@ -6,6 +6,7 @@ import jakarta.persistence.PersistenceContext;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public class HiringRepositoryImpl implements HiringRepository {
@@ -16,6 +17,17 @@ public class HiringRepositoryImpl implements HiringRepository {
     @Override
     public void save(Hiring hiring) {
         em.persist(hiring);
+    }
+
+    @Override
+    public Hiring findByHiringNo(Long hiringNo) {
+        return null;
+    }
+
+    @Override
+    public Optional<Hiring> findById(Long hiringNo) {
+        Hiring hiring = em.find(Hiring.class, hiringNo);
+        return Optional.ofNullable(hiring);
     }
 
     @Override
