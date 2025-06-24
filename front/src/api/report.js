@@ -43,7 +43,7 @@ export const reportService = {
 
       console.log(updatedReport);
 
-      const { data } = await api.post(API_ENDPOINTS.REPORT.BASE, camelToSnake(reportInfo));
+      const { data } = await api.post(API_ENDPOINTS.REPORT.BASE, camelToSnake(updatedReport));
       return data;
     } catch (error) {
       if (error.response) {

@@ -1,6 +1,6 @@
 package com.kh.dolbomi.repository;
 
-import com.kh.dolbomi.entity.User;
+import com.kh.dolbomi.domain.User;
 
 import java.util.List;
 import java.util.Optional;
