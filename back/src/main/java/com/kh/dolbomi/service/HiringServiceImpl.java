@@ -1,17 +1,15 @@
 package com.kh.dolbomi.service;
 
+import com.kh.dolbomi.domain.Hiring;
+import com.kh.dolbomi.domain.Patient;
+import com.kh.dolbomi.domain.User;
 import com.kh.dolbomi.dto.HiringDto;
-import com.kh.dolbomi.entity.Hiring;
-import com.kh.dolbomi.entity.Patient;
-import com.kh.dolbomi.entity.User;
 import com.kh.dolbomi.repository.HiringRepository;
 import com.kh.dolbomi.repository.PatientRepository;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -44,6 +42,7 @@ public class HiringServiceImpl implements HiringService {
     @Override
     public Optional<Hiring> findById(Long hiringNo) {
         return hiringRepository.findById(hiringNo);
+
     }
 
     @Override

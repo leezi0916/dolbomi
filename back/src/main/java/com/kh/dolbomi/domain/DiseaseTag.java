@@ -1,4 +1,4 @@
-package com.kh.dolbomi.entity;
+package com.kh.dolbomi.domain;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

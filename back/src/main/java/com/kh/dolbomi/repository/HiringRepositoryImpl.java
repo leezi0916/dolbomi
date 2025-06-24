@@ -1,12 +1,11 @@
 package com.kh.dolbomi.repository;
 
-import com.kh.dolbomi.entity.Hiring;
+import com.kh.dolbomi.domain.Hiring;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
-import org.springframework.stereotype.Repository;
-
 import java.util.List;
 import java.util.Optional;
+import org.springframework.stereotype.Repository;
 
 @Repository
 public class HiringRepositoryImpl implements HiringRepository {
