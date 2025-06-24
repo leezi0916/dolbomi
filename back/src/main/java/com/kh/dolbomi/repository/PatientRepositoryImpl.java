@@ -1,7 +1,8 @@
 package com.kh.dolbomi.repository;
 
-
+import com.kh.dolbomi.dto.PatientDto;
 import com.kh.dolbomi.entity.Patient;
+import com.kh.dolbomi.entity.User;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import org.springframework.stereotype.Repository;
@@ -26,13 +27,15 @@ import java.util.Optional;
         return em.createQuery("SELECT p FROM Patient p WHERE p.guardian_no = :userNo JOIN ", Patient.class)
                 .setParameter("userNo", userNo)
                 .getResultList();
+    }
 
     }
+
 
     @Override
-    public Optional<Patient> findById(Long patNo) {
-        Patient patient = em.find(Patient.class, patNo);
-        return Optional.ofNullable(patient);
+    public Optional<Patient> findOne(Long patNo) {
+        return Optional.ofNullable(em.find(Patient.class, patNo));
     }
+
 
 }

@@ -1,5 +1,6 @@
 package com.kh.dolbomi.repository;
 
+import com.kh.dolbomi.dto.PatientDto;
 import com.kh.dolbomi.entity.Patient;
 
 import java.util.List;
@@ -7,6 +8,8 @@ import java.util.Optional;
 
 public interface PatientRepository {
     void save(Patient patient);
+
     List<Patient> findByAll(Long userNo);
-    Optional<Patient> findById(Long patNo);
+
+   Optional<Patient> findOne(Long patNo);
 }

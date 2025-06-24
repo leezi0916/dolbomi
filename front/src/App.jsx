@@ -98,7 +98,7 @@ function AppRoutes() {
           <Route path="/guardian/caregiverlist" element={<CaregiverList />} />
           <Route path="/guardian/hire-registration" element={<HireRegistration />} />
           <Route path="/guardian/patient" element={<Patient />} />
-          <Route path="/guardian/patient/:id" element={<PatientUpdate />} />
+          <Route path="/guardian/patient/:patNo" element={<PatientUpdate />} />
           <Route path="/guardian/patientregisteration" element={<PatientRegisteration />} />
           <Route path="/guardian/review" element={<WrittenReviews />} />
           <Route path="/review" element={<ReviewModal />} />

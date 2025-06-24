@@ -30,6 +30,9 @@ public class Patient {
     @Column(name = "PROFILE_IMAGE", length = 100)
     private String profileImage;
 
+    @Column(name = "PAT_PHONE")
+    private Integer patPhone;
+
     @Column(name = "PAT_NAME", nullable = false, length = 10)
     private String patName;
 
@@ -47,7 +50,7 @@ public class Patient {
     private BigDecimal patHeight;
 
     @Column(name = "PAT_WEIGHT", nullable = false)
-    private BigDecimal patWeight;
+    private BigDecimal  patWeight;
 
     @Column(name = "PAT_CONTENT", columnDefinition = "TEXT")
     private String patContent;
