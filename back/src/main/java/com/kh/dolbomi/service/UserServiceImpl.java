@@ -117,13 +117,15 @@ public class UserServiceImpl implements UserService {
 
         return UserDto.Response.toDto(user);
     }
-}
 
     //userNo 로 유저 가져오기
     @Override
     public User findUserNo(Long userNo) {
         return userRepository.findUserNo(userNo);
     }
+}
+
+
 
 
 

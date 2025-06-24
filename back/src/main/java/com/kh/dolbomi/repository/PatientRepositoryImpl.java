@@ -29,13 +29,15 @@ import java.util.Optional;
                 .getResultList();
     }
 
-    }
-
 
     @Override
     public Optional<Patient> findOne(Long patNo) {
         return Optional.ofNullable(em.find(Patient.class, patNo));
     }
 
-
 }
+
+
+
+
+

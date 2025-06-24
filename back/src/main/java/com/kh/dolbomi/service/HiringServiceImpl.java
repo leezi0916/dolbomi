@@ -23,7 +23,7 @@ public class HiringServiceImpl implements HiringService {
 
     @Override
     public Long createHiring(Long patNo, HiringDto.Create createDto) {
-        Patient patient = patientRepository.findById(patNo)
+        Patient patient = patientRepository.findOne(patNo)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 환자 번호입니다."));
 
         // 보호자 추출
