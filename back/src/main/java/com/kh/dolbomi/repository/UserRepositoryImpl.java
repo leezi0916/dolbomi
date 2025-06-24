@@ -1,7 +1,7 @@
 package com.kh.dolbomi.repository;
 
 
-import com.kh.dolbomi.entity.User;
+import com.kh.dolbomi.domain.User;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import org.springframework.stereotype.Repository;

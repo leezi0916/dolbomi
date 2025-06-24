@@ -54,6 +54,3 @@ application-*.yml
 node_modules/
 .env
 .mtj.tmp/
-
-# Gradle lock files
-.gradle/
