@@ -32,4 +32,10 @@ public class License {
 
     @Column(name = "LICENSE_DATE", nullable = false)
     private LocalDateTime licenseDate;
+
+    public void updateInfo(String licenseName, String licensePublisher, LocalDateTime licenseDate) {
+        this.licenseName = licenseName;
+        this.licensePublisher = licensePublisher;
+        this.licenseDate = licenseDate;
+    }
 }

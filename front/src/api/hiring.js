@@ -1,5 +1,5 @@
 // 구인 API
-import { snakeToCamel, camelToSnake } from '../utils/formatData';
+import { snakeToCamel } from '../utils/formatData';
 import api from './axios';
 import { API_ENDPOINTS } from './config';
 
@@ -22,7 +22,8 @@ export const hiringService = {
   //세부 구인목록가져오기
   getHirngById: async (hiringNo) => {
     try {
-      const { data } = await api.post(API_ENDPOINTS.HIRING.DETAIL(hiringNo));
+      // 상세 보기에 들어가는 모든 정보(환자 정보, 보호자 전화번호, 보유질병, 제목,시급 등...) 불러와야함 실제 서버에서
+      const { data } = await api.get(API_ENDPOINTS.HIRING.DETAIL(hiringNo));
 
       return snakeToCamel(data[0]);
     } catch (error) {
@@ -34,13 +35,4 @@ export const hiringService = {
       throw new Error('서버 통신 불량');
     }
   },
-
-  postNewHiring : async (data) => {
-    try {
-      await api.post(API_ENDPOINTS.HIRING.BASE, camelToSnake(data));
-    } catch (error) {
-      console.log(error);
-      throw new Error('서버 통신 불량');
-    }
-  }
 };
