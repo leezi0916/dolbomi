@@ -42,6 +42,7 @@ public class HiringServiceImpl implements HiringService {
     @Override
     public Optional<Hiring> findById(Long hiringNo) {
         return hiringRepository.findById(hiringNo);
+
     }
 
     @Override
