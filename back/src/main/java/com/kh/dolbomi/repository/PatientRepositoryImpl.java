@@ -23,9 +23,9 @@ import java.util.Optional;
     }
 
     @Override
-    public List<Patient> findByAll(Long userNo) {
-        return em.createQuery("SELECT p FROM Patient p WHERE p.guardian_no = :userNo JOIN ", Patient.class)
-                .setParameter("userNo", userNo)
+    public List<Patient> findByAll(Long guardianNo) {
+        return em.createQuery("SELECT p FROM Patient p WHERE p.guardian.userNo = :guardianNo", Patient.class)
+                .setParameter("guardianNo", guardianNo)
                 .getResultList();
     }
 
