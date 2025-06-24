@@ -1,19 +1,18 @@
 package com.kh.dolbomi.service;
 
 
+import com.kh.dolbomi.domain.License;
+import com.kh.dolbomi.domain.User;
 import com.kh.dolbomi.dto.LicenseDto;
 import com.kh.dolbomi.dto.UserDto;
-import com.kh.dolbomi.entity.License;
-import com.kh.dolbomi.entity.User;
 import com.kh.dolbomi.repository.LicenseRepository;
 import com.kh.dolbomi.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -58,6 +57,14 @@ public class UserServiceImpl implements UserService {
         }
 
         return UserDto.Response.toDto(user);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public UserDto.ProfileDto getUserProfile(Long userNo) {
+        User user = userRepository.findById(userNo)
+                .orElseThrow(() -> new IllegalArgumentException("해당 회원이 존재하지 않습니다."));
+        return UserDto.ProfileDto.toDto(user);
     }
 
     @Override

@@ -1,7 +1,7 @@
 package com.kh.dolbomi.repository;
 
-import com.kh.dolbomi.entity.License;
-import com.kh.dolbomi.entity.User;
+import com.kh.dolbomi.domain.License;
+import com.kh.dolbomi.domain.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

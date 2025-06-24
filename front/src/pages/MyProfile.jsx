@@ -48,10 +48,12 @@ const MyProfile = () => {
       }
       try {
         const info = await userService.getUserProfile(userNo);
-        console.log(info);
+        console.log('profile data:', info);
 
-        if (info && info.length > 0) {
-          const userProfileData = info[0];
+        // info가 배열인지 객체인지에 따라 처리
+        const userProfileData = Array.isArray(info) ? info[0] : info;
+
+        if (userProfileData) {
           setProfile(userProfileData);
 
           setFormData({
