@@ -5,6 +5,7 @@ import com.kh.dolbomi.dto.PatientDto;
 import com.kh.dolbomi.entity.Patient;
 import com.kh.dolbomi.service.PatientService;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.annotations.Fetch;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,6 +23,7 @@ public class PatientController {
     // 환자등록하기
     @PostMapping
     public ResponseEntity<Long> addPatient(@RequestBody PatientDto.Create createDto) {
+
         Long patNo = patientService.createPatient(createDto);
         return ResponseEntity.ok(patNo);
     }
@@ -35,16 +37,15 @@ public class PatientController {
     //특정환자가져오기
     @GetMapping("/{patNo}")
     public  ResponseEntity<PatientDto.Response> OnePatient(@PathVariable Long patNo){
-
         return ResponseEntity.ok(patientService.getPatient(patNo));
     }
 
-//    @PutMapping("/{patNo}")
-//    public ResponseEntity<PatientDto.Response> UpdatePatient(
-//            @PathVariable Long patNo,
-//            @RequestBody PatientDto.Update updatePatient)throws IOException {
-//        return ResponseEntity.ok(patientService.updatePatient(patNo), updatePatient);
-//    }
+    @PutMapping("/{patNo}")
+    public ResponseEntity<PatientDto.Response> UpdatePatient(
+            @PathVariable Long patNo,
+            @RequestBody PatientDto.Update updatePatient)throws IOException {
+        return null;
+    }
 
 
 }

@@ -56,7 +56,7 @@ const PatientRegistration = () => {
         patHeight: data.patHeight,
         patWeight: data.patWeight,
         patContent: data.patContent,
-        // tags: data.tags,
+        diseaseTags: data.tags,
       });
       toast.success('돌봄대상자 등록 완료!');
       navigate('/guardian/patient');

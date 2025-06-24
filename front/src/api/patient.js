@@ -7,7 +7,7 @@ export const patientService = {
   getPatients: async (guardianNo) => {
     try {
       const { data } = await api.get(API_ENDPOINTS.PATIENT.DETAIL(guardianNo));
-      console.log(API_ENDPOINTS.PATIENT.DETAIL(guardianNo));
+
       return snakeToCamel(data);
     } catch (error) {
       if (error.response) {
@@ -21,7 +21,7 @@ export const patientService = {
 
   //환자등록
   postNewPatient: async (data) => {
-    console.log(camelToSnake(data));
+    console.log(data);
 
     try {
       await api.post(API_ENDPOINTS.PATIENT.BASE, camelToSnake(data));
@@ -35,7 +35,7 @@ export const patientService = {
   getPatientId: async (patNo) => {
     try {
       const { data } = await api.get(API_ENDPOINTS.PATIENT.PATDETAIL(patNo));
-    
+
       return snakeToCamel(data);
     } catch (error) {
       if (error.response) {
