@@ -2,15 +2,20 @@ package com.kh.dolbomi.controller;
 
 
 import com.kh.dolbomi.dto.PatientDto;
-import com.kh.dolbomi.entity.Patient;
 import com.kh.dolbomi.service.PatientService;
-import lombok.RequiredArgsConstructor;
-import org.hibernate.annotations.Fetch;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-
 import java.io.IOException;
 import java.util.List;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/patient")
@@ -30,20 +35,20 @@ public class PatientController {
 
     //환자목록가져오기
     @GetMapping()
-    public  ResponseEntity<List<PatientDto.Response>> PatientList(@RequestParam("guardian_no") Long guardianNo){
+    public ResponseEntity<List<PatientDto.Response>> PatientList(@RequestParam("guardian_no") Long guardianNo) {
         return ResponseEntity.ok(patientService.getListPatient(guardianNo));
     }
 
     //특정환자가져오기
     @GetMapping("/{patNo}")
-    public  ResponseEntity<PatientDto.Response> OnePatient(@PathVariable Long patNo){
+    public ResponseEntity<PatientDto.Response> OnePatient(@PathVariable Long patNo) {
         return ResponseEntity.ok(patientService.getPatient(patNo));
     }
 
     @PutMapping("/{patNo}")
     public ResponseEntity<PatientDto.Response> UpdatePatient(
             @PathVariable Long patNo,
-            @RequestBody PatientDto.Update updatePatient)throws IOException {
+            @RequestBody PatientDto.Update updatePatient) throws IOException {
         return null;
     }
 

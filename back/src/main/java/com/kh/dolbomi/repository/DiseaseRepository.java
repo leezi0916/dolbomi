@@ -1,6 +1,6 @@
 package com.kh.dolbomi.repository;
 
-import com.kh.dolbomi.entity.Disease;
+import com.kh.dolbomi.domain.Disease;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 

@@ -1,7 +1,7 @@
 package com.kh.dolbomi.dto;
 
-import com.kh.dolbomi.entity.Patient;
-import com.kh.dolbomi.entity.User;
+import com.kh.dolbomi.domain.Patient;
+import com.kh.dolbomi.domain.User;
 import java.math.BigDecimal;
 import java.util.List;
 import lombok.AllArgsConstructor;

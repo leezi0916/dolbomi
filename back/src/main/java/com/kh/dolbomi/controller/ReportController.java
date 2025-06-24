@@ -19,7 +19,7 @@ public class ReportController {
     @PostMapping
     public ResponseEntity<Long> createReport(@ModelAttribute ReportDto.Create reportCreate) {
 
-        ResponseEntity.ok(reportService.createReport(reportCreate));
+//        ResponseEntity.ok(reportService.createReport(reportCreate));
         return null;
     }
 }

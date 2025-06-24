@@ -1,7 +1,6 @@
 package com.kh.dolbomi.repository;
 
-import com.kh.dolbomi.entity.Patient;
-
+import com.kh.dolbomi.domain.Patient;
 import java.util.List;
 import java.util.Optional;
 
@@ -10,6 +9,6 @@ public interface PatientRepository {
 
     List<Patient> findByAll(Long userNo);
 
-   Optional<Patient> findOne(Long patNo);
+    Optional<Patient> findOne(Long patNo);
 
 }

@@ -1,15 +1,26 @@
 package com.kh.dolbomi.domain;
 
 import com.kh.dolbomi.enums.StatusEnum;
-import jakarta.persistence.*;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.PrePersist;
+import jakarta.persistence.Table;
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
-import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Table(name = "PATIENT")
@@ -50,7 +61,7 @@ public class Patient {
     private BigDecimal patHeight;
 
     @Column(name = "PAT_WEIGHT", nullable = false)
-    private BigDecimal  patWeight;
+    private BigDecimal patWeight;
 
     @Column(name = "PAT_CONTENT", columnDefinition = "TEXT")
     private String patContent;
@@ -58,21 +69,19 @@ public class Patient {
     @Column(name = "STATUS", nullable = false, length = 1)
     @Enumerated(EnumType.STRING)
     private StatusEnum.Status status;
-
-    public enum Gender {
-        M, F
-    }
+    //양방향 설정 환자 삭제시 관련 환자에 대한 질병태그들도 삭제
+    @OneToMany(mappedBy = "patient", cascade = CascadeType.ALL)
+    private List<DiseaseTag> diseaseTags = new ArrayList<>();
 
     @PrePersist
     public void prePersist() {
-        if(status == null){
+        if (status == null) {
             this.status = StatusEnum.Status.Y;
         }
     }
 
 
-
-    //양방향 설정 환자 삭제시 관련 환자에 대한 질병태그들도 삭제
-    @OneToMany(mappedBy = "patient", cascade = CascadeType.ALL)
-    private List<DiseaseTag> diseaseTags = new ArrayList<>();
+    public enum Gender {
+        M, F
+    }
 }

@@ -1,18 +1,54 @@
 package com.kh.dolbomi.dto;
 
-import com.kh.dolbomi.entity.Hiring;
-import com.kh.dolbomi.entity.Patient;
-import com.kh.dolbomi.entity.User;
+import com.kh.dolbomi.domain.Hiring;
+import com.kh.dolbomi.domain.Patient;
+import com.kh.dolbomi.domain.User;
 import com.kh.dolbomi.enums.StatusEnum;
-import lombok.*;
-
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 
-public class HiringDto{
+public class HiringDto {
 
+
+    public static Response toDto(Hiring hiring) {
+        Patient patient = hiring.getPatient();
+        User user = hiring.getUser();
+
+        return Response.builder()
+                .hiring_no(hiring.getHiringNo())
+                .hiring_title(hiring.getHiringTitle())
+                .hiring_content(hiring.getHiringContent())
+                .account(hiring.getAccount())
+                .start_date(hiring.getStartDate())
+                .end_date(hiring.getEndDate())
+                .max_applicants(hiring.getMaxApplicants())
+                .care_status(hiring.getCareStatus())
+                .room_image(hiring.getRoomImage())
+
+                // 환자 정보
+                .pat_no(patient.getPatNo())
+                .pat_name(patient.getPatName())
+                .pat_age(patient.getPatAge())
+                .pat_gender(patient.getPatGender().name())
+                .pat_address(patient.getPatAddress())
+
+                // 보호자 정보
+                .phone(user.getPhone())
+
+                // 질병 정보 (List<String>)
+                .disease_tag(
+                        patient.getDiseaseTags().stream()
+                                .map(diseaseTag -> diseaseTag.getDisease().getDisName())
+                                .toList()
+                )
+                .build();
+    }
 
     @Getter
     @Setter
@@ -77,40 +113,6 @@ public class HiringDto{
         // 질병 리스트 (ex: ["치매", "당뇨"])
         private List<String> disease_tag;
 
-    }
-
-    public static Response toDto(Hiring hiring) {
-        Patient patient = hiring.getPatient();
-        User user = hiring.getUser();
-
-        return Response.builder()
-                .hiring_no(hiring.getHiringNo())
-                .hiring_title(hiring.getHiringTitle())
-                .hiring_content(hiring.getHiringContent())
-                .account(hiring.getAccount())
-                .start_date(hiring.getStartDate())
-                .end_date(hiring.getEndDate())
-                .max_applicants(hiring.getMaxApplicants())
-                .care_status(hiring.getCareStatus())
-                .room_image(hiring.getRoomImage())
-
-                // 환자 정보
-                .pat_no(patient.getPatNo())
-                .pat_name(patient.getPatName())
-                .pat_age(patient.getPatAge())
-                .pat_gender(patient.getPatGender().name())
-                .pat_address(patient.getPatAddress())
-
-                // 보호자 정보
-                .phone(user.getPhone())
-
-                // 질병 정보 (List<String>)
-                .disease_tag(
-                        patient.getDiseaseTags().stream()
-                                .map(diseaseTag -> diseaseTag.getDisease().getDisName())
-                                .toList()
-                )
-                .build();
     }
 }
 
