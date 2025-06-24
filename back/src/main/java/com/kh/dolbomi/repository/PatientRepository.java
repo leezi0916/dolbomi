@@ -12,4 +12,5 @@ public interface PatientRepository {
     List<Patient> findByAll(Long userNo);
 
    Optional<Patient> findOne(Long patNo);
+
 }
