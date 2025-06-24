@@ -2,7 +2,7 @@ package com.kh.dolbomi.service;
 
 
 import com.kh.dolbomi.dto.UserDto;
-import com.kh.dolbomi.entity.User;
+import com.kh.dolbomi.domain.User;
 import com.kh.dolbomi.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
