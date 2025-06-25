@@ -55,7 +55,7 @@ public class Patient {
 
     @Column(name = "PAT_GENDER", nullable = false, length = 1)
     @Enumerated(EnumType.STRING)
-    private Gender patGender;
+    private StatusEnum.Gender patGender;
 
     @Column(name = "PAT_HEIGHT", nullable = false)
     private BigDecimal patHeight;
@@ -80,7 +80,4 @@ public class Patient {
         }
     }
 
-    public enum Gender {
-        M, F
-    }
 }

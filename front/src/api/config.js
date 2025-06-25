@@ -43,7 +43,7 @@ export const API_ENDPOINTS = {
     DETAIL: (userNo) => `/reviews?user_no=${userNo}`,
   },
   HIRING: {
-    BASE: '/hiring',
+    BASE: '/hiring/v1',
     DETAIL: (hiringNo) => `/hiring?hiring_no=${hiringNo}`,
   },
 

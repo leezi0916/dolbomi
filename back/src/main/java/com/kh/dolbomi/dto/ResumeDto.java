@@ -27,7 +27,7 @@ public class ResumeDto {
         // ===== 유저 =====
         private String user_name;
         private Integer age;
-        private String gender;
+        private StatusEnum.Gender gender;
         private String address;
         // private String email;
         private String profile_image;
@@ -44,6 +44,7 @@ public class ResumeDto {
                     .resume_no(resume.getResumeNo())
                     .user_name(resume.getUser().getUserName())
                     .age(resume.getUser().getAge())
+                    .gender(resume.getUser().getGender())
                     .resume_account(resume.getAccount())
                     .address(resume.getUser().getAddress())
                     .profile_image(resume.getUser().getProfileImage())
@@ -51,5 +52,6 @@ public class ResumeDto {
                     .has_license(resume.getUser().getLicenses() != null && !resume.getUser().getLicenses().isEmpty())
                     .build();
         }
+
     }
 }

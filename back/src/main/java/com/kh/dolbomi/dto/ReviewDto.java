@@ -19,7 +19,7 @@ public class ReviewDto {
         // ===== 유저 =====
         private String user_name;
         private Integer age;
-        private String gender;
+        private StatusEnum.Gender gender;
         private String address;
         private String profile_image;
 
@@ -36,6 +36,7 @@ public class ReviewDto {
                     .profile_image(review.getWriter().getProfileImage())
                     .user_name(review.getWriter().getUserName())
                     .age(review.getWriter().getAge())
+                    .gender(review.getWriter().getGender())
                     .address(review.getWriter().getAddress())
                     .review_content(review.getReviewContent())
                     .review_score(review.getScore())

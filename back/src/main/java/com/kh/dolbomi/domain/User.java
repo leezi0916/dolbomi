@@ -53,7 +53,7 @@ public class User {
 
     @Column(name = "GENDER", length = 1)
     @Enumerated(EnumType.STRING)
-    private Gender gender;
+    private StatusEnum.Gender gender;
 
     @Column(name = "PHONE", nullable = false, length = 13)
     private String phone;
@@ -75,7 +75,7 @@ public class User {
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private List<License> licenses = new ArrayList<>();
 
-    public void updateUserInfo(String userName, Integer age, Gender gender, String phone, String address,
+    public void updateUserInfo(String userName, Integer age, StatusEnum.Gender gender, String phone, String address,
                                String email) {
         if (userName != null && !userName.trim().isEmpty()) {
             this.userName = userName.trim();
@@ -115,7 +115,4 @@ public class User {
         this.userPwd = encodedPassword;
     }
 
-    public enum Gender {
-        M, F
-    }
 }

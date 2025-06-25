@@ -34,7 +34,7 @@ public class HiringDto {
                 .pat_no(patient.getPatNo())
                 .pat_name(patient.getPatName())
                 .pat_age(patient.getPatAge())
-                .pat_gender(patient.getPatGender().name())
+                .pat_gender(patient.getPatGender())
                 .pat_address(patient.getPatAddress())
 
                 // 보호자 정보
@@ -107,9 +107,9 @@ public class HiringDto {
         private Long pat_no;
         private String pat_name;
         private Integer pat_age;
-        private String pat_gender;
+        private StatusEnum.Gender pat_gender;
         private String pat_address;
-
+        private String profile_image;
 
         // 보호자 정보
         private String phone;
@@ -117,6 +117,15 @@ public class HiringDto {
         // 질병 리스트 (ex: ["치매", "당뇨"])
         private List<String> disease_tag;
 
+        public static Response mainHiringDto(Hiring hiring) {
+            return Response.builder()
+                    .hiring_no(hiring.getHiringNo())
+                    .profile_image(hiring.getPatient().getProfileImage())
+                    .pat_name(hiring.getPatient().getPatName())
+                    .pat_age(hiring.getPatient().getPatAge())
+                    .pat_gender(hiring.getPatient().getPatGender())
+                    .build();
+        }
     }
 
 
