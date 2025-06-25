@@ -1,4 +1,10 @@
 package com.kh.dolbomi.repository;
 
-public interface ReportRepository {
+import com.kh.dolbomi.domain.Report;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface ReportRepository extends JpaRepository<Report, Long> {
+
+//    Long save(Report report);
+
 }

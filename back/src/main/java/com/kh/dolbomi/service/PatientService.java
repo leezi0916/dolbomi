@@ -1,8 +1,6 @@
 package com.kh.dolbomi.service;
 
 import com.kh.dolbomi.dto.PatientDto;
-import com.kh.dolbomi.dto.UserDto;
-
 import java.util.List;
 
 public interface PatientService {
@@ -11,4 +9,7 @@ public interface PatientService {
     List<PatientDto.Response> getListPatient(Long guardianNo);
 
     PatientDto.Response getPatient(Long patNo);
+
+
+    PatientDto.Response updatePatient(Long patNo, PatientDto.Update updatePatDto);
 }
