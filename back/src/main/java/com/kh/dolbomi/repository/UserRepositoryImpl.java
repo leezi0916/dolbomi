@@ -1,15 +1,14 @@
 package com.kh.dolbomi.repository;
 
 
-import com.kh.dolbomi.entity.User;
+import com.kh.dolbomi.domain.User;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
+import java.util.List;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
-
 @Repository
-public class UserRepositoryImpl implements UserRepository{
+public class UserRepositoryImpl implements UserRepository {
     @PersistenceContext
     private EntityManager em;
 

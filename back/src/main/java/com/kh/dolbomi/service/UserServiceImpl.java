@@ -1,16 +1,15 @@
 package com.kh.dolbomi.service;
 
 
+import com.kh.dolbomi.domain.User;
 import com.kh.dolbomi.dto.UserDto;
-import com.kh.dolbomi.entity.User;
 import com.kh.dolbomi.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
