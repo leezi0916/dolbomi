@@ -71,9 +71,11 @@ public class Patient {
     @Enumerated(EnumType.STRING)
     private StatusEnum.Status status;
 
+
     //양방향 설정 환자 삭제시 관련 환자에 대한 질병태그들도 삭제
     @Builder.Default
     @OneToMany(mappedBy = "patient", cascade = CascadeType.ALL, orphanRemoval = true)
+
     private List<DiseaseTag> diseaseTags = new ArrayList<>();
 
     @PrePersist
@@ -82,6 +84,7 @@ public class Patient {
             this.status = StatusEnum.Status.Y;
         }
     }
+
 
     public void changePatPhone(String patPhone) {
         if (patPhone != null && !patPhone.isEmpty()) {
@@ -134,10 +137,11 @@ public class Patient {
             this.patHeight = patHeight;
         }
     }
-    
+
     public void changeStatus(String status) {
         if (status != null && !status.isEmpty()) {
             this.status = Status.valueOf(status);
         }
+
     }
 }

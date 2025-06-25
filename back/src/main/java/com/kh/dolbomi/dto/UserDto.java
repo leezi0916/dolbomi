@@ -3,6 +3,7 @@ package com.kh.dolbomi.dto;
 import com.kh.dolbomi.domain.User;
 import com.kh.dolbomi.enums.StatusEnum;
 import java.util.List;
+import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -71,10 +72,10 @@ public class UserDto {
                     .user_no(user.getUserNo())
                     .user_id(user.getUserId())
                     .user_name(user.getUserName())
-                    .email(user.getEmail())
                     .gender(user.getGender())
                     .age(user.getAge())
                     .phone(user.getPhone())
+                    .email(user.getEmail())
                     .address(user.getAddress())
                     .status(user.getStatus())
                     .build();
@@ -97,5 +98,42 @@ public class UserDto {
 
         // 자격증 여러 개를 받도록 리스트로 수정
         private List<LicenseDto> licenses;
+    }
+
+    @Getter
+    @Setter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    @Builder
+    public static class ProfileDto {
+
+        private Long user_no;
+        private String user_id;
+        private String user_name;
+        private String phone;
+        private String email;
+        private String address;
+        private Integer age;
+        private StatusEnum.Gender gender;
+
+        private List<LicenseDto> licenses;
+
+        public static ProfileDto toDto(User user) {
+            return ProfileDto.builder()
+                    .user_no(user.getUserNo())
+                    .user_id(user.getUserId())
+                    .user_name(user.getUserName())
+                    .phone(user.getPhone())
+                    .email(user.getEmail())
+                    .address(user.getAddress())
+                    .age(user.getAge())
+                    .gender(user.getGender())
+                    .licenses(
+                            user.getLicenses().stream()
+                                    .map(LicenseDto::toDto)
+                                    .collect(Collectors.toList())
+                    )
+                    .build();
+        }
     }
 }

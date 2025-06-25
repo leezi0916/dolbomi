@@ -1,11 +1,11 @@
 package com.kh.dolbomi.domain;
 
 import com.kh.dolbomi.enums.StatusEnum;
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -44,6 +44,7 @@ public class User {
     @Column(name = "USER_PWD", nullable = false, length = 100)
     private String userPwd;
 
+
     @Column(name = "USER_NAME", nullable = false, length = 10)
     private String userName;
 
@@ -70,11 +71,9 @@ public class User {
     @Column(name = "PROFILE_IMAGE", length = 100)
     private String profileImage;
 
-//    public enum Gender {
-//        M, F
-//    }
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    // User <-> License 양방향 설정
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private List<License> licenses = new ArrayList<>();
 
 
@@ -116,5 +115,9 @@ public class User {
     // 비밀번호 암호화 변경 메서드
     public void changePassword(String encodedPassword) {
         this.userPwd = encodedPassword;
+    }
+
+    public enum Gender {
+        M, F
     }
 }

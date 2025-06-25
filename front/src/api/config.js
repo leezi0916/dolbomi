@@ -31,9 +31,9 @@ export const API_ENDPOINTS = {
 
     CHECK_ID: 'users/check', //아이디 중복 검사
     PROFILE: (userNo) => `/users?user_no=${userNo}`,
-    // LOGIN: '/users/login', //실제에는 이렇게 해야함 아래는 JsonServer 사용시
+    LOGIN: '/users/login', //실제에는 이렇게 해야함 아래는 JsonServer 사용시
 
-    LOGIN: (userId, userPwd) => `/users?user_id=${userId}&user_pwd=${userPwd}`,
+    // LOGIN: (userId, userPwd) => `/users?user_id=${userId}&user_pwd=${userPwd}`,
     DETAIL: (userId) => `/users?user_id=${userId}`,
     PROFILE_UPDATE: (userNo) => `/users/${userNo}`,
     CAREPROFILE: (userNo) => `/users?user_no=${userNo}`,
@@ -48,7 +48,7 @@ export const API_ENDPOINTS = {
   },
 
   RESUME: {
-    BASE: '/resume',
+    BASE: '/resume/v1',
     DETAIL: (resumeNo) => `/resume?resume_no=${resumeNo}`,
     MYRESUME: (userNo) => `resume?user_no=${userNo}`,
     UPDATE: (resumeNo) => `/resume/${resumeNo}`,
