@@ -1,11 +1,18 @@
 package com.kh.dolbomi.domain;
 
 import com.kh.dolbomi.enums.StatusEnum;
+<<<<<<< HEAD
+import jakarta.persistence.CascadeType;
+=======
+>>>>>>> 6c4b9b5390a05fecde5915f8e8e2c03bc5a6ae78
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+<<<<<<< HEAD
+=======
 import jakarta.persistence.FetchType;
+>>>>>>> 6c4b9b5390a05fecde5915f8e8e2c03bc5a6ae78
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -58,10 +65,10 @@ public class User {
     @Column(name = "PHONE", nullable = false, length = 13)
     private String phone;
 
-    @Column(name = "ADDRESS", nullable = false, length = 30)
+    @Column(name = "ADDRESS", nullable = false, length = 40)
     private String address;
 
-    @Column(name = "EMAIL", nullable = false, length = 20)
+    @Column(name = "EMAIL", nullable = false, length = 40)
     private String email;
 
     @Column(name = "STATUS", nullable = false, length = 1)
@@ -72,16 +79,21 @@ public class User {
     private String profileImage;
 
 
+//    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+
+
     // User <-> License 양방향 설정
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+
     private List<License> licenses = new ArrayList<>();
 
-
-    public void updateUserInfo(String userName, Integer age, StatusEnum.Gender gender, String phone, String address,
-                               String email) {
+    public void updateUserInfo(String userName, Integer age, StatusEnum.Gender gender, String phone, String email,
+                               String address,
+                               String profileImage) {
         if (userName != null && !userName.trim().isEmpty()) {
             this.userName = userName.trim();
         }
+
 
         if (age != null && age > 0) {
             this.age = age;
@@ -102,8 +114,11 @@ public class User {
         if (address != null && !address.trim().isEmpty()) {
             this.address = address.trim();
         }
-    }
 
+        if (profileImage != null && !profileImage.trim().isEmpty()) {
+            this.profileImage = profileImage.trim();
+        }
+    }
 
     @PrePersist
     public void prePersist() {
@@ -117,7 +132,6 @@ public class User {
         this.userPwd = encodedPassword;
     }
 
-    public enum Gender {
-        M, F
-    }
+
+
 }

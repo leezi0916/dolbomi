@@ -26,6 +26,19 @@ export const proposerSevice = {
     }
   },
 
+  // 신청 여부 확인 (프론트에서 버튼 조건 분기용)
+  getProposerStatus: async ({ hiringNo, caregiverNo }) => {
+    try {
+      const { data } = await api.get(API_ENDPOINTS.PROPOSER.STATUS, {
+        params: { hiringNo, caregiverNo },
+      });
+      return data.applied; // true 또는 false 반환한다고 가정
+    } catch (error) {
+      console.error('신청 여부 확인 실패:', error.response?.data?.message || error.message);
+      throw error;
+    }
+  },
+
   // 신청 취소 (삭제)
   //취소는 현재 json-server 사용중이라 백엔드 들어갈시 다시 수정해야할듯
   cancelProposer: async ({ caregiverNo, hiringNo }) => {

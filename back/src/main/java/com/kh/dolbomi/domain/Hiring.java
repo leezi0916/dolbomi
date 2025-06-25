@@ -13,7 +13,6 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -51,16 +50,17 @@ public class Hiring {
     private Integer account;
 
     @Column(name = "START_DATE", nullable = false)
-    private LocalDate startDate;
+    private LocalDateTime startDate;
 
     @Column(name = "END_DATE", nullable = false)
-    private LocalDate endDate;
+    private LocalDateTime endDate;
 
     //지원자 몇명 받을지
     @Column(name = "MAX_APPLICANTS", nullable = false)
     private Integer maxApplicants;
 
     @Column(name = "CARE_STATUS", nullable = false, length = 1)
+    @Enumerated(EnumType.STRING)
     private StatusEnum.CareStatus careStatus;
 
     @Column(name = "ROOM_IMAGE", length = 100)

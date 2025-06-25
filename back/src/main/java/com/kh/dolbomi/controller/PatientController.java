@@ -46,8 +46,10 @@ public class PatientController {
     @PatchMapping("/{patNo}")
     public ResponseEntity<PatientDto.Response> UpdatePatient(
             @PathVariable Long patNo,
+
             @RequestBody PatientDto.Update updatePatDto) {
         return ResponseEntity.ok(patientService.updatePatient(patNo, updatePatDto));
+
 
     }
 

@@ -12,6 +12,7 @@ import { IoCheckmarkOutline } from 'react-icons/io5';
 import { ClipLoader } from 'react-spinners';
 import { Link } from 'react-router-dom';
 import { hiringService } from '../api/hiring';
+import Paging from '../components/Paging';
 
 const HireList = () => {
   const [hireLists, setHireLists] = useState([]);
@@ -24,28 +25,34 @@ const HireList = () => {
   const [account, setAccount] = useState('');
   const [keyword, setSearchKeyword] = useState('');
   const [careStatus, setCareStatus] = useState(false);
+  const [page, setPage] = useState(1); // MUI Pagination은 1부터 시작
+  const [size] = useState(10);
+  const [totalPages, setTotalPages] = useState(0);
 
   // 1. 컴포넌트가 처음 마운트될 때 전체 리스트를 불러옵니다.
   useEffect(() => {
-    loadHireLists(false); // 초기 로딩 시에는 필터 없이 전체 데이터 요청
-  }, []);
+    loadHireLists(page - 1, size); // API에선 0부터 시작일 가능성 있어 -1 처리
+  }, [page]);
 
-  const loadHireLists = async () => {
+  const loadHireLists = async (pageNumber, pageSize) => {
     try {
       setLoading(true);
       setError(null);
-
-      const hireList = await hiringService.getJobOpeningList();
-      setHireLists(hireList);
-    } catch (error) {
-      console.error(error);
-      const errorMessage = '돌봄 대상자 구인 리스트를 가져오지 못했습니다.';
-      setError(errorMessage);
+      const res = await hiringService.getHiringList({ page: pageNumber, size: pageSize });
+      console.log('API Response:', res); // 여기서 totalPages, content 등 확인
+      if (res.totalElements === 0) {
+        setHireLists([]);
+        setError('등록된 돌봄 대상자 모집 글이 없습니다.');
+      } else {
+        setHireLists(res.content);
+        setTotalPages(res.totalPage);
+      }
+    } catch (err) {
+      setError('돌봄 대상자 구인 리스트를 가져오지 못했습니다.');
     } finally {
       setLoading(false);
     }
   };
-
   // SearchBar에서 검색 버튼을 눌렀을 때 호출되는 함수
   const handleSearchSubmit = (keyword) => {
     // SearchBar로부터 받은 키워드를 searchKeyword 상태에 저장합니다.
@@ -173,7 +180,7 @@ const HireList = () => {
                     <div></div>
                   </Divder>
                   <DateInfo>
-                    {hire.startDate} ~ {hire.endDate}
+                    {hire.startDate?.substring(0, 10)} ~ {hire.endDate?.substring(0, 10)}
                   </DateInfo>
                 </HeaderContent>
               </CardHeader>
@@ -187,10 +194,11 @@ const HireList = () => {
                     <GrayText>시급</GrayText> <BoldAccount>{hire.account}원</BoldAccount>
                   </AccuontText>
                 </LocationWage>
-                {hire.careStatus && <AccommodationInfo>숙식 제공 가능</AccommodationInfo>}
+                {hire.careStatus === 'Y' && <AccommodationInfo>숙식 제공 가능</AccommodationInfo>}
               </CardFooter>
             </HireListCard>
           ))}
+          <Paging totalPage={totalPages} currentPage={page} chagneCurrentPage={(newPage) => setPage(newPage)} />
         </HireListSection>
       )}
     </>

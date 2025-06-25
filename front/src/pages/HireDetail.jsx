@@ -31,16 +31,11 @@ const HireDetail = () => {
   const handleOpenModal = () => setModalOpen(true);
   const handleCloseModal = () => setModalOpen(false);
 
-  //  신청 상태 확인
-  const fetchProposerStatus = async () => {
-    try {
-      const list = await proposerSevice.getcareGiverLists(Number(hiringNo));
-      const applied = list.some((item) => item.caregiverNo === user.userNo && item.status === 'N');
-      setAlreadyApplied(applied);
-    } catch (err) {
-      console.error('신청 상태 확인 실패', err);
-    }
+  //  신청 성공 시 상태 반영
+  const handleApply = () => {
+    setAlreadyApplied(true);
   };
+
   // 신청 취소 핸들러
   const handleCancel = async () => {
     const confirm = window.confirm('신청을 취소하시겠습니까?');
@@ -59,20 +54,33 @@ const HireDetail = () => {
       console.error(err);
     }
   };
-
-  //  신청 성공 시 상태 반영
-  const handleApply = () => {
-    setAlreadyApplied(true);
-  };
   useEffect(() => {
     const init = async () => {
-      const getOneJobOpening = await hiringService.getHirngById(Number(hiringNo));
-      setJobOpening(getOneJobOpening);
+      try {
+        const data = await hiringService.getHirngById(Number(hiringNo), user.userNo); // userNo 전달
+        console.log(data);
+        setJobOpening(data);
 
-      await fetchProposerStatus(); // ✅ 상태 확인
+        // 신청 여부는 API에서 받으니 따로 호출하지 않아도 됨
+        setAlreadyApplied(data.applied);
+        // 폼 필드 초기화
+        setValue('hiring_title', data.hiringTitle);
+        setValue('hiringContent', data.hiringContent);
+        setValue('account', data.account);
+        setValue('startDate', data.startDate.slice(0, 10)); // yyyy-MM-dd 형식
+        setValue('endDate', data.endDate.slice(0, 10));
+        setValue('maxApplicants', data.maxApplicants);
+        setValue('careStatus', data.careStatus);
+        setValue('patGender', data.patGender); // 성별도 설정
+      } catch (error) {
+        console.error('구인글 상세 및 신청 상태 불러오기 실패', error);
+      }
     };
-    init();
-  }, []);
+
+    if (user?.userNo && hiringNo) {
+      init();
+    }
+  }, [user, hiringNo, setValue]);
   return (
     <HireRegistSection>
       <HireContainer>
@@ -83,7 +91,7 @@ const HireDetail = () => {
           <ContentWrapper>
             <div>
               <ProfilImageWrapper>
-                <img src={profileImage} alt="프로필 이미지" />
+                <img src={jobOpening?.profileImage} alt="프로필 이미지" />
               </ProfilImageWrapper>
               <ChatButton>
                 <img src={chatImage} alt="프로필 이미지" />1 : 1 채팅하기
@@ -103,29 +111,11 @@ const HireDetail = () => {
               <RadioGroup>
                 <Label>성별</Label>
                 <RadioWrapper checked={currentGender === 'M'}>
-                  {/* checked prop 전달 */}
-                  <input
-                    type="radio"
-                    id="M"
-                    name="gender"
-                    value="M"
-                    checked={currentGender === 'M'} // watch 값으로 제어
-                    {...register('gender')} // register만 남김
-                    readOnly
-                  />
+                  <input type="radio" id="M" name="patGender" value="M" checked={currentGender === 'M'} readOnly />
                   <label htmlFor="M">남성</label>
                 </RadioWrapper>
                 <RadioWrapper checked={currentGender === 'F'}>
-                  {/* checked prop 전달 */}
-                  <input
-                    type="radio"
-                    id="F"
-                    name="gender"
-                    value="F"
-                    checked={currentGender === 'F'} // watch 값으로 제어
-                    {...register('gender')} // register만 남김
-                    readOnly
-                  />
+                  <input type="radio" id="F" name="patGender" value="F" checked={currentGender === 'F'} readOnly />
                   <label htmlFor="F">여성</label>
                 </RadioWrapper>
               </RadioGroup>
@@ -153,9 +143,9 @@ const HireDetail = () => {
             <DiseaseGroup>
               <Label>보유한 질병</Label>
               <DiseaseInputDiv>
-                <div>치매</div>
-                <div>고혈압</div>
-                <div>당뇨</div>
+                {jobOpening?.diseaseTag?.map((tag, idx) => (
+                  <div key={idx}>{tag}</div>
+                ))}
               </DiseaseInputDiv>
             </DiseaseGroup>
           </ContentWrapper>
@@ -190,19 +180,12 @@ const HireDetail = () => {
               <RadioGroup>
                 <Label>숙식 제공 여부</Label>
                 <RadioWrapper>
-                  <input type="radio" id="careStatus" {...register('careStatus')} name="careStatus" />
-                  <label htmlFor="careStatus">가능</label>
+                  <input type="radio" value="Y" name="careStatus" checked={jobOpening?.careStatus === 'Y'} readOnly />
+                  <label>가능</label>
                 </RadioWrapper>
                 <RadioWrapper>
-                  <input
-                    type="radio"
-                    id="careStatus"
-                    {...register('careStatus')}
-                    name="careStatus"
-                    value="careStatus"
-                    readOnly
-                  />
-                  <label htmlFor="careStatus">불가능</label>
+                  <input type="radio" value="N" name="careStatus" checked={jobOpening?.careStatus === 'N'} readOnly />
+                  <label>불가능</label>
                 </RadioWrapper>
               </RadioGroup>
               <InputGroup>
