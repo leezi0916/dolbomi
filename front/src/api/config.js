@@ -39,7 +39,7 @@ export const API_ENDPOINTS = {
     CAREPROFILE: (userNo) => `/users?user_no=${userNo}`,
   },
   REVIEWS: {
-    BASE: '/reviews',
+    BASE: '/reviews/v1',
     DETAIL: (userNo) => `/reviews?user_no=${userNo}`,
   },
   HIRING: {
@@ -68,8 +68,8 @@ export const API_ENDPOINTS = {
   },
 
   REPORT: {
-    BASE: `/report`,
-    PROFILE: (patNo) => `/report?pat_no=${patNo}`,
+    BASE: `/report/v1`,
+    LIST: (patNo) => `/report/v1/${patNo}`,
     SEARCH: (reportNo) => `/report/report_no=${reportNo}`,
   },
 
