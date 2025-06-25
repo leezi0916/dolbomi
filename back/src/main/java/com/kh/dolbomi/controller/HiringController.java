@@ -4,8 +4,16 @@ package com.kh.dolbomi.controller;
 import com.kh.dolbomi.dto.HiringDto;
 import com.kh.dolbomi.service.HiringService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/hiring")
@@ -14,6 +22,14 @@ import org.springframework.web.bind.annotation.*;
 public class HiringController {
 
     private final HiringService hiringService;
+
+    //돌봄 대상자 모집 리스트 불러오기
+    @GetMapping()
+    public ResponseEntity<Page<HiringDto.Response>> getPagedHiringList(Pageable pageable) {
+        Page<HiringDto.Response> hiringPage = hiringService.getHiringPage(pageable);
+        return ResponseEntity.ok(hiringPage);
+    }
+
 
     // 구인글 작성
     @PostMapping
@@ -34,4 +50,17 @@ public class HiringController {
         HiringDto.Response response = hiringService.getHiringDetail(hiringNo);
         return ResponseEntity.ok(response);
     }
+
+    //구인글 수정하기
+//    @PatchMapping("/{hiringNo}")
+//    public ResponseEntity<HiringDto.Response> updateHiring(@PathVariable Long hiringNo, @RequestBody HiringDto.Update updateDto) {
+//
+//    }
+
+    //구인글 삭제하기
+//    @DeleteMapping("/{hiringNo}")
+//    public ResponseEntity<Void> deleteHiring(@PathVariable Long hiringNo) {
+//        hiringService.deleteHiring(hiringNo);
+//        return ResponseEntity.ok().build();
+//    }
 }

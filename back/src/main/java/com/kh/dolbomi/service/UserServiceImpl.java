@@ -60,6 +60,14 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional(readOnly = true)
+    public UserDto.ProfileDto getUserProfile(Long userNo) {
+        User user = userRepository.findById(userNo)
+                .orElseThrow(() -> new IllegalArgumentException("해당 회원이 존재하지 않습니다."));
+        return UserDto.ProfileDto.toDto(user);
+    }
+
+    @Override
     public UserDto.Response updateUser(Long userNo, UserDto.Update updateDto) {
         User user = userRepository.findById(userNo)
                 .orElseThrow(() -> new IllegalArgumentException("유저가 존재하지 않습니다."));
