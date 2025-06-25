@@ -10,6 +10,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
@@ -31,6 +32,10 @@ public class Report {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "REPORT_NO")
     private Long reportNo;
+
+    @OneToOne
+    @JoinColumn(name = "CARE_GIVER_NO", nullable = false)
+    private User user;
 
     @ManyToOne
     @JoinColumn(name = "PAT_NO", nullable = false)
@@ -68,5 +73,9 @@ public class Report {
 
     public void changePatient(Patient patient) {
         this.patient = patient;
+    }
+
+    public void changeUser(User user) {
+        this.user = user;
     }
 }

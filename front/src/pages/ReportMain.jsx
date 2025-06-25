@@ -19,7 +19,7 @@ const ReportMain = () => {
 
   // 일지목록에서 가져온, 드롭다운박스에 넣을 날짜들과 작성자들
   const uniqueDates = [...new Set(allReport.map((report) => report.createDate.slice(0, 7)))];
-  const uniqueAuthors = [...new Set(allReport.map((report) => report.careGiverNo))];
+  const uniqueAuthors = [...new Set(allReport.map((report) => report.userName))];
 
   const formatPhoneNumber = (phone = '') => {
     return phone.replace(/(\d{3})(\d{4})(\d{4})/, '$1-$2-$3');
@@ -41,15 +41,19 @@ const ReportMain = () => {
     const loadReportList = async () => {
       try {
         const reports = await reportService.getReports(patNo);
-        setAllReport(reports);
 
-        setReportList(
-          reports.reverse().filter((report) => {
-            const date = dateFilter ? report.createDate.startsWith(dateFilter) : true;
-            const author = authorFilter ? report.careGiverNo.toString() === authorFilter : true;
-            return date && author;
-          })
-        );
+        if (reports) {
+          setAllReport(reports);
+
+          setReportList(
+            reports.filter((report) => {
+              const date = dateFilter ? report.createDate.startsWith(dateFilter) : true;
+              const author = authorFilter ? report.userName === authorFilter : true;
+              return date && author;
+            })
+          );
+        }
+        return null;
       } catch (error) {
         console.error(error);
         const errorMessage = '일지를 불러오는데 실패했습니다.';
@@ -87,31 +91,33 @@ const ReportMain = () => {
       <Board>
         <BoardTop>
           <ListTitle>진단 일지 목록</ListTitle>
-          <Right>
-            {/* 날짜 필터 */}
-            <Fillter value={dateFilter} onChange={(e) => setDateFilter(e.target.value)}>
-              <option value="">날짜 : 전체</option>
-              {uniqueDates.map((date) => (
-                <option key={date} value={date}>
-                  {date}
-                </option>
-              ))}
-            </Fillter>
-            {/* 작성자 필터 */}
-            <Fillter value={authorFilter} onChange={(e) => setAuthorFilter(e.target.value)}>
-              <option value="">작성자 : 전체</option>
-              {uniqueAuthors.map((author) => (
-                <option key={author} value={author}>
-                  {author}
-                </option>
-              ))}
-            </Fillter>
+          <Rights>
+            <Filters>
+              {/* 날짜 필터 */}
+              <Fillter value={dateFilter} onChange={(e) => setDateFilter(e.target.value)}>
+                <option value="">날짜 : 전체</option>
+                {uniqueDates.map((date) => (
+                  <option key={date} value={date}>
+                    {date}
+                  </option>
+                ))}
+              </Fillter>
+              {/* 작성자 필터 */}
+              <Fillter value={authorFilter} onChange={(e) => setAuthorFilter(e.target.value)}>
+                <option value="">작성자 : 전체</option>
+                {uniqueAuthors.map((author) => (
+                  <option key={author} value={author}>
+                    {author}
+                  </option>
+                ))}
+              </Fillter>
+            </Filters>
             <Link to={`/caregiver/reportform/${patNo}`} state={pat.patName}>
               <SubmitButton>
                 <ButtonText>글쓰기</ButtonText>
               </SubmitButton>
             </Link>
-          </Right>
+          </Rights>
         </BoardTop>
         <BoardItemTop>
           <div>No</div>
@@ -119,14 +125,20 @@ const ReportMain = () => {
           <div>작성자</div>
           <div>작성 일자</div>
         </BoardItemTop>
-        {reportList.map((report) => (
-          <BoardItem key={report.reportNo} to={`/report/${patNo}/detail/${report.reportNo}`} state={{ report }}>
-            <div>{report.reportNo}</div>
-            <div>{report.reportTitle}</div>
-            <div>{report.careGiverNo}</div>
-            <div>{report.createDate.slice(0, 10)}</div>
-          </BoardItem>
-        ))}
+        {reportList && reportList.length > 0 ? (
+          reportList.map((report) => (
+            <BoardItem key={report.reportNo} to={`/report/${patNo}/detail/${report.reportNo}`} state={{ report }}>
+              <div>{report.reportNo}</div>
+              <div>{report.reportTitle}</div>
+              <div>{report.userName}</div>
+              <div>{report.createDate.slice(0, 10)}</div>
+            </BoardItem>
+          ))
+        ) : (
+          <BoardItemTop>
+            <div>진단일지가 없습니다.</div>
+          </BoardItemTop>
+        )}
 
         <BorderDiv />
       </Board>
@@ -194,5 +206,14 @@ const BoardItem = styled(Link)`
   > div {
     flex: 1;
   }
+`;
+
+const Rights = styled(Right)`
+  justify-content: space-between;
+`;
+
+const Filters = styled.div`
+  display: flex;
+  gap: ${({ theme }) => theme.spacing[3]};
 `;
 export default ReportMain;
