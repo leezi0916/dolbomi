@@ -17,6 +17,7 @@ public class HiringDto {
 
 
     public static Response toDto(Hiring hiring) {
+
         Patient patient = hiring.getPatient();
         User user = hiring.getUser();
 

@@ -46,22 +46,22 @@ export const patientService = {
     }
   },
 
-  updatePatinet: async (patNo, data) => {
-    //put 요청을 보낼때 id로 입력해줘야 json.db가 인식함 가공은 페이지에서 하고 변수는 id로 넘겨주자
+  updatePatient: async (patNo, data) => {
+    console.log(data);
     try {
-      await api.fetch(API_ENDPOINTS.PATIENT.FETCH(Number(patNo)), camelToSnake(data));
+      await api.patch(API_ENDPOINTS.PATIENT.PATCH(Number(patNo)), camelToSnake(data));
     } catch (error) {
       console.error('돌봄대상자 수정 실패:', error);
       throw new Error('돌봄대상자 수정하는데 실패했습니다.');
     }
   },
 
-  deletPatient: async (id) => {
-    try {
-      await api.delete(API_ENDPOINTS.PATIENT.DELETE(id));
-    } catch (error) {
-      console.error('돌봄대상자 수정 실패:', error);
-      throw new Error('돌봄대상자 수정하는데 실패했습니다.');
-    }
-  },
+  // deletPatient: async (id) => {
+  //   try {
+  //     await api.delete(API_ENDPOINTS.PATIENT.DELETE(id));
+  //   } catch (error) {
+  //     console.error('돌봄대상자 수정 실패:', error);
+  //     throw new Error('돌봄대상자 수정하는데 실패했습니다.');
+  //   }
+  // },
 };

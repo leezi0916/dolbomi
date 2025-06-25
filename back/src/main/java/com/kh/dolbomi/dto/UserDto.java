@@ -2,9 +2,12 @@ package com.kh.dolbomi.dto;
 
 import com.kh.dolbomi.domain.User;
 import com.kh.dolbomi.enums.StatusEnum;
-import lombok.*;
-
 import java.util.List;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 public class UserDto {
 
@@ -17,7 +20,7 @@ public class UserDto {
         private String user_pwd;
         private String user_name;
         private Integer age;
-        private User.Gender gender;
+        private StatusEnum.Gender gender;
         private String phone;
         private String address;
         private String email;
@@ -57,7 +60,7 @@ public class UserDto {
         private String user_id;
         private String user_name;
         private String email;
-        private User.Gender gender;
+        private StatusEnum.Gender gender;
         private String phone;
         private String address;
         private Integer age;
@@ -87,7 +90,7 @@ public class UserDto {
         //private String profileImage
         private String user_name;
         private Integer age;
-        private User.Gender gender;
+        private StatusEnum.Gender gender;
         private String phone;
         private String email;
         private String address;

@@ -10,6 +10,7 @@ import com.kh.dolbomi.repository.DiseaseRepository;
 import com.kh.dolbomi.repository.PatientRepository;
 import com.kh.dolbomi.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -33,9 +34,9 @@ public class PatientServiceImpl implements PatientService {
 
         Patient patient = createDto.toEntity(user);
 
-        if (createDto.getDiseaseTags() != null && !createDto.getDiseaseTags().isEmpty()) {
+        if (createDto.getDisease_tags() != null && !createDto.getDisease_tags().isEmpty()) {
             //tag가 왔다. ["kh","java","쉬움"]
-            for (String disName : createDto.getDiseaseTags()) {
+            for (String disName : createDto.getDisease_tags()) {
 
                 //tag를 이름으로 조회해서 없으면 새로 만들어라.
                 Disease disease = diseaseRepository.findByDisName(disName)
@@ -65,6 +66,49 @@ public class PatientServiceImpl implements PatientService {
     public PatientDto.Response getPatient(Long patNo) {
         Patient patient = patientRepository.findOne(patNo).
                 orElseThrow(() -> new EntityNotFoundException("조회된 회원이 없습니다."));
+        return PatientDto.Response.toDetailDto(patient);
+    }
+
+    @Transactional
+    @Override
+    public PatientDto.Response updatePatient(Long patNo, PatientDto.Update updatePatDto) {
+
+        Patient patient = patientRepository.findOne(patNo)
+                .orElseThrow(() -> new IllegalArgumentException("해당 환자가 없습니다."));
+        System.out.println("name :" + patient.getDiseaseTags());
+
+        patient.changePatName(updatePatDto.getPat_name());
+        patient.changePatAge(updatePatDto.getPat_age());
+        patient.changePatAddress(updatePatDto.getPat_address());
+        patient.changePatPhone(updatePatDto.getPat_phone());
+        patient.changePatGender(updatePatDto.getPat_gender());
+        patient.changePatWeight(BigDecimal.valueOf(updatePatDto.getPat_weight()));
+        patient.changePatHeight(BigDecimal.valueOf(updatePatDto.getPat_height()));
+        patient.changePatContent(updatePatDto.getPat_content());
+        patient.changeStatus(updatePatDto.getStatus());
+
+        if (updatePatDto.getDisease_tags() != null && !updatePatDto.getDisease_tags().isEmpty()) {
+
+            patient.getDiseaseTags().clear();
+            //기존BoardTag -> 연결이 끊기면 필요가 있을까? X
+            for (String disName : updatePatDto.getDisease_tags()) {
+
+                //연결된 boardTags의 영속성을 제거한다. -> orphanRemoval = true 설정이 되어있다면 실제 db에서 제거
+
+                //tag를 이름으로 조회해서 없으면 새로 만들어라.
+                Disease disease = diseaseRepository.findByDisName(disName)
+                        .orElseGet(() -> diseaseRepository.save(Disease.builder().disName(disName)
+                                .build())
+                        );
+
+                DiseaseTag diseaseTag = DiseaseTag.builder()
+                        .disease(disease)
+                        .build();
+
+                diseaseTag.changePatient(patient);
+            }
+        }
+
         return PatientDto.Response.toDetailDto(patient);
     }
 
