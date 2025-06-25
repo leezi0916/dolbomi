@@ -75,6 +75,10 @@ public class User {
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private List<License> licenses = new ArrayList<>();
 
+    // User <-> board 양방향 설정
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    private List<Board> boards = new ArrayList<>();
+
     public void updateUserInfo(String userName, Integer age, Gender gender, String phone, String address,
                                String email) {
         if (userName != null && !userName.trim().isEmpty()) {
