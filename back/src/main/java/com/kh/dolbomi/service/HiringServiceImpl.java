@@ -7,6 +7,7 @@ import com.kh.dolbomi.dto.HiringDto;
 import com.kh.dolbomi.enums.StatusEnum;
 import com.kh.dolbomi.repository.HiringRepository;
 import com.kh.dolbomi.repository.PatientRepository;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -24,7 +25,7 @@ public class HiringServiceImpl implements HiringService {
 
     @Override
     public Long createHiring(Long patNo, HiringDto.Create createDto) {
-        Patient patient = patientRepository.findById(patNo)
+        Patient patient = patientRepository.findOne(patNo)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 환자 번호입니다."));
 
         // 보호자 추출
@@ -40,6 +41,13 @@ public class HiringServiceImpl implements HiringService {
         hiringRepository.save(hiring);
 
         return hiring.getHiringNo();
+    }
+
+
+    @Override
+    public Optional<Hiring> findById(Long hiringNo) {
+        return hiringRepository.findById(hiringNo);
+
     }
 
 

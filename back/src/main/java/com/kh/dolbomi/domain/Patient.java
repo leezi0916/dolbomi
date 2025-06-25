@@ -30,6 +30,9 @@ public class Patient {
     @Column(name = "PROFILE_IMAGE", length = 100)
     private String profileImage;
 
+    @Column(name = "PAT_PHONE")
+    private Integer patPhone;
+
     @Column(name = "PAT_NAME", nullable = false, length = 10)
     private String patName;
 
@@ -47,7 +50,7 @@ public class Patient {
     private BigDecimal patHeight;
 
     @Column(name = "PAT_WEIGHT", nullable = false)
-    private BigDecimal patWeight;
+    private BigDecimal  patWeight;
 
     @Column(name = "PAT_CONTENT", columnDefinition = "TEXT")
     private String patContent;
@@ -66,6 +69,8 @@ public class Patient {
             this.status = StatusEnum.Status.Y;
         }
     }
+
+
 
     //양방향 설정 환자 삭제시 관련 환자에 대한 질병태그들도 삭제
     @OneToMany(mappedBy = "patient", cascade = CascadeType.ALL)

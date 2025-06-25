@@ -17,6 +17,7 @@ import java.time.LocalDateTime;
     @DynamicInsert //insert시에 null이 아닌 필드만 쿼리에 포함, default값 활용
     @DynamicUpdate //변경된 필드만 update문에 포함
     public class Resume {
+
         @Id
         @GeneratedValue(strategy = GenerationType.IDENTITY)
         @Column(name = "RESUME_NO")

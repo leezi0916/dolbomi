@@ -19,10 +19,6 @@ public class Report {
     private Long reportNo;
 
     @ManyToOne
-    @JoinColumn(name = "CAREGIVER_NO", nullable = false)
-    private User caregiver;
-
-    @ManyToOne
     @JoinColumn(name = "PAT_NO", nullable = false)
     private Patient patient;
 

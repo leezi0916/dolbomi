@@ -60,8 +60,10 @@ public class HiringDto {
         private String hiring_title;
         private String hiring_content;
         private Integer account;
+
         private LocalDate start_date;
         private LocalDate end_date;
+
         private Integer max_applicants;
         private StatusEnum.CareStatus care_status;
         private String room_image;
@@ -92,8 +94,11 @@ public class HiringDto {
         private String hiring_title;
         private String hiring_content;
         private Integer account;
+
         private LocalDate start_date;
         private LocalDate end_date;
+
+
         private Integer max_applicants;
         private StatusEnum.CareStatus care_status;
         private String room_image;
@@ -114,6 +119,7 @@ public class HiringDto {
 
     }
 
+
     @Getter
     @Setter
     @AllArgsConstructor
@@ -129,5 +135,6 @@ public class HiringDto {
         private StatusEnum.CareStatus care_status;
         private String room_image;
     }
+
 }
 

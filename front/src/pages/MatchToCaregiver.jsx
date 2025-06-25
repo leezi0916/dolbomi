@@ -100,7 +100,7 @@ const [activeTab, setActiveTab] = useState('matching');
                     <ProfileInfo>
                       <UserName>{pat.patName} 님</UserName>
                       <UserAge>나이 {pat.patAge}세(여)</UserAge>
-                      <InfoButton onClick={() => navigate(`/guardian/patient/${pat.patNo}`)}>환자 정보</InfoButton>
+                      <InfoButton onClick={() => navigate(`/report/${pat.patNo}`)}> 간병일지 보기</InfoButton>
                     </ProfileInfo>
                   </ProfileCard>
                 ))}
@@ -194,7 +194,7 @@ const Title = styled.h1`
   font-weight: ${({ theme }) => theme.fontWeights.bold};
   text-align: center;
 
-  color: ${({ theme }) => theme.colors.gray[5]};
+  color: ${({ theme }) => theme.colors.black1};
   padding: ${({ theme }) => theme.spacing[3]};
   display: flex;
   justify-content: flex-start;

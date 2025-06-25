@@ -9,7 +9,9 @@ public interface UserService {
 
     UserDto.Response loginUser(String userId, String userPwd);
 
+
     UserDto.ProfileDto getUserProfile(Long userNo);
+
 
     UserDto.Response updateUser(Long userNo, UserDto.Update updateDto);
 }

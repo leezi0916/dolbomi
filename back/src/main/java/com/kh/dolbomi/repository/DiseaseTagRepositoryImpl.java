@@ -3,10 +3,9 @@ package com.kh.dolbomi.repository;
 import com.kh.dolbomi.domain.Disease;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
-
 import java.util.List;
 
-public class DiseaseTagRepositoryImpl implements DiseaseTagRepository{
+public class DiseaseTagRepositoryImpl implements DiseaseTagRepository {
 
 
     @PersistenceContext

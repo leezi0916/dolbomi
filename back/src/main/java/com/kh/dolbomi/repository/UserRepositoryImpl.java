@@ -36,4 +36,6 @@ public class UserRepositoryImpl implements UserRepository{
     public Optional<User> findById(Long userNo) {
         return Optional.ofNullable(em.find(User.class, userNo));
     }
+
+
 }
