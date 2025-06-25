@@ -26,13 +26,12 @@ const updateSchema = yup.object().shape({
     .required('전화번호를 입력하세요.')
     .matches(/^010\d{8}$/, "010으로 시작하고 '-' 제외한 11자리여야 합니다."),
 
+  email: yup.string().email('유효한 이메일 주소를 입력하세요.').required('이메일을 입력해주세요.'),
   address: yup
     .string()
     .required('주소를 입력해주세요.')
     .min(5, '주소는 최소 5자 이상이어야 합니다.')
     .max(100, '주소는 100자 이하로 입력해주세요.'),
-
-  email: yup.string().email('유효한 이메일 주소를 입력하세요.').required('이메일을 입력해주세요.'),
 });
 
 const useUserUpdateForm = ({ profile }) => {
@@ -63,8 +62,13 @@ const useUserUpdateForm = ({ profile }) => {
 
       const updatedData = {
         ...changedFields,
-        ...(licensesChanged ? { licenses: licenseList } : {}),
+        licenses: licenseList || [],
       };
+
+      // 문자열을 숫자로 변환 (필요시)
+      if (updatedData.age) {
+        updatedData.age = Number(updatedData.age);
+      }
 
       // 여기 userNo 사용! (profile.userNo 또는 profile.user_no)
       const userNo = profile.userNo || profile.user_no;

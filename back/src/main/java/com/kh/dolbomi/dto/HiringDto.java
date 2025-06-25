@@ -4,7 +4,7 @@ import com.kh.dolbomi.domain.Hiring;
 import com.kh.dolbomi.domain.Patient;
 import com.kh.dolbomi.domain.User;
 import com.kh.dolbomi.enums.StatusEnum;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -14,7 +14,6 @@ import lombok.Setter;
 
 
 public class HiringDto {
-
 
     public static Response toDto(Hiring hiring) {
         Patient patient = hiring.getPatient();
@@ -61,8 +60,10 @@ public class HiringDto {
         private String hiring_title;
         private String hiring_content;
         private Integer account;
-        private LocalDateTime start_date;
-        private LocalDateTime end_date;
+
+        private LocalDate start_date;
+        private LocalDate end_date;
+
         private Integer max_applicants;
         private StatusEnum.CareStatus care_status;
         private String room_image;
@@ -93,8 +94,11 @@ public class HiringDto {
         private String hiring_title;
         private String hiring_content;
         private Integer account;
-        private LocalDateTime start_date;
-        private LocalDateTime end_date;
+
+        private LocalDate start_date;
+        private LocalDate end_date;
+
+
         private Integer max_applicants;
         private StatusEnum.CareStatus care_status;
         private String room_image;
@@ -114,5 +118,23 @@ public class HiringDto {
         private List<String> disease_tag;
 
     }
+
+
+    @Getter
+    @Setter
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class Update {
+
+        private String hiring_title;
+        private String hiring_content;
+        private Integer account;
+        private LocalDate start_date;
+        private LocalDate end_date;
+        private Integer max_applicants;
+        private StatusEnum.CareStatus care_status;
+        private String room_image;
+    }
+
 }
 
