@@ -39,7 +39,7 @@ export const API_ENDPOINTS = {
     CAREPROFILE: (userNo) => `/users?user_no=${userNo}`,
   },
   REVIEWS: {
-    BASE: '/reviews',
+    BASE: '/review/v1',
     DETAIL: (userNo) => `/reviews?user_no=${userNo}`,
   },
   HIRING: {
