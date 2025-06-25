@@ -32,6 +32,10 @@ const PatientUpdate = () => {
 
   const navigate = useNavigate();
 
+  const handleTagChange = (newVal) => {
+    setTags(newVal); // set을 대체하는 커스텀 함수
+  };
+
   useEffect(() => {
     if (!user) {
       alert('로그인 후 이용해주세요');
@@ -58,9 +62,9 @@ const PatientUpdate = () => {
       setValue('patHeight', patient.patHeight || '');
       setValue('patWeight', patient.patWeight || '');
       setValue('patContent', patient.patContent || '');
-      setValue('phone', patient.phone || '');
-      setValue('tags', patient.tags || '');
-      setTags(patient.tags ? patient.tags : []);
+      setValue('patPhone', patient.patPhone || '');
+      setValue('diseaseTags', patient.diseaseTags || '');
+      setTags(patient.diseaseTags ? patient.diseaseTags : []);
     }
   }, [patient, setValue]);
 
@@ -69,12 +73,12 @@ const PatientUpdate = () => {
 
   // 이게 있어야 tag가 변경됌
   useEffect(() => {
-    setValue('tags', tags);
+    setValue('diseaseTags', tags);
   }, [tags]);
 
   const onSubmit = async (data) => {
     try {
-      await patientService.updatePatinet(patient.patNo, { ...patient, ...data });
+      await patientService.updatePatient(patient.patNo, { ...patient, ...data });
       toast.success('돌봄대상자 수정완료!');
       navigate('/guardian/patient');
     } catch (error) {
@@ -82,9 +86,15 @@ const PatientUpdate = () => {
     }
   };
 
-  const deletePatient = async (id) => {
+  const deletePatient = async (patNo) => {
+    
+    const updatedPatient = {
+      ...patient,
+      status: 'N',
+    };
+
     try {
-      await patientService.deletPatient(id);
+      await patientService.updatePatient(patNo, updatedPatient );
       toast.success('돌봄대상자 삭제완료!');
       navigate('/guardian/patient');
     } catch (error) {
@@ -137,7 +147,7 @@ const PatientUpdate = () => {
 
             <InputGroup>
               <Label htmlFor="phone">보호자 전화번호</Label>
-              <Input type="text" id="phone" {...register('phone')} />
+              <Input type="text" id="phone" {...register('patPhone')} />
             </InputGroup>
 
             <InputGroup>
@@ -160,7 +170,7 @@ const PatientUpdate = () => {
             </GridInerContainer>
 
             <InputGroup>
-              <Tags tags={tags} setTags={setTags} {...register('tags')} />
+              <Tags tags={tags} id="diseaseTags" handleTagChange={handleTagChange} {...register('diseaseTags')} />
             </InputGroup>
 
             <InputGroup>
@@ -172,7 +182,7 @@ const PatientUpdate = () => {
                 이전
               </BackBtn>
               <SubmitBtn type="submit">수정</SubmitBtn>
-              <SubmitBtn type="button" onClick={() => deletePatient(id)}>
+              <SubmitBtn type="button" onClick={() => deletePatient(patNo)}>
                 삭제
               </SubmitBtn>
             </BtnWrap>

@@ -4,17 +4,17 @@ import { useState } from 'react';
 import { Label } from '../styles/Auth.styles';
 import { Input } from '../styles/Auth.styles';
 import { DiseaseDiv,DiseaseBtn, TagsUl } from '../styles/PatientRegistration';
-const Tags = ({tags, setTags}) => {
+const Tags = ({tags, handleTagChange}) => {
   
-  const [inputValue, setInputValue] = useState();
+  const [inputValue, setInputValue] = useState("");
   const removeTags = (indexToRemove) => {
     const filter = tags.filter((_, index) => index !== indexToRemove);
-    setTags(filter);
+    handleTagChange(filter);
   };
   const addTags = () => {
     if (inputValue !== '' && !tags.includes(inputValue)) {
       
-      setTags([...tags, inputValue]);
+      handleTagChange([...tags, inputValue]);
       setInputValue('');
     }
   };

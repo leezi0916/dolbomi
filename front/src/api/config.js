@@ -55,11 +55,11 @@ export const API_ENDPOINTS = {
   },
 
   PATIENT: {
-    BASE: '/patient',
-    DETAIL: (guardianNo) => `/patient?guardian_no=${guardianNo}`,
-    PATDETAIL: (patNo) => `/patient/${patNo}`,
-    FETCH: (patNo) => `/patient/${patNo}`,
-    DELETE: (patNo) => `/patient/${patNo}`,
+    BASE: '/patient/v1',
+    DETAIL: (guardianNo) => `/patient/v1?guardian_no=${guardianNo}`,
+    PATDETAIL: (patNo) => `/patient/v1/${patNo}`,
+    PATCH: (patNo) => `/patient/v1/${patNo}`,
+
   },
 
   DISEASE: {
