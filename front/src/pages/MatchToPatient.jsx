@@ -44,7 +44,7 @@ const MatchToPatient = () => {
                   <UserAge>나이 50세(여)</UserAge>
                 </ProfileInfo>
                 <ButtonRow>
-                  <InfoButton >환자 정보</InfoButton>
+                  <InfoButton >간병일지보기</InfoButton>
                   <ReportButton>간병 종료</ReportButton>
                 </ButtonRow>
               </ProfileCard>
@@ -62,7 +62,7 @@ const MatchToPatient = () => {
                   <UserAge>나이 80세(여)</UserAge>
                 </ProfileInfo>
                 <ButtonRow>
-                  <InfoButton>환자 정보</InfoButton>
+                  <InfoButton>간병일지</InfoButton>
                 </ButtonRow>
               </ProfileCard>
             </ProfileCardPair>

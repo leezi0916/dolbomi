@@ -55,6 +55,7 @@ public class Board {
     @Column(name = "ROLE", nullable = false, length = 1)
     private StatusEnum.Role role;
 
+
     @PrePersist
     public void prePersist() {
         this.createDate = LocalDateTime.now();

@@ -2,7 +2,7 @@ spring:
   application:
     name: dolbomi
   profiles:
-    active: dev  # 실행 환경에 따라 dev 또는 prod로 변경
+    active: dev
 
 ---
 spring:
@@ -51,7 +51,7 @@ spring:
 
   jpa:
     hibernate:
-      ddl-auto: validate  # 운영환경에서는 validate 또는 none 권장
+      ddl-auto: validate
     show-sql: false
     properties:
       hibernate:

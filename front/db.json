@@ -132,20 +132,51 @@
       "id": "51"
     },
     {
+      "resume_no": 52,
       "resume_title": "지원합니다",
       "resume_content": "간병 지원합니다",
       "care_status": "Y",
       "account": 12000,
       "user_no": 1,
-      "user_name": "Adsa",
+      "user_name": "이지묵",
       "licenses": [
+        {
+          "license_name": "운전면허증",
+          "license_publisher": "서울시청",
+          "license_date": "2025-12-20"
+        },
         {
           "license_name": "운전면허증",
           "license_publisher": "서울시청",
           "license_date": "2025-12-20"
         }
       ],
-      "id": "52"
+      "id": "52",
+      "status": "N"
+    },
+    {
+      "resume_no": 53,
+      "id": "53",
+      "care_status": "N",
+      "account": 9800,
+      "resume_content": "취업 시켜줘요...!",
+      "resume_title": "취업 하고싶다!!!",
+      "license_list": "",
+      "user_no": 1,
+      "user_name": "이지묵",
+      "age": 26,
+      "gender": "F",
+      "phone": "01083281182",
+      "address": "경기도 남양주시 별내동",
+      "licenses": [
+        {
+          "license_name": "정보처리기사",
+          "license_publisher": "따고싶네",
+          "license_date": "2025-07-25"
+        }
+      ],
+      "score": "4.5",
+      "status": "N"
     }
   ],
   "hiring": [
@@ -171,7 +202,15 @@
       "pat_address": "서울특별시",
       "profile_image": "https://i.pinimg.com/736x/ba/ca/a0/bacaa0c3434602bc8e7d6a99db91b372.jpg",
       "care_status": "Y",
-      "id": "868f"
+      "id": "2",
+      "phone": "01011111111",
+      "pat_height": 168.5,
+      "pat_weight": 65.2,
+      "hiring_title": "저희 엄마 돌봐주세요",
+      "hiring_content": "부탁드려요",
+      "start_date": "2025-11-09",
+      "end_date": "2025-11-20",
+      "max_applicants": 2
     },
     {
       "hiring_no": 3,
@@ -346,22 +385,17 @@
       "user_id": "admin",
       "user_pwd": "a1234",
       "user_name": "이지묵",
-      "age": 19,
-      "gender": "M",
+      "age": "26",
+      "gender": "F",
       "phone": "01012345678",
-      "address": "별내동dsafsdafas",
+      "address": "경기도 남양주시 별내동",
       "email": "admin@diamelo.com",
       "profile_image": "/src/assets/profileImg/img_간병인.png",
       "licenses": [
         {
-          "license_name": "운전면허 1종",
-          "license_publisher": "경찰청",
-          "license_date": "2025-05-10"
-        },
-        {
-          "license_name": "기사 자격증",
-          "license_publisher": "경찰청",
-          "license_date": "2025-05-10"
+          "license_name": "정보처리기사",
+          "license_publisher": "따고싶네",
+          "license_date": "2025-07-25"
         }
       ]
     },
@@ -508,7 +542,7 @@
       "status": "Y"
     },
     {
-      "id": 2,
+      "id": "2",
       "pat_no": 2,
       "guardian_no": 5,
       "profile_image": "/src/assets/profileImg/img_환자소.png",
@@ -668,6 +702,95 @@
       "create_date": "2025-06-23T01:58:14.898Z",
       "update_date": "2025-06-23T01:58:14.898Z",
       "status": "Y"
+    },
+    {
+      "id": "a400",
+      "care_giver_no": 1,
+      "pat_no": "1",
+      "report_title": "1",
+      "sub_title0": "1",
+      "content0": "1",
+      "create_date": "2025-06-24T02:41:26.201Z",
+      "update_date": "2025-06-24T02:41:26.201Z",
+      "status": "Y"
+    },
+    {
+      "id": "94ad",
+      "care_giver_no": 1,
+      "pat_no": "1",
+      "report_title": "제목",
+      "sub_title0": "1111",
+      "content0": "111",
+      "sub_title1": "2222",
+      "content1": "222",
+      "create_date": "2025-06-24T02:43:41.264Z",
+      "update_date": "2025-06-24T02:43:41.264Z",
+      "status": "Y",
+      "report_content": "1111\n111\n\n2222\n222"
+    },
+    {
+      "id": "974b",
+      "care_giver_no": 1,
+      "pat_no": "1",
+      "report_title": "제목",
+      "sub_title0": "1111",
+      "content0": "111",
+      "sub_title1": "2222",
+      "content1": "222",
+      "create_date": "2025-06-24T03:32:43.592Z",
+      "update_date": "2025-06-24T03:32:43.592Z",
+      "status": "Y",
+      "report_content": "1111\n111\n\n2222\n222"
+    },
+    {
+      "id": "5aee",
+      "care_giver_no": 1,
+      "pat_no": "1",
+      "report_title": "제목",
+      "sub_title0": "11",
+      "content0": "111",
+      "sub_title1": "22",
+      "content1": "222",
+      "create_date": "2025-06-24T03:35:20.671Z",
+      "update_date": "2025-06-24T03:35:20.671Z",
+      "status": "Y",
+      "report_content": "11\n111\n\n22\n222"
+    },
+    {
+      "id": "0548",
+      "care_giver_no": 1,
+      "pat_no": "1",
+      "report_title": "ㅁㅁㅁㅁ",
+      "sub_title0": "ㄴㄴ",
+      "content0": "ㅇㅇ",
+      "create_date": "2025-06-24T03:40:19.184Z",
+      "update_date": "2025-06-24T03:40:19.184Z",
+      "status": "Y",
+      "report_content": "ㄴㄴ\nㅇㅇ"
+    },
+    {
+      "id": "ed28",
+      "care_giver_no": 1,
+      "pat_no": "1",
+      "report_title": "ㄴ",
+      "sub_title0": "ㄴ",
+      "content0": "ㄴ",
+      "create_date": "2025-06-24T03:46:05.688Z",
+      "update_date": "2025-06-24T03:46:05.688Z",
+      "status": "Y",
+      "report_content": "ㄴ\nㄴ"
+    },
+    {
+      "id": "d7c4",
+      "care_giver_no": 1,
+      "pat_no": "1",
+      "report_title": "ㅂ",
+      "sub_title0": "ㅂ",
+      "content0": "ㅂ",
+      "create_date": "2025-06-24T09:24:41.324Z",
+      "update_date": "2025-06-24T09:24:41.324Z",
+      "status": "Y",
+      "report_content": "ㅂ\nㅂ"
     }
   ],
   "proposer": [
@@ -729,6 +852,69 @@
       "address": "전북, 전주시",
       "license": true,
       "profile_image": "/src/assets/profileImg/img_간병인.png"
+    },
+    {
+      "id": "4414",
+      "hiring_no": 6,
+      "resume_no": 53,
+      "caregiver_no": 1,
+      "stauts": "N"
+    },
+    {
+      "id": "9c52",
+      "hiring_no": 6,
+      "resume_no": 52,
+      "caregiver_no": 1,
+      "stauts": "N"
+    },
+    {
+      "id": "57ac",
+      "hiring_no": 5,
+      "resume_no": 52,
+      "caregiver_no": 1
+    },
+    {
+      "id": "af48",
+      "hiring_no": 5,
+      "resume_no": 53,
+      "caregiver_no": 1
+    },
+    {
+      "id": "911f",
+      "hiring_no": 5,
+      "resume_no": 53,
+      "caregiver_no": 1
+    },
+    {
+      "id": "721a",
+      "hiring_no": 4,
+      "resume_no": 53,
+      "caregiver_no": 1
+    },
+    {
+      "id": "374d",
+      "hiring_no": 4,
+      "resume_no": 53,
+      "caregiver_no": 1
+    },
+    {
+      "id": "ed82",
+      "hiring_no": 4,
+      "resume_no": 53,
+      "caregiver_no": 1
+    },
+    {
+      "id": "38df",
+      "hiring_no": 1,
+      "resume_no": 52,
+      "caregiver_no": 1
+    },
+    {
+      "id": "14fa",
+      "hiring_no": 3,
+      "resume_no": 52,
+      "caregiver_no": 1,
+      "status": "N"
     }
   ],
   "matching": [

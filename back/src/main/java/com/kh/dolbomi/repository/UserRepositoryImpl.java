@@ -5,6 +5,7 @@ import com.kh.dolbomi.domain.User;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import java.util.List;
+import java.util.Optional;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -29,4 +30,11 @@ public class UserRepositoryImpl implements UserRepository {
                 .setParameter("userId", userId)
                 .getResultList();
     }
+
+    @Override
+    public Optional<User> findById(Long userNo) {
+        return Optional.ofNullable(em.find(User.class, userNo));
+    }
+
+
 }

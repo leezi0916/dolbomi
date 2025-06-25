@@ -9,7 +9,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -38,5 +38,11 @@ public class License {
     private String licensePublisher;
 
     @Column(name = "LICENSE_DATE", nullable = false)
-    private LocalDateTime licenseDate;
+    private LocalDate licenseDate;
+
+    public void updateInfo(String licenseName, String licensePublisher, LocalDate licenseDate) {
+        this.licenseName = licenseName;
+        this.licensePublisher = licensePublisher;
+        this.licenseDate = licenseDate;
+    }
 }

@@ -75,6 +75,34 @@ public class User {
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private List<License> licenses = new ArrayList<>();
 
+    public void updateUserInfo(String userName, Integer age, Gender gender, String phone, String address,
+                               String email) {
+        if (userName != null && !userName.trim().isEmpty()) {
+            this.userName = userName.trim();
+        }
+
+        if (age != null && age > 0) {
+            this.age = age;
+        }
+
+        if (gender != null) {
+            this.gender = gender;
+        }
+
+        if (phone != null && !phone.trim().isEmpty()) {
+            this.phone = phone.trim();
+        }
+
+        if (email != null && !email.trim().isEmpty()) {
+            this.email = email.trim();
+        }
+
+        if (address != null && !address.trim().isEmpty()) {
+            this.address = address.trim();
+        }
+    }
+
+
     @PrePersist
     public void prePersist() {
         if (status == null) {

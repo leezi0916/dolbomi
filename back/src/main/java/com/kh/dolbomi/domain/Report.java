@@ -33,10 +33,6 @@ public class Report {
     private Long reportNo;
 
     @ManyToOne
-    @JoinColumn(name = "CAREGIVER_NO", nullable = false)
-    private User caregiver;
-
-    @ManyToOne
     @JoinColumn(name = "PAT_NO", nullable = false)
     private Patient patient;
 
@@ -68,5 +64,9 @@ public class Report {
     @PreUpdate
     public void preUpdate() {
         this.updateDate = LocalDateTime.now();
+    }
+
+    public void changePatient(Patient patient) {
+        this.patient = patient;
     }
 }
