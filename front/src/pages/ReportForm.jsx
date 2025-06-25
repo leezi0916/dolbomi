@@ -16,7 +16,7 @@ const ReportForm = () => {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
     careGiverNo: user.userNo,
-    patNo: patNo,
+    patNo: Number(patNo),
   });
 
   const handleChange = (e) => {
@@ -89,6 +89,9 @@ const ReportForm = () => {
       <Line />
       <br />
       <Buttons>
+        <Btn onClick={() => window.history.back()}>
+          <ButtonText>이전</ButtonText>
+        </Btn>
         <Btn onClick={handleSubmit}>
           <ButtonText>등록</ButtonText>
         </Btn>

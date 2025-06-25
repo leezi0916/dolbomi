@@ -50,11 +50,12 @@ public class ReportDto {
         private LocalDateTime create_date;
         private LocalDateTime update_date;
         private StatusEnum.Status status;
+        private String userName;
 
         public static Response toDto(Report report, String userName) {
             return Response.builder()
                     .report_no(report.getReportNo())
-                    .care_giver_no(report.getUser().getUserNo())
+                    .userName(userName)
                     .pat_no(report.getPatient().getPatNo())
                     .report_title(report.getReportTitle())
                     .report_content(report.getReportContent())

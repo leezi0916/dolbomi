@@ -19,7 +19,7 @@ const ReportMain = () => {
 
   // 일지목록에서 가져온, 드롭다운박스에 넣을 날짜들과 작성자들
   const uniqueDates = [...new Set(allReport.map((report) => report.createDate.slice(0, 7)))];
-  const uniqueAuthors = [...new Set(allReport.map((report) => report.userName))];
+  const uniqueAuthors = [...new Set(allReport.map((report) => report.careGiverNo))];
 
   const formatPhoneNumber = (phone = '') => {
     return phone.replace(/(\d{3})(\d{4})(\d{4})/, '$1-$2-$3');
@@ -48,7 +48,7 @@ const ReportMain = () => {
           setReportList(
             reports.filter((report) => {
               const date = dateFilter ? report.createDate.startsWith(dateFilter) : true;
-              const author = authorFilter ? report.userName === authorFilter : true;
+              const author = authorFilter ? report.careGiverNo === authorFilter : true;
               return date && author;
             })
           );
@@ -95,28 +95,35 @@ const ReportMain = () => {
             <Filters>
               {/* 날짜 필터 */}
               <Fillter value={dateFilter} onChange={(e) => setDateFilter(e.target.value)}>
-                <option value="">날짜 : 전체</option>
+                <Option value="">날짜 : 전체</Option>
                 {uniqueDates.map((date) => (
-                  <option key={date} value={date}>
+                  <Option key={date} value={date}>
                     {date}
-                  </option>
+                  </Option>
                 ))}
               </Fillter>
               {/* 작성자 필터 */}
               <Fillter value={authorFilter} onChange={(e) => setAuthorFilter(e.target.value)}>
-                <option value="">작성자 : 전체</option>
+                <Option value="">작성자 : 전체</Option>
                 {uniqueAuthors.map((author) => (
-                  <option key={author} value={author}>
+                  <Option key={author} value={author}>
                     {author}
-                  </option>
+                  </Option>
                 ))}
               </Fillter>
             </Filters>
-            <Link to={`/caregiver/reportform/${patNo}`} state={pat.patName}>
-              <SubmitButton>
-                <ButtonText>글쓰기</ButtonText>
-              </SubmitButton>
-            </Link>
+            <Buttons>
+              <Link to={`/guardian/patient`} state={pat.patName}>
+                <SubmitButton>
+                  <ButtonText>목록으로</ButtonText>
+                </SubmitButton>
+              </Link>
+              <Link to={`/caregiver/reportform/${patNo}`} state={pat.patName}>
+                <SubmitButton>
+                  <ButtonText>글쓰기</ButtonText>
+                </SubmitButton>
+              </Link>
+            </Buttons>
           </Rights>
         </BoardTop>
         <BoardItemTop>
@@ -126,11 +133,11 @@ const ReportMain = () => {
           <div>작성 일자</div>
         </BoardItemTop>
         {reportList && reportList.length > 0 ? (
-          reportList.map((report) => (
+          reportList.reverse().map((report, index) => (
             <BoardItem key={report.reportNo} to={`/report/${patNo}/detail/${report.reportNo}`} state={{ report }}>
-              <div>{report.reportNo}</div>
+              <div>{reportList.length - index}</div>
               <div>{report.reportTitle}</div>
-              <div>{report.userName}</div>
+              <div>{report.careGiverNo}</div>
               <div>{report.createDate.slice(0, 10)}</div>
             </BoardItem>
           ))
@@ -189,13 +196,15 @@ const ListTitle = styled(Left)`
 `;
 
 const Fillter = styled.select`
-  width: 160px;
+  width: 140px;
   border: 1px solid ${({ theme }) => theme.colors.gray[5]};
   border-radius: 4px;
-  padding: 10px;
+  text-align: center;
   font-size: ${({ theme }) => theme.fontSizes.base};
   color: ${({ theme }) => theme.colors.gray[3]};
 `;
+
+const Option = styled.option``;
 
 const BoardItem = styled(Link)`
   width: 100%;
@@ -215,5 +224,10 @@ const Rights = styled(Right)`
 const Filters = styled.div`
   display: flex;
   gap: ${({ theme }) => theme.spacing[3]};
+`;
+
+const Buttons = styled.div`
+  display: flex;
+  gap: 10px;
 `;
 export default ReportMain;
