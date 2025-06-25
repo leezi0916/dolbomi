@@ -31,10 +31,10 @@ public class License {
     @JoinColumn(name = "USER_NO", nullable = false)
     private User user;
 
-    @Column(name = "LICENSE_NAME", nullable = false, length = 10)
+    @Column(name = "LICENSE_NAME", nullable = false, length = 30)
     private String licenseName;
 
-    @Column(name = "LICENSE_PUBLISHER", nullable = false, length = 10)
+    @Column(name = "LICENSE_PUBLISHER", nullable = false, length = 30)
     private String licensePublisher;
 
     @Column(name = "LICENSE_DATE", nullable = false)

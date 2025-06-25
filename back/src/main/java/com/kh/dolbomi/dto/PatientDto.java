@@ -2,6 +2,7 @@ package com.kh.dolbomi.dto;
 
 import com.kh.dolbomi.domain.Patient;
 import com.kh.dolbomi.domain.User;
+import com.kh.dolbomi.enums.StatusEnum;
 import java.math.BigDecimal;
 import java.util.List;
 import lombok.AllArgsConstructor;
@@ -24,7 +25,7 @@ public class PatientDto {
         private String pat_name;
         private Integer pat_age;
         private Integer pat_phone;
-        private Patient.Gender pat_gender;
+        private StatusEnum.Gender pat_gender;
         private Integer pat_weight;
         private Integer pat_height;
         private String pat_address;
@@ -57,7 +58,7 @@ public class PatientDto {
         private Long pat_no;
         private String pat_name;
         private Integer pat_age;
-        private Patient.Gender pat_gender;
+        private StatusEnum.Gender pat_gender;
         private Integer pat_weight;
         private Integer pat_height;
         private String pat_address;
@@ -99,7 +100,7 @@ public class PatientDto {
         private String pat_name;
         private Integer pat_age;
         private Integer pat_phone;
-        private Patient.Gender pat_gender;
+        private StatusEnum.Gender pat_gender;
         private Integer pat_weight;
         private Integer pat_height;
         private String pat_address;
