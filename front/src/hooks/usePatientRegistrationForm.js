@@ -25,10 +25,11 @@ const patientsSchema = yup.object().shape({
 
   patWeight: yup.number().typeError('몸무게는 숫자여야 합니다.'),
   patHeight: yup.number().typeError('키는 숫자여야 합니다.'),
-  phone: yup
+  patPhone: yup
     .string()
     .required('전화번호를 입력하세요.')
-    .matches(/^010\d{8}$/, "010으로 시작하고 '-' 제외한 11자리여야 합니다."),
+    .matches(/^01[016789]\d{3,4}\d{4}$/, '유효하지 않은 전화번호입니다.'),
+
 
   patAddress: yup
     .string()

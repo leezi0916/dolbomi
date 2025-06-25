@@ -3,15 +3,14 @@ package com.kh.dolbomi.controller;
 
 import com.kh.dolbomi.dto.PatientDto;
 import com.kh.dolbomi.service.PatientService;
-import java.io.IOException;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -28,7 +27,6 @@ public class PatientController {
     // 환자등록하기
     @PostMapping
     public ResponseEntity<Long> addPatient(@RequestBody PatientDto.Create createDto) {
-
         Long patNo = patientService.createPatient(createDto);
         return ResponseEntity.ok(patNo);
     }
@@ -45,11 +43,14 @@ public class PatientController {
         return ResponseEntity.ok(patientService.getPatient(patNo));
     }
 
-    @PutMapping("/{patNo}")
+    @PatchMapping("/{patNo}")
     public ResponseEntity<PatientDto.Response> UpdatePatient(
             @PathVariable Long patNo,
-            @RequestBody PatientDto.Update updatePatient) throws IOException {
-        return null;
+
+            @RequestBody PatientDto.Update updatePatDto) {
+        return ResponseEntity.ok(patientService.updatePatient(patNo, updatePatDto));
+
+
     }
 
 

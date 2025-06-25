@@ -151,7 +151,7 @@ public class HiringDto {
                     .pat_height(patient.getPatHeight())
                     .pat_weight(patient.getPatWeight())
                     .profile_image(patient.getProfileImage())
-                    
+
                     // 보호자 정보
                     .phone(user.getPhone())
 

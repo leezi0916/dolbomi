@@ -118,6 +118,7 @@ public class UserDto {
         private Integer age;
         private StatusEnum.Gender gender;
 
+
         private List<LicenseDto.Response> licenses;
 
 
