@@ -85,7 +85,6 @@ public class Patient {
         }
     }
 
-
     public void changePatPhone(String patPhone) {
         if (patPhone != null && !patPhone.isEmpty()) {
             this.patPhone = patPhone;

@@ -117,10 +117,7 @@ public class UserDto {
         private String address;
         private Integer age;
         private StatusEnum.Gender gender;
-
-
         private List<LicenseDto.Response> licenses;
-
 
         public static ProfileDto toDto(User user) {
             return ProfileDto.builder()

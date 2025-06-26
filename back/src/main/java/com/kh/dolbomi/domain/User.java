@@ -1,18 +1,11 @@
 package com.kh.dolbomi.domain;
 
 import com.kh.dolbomi.enums.StatusEnum;
-<<<<<<< HEAD
-import jakarta.persistence.CascadeType;
-=======
->>>>>>> 6c4b9b5390a05fecde5915f8e8e2c03bc5a6ae78
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
-<<<<<<< HEAD
-=======
 import jakarta.persistence.FetchType;
->>>>>>> 6c4b9b5390a05fecde5915f8e8e2c03bc5a6ae78
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -78,7 +71,6 @@ public class User {
     @Column(name = "PROFILE_IMAGE", length = 100)
     private String profileImage;
 
-
 //    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
 
 
@@ -90,10 +82,10 @@ public class User {
     public void updateUserInfo(String userName, Integer age, StatusEnum.Gender gender, String phone, String email,
                                String address,
                                String profileImage) {
+
         if (userName != null && !userName.trim().isEmpty()) {
             this.userName = userName.trim();
         }
-
 
         if (age != null && age > 0) {
             this.age = age;
@@ -131,7 +123,5 @@ public class User {
     public void changePassword(String encodedPassword) {
         this.userPwd = encodedPassword;
     }
-
-
-
+    
 }

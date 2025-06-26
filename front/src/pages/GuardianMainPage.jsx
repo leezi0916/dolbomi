@@ -87,7 +87,7 @@ const GuardianMainPage = () => {
                       <span>나이</span> : {resume.age}세({resume.gender == 'M' ? '남' : '여'})
                     </CardText>
                     <CardText>
-                      <span>시급</span> : {resume.account.toLocaleString()}원
+                      <span>시급</span> : {resume.resumeAccount.toLocaleString()}원
                     </CardText>
                   </CardTextGroup>
                 </CardTopContent>
@@ -134,9 +134,9 @@ const GuardianMainPage = () => {
                 <ReviewTextBox>{review.reviewContent}</ReviewTextBox>
                 <ReviewFooter>
                   <ReviewScore>
-                    평점 <strong>{review.score.toFixed(1)}</strong>
+                    평점 <strong>{review.reviewScore.toFixed(1)}</strong>
                   </ReviewScore>
-                  <ReviewDate>작성일 {review.createDate}</ReviewDate>
+                  <ReviewDate>작성일 {review.reviewUpdateDate.slice(0, 10)} </ReviewDate>
                 </ReviewFooter>
               </CardMidBottomContent>
             </Card>

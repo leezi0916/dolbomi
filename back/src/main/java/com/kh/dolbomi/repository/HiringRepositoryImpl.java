@@ -2,6 +2,8 @@ package com.kh.dolbomi.repository;
 
 import com.kh.dolbomi.domain.Hiring;
 import com.kh.dolbomi.enums.StatusEnum;
+import com.kh.dolbomi.enums.StatusEnum.CareStatus;
+import com.kh.dolbomi.enums.StatusEnum.Status;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import java.util.List;
@@ -26,6 +28,28 @@ public class HiringRepositoryImpl implements HiringRepository {
     public Optional<Hiring> findById(Long hiringNo) {
         Hiring hiring = em.find(Hiring.class, hiringNo);
         return Optional.ofNullable(hiring);
+    }
+
+    // 메인페이지(간병사 페이지) 구인글 조회 (상태 Y)
+    // 상태가 Y인 최근 8개 구인글 조회
+    @Override
+    public List<Hiring> getMainHiringList(Status status) {
+        String query = "SELECT DISTINCT h FROM Hiring h JOIN h.user u WHERE h.status = :status ORDER BY h.updateDate DESC";
+        return em.createQuery(query, Hiring.class)
+                .setParameter("status", status)
+                .setMaxResults(8)
+                .getResultList();
+    }
+
+    // 상태 Y + care_status가 Y인 최근 4개 구인글 조회
+    @Override
+    public List<Hiring> getMainCareHiringList(Status status, CareStatus careStatus) {
+        String query = "SELECT DISTINCT h FROM Hiring h JOIN h.user u WHERE h.status = :status AND h.careStatus = :careStatus ORDER BY h.updateDate DESC";
+        return em.createQuery(query, Hiring.class)
+                .setParameter("status", status)
+                .setParameter("careStatus", careStatus)
+                .setMaxResults(4)
+                .getResultList();
     }
 
     @Override
