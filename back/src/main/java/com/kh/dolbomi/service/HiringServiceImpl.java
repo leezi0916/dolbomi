@@ -7,7 +7,9 @@ import com.kh.dolbomi.dto.HiringDto;
 import com.kh.dolbomi.enums.StatusEnum;
 import com.kh.dolbomi.repository.HiringRepository;
 import com.kh.dolbomi.repository.PatientRepository;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -57,7 +59,7 @@ public class HiringServiceImpl implements HiringService {
         Hiring hiring = hiringRepository.findById(hiringNo)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 구인글 번호입니다: " + hiringNo));
 
-        return HiringDto.toDto(hiring);
+        return HiringDto.Response.toDto(hiring);
     }
 
 //    @Override
@@ -69,11 +71,28 @@ public class HiringServiceImpl implements HiringService {
 //        hiring.setStatus(StatusEnum.Status.N);
 //    }
 
+    // 메인페이지(간병사 페이지) 일반 구인글 조회
+    @Override
+    public List<HiringDto.Response> getMainHiringList() {
+        List<Hiring> hirings = hiringRepository.getMainHiringList(StatusEnum.Status.Y);
+        return hirings.stream()
+                .map(HiringDto.Response::mainHiringDto)
+                .collect(Collectors.toList());
+    }
+
+    // 메인페이지(간병사 페이지) 숙식제공 구인글 조회
+    @Override
+    public List<HiringDto.Response> getMainCareHiringList() {
+        List<Hiring> careHirings = hiringRepository.getMainCareHiringList(StatusEnum.Status.Y, StatusEnum.CareStatus.Y);
+        return careHirings.stream()
+                .map(HiringDto.Response::mainHiringDto)
+                .collect(Collectors.toList());
+    }
 
     @Override
     @Transactional(readOnly = true)
     public Page<HiringDto.Response> getHiringPage(Pageable pageable) {
         return hiringRepository.findByStatus(StatusEnum.Status.Y, pageable)
-                .map(HiringDto::toDto);
+                .map(HiringDto.Response::toDto);
     }
 }

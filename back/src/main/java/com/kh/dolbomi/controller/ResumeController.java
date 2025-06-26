@@ -19,8 +19,10 @@ public class ResumeController {
     private final ResumeService resumeService;
 
     // 메인(보호자 메인) 구직글 조회
-    @GetMapping
+    @GetMapping("/simple-list")
     public ResponseEntity<List<ResumeDto.Response>> getMainResumeList() {
         return ResponseEntity.ok(resumeService.getMainResumeList());
     }
+
+    
 }

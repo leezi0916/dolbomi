@@ -61,6 +61,7 @@ public class Hiring {
     private Integer maxApplicants;
 
     @Column(name = "CARE_STATUS", nullable = false, length = 1)
+    @Enumerated(EnumType.STRING)
     private StatusEnum.CareStatus careStatus;
 
     @Column(name = "ROOM_IMAGE", length = 100)

@@ -15,7 +15,7 @@ public class ReviewRepositoryImpl implements ReviewRepository {
 
     @Override
     public List<Review> getMainReviewList(StatusEnum.Status status) {
-        String query = "SELECT DISTINCT r FROM Review r JOIN r.writer u WHERE r.status = :status";
+        String query = "SELECT DISTINCT r FROM Review r JOIN r.writer u WHERE r.status = :status ORDER BY r.updateDate DESC";
         return em.createQuery(query, Review.class)
                 .setParameter("status", status)
                 .setMaxResults(3)
