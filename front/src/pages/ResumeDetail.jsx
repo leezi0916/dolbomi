@@ -108,7 +108,7 @@ function ResumeDetail() {
         <ContentWrapper>
           <div>
             <ProfilImageWrapper>
-              <img src={profileImage} alt="프로필 이미지" />
+              <img src={resumeData.profileImage || profileImage} alt="프로필" />
             </ProfilImageWrapper>
             <ChatButton>
               <img src={chatImage} alt="프로필 이미지" />1 : 1 채팅하기
@@ -242,6 +242,7 @@ function ResumeDetail() {
 
         <ButtonGroup>
           <BackButton onClick={() => navigate(-1)}>이전</BackButton>
+
           {resumeData?.userNo === user?.userNo ? (
             <SubmitButton1 type="button" onClick={() => navigate(`/caregiver/myresume/${resumeData?.resumeNo}`)}>
               수정하기
@@ -249,6 +250,7 @@ function ResumeDetail() {
           ) : (
             ''
           )}
+
         </ButtonGroup>
 
       </HireContainer>

@@ -1,8 +1,8 @@
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
-import { useNavigate } from 'react-router-dom';
-import useUserStore from '../store/userStore';
+import { useState } from 'react';
+import { hiringService } from '../api/hiring';
 
 //구인등록을 위한 스키마
 const guardianSchema = yup.object().shape({
@@ -24,30 +24,26 @@ const guardianSchema = yup.object().shape({
 });
 
 export const guardianHiringForm = () => {
-  const navigate = useNavigate();
-  const { user } = useUserStore();
-
   //react-hook-form으로 폼 상태 초기화및 유효성 검사
   const {
     register,
     handleSubmit,
     setValue,
-    formState: { errors, isSubmitting }, //유효성 에러및 제출중 상태
+    formState, //유효성 에러및 제출중 상태
     watch, // watch 함수를 추가로 가져옵니다.
     reset,
   } = useForm({
     resolver: yupResolver(guardianSchema), // yup스키마와 연결
-    mode: 'onChange'
-
+    mode: 'onChange',
   });
 
-  //컴포넌트에서 사용할 값들 반환
   return {
     register,
     handleSubmit,
-    formState: { errors },
     setValue,
     reset,
-    watch, // watch 함수를 반환합니다.
+    watch,
+    // 변경
+    formState,
   };
 };

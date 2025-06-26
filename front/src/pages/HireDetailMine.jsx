@@ -12,7 +12,7 @@ import useUserStore from '../store/userStore';
 import { hiringService } from '../api/hiring';
 import { useParams } from 'react-router-dom';
 import { guardianHiringForm } from '../hooks/guardianHiringForm';
-import { proposerSevice } from '../api/propose.js';
+import { proposerService } from '../api/propose.js';
 
 const HireDetail = () => {
   const navigate = useNavigate();
@@ -35,7 +35,7 @@ const HireDetail = () => {
     const getJobOpening = async () => {
       const getOneJobOpening = await hiringService.getHirngById(1);
       setJobOpening(getOneJobOpening);
-      
+
       console.log(getOneJobOpening);
     };
 
@@ -43,7 +43,7 @@ const HireDetail = () => {
 
     // 구직글을 가져온다. => 신청테이블에서 구인글의 번호로(hiringNo) 구직글을 가져온다
     const getList = async () => {
-      const list = await proposerSevice.getcareGiverLists(1);
+      const list = await proposerService.getcareGiverLists(1);
       setproposerList(list);
     };
     getList();

@@ -1,9 +1,12 @@
 package com.kh.dolbomi.controller;
 
+import com.kh.dolbomi.dto.PageResponse;
 import com.kh.dolbomi.dto.ResumeDto;
 import com.kh.dolbomi.service.ResumeService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -47,7 +50,16 @@ public class ResumeController {
         return ResponseEntity.ok(resumeService.getResume(resumeNo));
     }
 
-    //내가 작성한 이력서(구직글) 등록
+    //간병사 모집 리스트 불러오기
+    @GetMapping("/list")
+    public ResponseEntity<PageResponse<ResumeDto.Response>> getPagedResumeList(Pageable pageable) {
+        Page<ResumeDto.Response> resumePage = resumeService.getResumePage(pageable);
+        PageResponse<ResumeDto.Response> response = new PageResponse<>(resumePage);
+
+        return ResponseEntity.ok(response);
+    }
+
+    //이력서(구직글) 등록
     @PostMapping
     public ResponseEntity<Long> createResume(@RequestBody ResumeDto.Create createResumeDto) {
         Long resumeNo = resumeService.createResume(createResumeDto);
@@ -61,7 +73,5 @@ public class ResumeController {
             @RequestBody ResumeDto.Update updatePatDto) {
         return ResponseEntity.ok(resumeService.updateResume(userNo, updatePatDto));
     }
-
-
 }
 

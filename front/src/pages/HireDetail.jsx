@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { Container, Section } from '../styles/common/Container';
-import profileImage from '../assets/images/pat.png'; // 프로필 이미지 경로
+// import profileImage from '../assets/images/pat.png'; // 프로필 이미지 경로
+import caregiverImage from '../assets/profileImg/img_간병인.png'; //간병인 기본 이미지
 import chatImage from '../assets/icons/icon_채팅아이콘.png'; // 채팅 이미지 경로
 import styled from 'styled-components';
-import { SubmitButton } from '../styles/common/Button';
+import { DeleteButton, SubmitButton } from '../styles/common/Button';
 import { FaPlus } from 'react-icons/fa6';
 import { media } from '../styles/MediaQueries';
 import { useNavigate } from 'react-router-dom';
@@ -13,39 +14,74 @@ import { hiringService } from '../api/hiring';
 import { useParams } from 'react-router-dom';
 import { guardianHiringForm } from '../hooks/guardianHiringForm';
 import ResumeSelectModal from '../components/ResumeSelectModal';
-import { proposerSevice } from '../api/propose';
+import { proposerService } from '../api/propose';
 
 const HireDetail = () => {
   const navigate = useNavigate();
   const { hiringNo } = useParams();
-  const { user } = useUserStore();
-  const [jobOpening, setJobOpening] = useState();
+  const { user } = useUserStore(); // 현재 로그인한 사용자 정보
+  const [jobOpening, setJobOpening] = useState(null); // 초기값을 null로 설정하여 데이터 로딩 전 렌더링 방지
   const [alreadyApplied, setAlreadyApplied] = useState(false); // 신청 여부 상태 추가
 
-  const { register, handleSubmit, errors, isSubmitting, watch, setValue } = guardianHiringForm();
+  // 폼 관련 훅 (여기서는 읽기 전용으로 사용)
+  const { register, setValue, watch, errors } = guardianHiringForm();
+
+  //모집 마감상태
+  const [recruitmentClosed, setRecruitmentClosed] = useState(false);
+
+  const handleToggleRecruitmentStatus = async (hiringNo) => {
+    if (!window.confirm(`정말 이 구인글의 모집마감 하시겠습니까?`)) return;
+
+    try {
+      await hiringService.toggleRecruitmentStatus(Number(hiringNo));
+      setRecruitmentClosed((prev) => !prev);
+      alert(`구인글 모집이 성공적으로 모집마감 되었습니다.`);
+      // 상태 최신화 위해 getHirngById 다시 호출해도 좋음
+    } catch (err) {
+      alert(`구인글 모집 마감 실패`);
+      console.error(err);
+    }
+  };
+
+  //구인글 삭제 기능
+  const deleteOnClick = async (hiringNo) => {
+    if (!window.confirm('구인글을 삭제하시겠습니까?')) return;
+
+    try {
+      await hiringService.deleteHiring(hiringNo);
+      alert('삭제가 완료되었습니다.');
+      navigate('/guardian/jobopening-management');
+    } catch (err) {
+      console.error('삭제 실패', err);
+      alert('삭제에 실패했습니다.');
+    }
+  };
 
   const currentGender = watch('patGender');
 
+  // 이력서 선택 모달 상태
   const [isModalOpen, setModalOpen] = useState(false);
-
   const handleOpenModal = () => setModalOpen(true);
   const handleCloseModal = () => setModalOpen(false);
 
-  //  신청 성공 시 상태 반영
+  // 신청 성공 시 상태 반영
   const handleApply = () => {
     setAlreadyApplied(true);
   };
 
+<<<<<<< HEAD
 
+=======
+  //지원 현황 관련
+  const [proposerList, setproposerList] = useState([]);
+>>>>>>> 6071b4ed8c26a140cb77a2db38a02916173507e7
 
   // 신청 취소 핸들러
   const handleCancel = async () => {
     const confirm = window.confirm('신청을 취소하시겠습니까?');
     if (!confirm) return;
-
     try {
-      // 서버에 맞는 DELETE API 필요 (예: /proposer/{resumeNo}/{hiringNo})
-      await proposerSevice.cancelProposer({
+      await proposerService.cancelProposer({
         caregiverNo: user.userNo,
         hiringNo: Number(hiringNo),
       });
@@ -56,24 +92,25 @@ const HireDetail = () => {
       console.error(err);
     }
   };
+
   useEffect(() => {
     const init = async () => {
       try {
-        const data = await hiringService.getHirngById(Number(hiringNo), user.userNo); // userNo 전달
+        const data = await hiringService.getHirngById(Number(hiringNo), user?.userNo);
         console.log(data);
         setJobOpening(data);
-
-        // 신청 여부는 API에서 받으니 따로 호출하지 않아도 됨
         setAlreadyApplied(data.applied);
-        // 폼 필드 초기화
-        setValue('hiring_title', data.hiringTitle);
+
+        setRecruitmentClosed(data.hiringStatus === 'N');
+        setValue('hiringStatus', data.hiringStatus);
+        setValue('hiringTitle', data.hiringTitle);
         setValue('hiringContent', data.hiringContent);
         setValue('account', data.account);
-        setValue('startDate', data.startDate.slice(0, 10)); // yyyy-MM-dd 형식
+        setValue('startDate', data.startDate.slice(0, 10));
         setValue('endDate', data.endDate.slice(0, 10));
         setValue('maxApplicants', data.maxApplicants);
         setValue('careStatus', data.careStatus);
-        setValue('patGender', data.patGender); // 성별도 설정
+        setValue('patGender', data.patGender);
       } catch (error) {
         console.error('구인글 상세 및 신청 상태 불러오기 실패', error);
       }
@@ -82,11 +119,47 @@ const HireDetail = () => {
     if (user?.userNo && hiringNo) {
       init();
     }
+
+    const getList = async () => {
+      const data = await proposerService.getcareGiverLists(hiringNo);
+      setproposerList(data.proposers);
+    };
+    getList();
   }, [user, hiringNo, setValue]);
 
 
+  // jobOpening 데이터가 아직 로드되지 않았다면 로딩 상태를 표시
+  if (!jobOpening) {
+    return <div>로딩 중...</div>;
+  }
+
+  // 로그인한 사용자가 구인글 작성자인지 판단
+  // DTO의 userNo 필드가 구인글 작성자의 userNo입니다.
+  const isMyJobOpening = user?.userNo === jobOpening?.userNo;
+  // 모집 마감 상태 확인 (DTO에 hire_status 필드가 있다고 가정)
+
   return (
     <HireRegistSection>
+      {isMyJobOpening ? (
+        <Wrapper>
+          <ImageStack>
+            {proposerList.slice(0, 3).map((list, index) => (
+              <ProfileImg
+                key={index}
+                src={list.profileImage ? list.profileImage : caregiverImage} // 기본 이미지로 대체
+                style={{ left: `${index * 20}px`, zIndex: proposerList.length - index }}
+              />
+            ))}
+          </ImageStack>
+
+          <NewTitle>지원현황 {proposerList.length}명</NewTitle>
+          <ActionButton type="button" onClick={() => navigate(`/guardian/careGiverSupportBorad/${hiringNo}`)}>
+            확인하기
+          </ActionButton>
+        </Wrapper>
+      ) : (
+        <></>
+      )}
       <HireContainer>
         <HireHead>
           <HireHeadTitle>돌봄대상자 정보</HireHeadTitle>
@@ -159,28 +232,28 @@ const HireDetail = () => {
           <ContentWrapper1>
             <HireContent>
               <Label>제목</Label>
-              <Input type="text" id="hiring_title" {...register('hiring_title')} />
+              <Input type="text" id="hiring_title" {...register('hiring_title')} readOnly />
               <InputRow>
                 <InputGroup>
                   <Label>지급 금액 (시급)</Label>
-                  <Input type="text" id="account" {...register('account')} />
+                  <Input type="text" id="account" {...register('account')} readOnly />
                 </InputGroup>
                 <InputGroup>
                   <Label>시작일</Label>
-                  <Input type="date" id="startDate" {...register('startDate')} />
+                  <Input type="date" id="startDate" {...register('startDate')} readOnly />
                 </InputGroup>
 
                 <InputGroup>
                   <Label>종료일</Label>
-                  <Input type="date" id="endDate" {...register('endDate')} />
+                  <Input type="date" id="endDate" {...register('endDate')} readOnly />
                 </InputGroup>
                 <InputGroup>
                   <Label>모집 인원수 설정</Label>
-                  <Input type="number" id="maxApplicants" {...register('maxApplicants')} />
+                  <Input type="number" id="maxApplicants" {...register('maxApplicants')} readOnly />
                 </InputGroup>
               </InputRow>
               <Label>내용</Label>
-              <Content type="text" id="hiringContent" {...register('hiringContent')} />
+              <Content type="text" id="hiringContent" {...register('hiringContent')} readOnly />
               <RadioGroup>
                 <Label>숙식 제공 여부</Label>
                 <RadioWrapper>
@@ -198,20 +271,39 @@ const HireDetail = () => {
                 <RoomImage>
                   <Plus />
                 </RoomImage>
-                <input type="file" style={{ display: 'none' }} />
+                <input type="file" style={{ display: 'none' }} readOnly />
               </InputGroup>
             </HireContent>
           </ContentWrapper1>
         </form>
-
         <ButtonGroup>
           <BackButton onClick={() => navigate(-1)}>이전</BackButton>
-
-          {alreadyApplied ? (
+          <DeleteButton type="button" onClick={() => deleteOnClick(hiringNo)}>
+            삭제
+          </DeleteButton>
+          {isMyJobOpening ? (
+            // 본인이 작성한 글일 경우
+            <>
+              <SubmitButton1
+                type="button"
+                onClick={() => {
+                  if (!recruitmentClosed) {
+                    handleToggleRecruitmentStatus(hiringNo);
+                  }
+                }}
+                disabled={recruitmentClosed}
+                $disabled={recruitmentClosed}
+              >
+                {recruitmentClosed ? '마감' : '모집 마감'}
+              </SubmitButton1>
+            </>
+          ) : alreadyApplied ? (
+            // 다른 사람이 작성하고 내가 신청한 글일 경우
             <SubmitButton1 type="button" onClick={handleCancel}>
               신청취소
             </SubmitButton1>
           ) : (
+            // 다른 사람이 작성하고 내가 신청하지 않은 글일 경우
             <SubmitButton1 type="button" onClick={handleOpenModal}>
               신청하기
             </SubmitButton1>
@@ -221,7 +313,7 @@ const HireDetail = () => {
             <ResumeSelectModal
               hiringNo={hiringNo}
               onClose={handleCloseModal}
-              onSuccess={(resumeNo) => {
+              onSuccess={() => {
                 handleApply();
                 setModalOpen(false);
               }}
@@ -475,9 +567,11 @@ const RoomImage = styled.div`
 
 const ButtonGroup = styled.div`
   display: flex;
-  width: 100%;
-  padding: 64px;
+  width: 80%;
+  margin: 0 auto;
   gap: ${({ theme }) => theme.spacing[3]};
+  margin-bottom: ${({ theme }) => theme.spacing[5]};
+  height: 50px;
   justify-content: center;
 `;
 
@@ -491,16 +585,72 @@ const BackButton = styled.button`
 
 const SubmitButton1 = styled(SubmitButton)`
   width: 65%;
-  border: 1px solid ${({ theme, $error }) => ($error ? theme.colors.error : theme.colors.gray[5])};
-  border-radius: ${({ theme }) => theme.borderRadius.md};
+  border: 1px solid ${({ theme, $disabled }) => ($disabled ? theme.colors.gray[5] : theme.colors.gray[5])};
+  background-color: ${({ theme, $disabled }) => ($disabled ? theme.colors.gray[5] : theme.colors.primary)};
   font-size: ${({ theme }) => theme.fontSizes.md};
   font-weight: ${({ theme }) => theme.fontWeights.medium};
-  color: white;
+  color: ${({ theme, $disabled }) => ($disabled ? theme.colors.gray[600] : 'white')};
+  cursor: ${({ $disabled }) => ($disabled ? 'not-allowed' : 'pointer')};
 `;
 
 const Plus = styled(FaPlus)`
   width: 30px;
   height: 30px;
   color: white;
+`;
+
+const Wrapper = styled.div`
+  width: 80%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 50px;
+  gap: 50px;
+  margin: 20px auto;
+  margin-top: 30px;
+  border: 1px solid ${({ theme }) => theme.colors.gray[5]};
+  border-radius: ${({ theme }) => theme.borderRadius.md};
+  box-shadow: ${({ theme }) => theme.shadows.md};
+`;
+const ImageStack = styled.div`
+  position: relative;
+  height: 50px;
+  width: 20%;
+  margin-bottom: 16px;
+`;
+
+const ProfileImg = styled.img`
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  object-fit: cover;
+  position: absolute;
+  border: 2px solid white;
+  transition: transform 0.2s;
+
+  &:hover {
+    transform: scale(1.05);
+  }
+`;
+
+const NewTitle = styled.h2`
+  width: 20%;
+  font-size: ${({ theme }) => theme.fontSizes['3xl']};
+  margin-bottom: 10px;
+`;
+
+const ActionButton = styled.button`
+  width: 200px;
+
+  background-color: ${({ theme }) => theme.colors.primary};
+  color: white;
+  padding: 10px 20px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+
+  &:hover {
+    opacity: 0.9;
+  }
 `;
 export default HireDetail;

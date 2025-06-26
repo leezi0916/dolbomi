@@ -4,11 +4,15 @@ import com.kh.dolbomi.domain.Patient;
 import com.kh.dolbomi.domain.Report;
 import com.kh.dolbomi.domain.User;
 import com.kh.dolbomi.dto.ReportDto;
+import com.kh.dolbomi.enums.StatusEnum.Status;
 import com.kh.dolbomi.repository.PatientRepositoryV2;
 import com.kh.dolbomi.repository.ReportRepository;
 import com.kh.dolbomi.repository.ReportRepositoryV2;
 import com.kh.dolbomi.repository.UserRepositoryV2;
+import jakarta.persistence.EntityNotFoundException;
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -33,10 +37,39 @@ public class ReportServiceImpl implements ReportService {
     }
 
     @Override
-    public List<ReportDto.Response> findAll(Long patNo) {
-        Patient patient = patientRepositoryV2.findByPatNo(patNo);
-//        reportRepository.findAllByPatient(patient);
-        return null;
-
+    public List<ReportDto.Response> getList(Long patNo) {
+        List<Object[]> reports = reportRepository.getList(patNo);
+        return reports.stream()
+                .map(row -> new ReportDto.Response(
+                        (Long) row[0],
+                        (String) row[1],
+                        (String) row[2],
+                        (LocalDateTime) row[3],
+                        (String) row[4]
+                ))
+                .collect(Collectors.toList());
     }
+
+    @Override
+    public void updateReport(ReportDto.Update update) {
+
+        Report report = reportRepositoryV2.findById(update.getReport_no())
+                .orElseThrow(() -> new EntityNotFoundException("그런 일지는 없단다"));
+
+        report.changReportTitle(update.getReport_title());
+        report.changReportContent(update.getReport_content());
+        report.changUpdateDate(update.getUpdate_date());
+
+        reportRepositoryV2.save(report);
+    }
+
+    @Override
+    public void deleteReport(Long reportNo) {
+        Report report = reportRepositoryV2.findById(reportNo)
+                .orElseThrow(() -> new EntityNotFoundException("진단일지가 없음"));
+        report.changeStatus(Status.N);
+        reportRepositoryV2.save(report);
+    }
+
 }
+

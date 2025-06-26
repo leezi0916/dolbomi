@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { jobSeekingService } from '../api/jobSeeking';
 import useUserStore from '../store/userStore';
-import { proposerSevice } from '../api/propose';
+import { proposerService } from '../api/propose';
 
 export const useProposerForm = (hiringNo, onSuccess) => {
   const { user } = useUserStore();
@@ -40,7 +40,7 @@ export const useProposerForm = (hiringNo, onSuccess) => {
     if (!confirmed) return;
 
     try {
-      await proposerSevice.proposerToHiring({
+      await proposerService.proposerToHiring({
         hiringNo: Number(hiringNo),
         resumeNo: Number(selectedResumeNo),
         caregiverNo: user.userNo, // 또는 caregiver_no

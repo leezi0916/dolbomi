@@ -6,5 +6,10 @@ import java.util.List;
 public interface ReportService {
     Long createReport(ReportDto.Create createReportDto);
 
-    List<ReportDto.Response> findAll(Long patNo);
+    List<ReportDto.Response> getList(Long patNo);
+
+    void updateReport(ReportDto.Update update);
+
+    void deleteReport(Long reportNo);
+
 }

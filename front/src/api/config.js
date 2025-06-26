@@ -49,7 +49,9 @@ export const API_ENDPOINTS = {
     BASE: '/hiring/v1',
     SIMPLE_LIST: '/hiring/v1/simple-list',
     LIST: '/hiring/v1/list',
-    DETAIL: (hiringNo) => `/hiring/v1/${hiringNo}`,
+    DETAIL: (hiringNo) => `/hiring/v1/${hiringNo}`, //get
+    STATUS: (hiringNo) => `/hiring/v1/${hiringNo}/status`,
+    DELETE: (hiringNo) => `/hiring/v1/${hiringNo}`, //patch
   },
 
   RESUME: {

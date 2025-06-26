@@ -20,23 +20,33 @@ const CaregiverList = () => {
   const [gender, setGender] = useState('');
   const [account, setAccount] = useState('');
   const [careStatus, setCareStatus] = useState(false);
-
+  const [page, setPage] = useState(1); // MUI Pagination은 1부터 시작
+  const [size] = useState(10);
+  const [totalPages, setTotalPages] = useState(0);
   //검색창
   const [keyword, setKeyword] = useState('');
   const navigate = useNavigate();
   // 1. 컴포넌트가 처음 마운트될 때 전체 리스트를 불러옵니다.
   useEffect(() => {
-    loadHireLists(false); // 초기 로딩 시에는 필터 없이 전체 데이터 요청
-  }, []);
+    loadHireLists(page - 1, size); // API에선 0부터 시작일 가능성 있어 -1 처리
+  }, [page]);
 
   // 간병사모집 리스트를 불러오는 함수
-  const loadHireLists = async () => {
+  const loadHireLists = async (pageNumber, pageSize) => {
     try {
       setLoading(true);
       setError(null);
 
-      const caregiverList = await jobSeekingService.getResumeListAll();
-      setCaregiverLists(caregiverList);
+
+const caregiverList = await jobSeekingService.getResumeListAll();
+setCaregiverLists(caregiverList); // 이게 구조를 보여줌
+      if (caregiverList.totalElements === 0) {
+        setCaregiverLists([]);
+        setError('등록된 간병사 모집 글이 없습니다.');
+      } else {
+        setCaregiverLists(caregiverList.content);
+        setTotalPages(caregiverList.totalPage);
+      }
     } catch (error) {
       console.error(error);
       const errorMessage = '간병사모집 리스트를 가져오지 못했습니다.';
@@ -86,9 +96,27 @@ const CaregiverList = () => {
             </Section1>
             <Section2>
               <SearchDivder1>
-                <DateInput type="date" value={startDate} onChange={(e) => setStartDate(e.target.value)} />
-                <DateSeparator>-</DateSeparator>
-                <DateInput type="date" value={endDate} onChange={(e) => setEndDate(e.target.value)} />
+                <AccommodationCheckboxLabel>
+                  <HiddenCheckbox type="checkbox" checked={careStatus} onChange={handleCheckChange} />
+                  <StyledCheckbox checked={careStatus}>
+                    {handleCheckChange && <IoCheckmarkOutline size="20px" color="white" />}
+                  </StyledCheckbox>
+                  관련 자격증 소지
+                </AccommodationCheckboxLabel>
+                <AccommodationCheckboxLabel>
+                  <HiddenCheckbox type="checkbox" checked={careStatus} onChange={handleCheckChange} />
+                  <StyledCheckbox checked={careStatus}>
+                    {handleCheckChange && <IoCheckmarkOutline size="20px" color="white" />}
+                  </StyledCheckbox>
+                  상주 간병인
+                </AccommodationCheckboxLabel>
+                <AccommodationCheckboxLabel>
+                  <HiddenCheckbox type="checkbox" checked={careStatus} onChange={handleCheckChange} />
+                  <StyledCheckbox checked={careStatus}>
+                    {handleCheckChange && <IoCheckmarkOutline size="20px" color="white" />}
+                  </StyledCheckbox>
+                  높은 평점 순
+                </AccommodationCheckboxLabel>
               </SearchDivder1>
               <SearchDivder1>
                 <SearchBar onSearch={handleSearchSubmit} />
@@ -134,29 +162,7 @@ const CaregiverList = () => {
                   </RadioWrapper>
                 </RadioGroup>
               </SearchDivder1>
-              <SearchDivder2>
-                <AccommodationCheckboxLabel>
-                  <HiddenCheckbox type="checkbox" checked={careStatus} onChange={handleCheckChange} />
-                  <StyledCheckbox checked={careStatus}>
-                    {handleCheckChange && <IoCheckmarkOutline size="20px" color="white" />}
-                  </StyledCheckbox>
-                  관련 자격증 소지
-                </AccommodationCheckboxLabel>
-                <AccommodationCheckboxLabel>
-                  <HiddenCheckbox type="checkbox" checked={careStatus} onChange={handleCheckChange} />
-                  <StyledCheckbox checked={careStatus}>
-                    {handleCheckChange && <IoCheckmarkOutline size="20px" color="white" />}
-                  </StyledCheckbox>
-                  상주 간병인
-                </AccommodationCheckboxLabel>
-                <AccommodationCheckboxLabel>
-                  <HiddenCheckbox type="checkbox" checked={careStatus} onChange={handleCheckChange} />
-                  <StyledCheckbox checked={careStatus}>
-                    {handleCheckChange && <IoCheckmarkOutline size="20px" color="white" />}
-                  </StyledCheckbox>
-                  높은 평점 순
-                </AccommodationCheckboxLabel>
-              </SearchDivder2>
+              <SearchDivder2></SearchDivder2>
             </Section3>
           </SearchDivder>
         </SearchContainer>
@@ -190,8 +196,7 @@ const CaregiverList = () => {
                     <CareContent>{resume.resumeTitle}</CareContent>
                     <div></div>
                   </Divder>
-
-                  {resume.score && <AccommodationInfo>평점 {resume.score}</AccommodationInfo>}
+                  {resume.avgScore > 0 && <AccommodationInfo>평점 {resume.avgScore}</AccommodationInfo>}
                 </HeaderContent>
               </CardHeader>
               <CardFooter>
@@ -214,7 +219,7 @@ const CaregiverList = () => {
               </CardFooter>
             </HireListCard>
           ))}
-          <Paging></Paging>
+          <Paging totalPage={totalPages} currentPage={page} chagneCurrentPage={(newPage) => setPage(newPage)} />
         </HireListSection>
       )}
     </>
