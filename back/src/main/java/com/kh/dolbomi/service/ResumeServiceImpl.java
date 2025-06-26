@@ -77,7 +77,7 @@ public class ResumeServiceImpl implements ResumeService {
 
         Resume resume = resumeRepositoryV2.findById(resumeNo)
                 .orElseThrow(() -> new IllegalArgumentException("유저가 존재하지 않습니다."));
-
+   
         return ResumeDto.Response.ResumeDto(resume);
     }
 

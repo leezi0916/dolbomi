@@ -18,31 +18,28 @@ import {
   ReviewScore,
   ReviewDate,
 } from './GuardianMainPage';
-// import { useParams } from 'react-router-dom';
-import { FaPlus } from 'react-icons/fa6';
-import chatImage from '../assets/icons/icon_채팅아이콘.png'; // 채팅 이미지 경로
-// import { useResumeForm } from '../hooks/useResumeForm';
 
+import chatImage from '../assets/icons/icon_채팅아이콘.png'; // 채팅 이미지 경로
 import Paging from '../components/Paging';
 import { useNavigate } from 'react-router-dom';
-import PatientSelectModal from '../components/PatientSelectModal';
 import { useParams } from 'react-router-dom';
 import { jobSeekingService } from '../api/jobSeeking';
 import { reviewService } from '../api/reviews';
-import { userService } from '../api/users';
+import useUserStore from '../store/userStore';
+
 function ResumeDetail() {
+  const { user } = useUserStore();
   const [activeTab, setActiveTab] = useState('info');
+
   const ITEMS_PER_PAGE = 4;
   const [reviews, setReviews] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const { resumeNo } = useParams();
-  const [resumeData, setResumeData] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  console.log(resumeNo);
+
   const navigate = useNavigate();
 
-  //이건 만약 dto로 유저정보+자격증 까지 불러오지 않고 get을 한번 더 보낼려면~
-  // const [userInfo, setUserInfo] = useState(null);
+  const [resumeData, setResumeData] = useState(null);
 
   /*작성자의 리뷰를 갖고오는 코드 */
   useEffect(() => {
@@ -59,56 +56,35 @@ function ResumeDetail() {
 
       fetchUserReviews();
     }
-  }, [activeTab, resumeData]);
+  }, [activeTab]);
 
   /*페이지 처리 */
   const offset = (currentPage - 1) * ITEMS_PER_PAGE;
   const totalPage = Math.ceil(reviews.length / ITEMS_PER_PAGE);
-
   const averageScore = (reviews.reduce((acc, cur) => acc + cur.score, 0) / reviews.length || 0).toFixed(1);
-
+ 
   const chagneCurrentPage = (value) => {
     setCurrentPage(value);
   };
-
-  //이것도 마찬가지로 유저정보 + 이력서 갖고오는 기능
-  // useEffect(() => {
-  //   const fetchUserInfo = async () => {
-  //     if (!resumeData?.userNo) return;
-
-  //     try {
-  //       const data = await userService.getUserProfile(resumeData.userNo);
-  //       setUserInfo(data[0]); // userService.getUserProfile이 배열 반환 시
-  //     } catch (err) {
-  //       console.error('유저 정보 불러오기 실패:', err);
-  //     }
-  //   };
-
-  //   fetchUserInfo();
-  // }, [resumeData?.userNo]);
 
   /*이력서 정보를 갖고오는 (유저 정보 담아서) */
   useEffect(() => {
     const fetchResume = async () => {
       try {
-        const data = await jobSeekingService.getResume(resumeNo);
-        console.log(data);
-        setResumeData(data[0]);
-      } catch (err) {
-        setError(err.message);
-      } finally {
-        setLoading(false);
+        const data = await jobSeekingService.getResume(Number(resumeNo));
+        console.log('정보', data);
+        setResumeData(data);
+      } catch (error) {
+        console.log(error);
       }
     };
-
     fetchResume();
-  }, [resumeNo]);
+  }, []);
 
   const handleTabChange = (tab) => {
     setActiveTab(tab);
   };
 
-  /*아 */
   const [isModalOpen, setModalOpen] = useState(false);
 
   const handleOpenModal = () => setModalOpen(true);
@@ -122,16 +98,13 @@ function ResumeDetail() {
     }
   };
 
-  if (loading) return <div>로딩 중...</div>;
-  if (error) return <div>에러: {error}</div>;
+
   return (
     <HireRegistSection>
       <HireContainer>
         <HireHead>
           <HireHeadTitle>간병사 정보</HireHeadTitle>
         </HireHead>
-
-        {/* <form onSubmit={handleSubmit}> */}
         <ContentWrapper>
           <div>
             <ProfilImageWrapper>
@@ -227,7 +200,7 @@ function ResumeDetail() {
                 <AccountGroup>
                   <InputGroup>
                     <Label>희망 금액</Label>
-                    <Input value={resumeData?.account || ''} readOnly />
+                    <Input value={resumeData?.resumeAccount || ''} readOnly />
                   </InputGroup>
                 </AccountGroup>
               </RadioGroup>
@@ -269,12 +242,15 @@ function ResumeDetail() {
 
         <ButtonGroup>
           <BackButton onClick={() => navigate(-1)}>이전</BackButton>
-          <SubmitButton1 type="button" onClick={handleOpenModal}>
-            간병 신청
-          </SubmitButton1>
-          {isModalOpen && <PatientSelectModal onClose={handleCloseModal} onSubmit={handleSubmitModal} />}
+          {resumeData?.userNo === user?.userNo ? (
+            <SubmitButton1 type="button" onClick={() => navigate(`/caregiver/myresume/${resumeData?.resumeNo}`)}>
+              수정하기
+            </SubmitButton1>
+          ) : (
+            ''
+          )}
         </ButtonGroup>
-        {/* </form> */}
+
       </HireContainer>
     </HireRegistSection>
   );

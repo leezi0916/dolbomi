@@ -6,6 +6,7 @@ import { toast } from 'react-toastify';
 import { useNavigate, useParams } from 'react-router-dom';
 import { userService } from '../api/users';
 import { jobSeekingService } from '../api/jobSeeking';
+import useUserStore from '../store/userStore';
 
 // 유효성 스키마
 const resumeSchema = yup.object().shape({
@@ -15,17 +16,16 @@ const resumeSchema = yup.object().shape({
   careStatus: yup.string().required('숙식 여부를 선택해주세요'),
 });
 
-export const useResumeForm = () => {
-  const [user, setUser] = useState(null);
+export const useResumeForm = (resumeNo) => {
+  const { user } = useUserStore();
+  // const [user, setUser] = useState(null);
   const [licenseList, setLicenseList] = useState([{ licenseName: '', licensePublisher: '', licenseDate: '' }]);
-
+  const [careGiverResume, setCareGiverResume] = useState();
   const navigate = useNavigate();
-  const { resumeNo } = useParams();
 
   const {
     register,
     handleSubmit,
-    reset,
     setValue,
     formState: { errors },
   } = useForm({
@@ -33,36 +33,19 @@ export const useResumeForm = () => {
     mode: 'onChange',
   });
 
-  // // 유저 정보 불러오기
-  // useEffect(() => {
-  //   const storedData = localStorage.getItem('user-storage');
-  //   if (!storedData) return;
-
-  //   try {
-  //     const parsedState = JSON.parse(storedData);
-  //     const user = parsedState.state.user;
-  //     const userNo = user?.userNo;
-
-  //     if (userNo) {
-  //       userService
-  //         .getUserProfile(userNo)
-  //         .then((data) => {
-  //           const userData = data[0];
-  //           setUser(userData);
-  //           // 자격증 정보는 이력서에서 항상 직접 입력하므로 여기서 설정하지 않음
-  //           //등록 페이지일 때만 user.licenses로 자격증 리스트 초기화
-  //           if (!resumeNo && userData.licenses?.length > 0) {
-  //             setLicenseList(userData.licenses);
-  //           }
-  //         })
-  //         .catch((err) => {
-  //           console.error('유저 정보 가져오기 실패:', err);
-  //         });
-  //     }
-  //   } catch (e) {
-  //     console.error('user-storage 파싱 실패:', e);
-  //   }
-  // }, []);
+  useEffect(() => {
+    const fetchAll = async () => {
+      try {
+        const getcareGiverResume = await jobSeekingService.getResume(Number(resumeNo));
+        setCareGiverResume(getcareGiverResume);
+        console.log('시작 ', getcareGiverResume);
+      } catch (error) {
+        toast.error('상세 이력서 불러오기 중 문제가 발생하였습니다.');
+        console.error('이력서 불러오기 오류 : ', error);
+      }
+    };
+    fetchAll();
+  }, [user]);
 
   // // resumeNo가 있으면 이력서 데이터 불러와서 폼 초기화
   // useEffect(() => {
@@ -124,5 +107,7 @@ export const useResumeForm = () => {
     licenseList,
     setLicenseList,
     setValue,
+    careGiverResume,
+    setCareGiverResume,
   };
 };

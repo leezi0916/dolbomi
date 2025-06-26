@@ -43,6 +43,7 @@ public class ResumeController {
     //이력서 상세보기
     @GetMapping("/detail/{resumeNo}")
     public ResponseEntity<ResumeDto.Response> getResume(@PathVariable Long resumeNo) {
+        System.out.println("resumeNo : " + resumeNo);
         return ResponseEntity.ok(resumeService.getResume(resumeNo));
     }
 

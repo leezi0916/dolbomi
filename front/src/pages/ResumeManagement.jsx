@@ -20,6 +20,7 @@ const ResumeManagement = () => {
     const fetchAll = async () => {
       if (!user) {
         alert('로그인 후 이용해주세요');
+        navigate('/');
         return;
       }
 

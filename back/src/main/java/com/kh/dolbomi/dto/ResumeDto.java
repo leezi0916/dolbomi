@@ -33,14 +33,13 @@ public class ResumeDto {
         private Long user_no;
         private String user_name;
         private Integer age;
+        private String phone;
         private StatusEnum.Gender gender;
         private String address;
         private String email;
         private String profile_image;
 
-        //         ===== 자격증 =====
-
-
+        // ===== 자격증 =====
         private List<License> license_list;
         private String license_name;
         private String license_publisher;
@@ -79,10 +78,11 @@ public class ResumeDto {
                     .user_no(resume.getUser().getUserNo())
                     .user_name(resume.getUser().getUserId())
                     .age(resume.getUser().getAge())
+                    .phone(resume.getUser().getPhone())
                     .address(resume.getUser().getAddress())
                     .gender(resume.getUser().getGender())
                     .profile_image(resume.getUser().getProfileImage())
-//                    .email(resume.getUser().getEmail())
+                    .email(resume.getUser().getEmail())
 
                     .resume_no(resume.getResumeNo())
                     .resume_account(resume.getAccount())
