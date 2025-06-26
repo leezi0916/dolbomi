@@ -66,7 +66,14 @@ public class PatientServiceImpl implements PatientService {
     public PatientDto.Response getPatient(Long patNo) {
         Patient patient = patientRepository.findOne(patNo).
                 orElseThrow(() -> new EntityNotFoundException("조회된 회원이 없습니다."));
-        return PatientDto.Response.toDetailDto(patient);
+
+        // 보호자 추출
+        User user = patient.getGuardian(); // 또는 getUser() 등 필드에 따라 다름
+        if (user == null) {
+            throw new IllegalStateException("해당 환자에 보호자가 연결되어 있지 않습니다.");
+        }
+
+        return PatientDto.Response.toDetailDto(patient, user);
     }
 
     @Transactional
@@ -75,7 +82,12 @@ public class PatientServiceImpl implements PatientService {
 
         Patient patient = patientRepository.findOne(patNo)
                 .orElseThrow(() -> new IllegalArgumentException("해당 환자가 없습니다."));
-        System.out.println("name :" + patient.getDiseaseTags());
+
+        // 보호자 추출
+        User user = patient.getGuardian(); // 또는 getUser() 등 필드에 따라 다름
+        if (user == null) {
+            throw new IllegalStateException("해당 환자에 보호자가 연결되어 있지 않습니다.");
+        }
 
         patient.changePatName(updatePatDto.getPat_name());
         patient.changePatAge(updatePatDto.getPat_age());
@@ -109,7 +121,7 @@ public class PatientServiceImpl implements PatientService {
             }
         }
 
-        return PatientDto.Response.toDetailDto(patient);
+        return PatientDto.Response.toDetailDto(patient, user);
     }
 
 

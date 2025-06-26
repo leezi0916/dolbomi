@@ -72,7 +72,6 @@ public class User {
     @Column(name = "PROFILE_IMAGE", length = 100)
     private String profileImage;
 
-
 //    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
 
     // User <-> License 양방향 설정
@@ -127,7 +126,5 @@ public class User {
     public void changePassword(String encodedPassword) {
         this.userPwd = encodedPassword;
     }
-
-
 
 }

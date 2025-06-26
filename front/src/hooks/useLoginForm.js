@@ -29,7 +29,6 @@ export const useLoginForm = () => {
   });
 
   const onSubmit = async (data) => {
-    console.log(data);
     try {
       setIsLoading(true);
       //로그인API호출

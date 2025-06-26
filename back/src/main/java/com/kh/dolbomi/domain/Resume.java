@@ -1,6 +1,7 @@
 package com.kh.dolbomi.domain;
 
 import com.kh.dolbomi.enums.StatusEnum;
+import com.kh.dolbomi.enums.StatusEnum.Status;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -20,7 +21,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
@@ -33,7 +33,6 @@ import org.hibernate.annotations.DynamicUpdate;
 @Builder
 @DynamicInsert //insert시에 null이 아닌 필드만 쿼리에 포함, default값 활용
 @DynamicUpdate //변경된 필드만 update문에 포함
-@ToString
 public class Resume {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -85,4 +84,28 @@ public class Resume {
     public void preUpdate() {
         this.updateDate = LocalDateTime.now();
     }
+
+    // 변경 set메서드
+
+    public void changeResume(String resumeTitle, String resumeContent, Integer Account) {
+
+        if (resumeTitle != null && !resumeTitle.isEmpty()) {
+            this.resumeTitle = resumeTitle;
+        }
+        if (resumeContent != null && !resumeContent.isEmpty()) {
+            this.resumeContent = resumeContent;
+        }
+        if (account != null) {
+            this.account = account;
+        }
+    }
+
+    public void changeStatus(String status) {
+        if (status != null && !status.isEmpty()) {
+            this.status = Status.valueOf(status);
+        }
+
+    }
+
+
 }

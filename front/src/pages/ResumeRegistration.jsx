@@ -1,17 +1,61 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Container, Section } from '../styles/common/Container';
 import profileImage from '../assets/images/pat.png'; // 프로필 이미지 경로
 import styled from 'styled-components';
 import { Input, InputGroup, Title } from '../styles/Auth.styles';
 import { media } from '../styles/MediaQueries';
 import { SubmitButton } from '../styles/common/Button';
-import { FaPlus } from 'react-icons/fa6';
+import { useEffect } from 'react';
 
 import { useResumeForm } from '../hooks/useResumeForm';
+import { userService } from '../api/users';
+import useUserStore from '../store/userStore';
+import { toast } from 'react-toastify';
+import { jobSeekingService } from '../api/jobSeeking';
+import { useNavigate } from 'react-router-dom';
 
 const ResumeRegistration = () => {
-  const { register, handleSubmit, errors, licenseList, handleLicenseChange, user } = useResumeForm();
-  console.log(user);
+  const { user } = useUserStore();
+  const { register, handleSubmit, errors, licenseList, handleLicenseChange } = useResumeForm();
+  const [careGiver, setCareGiver] = useState('');
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const fetchAll = async () => {
+      if (!user) {
+        alert('로그인 후 이용해주세요');
+        navigate('/guardian');
+      }
+
+      try {
+        const careGiverProfile = await userService.getUserProfile(user.userNo);
+
+        setCareGiver(careGiverProfile);
+       
+      } catch (error) {
+        toast.error('이력서 등록 중 문제가 발생하였습니다.');
+        console.error('이력서 등록 에러 : ', error);
+      }
+    };
+    fetchAll();
+  }, [user]);
+
+  const onSubmit = async (formData) => {
+    const newData = {
+      ...formData,
+      userNo: Number(user.userNo),
+    };
+    try {
+      await jobSeekingService.postNewResume(newData); // API 함수명 그대로 사용
+
+      toast.success('이력서가 저장되었습니다!');
+      navigate('/caregiver/resumemanagement');
+    } catch (error) {
+      console.error('이력서등록에 실패하였습니다.:', error);
+      toast.error('이력서 저장 중 문제가 발생했습니다.');
+    }
+  };
+
   return (
     <HireRegistSection>
       <HireContainer>
@@ -19,7 +63,7 @@ const ResumeRegistration = () => {
           <HireHeadTitle>이력서 작성</HireHeadTitle>
         </HireHead>
 
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit(onSubmit)}>
           <ContentWrapper>
             <div>
               <ProfilImageWrapper>
@@ -30,35 +74,41 @@ const ResumeRegistration = () => {
               <InputRow>
                 <InputGroup>
                   <Label>이름</Label>
-                  <Input type="text" value={user?.userName || ''} readOnly />
+                  <Input type="text" value={careGiver?.userName || ''} readOnly />
                 </InputGroup>
                 <InputGroup>
                   <Label>나이</Label>
-                  <Input type="text" value={user?.age || ''} readOnly />
+                  <Input type="text" value={careGiver?.age || ''} readOnly />
                 </InputGroup>
               </InputRow>
               <RadioGroup>
                 <Label>성별</Label>
                 <RadioWrapper>
-                  <input type="radio" id="male" name="gender" value="M" checked={user?.gender === 'M'} readOnly />
+                  <input type="radio" id="male" name="gender" value="M" checked={careGiver?.gender === 'M'} readOnly />
                   <label htmlFor="male">남성</label>
                 </RadioWrapper>
                 <RadioWrapper>
-                  <input type="radio" id="female" name="gender" value="F" checked={user?.gender === 'F'} readOnly />
+                  <input
+                    type="radio"
+                    id="female"
+                    name="gender"
+                    value="F"
+                    checked={careGiver?.gender === 'F'}
+                    readOnly
+                  />
                   <label htmlFor="female">여성</label>
                 </RadioWrapper>
               </RadioGroup>
               <InputGroup>
                 <Label>전화번호</Label>
-                <Input type="text" value={user?.phone || ''} readOnly />
+                <Input type="text" value={careGiver?.phone || ''} readOnly />
               </InputGroup>
               <InputGroup>
                 <Label>주소</Label>
-                <Input type="text" value={user?.address || ''} readOnly />
+                <Input type="text" value={careGiver?.address || ''} readOnly />
               </InputGroup>
             </Divider>
           </ContentWrapper>
-          <input type="hidden" {...register('licenseList')}></input>
           {licenseList.map((license, index) => (
             <ContentWrapper2>
               <LicenseGroup>
@@ -93,12 +143,14 @@ const ResumeRegistration = () => {
           </HireBottom>
           <ContentWrapper1>
             <HireContent>
-              <Label>제목</Label>
+              <Label id="resumeTitel">제목</Label>
               <Input {...register('resumeTitle')} placeholder="제목" />
               <p>{errors.resumeTitle?.message}</p>
-              <Label>내용</Label>
+
+              <Label id="resumeContent">내용</Label>
               <Content {...register('resumeContent')} placeholder="내용" />
               <p>{errors.resumeContent?.message}</p>
+
               <RadioGroup>
                 <RadioContainer>
                   <Label>숙식 가능</Label>
@@ -123,7 +175,9 @@ const ResumeRegistration = () => {
           </ContentWrapper1>
 
           <ButtonGroup>
-            <BackButton>이전</BackButton>
+            <BackButton type="button" onClick={() => navigate(-1)}>
+              이전
+            </BackButton>
             <SubmitButton1 type="submit">저장하기</SubmitButton1>
           </ButtonGroup>
         </form>
