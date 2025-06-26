@@ -11,11 +11,11 @@ public interface ReviewRepositoryV2 extends JpaRepository<Review, Long> {
     @Query("""
                 SELECT AVG(r.score)
                 FROM Review r
-                WHERE r.reviewNo IN (
-                    SELECT m.reviewNo
+                WHERE r IN (
+                    SELECT m.review
                     FROM Matching m
                     WHERE m.caregiver.userNo = :caregiverNo
-                    AND m.reviewNo IS NOT NULL
+                    AND m.review IS NOT NULL
                 )
             """)
     Double findAverageScoreByCaregiverNo(@Param("caregiverNo") Long caregiverNo);

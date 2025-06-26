@@ -40,7 +40,12 @@ export const Button = styled.button`
 
 export const AddButton = styled.button``;
 
-export const DeleteButton = styled.button``;
+export const DeleteButton = styled.button`
+  width: 25%;
+  border-radius: ${({ theme }) => theme.borderRadius.md};
+  color: ${({ theme }) => theme.colors.white};
+  background: ${({ theme }) => theme.colors.primary};
+`;
 
 export const SubmitButton = styled.button`
   border-radius: ${({ theme }) => theme.borderRadius.md};

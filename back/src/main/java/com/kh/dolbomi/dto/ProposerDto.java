@@ -45,7 +45,7 @@ public class ProposerDto {
                     .resume_no(proposer.getResume().getResumeNo())
                     .resume_title(proposer.getResume().getResumeTitle())
                     .proposer_date(proposer.getProposerDate())
-                    .status(proposer.getStatus())
+                    .status(proposer.getStatus()) //신청 상태
                     .build();
         }
 
