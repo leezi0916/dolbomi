@@ -19,6 +19,8 @@ public class ResumeDto {
     @Builder
     @Setter
     public static class Response {
+
+     
         // ===== 이력서 =====
         private Long resume_no;
         private String resume_title;
@@ -27,7 +29,6 @@ public class ResumeDto {
         private LocalDateTime resume_update_date; // create_date는 업데이트시 값을 추적못하기 때문에 update_date로 설정
         private StatusEnum.CareStatus care_status;
         private StatusEnum.Status status;
-        private Integer account;
 
         // ===== 유저 =====
         private Long user_no;
@@ -36,7 +37,6 @@ public class ResumeDto {
         private String phone;
         private StatusEnum.Gender gender;
         private String address;
-        private String phone;
         private String email;
         private String profile_image;
         private Double avg_score; //이사람이 받은 리뷰의 평균점수
@@ -73,7 +73,7 @@ public class ResumeDto {
                     .user_name(resume.getUser().getUserName())
                     .age(resume.getUser().getAge())
                     .gender(resume.getUser().getGender())
-                    .account(resume.getAccount())
+                    .resume_account(resume.getAccount())
                     .address(resume.getUser().getAddress())
                     .has_license(resume.getUser().getLicenses() != null && !resume.getUser().getLicenses().isEmpty())
                     .avg_score(avgScore != null ? avgScore : 0.0)

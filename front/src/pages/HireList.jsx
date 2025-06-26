@@ -30,12 +30,22 @@ const HireList = () => {
   const [page, setPage] = useState(1); // MUI Pagination은 1부터 시작
   const [size] = useState(10);
   const [totalPages, setTotalPages] = useState(0);
-  
 
   // 1. 컴포넌트가 처음 마운트될 때 전체 리스트를 불러옵니다.
   useEffect(() => {
     loadHireLists(page - 1, size); // API에선 0부터 시작일 가능성 있어 -1 처리
   }, [page]);
+
+  // 이름 첫글자 O 처리하기
+  const maskName = (name) => {
+    if (name.length === 2) {
+      return name[0] + '○';
+    } else if (name.length >= 3) {
+      return name[0] + '○' + name.slice(2);
+    }
+
+    return name;
+  };
 
   const loadHireLists = async (pageNumber, pageSize) => {
     try {
@@ -62,7 +72,6 @@ const HireList = () => {
     setSearchKeyword(keyword);
     // 이 상태 변경은 위에 있는 useEffect를 트리거하여 자동으로 검색을 실행시킬 것입니다.
   };
-
 
   const handleCheckChange = (e) => {
     setCareStatus(e.target.checked);
@@ -174,7 +183,7 @@ const HireList = () => {
                 <HeaderContent>
                   <Divder>
                     <UserInfo>
-                      <UserName>{hire.patName}</UserName>
+                      <UserName>{maskName(hire.patName)}</UserName>
                       <UserAge>
                         나이 {hire.patAge}세(
                         {hire.patGender === 'M' ? '남' : hire.patGender === 'F' ? '여' : ''})
@@ -191,11 +200,11 @@ const HireList = () => {
               <CardFooter>
                 <LocationWage>
                   <LocationText>
-                    <GrayText>지역 </GrayText>
-                    {hire.patAddress}
+                    <GrayText>시급</GrayText> <BoldAccount>{hire.account}원</BoldAccount>
                   </LocationText>
                   <AccuontText>
-                    <GrayText>시급</GrayText> <BoldAccount>{hire.account}원</BoldAccount>
+                    <GrayText>지역 </GrayText>
+                    {hire.patAddress}
                   </AccuontText>
                 </LocationWage>
                 {hire.careStatus === 'Y' && <AccommodationInfo>숙식 제공 가능</AccommodationInfo>}
