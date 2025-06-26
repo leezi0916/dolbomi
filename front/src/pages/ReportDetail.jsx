@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import { Section } from '../styles/common/Container';
 import { Button, ButtonText } from '../styles/common/Button';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import TextareaAutosize from 'react-textarea-autosize';
 import { reportService } from '../api/report';
 import { toast } from 'react-toastify';
@@ -14,6 +14,7 @@ import { toast } from 'react-toastify';
 */
 
 const ReportDetail = () => {
+  const { reportNo } = useParams();
   const navigate = useNavigate();
   const location = useLocation();
   const [state, setState] = useState(true);
@@ -23,28 +24,25 @@ const ReportDetail = () => {
   const handleSubmit = async () => {
     try {
       const save = await reportService.modifyReports(report);
-      console.log(save); //확인용
+      save && alert('수정 완료');
     } catch (error) {
       console.error(error);
       const errorMessage = '리뷰를 불러오는데 실패했습니다.';
       setError(errorMessage);
       toast.error(errorMessage);
-    } finally {
-      navigate(`/report/${report.patNo}`);
     }
   };
 
   const handleDelete = async () => {
     try {
-      const save = await reportService.removeReports(report);
-      console.log(save); //확인용
+      const result = await reportService.removeReports(reportNo);
+      result && alert('일지 삭제');
+      navigate(-1);
     } catch (error) {
       console.error(error);
       const errorMessage = '리뷰를 삭제하는데 실패했습니다.';
       setError(errorMessage);
       toast.error(errorMessage);
-    } finally {
-      navigate(`/report/${report.patNo}`);
     }
   };
 

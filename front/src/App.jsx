@@ -104,7 +104,7 @@ function AppRoutes() {
           <Route path="/review" element={<ReviewModal />} />
           <Route path="/guardian/matchpage" element={<MatchToCaregiver />} />
           <Route path="/guardian/hireDetail/:hiringNo" element={<HireDetailMine />} />
-          <Route path="/guardian/careGiverSupportBorad" element={<CareGiverSupportBoard />} />
+          <Route path="/guardian/careGiverSupportBorad/:hiringNo" element={<CareGiverSupportBoard />} />
 
           <Route path="/guardian/jobopening-management" element={<JobOpeningManagement />} />
           {/* 공용 */}
@@ -128,7 +128,7 @@ function AppRoutes() {
 
           <Route path="/resumeDetail/:resumeNo" element={<ResumeDetail />} />
           <Route path="/report/:patNo" element={<ReportMain />} />
-          <Route path="/report/:patNo/detail/:reportNo" element={<ReportDetail />} />
+          <Route path="/report/detail/:reportNo" element={<ReportDetail />} />
 
           <Route path="/privacy-policy" element={<PrivacyPolicy />} />
           <Route path="/terms-of-service" element={<TermsOfService />} />

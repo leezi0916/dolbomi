@@ -53,6 +53,7 @@ export const API_ENDPOINTS = {
 
   RESUME: {
     BASE: '/resume/v1',
+    LIST: '/resume/v1/list',
     SIMPLE_LIST: '/resume/v1/simple-list',
     DETAIL: (resumeNo) => `/resume/v1/detail/${resumeNo}`,
     MYRESUME: (userNo) => `resume/v1/${userNo}`,
@@ -78,7 +79,7 @@ export const API_ENDPOINTS = {
     // SEARCH: (reportNo) => `/report/v1/report_no=${reportNo}`,
 
     LIST: (patNo) => `/report/v1/${patNo}`,
-    SEARCH: (reportNo) => `/report/report_no=${reportNo}`,
+    SEARCH: (reportNo) => `/report/v1/detail/${reportNo}`,
   },
 
   PROPOSER: {
