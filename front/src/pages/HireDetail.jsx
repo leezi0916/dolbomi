@@ -122,7 +122,6 @@ const HireDetail = () => {
     getList();
   }, [user, hiringNo, setValue]);
 
-
   // jobOpening 데이터가 아직 로드되지 않았다면 로딩 상태를 표시
   if (!jobOpening) {
     return <div>로딩 중...</div>;
@@ -304,7 +303,7 @@ const HireDetail = () => {
             </SubmitButton1>
           )}
 
-          {isModalOpen && ( 
+          {isModalOpen && (
             <ResumeSelectModal
               hiringNo={hiringNo}
               onClose={handleCloseModal}
