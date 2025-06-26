@@ -24,6 +24,7 @@ public class HiringDto {
     public static class Response {
         //구인 정보
         private Long hiring_no;
+        private Long user_no; // 작성자
         private String hiring_title;
         private String hiring_content;
         private Integer account;
@@ -40,17 +41,22 @@ public class HiringDto {
         private Long pat_no;
         private String pat_name;
         private Integer pat_age;
-        private String pat_gender;
+        private StatusEnum.Gender pat_gender;
         private String pat_address;
         private BigDecimal pat_height;
         private BigDecimal pat_weight;
         private String profile_image;
 
         // 보호자 정보
+
         private String phone;
 
         // 질병 리스트 (ex: ["치매", "당뇨"])
         private List<String> disease_tag;
+
+        // 신청 여부(신청테이블에서 상태 갖고옴)
+        private boolean applied;
+
 
         public static Response toDto(Hiring hiring) {
             Patient patient = hiring.getPatient();
@@ -71,7 +77,7 @@ public class HiringDto {
                     .pat_no(patient.getPatNo())
                     .pat_name(patient.getPatName())
                     .pat_age(patient.getPatAge())
-                    .pat_gender(patient.getPatGender().name())
+                    .pat_gender(patient.getPatGender())
                     .pat_address(patient.getPatAddress())
                     .pat_height(patient.getPatHeight())
                     .pat_weight(patient.getPatWeight())
@@ -88,51 +94,15 @@ public class HiringDto {
                     )
                     .build();
         }
-    }
 
-    //구인 상세보기 용 dto(원래 todto에서 자기가 신청됬냐 안됬냐 여부만 추가됨)
-    @Getter
-    @NoArgsConstructor
-    @AllArgsConstructor
-    @Builder
-    public static class DetailResponse {
-        //구인 정보
-        private Long hiring_no;
-        private String hiring_title;
-        private String hiring_content;
-        private Integer account;
-
-        private LocalDateTime start_date;
-        private LocalDateTime end_date;
-
-
-        private Integer max_applicants;
-        private StatusEnum.CareStatus care_status;
-        private String room_image;
-
-        //환자 정보
-        private Long pat_no;
-        private String pat_name;
-        private Integer pat_age;
-        private String pat_gender;
-        private String pat_address;
-        private BigDecimal pat_height;
-        private BigDecimal pat_weight;
-        private String profile_image;
-        // 보호자 정보
-        private String phone;
-
-        // 질병 리스트 (ex: ["치매", "당뇨"])
-        private List<String> disease_tag;
-        // 신청 여부(신청테이블에서 상태 갖고옴)
-        private boolean applied;
-
-        public static DetailResponse toDto(Hiring hiring, boolean applied) {
+        //구인 상세보기 용 dto(원래 todto에서 자기가 신청됬냐 안됬냐 여부만 추가됨)
+        public static Response Detail(Hiring hiring, boolean applied) {
             Patient patient = hiring.getPatient();
             User user = hiring.getUser();
 
-            return DetailResponse.builder()
+            return Response.builder()
                     .hiring_no(hiring.getHiringNo())
+                    .user_no(user.getUserNo())
                     .hiring_title(hiring.getHiringTitle())
                     .hiring_content(hiring.getHiringContent())
                     .account(hiring.getAccount())
@@ -146,7 +116,7 @@ public class HiringDto {
                     .pat_no(patient.getPatNo())
                     .pat_name(patient.getPatName())
                     .pat_age(patient.getPatAge())
-                    .pat_gender(patient.getPatGender().name())
+                    .pat_gender(patient.getPatGender())
                     .pat_address(patient.getPatAddress())
                     .pat_height(patient.getPatHeight())
                     .pat_weight(patient.getPatWeight())

@@ -13,7 +13,7 @@ public interface HiringService {
     Long createHiring(Long patNo, HiringDto.Create createDto);
 
     // 상세보기 메서드 (DetailResponse DTO 사용)
-    HiringDto.DetailResponse getHiringDetail(Long hiringNo, Long caregiverNo);
+    HiringDto.Response getHiringDetail(Long hiringNo, Long caregiverNo);
 
     //구인글 삭제하기
 //    void deleteHiring(Long hiringNo);

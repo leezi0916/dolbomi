@@ -27,10 +27,12 @@ public class ResumeDto {
         // ===== 유저 =====
         private String user_name;
         private Integer age;
-        private String gender;
+        private StatusEnum.Gender gender;
         private String address;
+        private String phone;
         // private String email;
         private String profile_image;
+        private Double avg_score; //이사람이 받은 리뷰의 평균점수
 
         // ===== 자격증 =====
         private String license_name;
@@ -51,5 +53,25 @@ public class ResumeDto {
                     .has_license(resume.getUser().getLicenses() != null && !resume.getUser().getLicenses().isEmpty())
                     .build();
         }
+
+
+        public static Response caregiverListDto(Resume resume, Double avgScore) {
+            return Response.builder()
+                    .resume_no(resume.getResumeNo())
+                    .resume_title(resume.getResumeTitle())
+                    .resume_content(resume.getResumeContent())
+                    .care_status(resume.getCareStatus())
+                    .profile_image(resume.getUser().getProfileImage())
+                    .user_name(resume.getUser().getUserName())
+                    .age(resume.getUser().getAge())
+                    .gender(resume.getUser().getGender())
+                    .account(resume.getAccount())
+                    .address(resume.getUser().getAddress())
+                    .has_license(resume.getUser().getLicenses() != null && !resume.getUser().getLicenses().isEmpty())
+                    .avg_score(avgScore != null ? avgScore : 0.0)
+                    .build();
+        }
+
+
     }
 }

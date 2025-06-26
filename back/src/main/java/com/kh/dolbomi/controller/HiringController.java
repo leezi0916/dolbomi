@@ -51,11 +51,11 @@ public class HiringController {
 
     //구인글 상세보기
     @GetMapping("/{hiringNo}")
-    public ResponseEntity<HiringDto.DetailResponse> getHiringDetail(
+    public ResponseEntity<HiringDto.Response> getHiringDetail(
             @PathVariable Long hiringNo,
             @RequestParam(name = "caregiverNo") Long caregiverNo
     ) {
-        HiringDto.DetailResponse response = hiringService.getHiringDetail(hiringNo, caregiverNo);
+        HiringDto.Response response = hiringService.getHiringDetail(hiringNo, caregiverNo);
         return ResponseEntity.ok(response);
     }
 

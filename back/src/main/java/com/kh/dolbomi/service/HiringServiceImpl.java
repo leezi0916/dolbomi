@@ -44,14 +44,14 @@ public class HiringServiceImpl implements HiringService {
 
     @Override
     @Transactional(readOnly = true)
-    public HiringDto.DetailResponse getHiringDetail(Long hiringNo, Long caregiverNo) {
+    public HiringDto.Response getHiringDetail(Long hiringNo, Long caregiverNo) {
         Hiring hiring = hiringRepository.findById(hiringNo)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 구인글 번호입니다: " + hiringNo));
 
         boolean applied = proposerRepository.existsByHiringNoAndCaregiverNoAndStatus(hiringNo, caregiverNo,
                 StatusEnum.Status.Y);
 
-        return HiringDto.DetailResponse.toDto(hiring, applied);
+        return HiringDto.Response.Detail(hiring, applied);
         //  신청 여부 포함해서 DTO 반환
     }
 

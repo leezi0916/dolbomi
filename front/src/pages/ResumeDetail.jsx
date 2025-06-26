@@ -135,7 +135,7 @@ function ResumeDetail() {
         <ContentWrapper>
           <div>
             <ProfilImageWrapper>
-              <img src={profileImage} alt="프로필 이미지" />
+              <img src={resumeData.profileImage || profileImage} alt="프로필" />
             </ProfilImageWrapper>
             <ChatButton>
               <img src={chatImage} alt="프로필 이미지" />1 : 1 채팅하기
@@ -270,7 +270,7 @@ function ResumeDetail() {
         <ButtonGroup>
           <BackButton onClick={() => navigate(-1)}>이전</BackButton>
           <SubmitButton1 type="button" onClick={handleOpenModal}>
-            간병 신청
+            도움 신청
           </SubmitButton1>
           {isModalOpen && <PatientSelectModal onClose={handleCloseModal} onSubmit={handleSubmitModal} />}
         </ButtonGroup>
