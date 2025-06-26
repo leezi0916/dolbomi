@@ -38,12 +38,6 @@ const WrittenReviews = () => {
     fetchReviews();
   }, [currentPage]);
 
-  const maskName = (name) => {
-    if (name.length === 2) return name[0] + '○';
-    if (name.length >= 3) return name[0] + '○' + name.slice(2);
-    return name;
-  };
-
   const chagneCurrentPage = (value) => {
     setCurrentPage(value);
   };
@@ -61,7 +55,7 @@ const WrittenReviews = () => {
             <CardTopContent>
               <CardImage src={review.profileImage} />
               <CardTextGroup>
-                <CardTitle>{maskName(review.userName)} 간병사</CardTitle>
+                <CardTitle>{review.userName} 간병사</CardTitle>
                 <CardText>
                   나이 {review.age}세({review.gender === 'male' ? '남' : '여'})
                 </CardText>
