@@ -8,7 +8,6 @@ export const reviewService = {
   getReviews: async () => {
     try {
       const { data } = await api.get(API_ENDPOINTS.REVIEWS.SIMPLE_LIST);
-
       return snakeToCamel(data);
     } catch (error) {
       if (error.response) {
@@ -19,7 +18,21 @@ export const reviewService = {
       throw new Error('서버 통신 불량');
     }
   },
-  //특정 간병인 리뷰조회
+
+  // 내가 쓴 리뷰 조회
+  getMyWrittenReviews: async (currentPage, userNo) => {
+    try {
+      const { data } = await api.get(API_ENDPOINTS.REVIEWS.LIST(currentPage, userNo));
+      return snakeToCamel(data);
+    } catch (error) {
+      if (error.response) {
+        const message = error.response?.data?.message || '리뷰를 불러오는데 실패했습니다.';
+        throw new Error(message);
+      }
+
+      throw new Error('서버 통신 불량');
+    }
+  },
 
   //리뷰작성
   saveReview: async (rating, inputValue) => {
