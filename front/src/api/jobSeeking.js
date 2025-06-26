@@ -7,7 +7,7 @@ export const jobSeekingService = {
   // 이력서(구직) 목록 가져오기
   getResumeList: async () => {
     try {
-      const { data } = await api.get(API_ENDPOINTS.RESUME.BASE);
+      const { data } = await api.get(API_ENDPOINTS.RESUME.SIMPLE_LIST);
       return snakeToCamel(data);
     } catch (error) {
       if (error.response) {

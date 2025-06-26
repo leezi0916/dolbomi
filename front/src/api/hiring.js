@@ -7,7 +7,7 @@ export const hiringService = {
   // 구인 목록 가져오기
   getJobOpeningList: async () => {
     try {
-      const { data } = await api.get(API_ENDPOINTS.HIRING.BASE);
+      const { data } = await api.get(API_ENDPOINTS.HIRING.SIMPLE_LIST);
       return snakeToCamel(data);
     } catch (error) {
       if (error.response) {

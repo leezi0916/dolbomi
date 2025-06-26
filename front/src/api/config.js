@@ -39,19 +39,23 @@ export const API_ENDPOINTS = {
     CAREPROFILE: (userNo) => `/users/v1?user_no=${userNo}`,
   },
   REVIEWS: {
-    BASE: '/review/v1/simple-list',
+    BASE: '/review/v1',
+    SIMPLE_LIST: '/review/v1/simple-list',
+    LIST: (currentPage, userNo) => `/review/v1/list?page=${currentPage - 1}&userNo=${userNo}`,
     DETAIL: (userNo) => `/reviews/v1?user_no=${userNo}`,
   },
   HIRING: {
-    BASE: '/hiring/v1/simple-list',
+    BASE: '/hiring/v1',
+    SIMPLE_LIST: '/hiring/v1/simple-list',
     LIST: '/hiring/v1/list',
     DETAIL: (hiringNo) => `/hiring/v1/${hiringNo}`,
   },
 
   RESUME: {
-    BASE: '/resume/v1/simple-list',
-    DETAIL: (resumeNo) => `/resume/v1?resume_no=${resumeNo}`,
-    MYRESUME: (userNo) => `resume/v1?user_no=${userNo}`,
+    BASE: '/resume/v1',
+    SIMPLE_LIST: '/resume/v1/simple-list',
+    DETAIL: (resumeNo) => `/resume/v1/detail/${resumeNo}`,
+    MYRESUME: (userNo) => `resume/v1/${userNo}`,
     UPDATE: (resumeNo) => `/resume/v1/${resumeNo}`,
   },
 

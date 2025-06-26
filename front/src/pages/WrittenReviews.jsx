@@ -17,27 +17,26 @@ import {
 import { reviewService } from '../api/reviews';
 import Paging from '../components/Paging';
 import { media } from '../styles/MediaQueries';
-
-const ITEMS_PER_PAGE = 6;
+import useUserStore from '../store/userStore';
 
 const WrittenReviews = () => {
   const [reviews, setReviews] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
 
+  const { user } = useUserStore();
+
   useEffect(() => {
     const fetchReviews = async () => {
       try {
-        const data = await reviewService.getReviews();
+        const data = await reviewService.getMyWrittenReviews(currentPage, user.userNo);
+        console.log(data);
         setReviews(data);
       } catch (error) {
         console.error('리뷰 로딩 실패:', error);
       }
     };
     fetchReviews();
-  }, []);
-
-  const offset = (currentPage - 1) * ITEMS_PER_PAGE;
-  const totalPage = Math.ceil(reviews.length / ITEMS_PER_PAGE);
+  }, [currentPage]);
 
   const maskName = (name) => {
     if (name.length === 2) return name[0] + '○';
@@ -45,12 +44,11 @@ const WrittenReviews = () => {
     return name;
   };
 
-  const averageScore = (reviews.reduce((acc, cur) => acc + cur.score, 0) / reviews.length || 0).toFixed(1);
-
   const chagneCurrentPage = (value) => {
     setCurrentPage(value);
   };
 
+  console.log(currentPage);
   return (
     <ReviewWrapper>
       <TopSection>
@@ -58,7 +56,7 @@ const WrittenReviews = () => {
       </TopSection>
 
       <RecivedReviewsGridContainer>
-        {reviews.slice(offset, offset + ITEMS_PER_PAGE).map((review) => (
+        {reviews.content?.map((review) => (
           <Card key={review.reviewNo}>
             <CardTopContent>
               <CardImage src={review.profileImage} />
@@ -73,16 +71,16 @@ const WrittenReviews = () => {
               <ReviewTextBox>{review.reviewContent}</ReviewTextBox>
               <ReviewFooter>
                 <ReviewScore>
-                  평점 <strong>{review.score.toFixed(1)}</strong>
+                  평점 <strong>{review.reviewScore.toFixed(1)}</strong>
                 </ReviewScore>
-                <ReviewDate>작성일 {review.createDate}</ReviewDate>
+                <ReviewDate>작성일 {review.reviewUpdateDate.slice(0, 10)}</ReviewDate>
               </ReviewFooter>
             </CardMidBottomContent>
           </Card>
         ))}
       </RecivedReviewsGridContainer>
 
-      <Paging currentPage={currentPage} totalPage={totalPage} chagneCurrentPage={chagneCurrentPage} />
+      <Paging currentPage={currentPage} totalPage={reviews.totalPage} chagneCurrentPage={chagneCurrentPage} />
     </ReviewWrapper>
   );
 };
