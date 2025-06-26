@@ -22,4 +22,21 @@ public class ResumeRepositoryImpl implements ResumeRepository {
                 .setMaxResults(8)
                 .getResultList();
     }
+
+    @Override
+    public void save(Resume resume) {
+        em.persist(resume);
+    }
+
+    @Override
+    public List<Resume> getResumeList(Long userNo) {
+
+        String query = "SELECT r FROM Resume r  WHERE r.user.userNo = :userNo and r.status <> 'N'";
+        return em.createQuery(query, Resume.class)
+                .setParameter("userNo", userNo)
+                .getResultList();
+
+    }
+
+
 }

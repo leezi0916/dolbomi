@@ -59,16 +59,23 @@ const HireRegistration = () => {
     fetchAll();
   }, [user]);
 
-  const getPatient = (patNo) => {
+  const getPatient = async (patNo) => {
     // patNo가 빈값이면 patient도 초기화
     if (!patNo) {
       setPatient(null);
       return;
     }
 
-    setSelectPatientNo(patNo);
-    const patient = userPatients.find((p) => p.patNo === Number(patNo));
-    setPatient(patient);
+    try {
+      setSelectPatientNo(patNo);
+
+      // patientService.getPatientId는 비동기 함수로 가정
+      const patient = await patientService.getPatientId(patNo);
+
+      setPatient(patient);
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   const handleFileChange = (e) => {
@@ -183,7 +190,7 @@ const HireRegistration = () => {
               <Label>보유한 질병</Label>
               <DiseaseInputDiv>
                 <TagsUl id="tags">
-                  {Array.isArray(patient?.tags) && patient.tags.length > 0
+                  {Array.isArray(patient?.disaseTags) && patient.disaseTags.length > 0
                     ? patient.tags.map((tag, index) => (
                         <li key={index} readOnly>
                           <span>{tag}</span>

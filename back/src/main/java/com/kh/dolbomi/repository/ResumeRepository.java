@@ -7,4 +7,8 @@ import java.util.List;
 public interface ResumeRepository {
     // 메인 구직글 조회
     List<Resume> getMainResumeList(StatusEnum.Status status);
+
+    void save(Resume resume);
+
+    List<Resume> getResumeList(Long userNo);
 }

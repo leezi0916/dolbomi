@@ -1,6 +1,7 @@
 package com.kh.dolbomi.domain;
 
 import com.kh.dolbomi.enums.StatusEnum;
+import com.kh.dolbomi.enums.StatusEnum.Status;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -83,4 +84,28 @@ public class Resume {
     public void preUpdate() {
         this.updateDate = LocalDateTime.now();
     }
+
+    // 변경 set메서드
+
+    public void changeResume(String resumeTitle, String resumeContent, Integer Account) {
+
+        if (resumeTitle != null && !resumeTitle.isEmpty()) {
+            this.resumeTitle = resumeTitle;
+        }
+        if (resumeContent != null && !resumeContent.isEmpty()) {
+            this.resumeContent = resumeContent;
+        }
+        if (account != null) {
+            this.account = account;
+        }
+    }
+
+    public void changeStatus(String status) {
+        if (status != null && !status.isEmpty()) {
+            this.status = Status.valueOf(status);
+        }
+
+    }
+
+
 }

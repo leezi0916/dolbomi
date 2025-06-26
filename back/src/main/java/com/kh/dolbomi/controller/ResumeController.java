@@ -7,6 +7,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -24,5 +28,26 @@ public class ResumeController {
         return ResponseEntity.ok(resumeService.getMainResumeList());
     }
 
-    
+
+    //이력서(구직글) 등록
+    @PostMapping
+    public ResponseEntity<Long> createResume(@RequestBody ResumeDto.Create createResumeDto) {
+        Long resumeNo = resumeService.createResume(createResumeDto);
+        return ResponseEntity.ok(resumeNo);
+    }
+
+    @GetMapping("/{userNo}")
+    public ResponseEntity<List<ResumeDto.Response>> getResumeList(@PathVariable Long userNo) {
+        return ResponseEntity.ok(resumeService.getResumList(userNo));
+    }
+
+    @PatchMapping("/{userNo}")
+    public ResponseEntity<ResumeDto.Response> UpdatePaient(
+            @PathVariable Long userNo,
+            @RequestBody ResumeDto.Update updatePatDto) {
+        return ResponseEntity.ok(resumeService.updateResume(userNo, updatePatDto));
+    }
+
+
 }
+

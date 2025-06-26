@@ -51,7 +51,7 @@ const PatientRegistration = () => {
     e.preventDefault(); // 기본 제출 동작 막기
     try {
       await patientService.postNewPatient({
-        // user가 있는 경우 user_no 저장해야함 아래의 숫자는 로그인한 user_no로 작성해주세요
+    
         guardianNo: user.userNo,
         patName: data.patName,
         patAge: data.patAge,

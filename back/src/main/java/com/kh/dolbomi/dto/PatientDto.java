@@ -3,7 +3,6 @@ package com.kh.dolbomi.dto;
 import com.kh.dolbomi.domain.Patient;
 import com.kh.dolbomi.domain.User;
 import com.kh.dolbomi.enums.StatusEnum;
-import com.kh.dolbomi.enums.StatusEnum.Status;
 import java.math.BigDecimal;
 import java.util.List;
 import lombok.AllArgsConstructor;
@@ -122,22 +121,6 @@ public class PatientDto {
         private String status;
         private List<String> disease_tags;
 
-
-        public Patient toEntity() {
-            return Patient.builder()
-                    .patName(this.pat_name)
-                    .patAge(this.pat_age)
-                    .patPhone(this.pat_phone)
-                    .patGender(this.pat_gender)
-                    .patWeight(BigDecimal.valueOf(this.pat_weight))
-                    .patHeight(BigDecimal.valueOf(this.pat_height))
-                    .profileImage(null)
-                    .patContent(this.pat_content)
-                    .patAddress(this.pat_address)
-                    .status(Status.valueOf(this.status))
-                    .build();
-
-        }
 
     }
 
