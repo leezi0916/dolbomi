@@ -59,8 +59,6 @@ public class ResumeController {
             @RequestBody ResumeDto.Update updatePatDto) {
         return ResponseEntity.ok(resumeService.updateResume(userNo, updatePatDto));
     }
-
-
->>>>>>> 218319b16bd24b3f0fe19b5777db3accc82eb94d
+    
 }
 
