@@ -82,6 +82,7 @@ public class User {
     public void updateUserInfo(String userName, Integer age, StatusEnum.Gender gender, String phone, String email,
                                String address,
                                String profileImage) {
+
         if (userName != null && !userName.trim().isEmpty()) {
             this.userName = userName.trim();
         }
@@ -122,6 +123,5 @@ public class User {
     public void changePassword(String encodedPassword) {
         this.userPwd = encodedPassword;
     }
-
 
 }

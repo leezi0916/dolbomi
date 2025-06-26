@@ -10,6 +10,12 @@ public interface ResumeRepository {
     // 메인 구직글 조회
     List<Resume> getMainResumeList(StatusEnum.Status status);
 
+
     //간병사 모집 리스트(페이징)
     Page<Resume> findByStatus(StatusEnum.Status status, Pageable pageable);
+
+    void save(Resume resume);
+
+    List<Resume> getResumeList(Long userNo);
+
 }

@@ -19,8 +19,7 @@ public class ResumeRepositoryImpl implements ResumeRepository {
     // 메인 카드용 구직글 8개 조회 (페이징 없이)
     @Override
     public List<Resume> getMainResumeList(StatusEnum.Status status) {
-        String query = "SELECT DISTINCT r FROM Resume r JOIN r.user u LEFT JOIN License l ON l.user = u WHERE r.status = :status";
-        // String query = "SELECT DISTINCT r FROM Resume r JOIN FETCH r.user u LEFT JOIN fetch License l ON l.user = u WHERE r.status = :status";
+        String query = "SELECT DISTINCT r FROM Resume r JOIN r.user u LEFT JOIN License l ON l.user = u WHERE r.status = :status ORDER BY r.updateDate DESC";
         return em.createQuery(query, Resume.class)
                 .setParameter("status", status)
                 .setMaxResults(8)
@@ -28,6 +27,7 @@ public class ResumeRepositoryImpl implements ResumeRepository {
     }
 
     @Override
+
     public Page<Resume> findByStatus(StatusEnum.Status status, Pageable pageable) {
         // 1. 페이징된 데이터 조회
         List<Resume> content = em.createQuery(
@@ -46,4 +46,20 @@ public class ResumeRepositoryImpl implements ResumeRepository {
         // 3. Page 객체로 변환
         return new PageImpl<>(content, pageable, total);
     }
+
+    public void save(Resume resume) {
+        em.persist(resume);
+    }
+
+    @Override
+    public List<Resume> getResumeList(Long userNo) {
+
+        String query = "SELECT r FROM Resume r  WHERE r.user.userNo = :userNo and r.status <> 'N'";
+        return em.createQuery(query, Resume.class)
+                .setParameter("userNo", userNo)
+                .getResultList();
+
+    }
+
+    
 }

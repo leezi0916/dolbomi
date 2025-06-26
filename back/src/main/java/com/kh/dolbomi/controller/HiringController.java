@@ -2,8 +2,12 @@ package com.kh.dolbomi.controller;
 
 
 import com.kh.dolbomi.dto.HiringDto;
+import com.kh.dolbomi.dto.HiringDto.Response;
 import com.kh.dolbomi.dto.PageResponse;
 import com.kh.dolbomi.service.HiringService;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -26,9 +30,20 @@ public class HiringController {
     private final HiringService hiringService;
 
     //돌봄 대상자 모집 리스트 불러오기
+    @GetMapping("/simple-list")
+    public ResponseEntity<Map<String, List<Response>>> getHomeHiringLists() {
+        Map<String, List<HiringDto.Response>> result = new HashMap<>();
+        result.put("all", hiringService.getMainHiringList());
+        result.put("careOnly", hiringService.getMainCareHiringList());
+
+        return ResponseEntity.ok(result);
+    }
+
+
     @GetMapping("/list")
     public ResponseEntity<PageResponse<HiringDto.Response>> getPagedHiringList(Pageable pageable) {
 //        @PageableDefault(size = 10, sort = "createDate", direction = Sort.Direction.DESC)
+
         Page<HiringDto.Response> hiringPage = hiringService.getHiringPage(pageable);
         PageResponse<HiringDto.Response> response = new PageResponse<>(hiringPage);
 

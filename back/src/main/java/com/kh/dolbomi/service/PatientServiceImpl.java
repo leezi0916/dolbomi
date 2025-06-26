@@ -82,7 +82,6 @@ public class PatientServiceImpl implements PatientService {
 
         Patient patient = patientRepository.findOne(patNo)
                 .orElseThrow(() -> new IllegalArgumentException("해당 환자가 없습니다."));
-        System.out.println("name :" + patient.getDiseaseTags());
 
         // 보호자 추출
         User user = patient.getGuardian(); // 또는 getUser() 등 필드에 따라 다름

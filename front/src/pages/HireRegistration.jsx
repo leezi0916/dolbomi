@@ -72,7 +72,9 @@ const HireRegistration = () => {
 
       // patientService.getPatientId는 비동기 함수로 가정
       const patient = await patientService.getPatientId(patNo);
+
       console.log(patient);
+
       setPatient(patient);
     } catch (error) {
       console.error(error);

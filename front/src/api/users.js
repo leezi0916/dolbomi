@@ -21,7 +21,7 @@ export const userService = {
   getCareGiverProfile: async (userNo) => {
     try {
       const { data } = await api.get(API_ENDPOINTS.USERS.CAREPROFILE(Number(userNo)));
-      return snakeToCamel(data[0]);
+      return snakeToCamel(data);
     } catch (error) {
       console.error('프로필 조회 실패:', error.response?.data?.message || error.message);
       throw error;

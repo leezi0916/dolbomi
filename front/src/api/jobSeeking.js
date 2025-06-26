@@ -8,7 +8,6 @@ export const jobSeekingService = {
   getResumeList: async () => {
     try {
       const { data } = await api.get(API_ENDPOINTS.RESUME.BASE);
-      console.log(data);
       return snakeToCamel(data);
     } catch (error) {
       if (error.response) {
@@ -39,9 +38,10 @@ export const jobSeekingService = {
   },
 
   //이력서등록
-  postNewResume: async (resumeData) => {
+  postNewResume: async (newData) => {
+    console.log(camelToSnake(newData));
     try {
-      await api.post(API_ENDPOINTS.RESUME.BASE, camelToSnake(resumeData));
+      await api.post(API_ENDPOINTS.RESUME.BASE, camelToSnake(newData));
     } catch (error) {
       console.log(error);
       throw new Error('서버 통신 불량');
@@ -50,7 +50,7 @@ export const jobSeekingService = {
 
   getMyResumeList: async (userNo) => {
     try {
-      const { data } = await api.get(`${API_ENDPOINTS.RESUME.MYRESUME(userNo)}`); // 또는 경로 param이면 `/resumes/${userNo}`
+      const { data } = await api.get(`${API_ENDPOINTS.RESUME.MYRESUME(userNo)}`);
       return snakeToCamel(data);
     } catch (error) {
       const message = error.response?.data?.message || '이력서 리스트를 가져오는데에 실패했습니다.';
