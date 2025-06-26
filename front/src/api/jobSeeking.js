@@ -19,6 +19,24 @@ export const jobSeekingService = {
     }
   },
 
+  // 간병사 모집 리스트 가져오기
+  getCaregiverList: async ({ page = 0, size = 10 } = {}) => {
+    try {
+      // 쿼리 파라미터를 URL에 붙임
+      const { data } = await api.get(API_ENDPOINTS.RESUME.LIST, {
+        params: { page, size },
+      });
+      return snakeToCamel(data);
+    } catch (error) {
+      if (error.response) {
+        const message = error.response?.data?.message || '이력서 리스트를 가져오는데에 실패했습니다.';
+        throw new Error(message);
+      }
+
+      throw new Error('서버 통신 불량');
+    }
+  },
+
   //이력서등록
   postNewResume: async (newData) => {
     console.log(camelToSnake(newData));
@@ -44,6 +62,7 @@ export const jobSeekingService = {
   getResume: async (resumeNo) => {
     try {
       const { data } = await api.get(API_ENDPOINTS.RESUME.DETAIL(resumeNo));
+      console.log('이력서 상세보기 데이터', data);
       return snakeToCamel(data);
     } catch (error) {
       console.log(error);

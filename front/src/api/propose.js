@@ -6,6 +6,7 @@ export const proposerSevice = {
   getcareGiverLists: async (hiringNo) => {
     try {
       const { data } = await api.get(API_ENDPOINTS.PROPOSER.LIST(hiringNo));
+      console.log(data);
       return snakeToCamel(data);
     } catch (error) {
       console.error(

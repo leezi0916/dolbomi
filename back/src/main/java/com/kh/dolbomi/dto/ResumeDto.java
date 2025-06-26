@@ -34,8 +34,10 @@ public class ResumeDto {
         private Integer age;
         private StatusEnum.Gender gender;
         private String address;
+        private String phone;
         private String email;
         private String profile_image;
+        private Double avg_score; //이사람이 받은 리뷰의 평균점수
 
         //         ===== 자격증 =====
         private List<License> license_list;
@@ -43,7 +45,6 @@ public class ResumeDto {
         private String license_publisher;
         private LocalDateTime license_date;
         private boolean has_license; // 자격증 있는지 여부 -> 메인페이지에 사용
-
 
         public static Response mainResumeDto(Resume resume) {
             return Response.builder()
@@ -59,6 +60,23 @@ public class ResumeDto {
                     .build();
         }
 
+
+        public static Response caregiverListDto(Resume resume, Double avgScore) {
+            return Response.builder()
+                    .resume_no(resume.getResumeNo())
+                    .resume_title(resume.getResumeTitle())
+                    .resume_content(resume.getResumeContent())
+                    .care_status(resume.getCareStatus())
+                    .profile_image(resume.getUser().getProfileImage())
+                    .user_name(resume.getUser().getUserName())
+                    .age(resume.getUser().getAge())
+                    .gender(resume.getUser().getGender())
+                    .account(resume.getAccount())
+                    .address(resume.getUser().getAddress())
+                    .has_license(resume.getUser().getLicenses() != null && !resume.getUser().getLicenses().isEmpty())
+                    .avg_score(avgScore != null ? avgScore : 0.0)
+                    .build();
+        }
 
         public static Response ResumeListDto(Resume resume) {
             return Response.builder()
@@ -137,6 +155,5 @@ public class ResumeDto {
         private LocalDateTime update_date;
         private StatusEnum.CareStatus care_status;
         private String status;
-
     }
 }

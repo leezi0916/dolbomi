@@ -1,9 +1,12 @@
 package com.kh.dolbomi.controller;
 
+import com.kh.dolbomi.dto.PageResponse;
 import com.kh.dolbomi.dto.ResumeDto;
 import com.kh.dolbomi.service.ResumeService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,6 +32,15 @@ public class ResumeController {
     }
 
 
+    //간병사 모집 리스트 불러오기
+    @GetMapping("/list")
+    public ResponseEntity<PageResponse<ResumeDto.Response>> getPagedResumeList(Pageable pageable) {
+        Page<ResumeDto.Response> resumePage = resumeService.getResumePage(pageable);
+        PageResponse<ResumeDto.Response> response = new PageResponse<>(resumePage);
+
+        return ResponseEntity.ok(response);
+    }
+
     //이력서(구직글) 등록
     @PostMapping
     public ResponseEntity<Long> createResume(@RequestBody ResumeDto.Create createResumeDto) {
@@ -49,5 +61,6 @@ public class ResumeController {
     }
 
 
+>>>>>>> 218319b16bd24b3f0fe19b5777db3accc82eb94d
 }
 

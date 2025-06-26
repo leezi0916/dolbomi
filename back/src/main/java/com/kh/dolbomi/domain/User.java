@@ -123,5 +123,5 @@ public class User {
     public void changePassword(String encodedPassword) {
         this.userPwd = encodedPassword;
     }
-    
+
 }

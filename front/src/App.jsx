@@ -104,7 +104,7 @@ function AppRoutes() {
           <Route path="/review" element={<ReviewModal />} />
           <Route path="/guardian/matchpage" element={<MatchToCaregiver />} />
           <Route path="/guardian/hireDetail/:hiringNo" element={<HireDetailMine />} />
-          <Route path="/guardian/careGiverSupportBorad" element={<CareGiverSupportBoard />} />
+          <Route path="/guardian/careGiverSupportBorad/:hiringNo" element={<CareGiverSupportBoard />} />
 
           <Route path="/guardian/jobopening-management" element={<JobOpeningManagement />} />
           {/* 공용 */}

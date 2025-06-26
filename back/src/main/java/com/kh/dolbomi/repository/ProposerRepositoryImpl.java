@@ -11,6 +11,8 @@ public class ProposerRepositoryImpl implements ProposerRepository {
     @PersistenceContext
     private EntityManager em;
 
+
+    //내가 신청했는지 안했는지
     @Override
     public boolean existsByHiringNoAndCaregiverNoAndStatus(Long hiringNo, Long caregiverNo, Status status) {
         String jpql = "SELECT COUNT(p) FROM Proposer p " +
@@ -26,4 +28,6 @@ public class ProposerRepositoryImpl implements ProposerRepository {
 
         return count > 0;
     }
+
+
 }
