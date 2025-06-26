@@ -93,7 +93,12 @@ const HireRegistration = () => {
   const onSubmit = async (data) => {
     console.log(data);
     try {
-      await hiringService.postNewHiring({ ...data, patNo: Number(selectPatientNo) });
+      await hiringService.postNewHiring({
+        ...data,
+        startDate: new Date(data.startDate).toISOString(), // ISO 8601 형식
+        endDate: new Date(data.endDate).toISOString(),
+        patNo: Number(selectPatientNo),
+      });
       toast.success('돌봄대상자 등록 완료!');
       navigate('/guardian/jobopening-management');
     } catch (error) {

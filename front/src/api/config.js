@@ -20,37 +20,44 @@ export const API_ENDPOINTS = {
   //   BASE: '/products',
   // },
   COMMUNITY: {
-    BASE: '/community',
-    LIST: (status, role) => `/community?status=${status}&role=${role}`, // 게시판 리스트 등
-    DETAIL: (no) => `/community?no=${no}`, // 특정 게시글
-    QUESTION: (status, role, id) => `/community?status=${status}&role=${role}&id=${id}`,
+    BASE: '/community/v1',
+    LIST: (status, role) => `/community/v1?status=${status}&role=${role}`, // 게시판 리스트 등
+    DETAIL: (no) => `/community/v1?no=${no}`, // 특정 게시글
+    QUESTION: (status, role, id) => `/community/v1?status=${status}&role=${role}&id=${id}`,
   },
 
   USERS: {
-    BASE: '/users',
+    BASE: '/users/v1',
 
-    CHECK_ID: 'users/check', //아이디 중복 검사
-    PROFILE: (userNo) => `/users?user_no=${userNo}`,
-    LOGIN: '/users/login', //실제에는 이렇게 해야함 아래는 JsonServer 사용시
+    CHECK_ID: 'users/v1/check', //아이디 중복 검사
+    PROFILE: (userNo) => `/users/v1?user_no=${userNo}`,
+    LOGIN: '/users/v1/login', //실제에는 이렇게 해야함 아래는 JsonServer 사용시
 
     // LOGIN: (userId, userPwd) => `/users?user_id=${userId}&user_pwd=${userPwd}`,
-    DETAIL: (userId) => `/users?user_id=${userId}`,
-    PROFILE_UPDATE: (userNo) => `/users/${userNo}`,
-    CAREPROFILE: (userNo) => `/users?user_no=${userNo}`,
+    DETAIL: (userId) => `/users/v1?user_id=${userId}`,
+    PROFILE_UPDATE: (userNo) => `/users/v1/${userNo}`,
+    CAREPROFILE: (userNo) => `/users/v1?user_no=${userNo}`,
   },
   REVIEWS: {
-    BASE: '/reviews',
-    DETAIL: (userNo) => `/reviews?user_no=${userNo}`,
+    BASE: '/review/v1/simple-list',
+    DETAIL: (userNo) => `/reviews/v1?user_no=${userNo}`,
   },
   HIRING: {
-    BASE: '/hiring',
-    DETAIL: (hiringNo) => `/hiring?hiring_no=${hiringNo}`,
+    BASE: '/hiring/v1/simple-list',
+    LIST: '/hiring/v1/list',
+    DETAIL: (hiringNo) => `/hiring/v1/${hiringNo}`,
   },
 
   RESUME: {
+<<<<<<< HEAD
     BASE: '/resume/v1',
     DETAIL: (resumeNo) => `/resume?resume_no=${resumeNo}`,
     MYRESUME: (userNo) => `resume/v1/${userNo}`,
+=======
+    BASE: '/resume/v1/simple-list',
+    DETAIL: (resumeNo) => `/resume/v1?resume_no=${resumeNo}`,
+    MYRESUME: (userNo) => `resume/v1?user_no=${userNo}`,
+>>>>>>> 3b9a5b7a902fb56166788d8ef7bb3799f525b2d1
     UPDATE: (resumeNo) => `/resume/v1/${resumeNo}`,
   },
 
@@ -62,25 +69,29 @@ export const API_ENDPOINTS = {
   },
 
   DISEASE: {
-    BASE: '/disease',
-    DETAIL: (disNo) => `/patients?disNo=${disNo}`,
+    BASE: '/disease/v1',
+    DETAIL: (disNo) => `/patients/v1?disNo=${disNo}`,
   },
 
   REPORT: {
-    BASE: `/report`,
-    PROFILE: (patNo) => `/report?pat_no=${patNo}`,
+    BASE: `/report/v1`,
+
+    PROFILE: (patNo) => `/report/v1?pat_no=${patNo}`,
+    // SEARCH: (reportNo) => `/report/v1/report_no=${reportNo}`,
+
+    LIST: (patNo) => `/report/v1/${patNo}`,
     SEARCH: (reportNo) => `/report/report_no=${reportNo}`,
   },
 
   PROPOSER: {
-    BASE: '/proposer',
-    LIST: (hiringNo) => `/proposer?hiring_no=${hiringNo}`,
-    CANCEL: (hiringNo, caregiverNo) => `/proposer/${hiringNo}/${caregiverNo}`,
+    BASE: '/proposer/v1',
+    LIST: (hiringNo) => `/proposer/v1?hiring_no=${hiringNo}`,
+    CANCEL: (hiringNo, caregiverNo) => `/proposer/v1/${hiringNo}/${caregiverNo}`,
   },
 
   MATCHING: {
-    BASE: '/matching',
-    LIST: (patNo, status) => `/matching?pat_no=${patNo}&status=${status}`,
-    ENDLIST: (status) => `/matching?status=${status}`,
+    BASE: '/matching/v1',
+    LIST: (patNo, status) => `/matching/v1?pat_no=${patNo}&status=${status}`,
+    ENDLIST: (status) => `/matching/v1?status=${status}`,
   },
 };

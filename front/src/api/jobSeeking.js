@@ -8,7 +8,6 @@ export const jobSeekingService = {
   getResumeList: async () => {
     try {
       const { data } = await api.get(API_ENDPOINTS.RESUME.BASE);
-      console.log(data);
       return snakeToCamel(data);
     } catch (error) {
       if (error.response) {

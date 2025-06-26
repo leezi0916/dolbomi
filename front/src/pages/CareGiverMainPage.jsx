@@ -12,16 +12,12 @@ import { MainMoveButton } from '../styles/common/Button';
 
 const CareGiverMainPage = () => {
   const [jobOpeningList, setJobOpeningList] = useState([]);
-  const [RoomAndBoardList, setRoomAndBoardList] = useState([]);
 
   useEffect(() => {
     const loadJobOpeningList = async () => {
       try {
         const list = await hiringService.getJobOpeningList();
         setJobOpeningList(list);
-
-        // list를 기반으로 바로 필터링
-        setRoomAndBoardList(list.filter((h) => h.careStatus === 'Y'));
       } catch (error) {
         toast.error('구인 목록을 불러오는데 실패했습니다.');
       }
@@ -72,25 +68,27 @@ const CareGiverMainPage = () => {
 
         <HiringCardSection>
           <GridContainer>
-            {jobOpeningList.map((user) => (
-              <Card key={user.hiringNo}>
+            {jobOpeningList.all?.map((jobOpening) => (
+              <Card key={jobOpening.hiringNo}>
                 <CardTopContent>
-                  <CardImage src={user.profileImage} />
+                  <CardImage src={jobOpening.profileImage} />
                   <CardTextGroup>
-                    <CardTitle>{maskName(user.patName)} 님</CardTitle>
+                    <CardTitle>{maskName(jobOpening.patName)} 님</CardTitle>
                     <CardText>
-                      <span>나이</span> : {user.patAge}세({user.patGender == 'M' ? '남' : '여'})
+                      <span>나이</span> : {jobOpening.patAge}세({jobOpening.patGender == 'M' ? '남' : '여'})
                     </CardText>
                     <CardText>
-                      <span>시급</span> : {user.account.toLocaleString()}원
+                      <span>시급</span> : {jobOpening.account.toLocaleString()}원
                     </CardText>
                   </CardTextGroup>
                 </CardTopContent>
                 <CardBottomContent>
                   <CardRegion>
-                    <span>지역</span> {user.patAddress}
+                    <span>지역</span> {jobOpening.patAddress}
                   </CardRegion>
-                  <MainMoveButton onClick={() => navigate(`/hireDetail/${user.hiringNo}`)}>상세보기</MainMoveButton>
+                  <MainMoveButton onClick={() => navigate(`/hireDetail/${jobOpening.hiringNo}`)}>
+                    상세보기
+                  </MainMoveButton>
                 </CardBottomContent>
               </Card>
             ))}
@@ -105,25 +103,27 @@ const CareGiverMainPage = () => {
 
         <RoomAndBoardCardSection>
           <GridContainer>
-            {RoomAndBoardList.map((user) => (
-              <Card key={user.hiringNo}>
+            {jobOpeningList.careOnly?.map((jobOpening) => (
+              <Card key={jobOpening.hiringNo}>
                 <CardTopContent>
-                  <CardImage src={user.profileImage} />
+                  <CardImage src={jobOpening.profileImage} />
                   <CardTextGroup>
-                    <CardTitle>{maskName(user.patName)} 님</CardTitle>
+                    <CardTitle>{maskName(jobOpening.patName)} 님</CardTitle>
                     <CardText>
-                      <span>나이</span> : {user.patAge}세({user.patGender == 'M' ? '남' : '여'})
+                      <span>나이</span> : {jobOpening.patAge}세({jobOpening.patGender == 'M' ? '남' : '여'})
                     </CardText>
                     <CardText>
-                      <span>시급</span> : {user.account.toLocaleString()}원
+                      <span>시급</span> : {jobOpening.account.toLocaleString()}원
                     </CardText>
                   </CardTextGroup>
                 </CardTopContent>
                 <CardBottomContent>
                   <CardRegion>
-                    <span>지역</span> {user.patAddress}
+                    <span>지역</span> {jobOpening.patAddress}
                   </CardRegion>
-                  <MainMoveButton onClick={() => navigate(`/hireDetail/${user.hiringNo}`)}>상세보기</MainMoveButton>
+                  <MainMoveButton onClick={() => navigate(`/hireDetail/${jobOpening.hiringNo}`)}>
+                    상세보기
+                  </MainMoveButton>
                 </CardBottomContent>
               </Card>
             ))}

@@ -21,7 +21,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
@@ -34,7 +33,6 @@ import org.hibernate.annotations.DynamicUpdate;
 @Builder
 @DynamicInsert //insert시에 null이 아닌 필드만 쿼리에 포함, default값 활용
 @DynamicUpdate //변경된 필드만 update문에 포함
-@ToString
 public class Resume {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

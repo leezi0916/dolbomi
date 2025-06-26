@@ -26,7 +26,6 @@ public class ResumeServiceImpl implements ResumeService {
     @Override
     @Transactional(readOnly = true)
     public List<ResumeDto.Response> getMainResumeList() {
-        // join 대신 em에서 Resume를 가져오고, Resume안의 User를 가져와보자
         List<Resume> resumes = resumeRepository.getMainResumeList(StatusEnum.Status.Y);
 
         return resumes.stream()

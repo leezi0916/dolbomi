@@ -86,7 +86,7 @@ public class Patient {
     }
 
 
-    // 변경 set메서드
+    // 변경 set메서
     public void changePatPhone(String patPhone) {
         if (patPhone != null && !patPhone.isEmpty()) {
             this.patPhone = patPhone;
@@ -145,4 +145,5 @@ public class Patient {
         }
 
     }
+
 }

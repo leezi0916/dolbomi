@@ -55,7 +55,7 @@ const ReportDetail = () => {
   return (
     <Wrap>
       <Head>
-        <MainTitle>[{report.createDate}]</MainTitle>
+        <MainTitle>[{report.createDate.slice(0, 10)}]</MainTitle>
         <Buttons>
           {/*
             여기서 해당환자(patNo)의 간병인이 맞는지 체크해야함

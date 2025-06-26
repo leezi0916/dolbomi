@@ -22,10 +22,9 @@ public class ResumeController {
 
     private final ResumeService resumeService;
 
-    // 메인 구직글 조회
-    @GetMapping
+    // 메인(보호자 메인) 구직글 조회
+    @GetMapping("/simple-list")
     public ResponseEntity<List<ResumeDto.Response>> getMainResumeList() {
-        // 페이징에 필요한 정보만 가져오기 위해 PageResponse 객체로 감싸기
         return ResponseEntity.ok(resumeService.getMainResumeList());
     }
 
@@ -48,6 +47,7 @@ public class ResumeController {
             @RequestBody ResumeDto.Update updatePatDto) {
         return ResponseEntity.ok(resumeService.updateResume(userNo, updatePatDto));
     }
+
 
 }
 
