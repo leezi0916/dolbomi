@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -29,10 +30,24 @@ public class ReportController {
         return ResponseEntity.ok(reportService.createReport(reportCreate));
     }
 
-    //    진단일지 목록 불러오기
+    //    진단일지 목록/상세 불러오기
     @GetMapping("/{patNo}")
     public ResponseEntity<List<ReportDto.Response>> getReports(@PathVariable Long patNo) {
-        return ResponseEntity.ok(reportService.findAll(patNo));
+        List<ReportDto.Response> reports = reportService.getList(patNo);
+        return ResponseEntity.ok(reports);
+    }
+
+    //진단일지 수정
+    @PatchMapping
+    public void updateReport(@RequestBody ReportDto.Update update) {
+        reportService.updateReport(update);
+    }
+
+    //  진단일지 삭제
+    @PatchMapping("/detail/{reportNo}")
+    public ResponseEntity<Void> deleteReport(@PathVariable Long reportNo) {
+        reportService.deleteReport(reportNo);
+        return ResponseEntity.ok().build();
     }
 
 }

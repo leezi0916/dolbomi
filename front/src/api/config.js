@@ -59,7 +59,6 @@ export const API_ENDPOINTS = {
     DETAIL: (guardianNo) => `/patient/v1?guardian_no=${guardianNo}`,
     PATDETAIL: (patNo) => `/patient/v1/${patNo}`,
     PATCH: (patNo) => `/patient/v1/${patNo}`,
-
   },
 
   DISEASE: {
@@ -70,7 +69,7 @@ export const API_ENDPOINTS = {
   REPORT: {
     BASE: `/report/v1`,
     LIST: (patNo) => `/report/v1/${patNo}`,
-    SEARCH: (reportNo) => `/report/report_no=${reportNo}`,
+    SEARCH: (reportNo) => `/report/v1/detail/${reportNo}`,
   },
 
   PROPOSER: {
