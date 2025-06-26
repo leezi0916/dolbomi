@@ -33,6 +33,10 @@ public class Report {
     private Long reportNo;
 
     @ManyToOne
+    @JoinColumn(name = "CARE_GIVER_NO", nullable = false)
+    private User user;
+
+    @ManyToOne
     @JoinColumn(name = "PAT_NO", nullable = false)
     private Patient patient;
 
@@ -68,5 +72,9 @@ public class Report {
 
     public void changePatient(Patient patient) {
         this.patient = patient;
+    }
+
+    public void changeUser(User user) {
+        this.user = user;
     }
 }

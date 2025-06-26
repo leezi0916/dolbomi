@@ -3,6 +3,7 @@ package com.kh.dolbomi.dto;
 import com.kh.dolbomi.domain.Patient;
 import com.kh.dolbomi.domain.User;
 import com.kh.dolbomi.enums.StatusEnum;
+import com.kh.dolbomi.enums.StatusEnum.Status;
 import java.math.BigDecimal;
 import java.util.List;
 import lombok.AllArgsConstructor;
@@ -10,7 +11,6 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.ToString;
 
 public class PatientDto {
 
@@ -18,20 +18,19 @@ public class PatientDto {
     @Setter
     @AllArgsConstructor
     @NoArgsConstructor
-    @ToString
     public static class Create {
 
         private Long guardian_no;
         private String pat_name;
         private Integer pat_age;
-        private Integer pat_phone;
+        private String pat_phone;
         private StatusEnum.Gender pat_gender;
         private Integer pat_weight;
         private Integer pat_height;
         private String pat_address;
         private String pat_content;
         private String status;
-        private List<String> diseaseTags;
+        private List<String> disease_tags;
 
         public Patient toEntity(User user) {
             return Patient.builder()
@@ -42,6 +41,7 @@ public class PatientDto {
                     .patWeight(BigDecimal.valueOf(this.pat_weight))
                     .patHeight(BigDecimal.valueOf(this.pat_height))
                     .profileImage(null)
+                    .patContent(this.pat_content)
                     .patGender(this.pat_gender)
                     .patAddress(this.pat_address)
                     .build();
@@ -58,15 +58,17 @@ public class PatientDto {
         private Long pat_no;
         private String pat_name;
         private Integer pat_age;
+        private String pat_phone;
         private StatusEnum.Gender pat_gender;
         private Integer pat_weight;
         private Integer pat_height;
         private String pat_address;
         private String pat_content;
         private String status;
+        private List<String> disease_tags;
 
         public static PatientDto.Response toDto(Patient patient) {
-            return PatientDto.Response.builder()
+            return Response.builder()
                     .pat_no(patient.getPatNo())
                     .pat_name(patient.getPatName())
                     .pat_age(patient.getPatAge())
@@ -75,16 +77,27 @@ public class PatientDto {
         }
 
         public static PatientDto.Response toDetailDto(Patient patient) {
+
             return Response.builder()
                     .pat_no(patient.getPatNo())
                     .pat_name(patient.getPatName())
                     .pat_age(patient.getPatAge())
+                    .pat_phone(patient.getPatPhone())
                     .pat_gender(patient.getPatGender())
                     .pat_weight(patient.getPatWeight().intValue())
                     .pat_height(patient.getPatHeight().intValue())
                     .pat_address(patient.getPatAddress())
                     .pat_content(patient.getPatContent())
+
+                    // 질병 정보 (List<String>)
+                    .disease_tags(
+                            patient.getDiseaseTags().stream()
+                                    .map(diseaseTag -> diseaseTag.getDisease().getDisName())
+                                    .toList()
+                    )
                     .build();
+
+
         }
 
     }
@@ -96,29 +109,34 @@ public class PatientDto {
     @NoArgsConstructor
     @Builder
     public static class Update {
+
         private Long pat_no;
         private String pat_name;
         private Integer pat_age;
-        private Integer pat_phone;
+        private String pat_phone;
         private StatusEnum.Gender pat_gender;
         private Integer pat_weight;
         private Integer pat_height;
         private String pat_address;
         private String pat_content;
         private String status;
+        private List<String> disease_tags;
 
 
         public Patient toEntity() {
             return Patient.builder()
                     .patName(this.pat_name)
-                    .patPhone(this.pat_phone)
                     .patAge(this.pat_age)
+                    .patPhone(this.pat_phone)
+                    .patGender(this.pat_gender)
                     .patWeight(BigDecimal.valueOf(this.pat_weight))
                     .patHeight(BigDecimal.valueOf(this.pat_height))
                     .profileImage(null)
-                    .patGender(this.pat_gender)
+                    .patContent(this.pat_content)
                     .patAddress(this.pat_address)
+                    .status(Status.valueOf(this.status))
                     .build();
+
         }
 
     }

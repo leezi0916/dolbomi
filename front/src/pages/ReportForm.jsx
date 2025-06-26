@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import { Section } from '../styles/common/Container';
 import { ButtonText, SubmitButton } from '../styles/common/Button';
@@ -16,7 +16,7 @@ const ReportForm = () => {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
     careGiverNo: user.userNo,
-    patNo: patNo,
+    patNo: Number(patNo),
   });
 
   const handleChange = (e) => {
@@ -31,10 +31,10 @@ const ReportForm = () => {
   const handleSubmit = async () => {
     try {
       const save = await reportService.addReports(formData);
-      console.log(save); //확인용
+      console.log('1이면 등록 성공' + save); //확인용
     } catch (error) {
       console.error(error);
-      const errorMessage = '리뷰를 불러오는데 실패했습니다.';
+      const errorMessage = '일지 등록에 실패했습니다.';
       setError(errorMessage);
       toast.error(errorMessage);
     } finally {
@@ -89,6 +89,9 @@ const ReportForm = () => {
       <Line />
       <br />
       <Buttons>
+        <Btn onClick={() => window.history.back()}>
+          <ButtonText>이전</ButtonText>
+        </Btn>
         <Btn onClick={handleSubmit}>
           <ButtonText>등록</ButtonText>
         </Btn>
