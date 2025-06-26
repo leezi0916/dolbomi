@@ -1,17 +1,22 @@
 package com.kh.dolbomi.controller;
 
+import com.kh.dolbomi.dto.PageResponse;
 import com.kh.dolbomi.dto.ReviewDto;
 import com.kh.dolbomi.service.ReviewService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/review/v1/simple-list")
+@RequestMapping("/review/v1")
 @RequiredArgsConstructor
 @CrossOrigin(origins = "http://localhost:5173")// 프론트와 백엔드 url이 다른것을 맞춰주기 위한 어노테이션
 public class ReviewController {
@@ -19,9 +24,17 @@ public class ReviewController {
     private final ReviewService reviewService;
 
     // 메인(보호자 메인) 리뷰 조회
-    @GetMapping
+    @GetMapping("/simple-list")
     public ResponseEntity<List<ReviewDto.Response>> getReviews() {
         return ResponseEntity.ok(reviewService.getMainReviewList());
+    }
+
+    // 내가쓴 리뷰, 내가 받은 리뷰 조회
+    @GetMapping("/list")
+    public ResponseEntity<PageResponse<ReviewDto.Response>> getReviewsByPage(
+            @PageableDefault(size = 6, sort = "updateDate", direction = Sort.Direction.DESC) Pageable pageable,
+            @RequestParam Long userNo) {
+        return ResponseEntity.ok(new PageResponse<>(reviewService.getMyWrittenReviewList(pageable, userNo)));
     }
 
 }

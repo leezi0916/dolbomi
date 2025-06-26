@@ -13,6 +13,8 @@ import { ClipLoader } from 'react-spinners';
 import { Link } from 'react-router-dom';
 import { hiringService } from '../api/hiring';
 import Paging from '../components/Paging';
+import { jobSeekingService } from '../api/jobSeeking';
+import useUserStore from '../store/userStore';
 
 const HireList = () => {
   const [hireLists, setHireLists] = useState([]);

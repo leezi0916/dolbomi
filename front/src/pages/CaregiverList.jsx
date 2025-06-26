@@ -37,8 +37,8 @@ const CaregiverList = () => {
       setLoading(true);
       setError(null);
 
-      const caregiverList = await jobSeekingService.getCaregiverList({ page: pageNumber, size: pageSize });
-      console.log('API Response:', caregiverList); // 이게 구조를 보여줌
+      const caregiverList = await jobSeekingService.getResumeListAll();
+      setCaregiverLists(caregiverList); // 이게 구조를 보여줌
       if (caregiverList.totalElements === 0) {
         setCaregiverLists([]);
         setError('등록된 간병사 모집 글이 없습니다.');
@@ -212,15 +212,19 @@ const CaregiverList = () => {
               <CardFooter>
                 <LocationWage>
                   <LocationText>
-                    <GrayText>시급</GrayText> <BoldAccount>{resume.account}원</BoldAccount>
+                    <GrayText>시급</GrayText> <BoldAccount>{resume.resumeAccount}원</BoldAccount>
                   </LocationText>
                   <AccuontText>
                     <GrayText>지역</GrayText> {resume.address}
                   </AccuontText>
                 </LocationWage>
                 <USERINFO1>
-                  {resume.licenses && <AccommodationInfo>자격증 보유</AccommodationInfo>}
-                  {resume.careStatus === 'Y' && <AccommodationInfo>상주 간병 가능</AccommodationInfo>}
+                  {resume.has_license && <AccommodationInfo>자격증 보유</AccommodationInfo>}
+                  {resume.careStatus ? (
+                    <AccommodationInfo>상주 간병 O</AccommodationInfo>
+                  ) : (
+                    <AccommodationInfo>상주 간병 X</AccommodationInfo>
+                  )}
                 </USERINFO1>
               </CardFooter>
             </HireListCard>

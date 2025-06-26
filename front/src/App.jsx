@@ -76,7 +76,7 @@ function AppRoutes() {
           <Route path="/caregiver/matchpage" element={<MatchToPatient />} />
           <Route path="/caregiver/myresume/:resumeNo" element={<MyResume />} />
           <Route path="/caregiver/post-management" element={<PostManagement />} />
-
+          <Route path="/caregiver/resumeDetail/:resumeNo" element={<ResumeDetail />} />
           {/* 보호자 */}
           <Route path="/guardian" element={<GuardianMainPage />} />
           <Route path="/guardian/caregiverlist" element={<CaregiverList />} />
@@ -106,7 +106,7 @@ function AppRoutes() {
           <Route path="/myprofile" element={<MyProfile />} />
           <Route path="/caregiverProfile/:userNo" element={<CareGviverProfile />} />
           <Route path="/hireDetail/:hiringNo" element={<HireDetail />} />
-          <Route path="/resumeDetail/:resumeNo" element={<ResumeDetail />} />
+
           <Route path="/report/:patNo" element={<ReportMain />} />
           <Route path="/report/detail/:reportNo" element={<ReportDetail />} />
           <Route path="/privacy-policy" element={<PrivacyPolicy />} />
