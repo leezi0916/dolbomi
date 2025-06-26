@@ -50,8 +50,8 @@ export const API_ENDPOINTS = {
   RESUME: {
     BASE: '/resume/v1',
     DETAIL: (resumeNo) => `/resume?resume_no=${resumeNo}`,
-    MYRESUME: (userNo) => `resume?user_no=${userNo}`,
-    UPDATE: (resumeNo) => `/resume/${resumeNo}`,
+    MYRESUME: (userNo) => `resume/v1/${userNo}`,
+    UPDATE: (resumeNo) => `/resume/v1/${resumeNo}`,
   },
 
   PATIENT: {
@@ -59,7 +59,6 @@ export const API_ENDPOINTS = {
     DETAIL: (guardianNo) => `/patient/v1?guardian_no=${guardianNo}`,
     PATDETAIL: (patNo) => `/patient/v1/${patNo}`,
     PATCH: (patNo) => `/patient/v1/${patNo}`,
-
   },
 
   DISEASE: {

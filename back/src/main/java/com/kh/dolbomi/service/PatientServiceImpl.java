@@ -75,7 +75,6 @@ public class PatientServiceImpl implements PatientService {
 
         Patient patient = patientRepository.findOne(patNo)
                 .orElseThrow(() -> new IllegalArgumentException("해당 환자가 없습니다."));
-        System.out.println("name :" + patient.getDiseaseTags());
 
         patient.changePatName(updatePatDto.getPat_name());
         patient.changePatAge(updatePatDto.getPat_age());

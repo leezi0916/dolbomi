@@ -53,8 +53,8 @@ export const usepatientRegistrationForm = () => {
     resolver: yupResolver(patientsSchema), // yup스키마와 연결
     mode: 'onChange',
     defaultValues: {
-      // gender 필드의 초기값을 설정합니다.
-      patGender: 'M', // 기본값을 'male'로 설정 (또는 원하는 값으로)
+     
+      patGender: 'M', 
       // 나머지 필드에 대한 기본값이 있다면 여기에 추가
     },
   });

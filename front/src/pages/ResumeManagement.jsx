@@ -8,14 +8,14 @@ import { useEffect } from 'react';
 import { ProfileImg } from '../styles/common/Profile';
 import { IoCheckmarkOutline } from 'react-icons/io5';
 import { jobSeekingService } from '../api/jobSeeking';
+import { toast } from 'react-toastify';
 
 const ResumeManagement = () => {
   const { user } = useUserStore();
   const [resumeLists, setResumeLists] = useState([]);
-  const [resumeStatus, setResumeStatus] = useState([]);
-  const handleCheckChange = (e) => {
-    setResumeStatus(e.target.checked);
-  };
+
+  const [resumeStatus, setResumeStatus] = useState(false);
+
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -26,15 +26,32 @@ const ResumeManagement = () => {
       }
 
       try {
-        const resumeLists = await jobSeekingService.getMyResumeList(user.userNo);
-        console.log(resumeLists);
-        setResumeLists(resumeLists);
+        const getResumeLists = await jobSeekingService.getMyResumeList(user.userNo);
+        console.log('목록 :', getResumeLists);
+
+        setResumeLists(getResumeLists);
       } catch (err) {
         console.error(err);
       }
     };
     fetchAll();
   }, []);
+
+  const handleStatusToggle = async (resumeNo, currentStatus) => {
+    const newStatus = currentStatus === 'Y' ? 'W' : 'Y';
+
+    try {
+      await jobSeekingService.updateResume(resumeNo, { status: newStatus });
+      toast.success('상태가 변경되었습니다.');
+
+      setResumeLists((prev) =>
+        prev.map((resume) => (resume.resumeNo === resumeNo ? { ...resume, status: newStatus } : resume))
+      );
+    } catch (error) {
+      toast.error('상태 변경 중 문제가 발생했습니다.');
+      console.error('상태 변경 에러: ', error);
+    }
+  };
   return (
     <>
       <AuthContainer>
@@ -53,9 +70,15 @@ const ResumeManagement = () => {
                 <ProfileTextGray>
                   NO <ProfileTextStrong>{resume.resumeNo}</ProfileTextStrong>
                 </ProfileTextGray>
-                <HiddenCheckbox type="checkbox" checked={resumeStatus} />
-                <StyledCheckbox checked={resumeStatus}>
-                  {handleCheckChange && <IoCheckmarkOutline size="20px" color="white" />}
+                <StyledCheckbox checked={resume.status === 'Y'}>
+                  <Label htmlFor={`checkbox-${resume.resumeNo}`}>
+                    <HiddenCheckbox
+                      id={`checkbox-${resume.resumeNo}`}
+                      checked={resume.status === 'Y'}
+                      onChange={() => handleStatusToggle(resume.resumeNo, resume.status)}
+                    />
+                  </Label>
+                  {resume.status === 'Y' ? <IoCheckmarkOutline size="20px" color="white" /> : ''}
                 </StyledCheckbox>
               </ProfileDiv>
 
@@ -145,7 +168,12 @@ const HiddenCheckbox = styled.input.attrs({ type: 'checkbox' })`
   white-space: nowrap;
   width: 1px;
 `;
-
+const Label = styled.label`
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  gap: 8px;
+`;
 const StyledCheckbox = styled.div`
   width: 18px;
   height: 18px;

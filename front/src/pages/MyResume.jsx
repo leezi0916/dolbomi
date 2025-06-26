@@ -9,11 +9,45 @@ import { FaPlus } from 'react-icons/fa6';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useResumeForm } from '../hooks/useResumeForm';
 import { jobSeekingService } from '../api/jobSeeking';
+
+import { useState, useEffect } from 'react';
+import { toast } from 'react-toastify';
+import useUserStore from '../store/userStore';
 const MyResume = () => {
+  const { user } = useUserStore();
   const navigate = useNavigate();
   const { resumeNo } = useParams();
-  const { register, handleSubmit, errors, licenseList, handleLicenseChange, user } = useResumeForm();
-  console.log(user);
+  const { register, handleSubmit, errors, licenseList, handleLicenseChange, setValue } = useResumeForm();
+  const [careGiverResum, setCareGiverResum ] = useState();
+
+  useEffect(() => {
+    const fetchAll = async () => {
+      if (!user) {
+        alert('로그인 후 이용해주세요');
+        navigate('/guardian');
+      }
+
+      try {
+        const careGiverResum = await jobSeekingService.getResume(resumeNo);
+        setCareGiverResum(careGiverResum)
+        console.log(careGiverResum);
+      } catch (error) {
+        toast.error('이력서  중 문제가 발생하였습니다.');
+        console.error('이력서 등록 에러 : ', error);
+      }
+    };
+    fetchAll();
+  }, [user]);
+
+  useEffect(() => {
+    if (careGiverResum) {
+      setValue('resumeTitle', careGiverResum.resumeTitle || '');
+      setValue('resumeContent', careGiverResum.resumeContent || '');
+      setValue('account', careGiverResum.account || '');
+      setValue('careStatus', careGiverResum.careStatus || '');
+      setValue('licenseList', licenseList || '');
+    }
+  }, [careGiverResum]);
 
   const handleDelete = async () => {
     if (!resumeNo) return;
@@ -24,10 +58,20 @@ const MyResume = () => {
     try {
       await jobSeekingService.deleteResume(resumeNo);
       alert('이력서가 삭제되었습니다.');
-      navigate('/caregiver/resumemanagement'); // 홈 또는 원하는 페이지로 이동
+      navigate('/caregiver/resumemanagement');
     } catch (error) {
       console.error('이력서 삭제 실패:', error);
       alert('삭제 중 오류가 발생했습니다.');
+    }
+  };
+
+  const onSubmit = async (data) => {
+    try {
+      await jobSeekingService.updateResume(resumeNo, { ...careGiverResum, ...data });
+      toast.success('이력서가 수정되었습니다!');
+    } catch (error) {
+      toast.error('이력서 수정중 문제가 발생했습니다,');
+      console.error('이력서 수정 에러 :', error);
     }
   };
   return (
@@ -37,7 +81,7 @@ const MyResume = () => {
           <HireHeadTitle>이력서 상세/수정</HireHeadTitle>
         </HireHead>
 
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit(onSubmit)}>
           <ContentWrapper>
             <div>
               <ProfilImageWrapper>
@@ -48,36 +92,43 @@ const MyResume = () => {
               <InputRow>
                 <InputGroup>
                   <Label>이름</Label>
-                  <Input type="text" value={user?.userName || ''} readOnly />
+                  <Input type="text" value={careGiverResum?.userName || ''} readOnly />
                 </InputGroup>
                 <InputGroup>
                   <Label>나이</Label>
-                  <Input type="text" value={user?.age || ''} readOnly />
+                  <Input type="text" value={careGiverResum?.age || ''} readOnly />
                 </InputGroup>
               </InputRow>
               <RadioGroup>
                 <Label>성별</Label>
                 <RadioWrapper>
-                  <input type="radio" id="male" name="gender" value="M" checked={user?.gender === 'M'} readOnly />
+                  <input type="radio" id="male" name="gender" value="M" checked={careGiverResum?.gender === 'M'} readOnly />
                   <label htmlFor="male">남성</label>
                 </RadioWrapper>
                 <RadioWrapper>
-                  <input type="radio" id="female" name="gender" value="F" checked={user?.gender === 'F'} readOnly />
+                  <input
+                    type="radio"
+                    id="female"
+                    name="gender"
+                    value="F"
+                    checked={careGiverResum?.gender === 'F'}
+                    readOnly
+                  />
                   <label htmlFor="female">여성</label>
                 </RadioWrapper>
               </RadioGroup>
               <InputGroup>
                 <Label>전화번호</Label>
-                <Input type="text" value={user?.phone || ''} readOnly />
+                <Input type="text" value={careGiverResum?.phone || ''} readOnly />
               </InputGroup>
               <InputGroup>
                 <Label>주소</Label>
-                <Input type="text" value={user?.address || ''} readOnly />
+                <Input type="text" value={careGiverResum?.address || ''} readOnly />
               </InputGroup>
             </Divider>
           </ContentWrapper>
           <input type="hidden" {...register('licenseList')}></input>
-          {licenseList.map((license, index) => (
+          {careGiverResum.licenseList.map((license, index) => (
             <ContentWrapper2>
               <LicenseGroup>
                 <Label>자격증 명</Label>
@@ -154,8 +205,6 @@ const MyResume = () => {
     </HireRegistSection>
   );
 };
-
-const HireRegistSection = styled(Section)``;
 
 const HireContainer = styled(Container)`
   width: 80%;

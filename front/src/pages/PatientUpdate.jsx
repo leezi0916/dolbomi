@@ -83,6 +83,7 @@ const PatientUpdate = () => {
       navigate('/guardian/patient');
     } catch (error) {
       console.log(error);
+      
     }
   };
 
