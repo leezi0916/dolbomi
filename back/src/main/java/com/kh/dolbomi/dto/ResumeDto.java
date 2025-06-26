@@ -36,7 +36,6 @@ public class ResumeDto {
         private String phone;
         private StatusEnum.Gender gender;
         private String address;
-        private String phone;
         private String email;
         private String profile_image;
         private Double avg_score; //이사람이 받은 리뷰의 평균점수

@@ -32,10 +32,10 @@ public class ResumeController {
     }
 
     //이력서 전체 목록
-    @GetMapping("/list")
-    public ResponseEntity<List<ResumeDto.Response>> getResumeListAll() {
-        return ResponseEntity.ok(resumeService.getResumListALL());
-    }
+//    @GetMapping("/list")
+//    public ResponseEntity<List<ResumeDto.Response>> getResumeListAll() {
+//        return ResponseEntity.ok(resumeService.getResumListALL());
+//    }
 
     //내가 작성한 이력서 불러오기
     @GetMapping("/user/{userNo}")
