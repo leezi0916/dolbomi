@@ -14,6 +14,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -74,16 +75,17 @@ public class HiringController {
         return ResponseEntity.ok(response);
     }
 
-    //구인글 수정하기
-//    @PatchMapping("/{hiringNo}")
-//    public ResponseEntity<HiringDto.Response> updateHiring(@PathVariable Long hiringNo, @RequestBody HiringDto.Update updateDto) {
-//
-//    }
+    //구인글 모집마감하기
+    @PatchMapping("/{hiringNo}/status")
+    public ResponseEntity<String> toggleHiringStatus(@PathVariable Long hiringNo) {
+        hiringService.closeHiring(hiringNo);
+        return ResponseEntity.ok("모집 상태가 변경되었습니다.");
+    }
 
     //구인글 삭제하기
-//    @DeleteMapping("/{hiringNo}")
-//    public ResponseEntity<Void> deleteHiring(@PathVariable Long hiringNo) {
-//        hiringService.deleteHiring(hiringNo);
-//        return ResponseEntity.ok().build();
-//    }
+    @PatchMapping("/{hiringNo}")
+    public ResponseEntity<Void> deleteHiring(@PathVariable Long hiringNo) {
+        hiringService.deleteHiring(hiringNo);
+        return ResponseEntity.ok().build();
+    }
 }

@@ -48,13 +48,15 @@ export const API_ENDPOINTS = {
     BASE: '/hiring/v1',
     SIMPLE_LIST: '/hiring/v1/simple-list',
     LIST: '/hiring/v1/list',
-    DETAIL: (hiringNo) => `/hiring/v1/${hiringNo}`,
+    DETAIL: (hiringNo) => `/hiring/v1/${hiringNo}`, //get
+    STATUS: (hiringNo) => `/hiring/v1/${hiringNo}/status`,
+    DELETE: (hiringNo) => `/hiring/v1/${hiringNo}`, //patch
   },
 
   RESUME: {
     BASE: '/resume/v1',
-    LIST: '/resume/v1/list',
     SIMPLE_LIST: '/resume/v1/simple-list',
+    LIST: '/resume/v1/list',
     DETAIL: (resumeNo) => `/resume/v1/detail/${resumeNo}`,
     MYRESUME: (userNo) => `resume/v1/${userNo}`,
     UPDATE: (resumeNo) => `/resume/v1/${resumeNo}`,
@@ -79,7 +81,7 @@ export const API_ENDPOINTS = {
     // SEARCH: (reportNo) => `/report/v1/report_no=${reportNo}`,
 
     LIST: (patNo) => `/report/v1/${patNo}`,
-    SEARCH: (reportNo) => `/report/v1/detail/${reportNo}`,
+    SEARCH: (reportNo) => `/report/report_no=${reportNo}`,
   },
 
   PROPOSER: {

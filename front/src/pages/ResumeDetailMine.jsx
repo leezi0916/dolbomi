@@ -8,7 +8,7 @@ import { SubmitButton } from '../styles/common/Button';
 
 import { useResumeForm } from '../hooks/useResumeForm';
 import { useParams } from 'react-router-dom';
-import { proposerSevice } from '../api/propose';
+import { proposerService } from '../api/propose';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import useUserStore from '../store/userStore';
@@ -38,7 +38,7 @@ const ResumeDetailMine = () => {
 
     // 구인글을 가져온다. => 신청테이블에서 이력서의 번호로(resumeNo) 구인글을 가져온다
     const getList = async () => {
-      const list = await proposerSevice.getguardianLists(1);
+      const list = await proposerService.getguardianLists(1);
       setproposerList(list);
     };
     getList();
@@ -166,7 +166,6 @@ const ResumeDetailMine = () => {
     </>
   );
 };
-
 
 /* ======== main   ========*/
 

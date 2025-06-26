@@ -8,7 +8,6 @@ export const reviewService = {
   getReviews: async () => {
     try {
       const { data } = await api.get(API_ENDPOINTS.REVIEWS.SIMPLE_LIST);
-
       return snakeToCamel(data);
     } catch (error) {
       if (error.response) {
@@ -24,7 +23,6 @@ export const reviewService = {
   getMyWrittenReviews: async (currentPage, userNo) => {
     try {
       const { data } = await api.get(API_ENDPOINTS.REVIEWS.LIST(currentPage, userNo));
-
       return snakeToCamel(data);
     } catch (error) {
       if (error.response) {

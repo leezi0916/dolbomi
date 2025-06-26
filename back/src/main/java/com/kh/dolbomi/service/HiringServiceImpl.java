@@ -8,6 +8,7 @@ import com.kh.dolbomi.enums.StatusEnum;
 import com.kh.dolbomi.repository.HiringRepository;
 import com.kh.dolbomi.repository.PatientRepository;
 import com.kh.dolbomi.repository.ProposerRepository;
+import jakarta.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -57,14 +58,22 @@ public class HiringServiceImpl implements HiringService {
         //  신청 여부 포함해서 DTO 반환
     }
 
-//    @Override
-//    public void deleteHiring(Long hiringNo) {
-//        Hiring hiring = hiringRepository.findByHiringNo(hiringNo);
-//        if (hiring == null) {
-//            throw new IllegalArgumentException("존재하지 않는 구인글입니다: " + hiringNo);
-//        }
-//        hiring.setStatus(StatusEnum.Status.N);
-//    }
+    //구인글 모집 마감
+    @Override
+    @Transactional
+    public void closeHiring(Long hiringNo) {
+        Hiring hiring = hiringRepository.findById(hiringNo)
+                .orElseThrow(() -> new EntityNotFoundException("구인글이 없습니다."));
+        hiring.closeHiring(); // 모집마감 상태로 update
+    }
+
+
+    @Override
+    public void deleteHiring(Long hiringNo) {
+        Hiring hiring = hiringRepository.findById(hiringNo)
+                .orElseThrow(() -> new EntityNotFoundException("구인글이 없습니다."));
+        hiring.hiringDeleted(); //삭제 상태로 변경
+    }
 
     // 메인페이지(간병사 페이지) 일반 구인글 조회
     @Override
