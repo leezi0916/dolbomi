@@ -7,7 +7,7 @@ export const reviewService = {
   //리뷰전체조회
   getReviews: async () => {
     try {
-      const { data } = await api.get(API_ENDPOINTS.REVIEWS.BASE);
+      const { data } = await api.get(API_ENDPOINTS.REVIEWS.SIMPLE_LIST);
 
       return snakeToCamel(data);
     } catch (error) {

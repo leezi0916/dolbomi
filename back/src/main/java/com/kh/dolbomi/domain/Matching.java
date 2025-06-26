@@ -39,8 +39,9 @@ public class Matching {
     @JoinColumn(name = "PAT_NO", nullable = false)
     private Patient patient;
 
-    @Column(name = "REVIEW_NO")
-    private Long reviewNo;
+    @ManyToOne
+    @JoinColumn(name = "REVIEW_NO")
+    private Review review;
 
     @Column(name = "STATUS", nullable = false, length = 1)
     @Enumerated(EnumType.STRING)
