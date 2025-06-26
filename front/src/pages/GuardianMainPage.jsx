@@ -100,9 +100,7 @@ const GuardianMainPage = () => {
                       <span>지역</span> {resume.address}
                     </CardRegionText>
                   </CardBottomTextSection>
-                  <MainMoveButton onClick={() => navigate(`/caregiver/resumeDetail/${resume.resumeNo}`)}>
-                    상세보기
-                  </MainMoveButton>
+                  <MainMoveButton onClick={() => navigate(`/caregiver/resumeDetail/${resume.resumeNo}`)}>상세보기</MainMoveButton>
                 </CardBottomContent>
               </Card>
             ))}
