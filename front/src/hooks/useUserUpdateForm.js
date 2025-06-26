@@ -3,6 +3,12 @@ import { userService } from '../api/users';
 import { toast } from 'react-toastify';
 import { useState } from 'react';
 
+const licenseSchema = yup.object().shape({
+  licenseDate: yup.date().required('발행일을 입력해주세요.').typeError('유효한 날짜를 입력해주세요.'),
+  // 다른 필드도 같이 작성
+  licenseName: yup.string().required('자격증명을 입력해주세요.'),
+  licensePublisher: yup.string().required('발급기관을 입력해주세요.'),
+});
 // 유효성 스키마
 const updateSchema = yup.object().shape({
   userName: yup
@@ -37,7 +43,7 @@ const updateSchema = yup.object().shape({
 const useUserUpdateForm = ({ profile }) => {
   const [updating, setUpdating] = useState(false);
 
-  const validateAndSubmit = async (formData, licenseList) => {
+  const validateAndSubmit = async (formData, licenseList, profileImageFile) => {
     try {
       // 변경된 값만 필터링
       const changedFields = Object.entries(formData).reduce((acc, [key, value]) => {
@@ -50,21 +56,25 @@ const useUserUpdateForm = ({ profile }) => {
       // 자격증도 변경되었는지 체크
       const licensesChanged = JSON.stringify(profile.licenses || []) !== JSON.stringify(licenseList);
 
-      if (Object.keys(changedFields).length === 0 && !licensesChanged) {
+      // ✅ 이미지가 선택되었지만, 지금은 S3 업로드 기능 없음 → null로 대체
+      const imageChanged = !!profileImageFile;
+
+      if (Object.keys(changedFields).length === 0 && !licensesChanged && !imageChanged) {
         toast.info('변경된 정보가 없습니다.');
         return;
       }
 
       // 유효성 검사
       await updateSchema.validate(formData, { abortEarly: false });
-
       setUpdating(true);
 
       const updatedData = {
         ...changedFields,
         licenses: licenseList || [],
+        profileImage: 's3url보내야함', //나중에 s3 url
       };
 
+      console.log('보내는 데이터:', updatedData);
       // 문자열을 숫자로 변환 (필요시)
       if (updatedData.age) {
         updatedData.age = Number(updatedData.age);

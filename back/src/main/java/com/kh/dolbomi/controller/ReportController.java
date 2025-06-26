@@ -2,23 +2,37 @@ package com.kh.dolbomi.controller;
 
 import com.kh.dolbomi.dto.ReportDto;
 import com.kh.dolbomi.service.ReportService;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+
 @RestController
-@RequestMapping("/report")
 @RequiredArgsConstructor
+@CrossOrigin(origins = "http://localhost:5173")
+@RequestMapping("/report/v1")
 public class ReportController {
 
     public final ReportService reportService;
 
+    //    진단일지 작성
     @PostMapping
-    public ResponseEntity<Long> createReport(@ModelAttribute ReportDto.Create reportCreate) {
+    public ResponseEntity<Long> createReport(@RequestBody ReportDto.Create reportCreate) {
+        System.out.println("작성한 일지" + reportCreate.getReport_title());
         return ResponseEntity.ok(reportService.createReport(reportCreate));
+    }
+
+    //    진단일지 목록 불러오기
+    @GetMapping("/{patNo}")
+    public ResponseEntity<List<ReportDto.Response>> getReports(@PathVariable Long patNo) {
+        return ResponseEntity.ok(reportService.findAll(patNo));
     }
 
 }

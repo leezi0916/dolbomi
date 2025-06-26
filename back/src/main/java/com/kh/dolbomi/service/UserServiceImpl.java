@@ -69,6 +69,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDto.Response updateUser(Long userNo, UserDto.Update updateDto) {
+
         User user = userRepository.findById(userNo)
                 .orElseThrow(() -> new IllegalArgumentException("유저가 존재하지 않습니다."));
 
@@ -79,17 +80,19 @@ public class UserServiceImpl implements UserService {
                 updateDto.getGender(),
                 updateDto.getPhone(),
                 updateDto.getEmail(),
-                updateDto.getAddress()
+                updateDto.getAddress(),
+                updateDto.getProfile_image()
+
         );
 
         // 2. 기존 자격증 조회
         List<License> existingLicenses = licenseRepository.findByUser(user);
         // 3. 프론트에서 넘어온 자격증
-        List<LicenseDto> incomingDtos = updateDto.getLicenses();
+        List<LicenseDto.Response> incomingDtos = updateDto.getLicenses();
 
         // 4. 삭제 처리 (DB엔 있는데 프론트엔 없는 경우)
         List<Long> incomingIds = incomingDtos.stream()
-                .map(LicenseDto::getLicense_no)
+                .map(LicenseDto.Response::getLicense_no)
                 .filter(id -> id != null)
                 .toList();
 
@@ -99,7 +102,7 @@ public class UserServiceImpl implements UserService {
 
         licenseRepository.deleteAll(toDelete);
         // 5. 신규 및 수정 처리
-        for (LicenseDto dto : incomingDtos) {
+        for (LicenseDto.Response dto : incomingDtos) {
             if (dto.getLicense_no() != null) {
                 // 수정
                 License license = existingLicenses.stream()

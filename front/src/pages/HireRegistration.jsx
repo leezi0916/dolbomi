@@ -42,7 +42,6 @@ const HireRegistration = () => {
     console.log('폼 에러:', errors);
   }, [errors]);
 
-
   useEffect(() => {
     const fetchAll = async () => {
       if (!user) {
@@ -72,7 +71,7 @@ const HireRegistration = () => {
     setPatient(patient);
   };
 
-const handleFileChange = (e) => {
+  const handleFileChange = (e) => {
     const file = e.target.files?.[0];
     if (file) {
       console.log('선택된 파일:', file.name);
@@ -87,7 +86,12 @@ const handleFileChange = (e) => {
   const onSubmit = async (data) => {
     console.log(data);
     try {
-      await hiringService.postNewHiring({ ...data, patNo: Number(selectPatientNo) });
+      await hiringService.postNewHiring({
+        ...data,
+        startDate: new Date(data.startDate).toISOString(), // ISO 8601 형식
+        endDate: new Date(data.endDate).toISOString(),
+        patNo: Number(selectPatientNo),
+      });
       toast.success('돌봄대상자 등록 완료!');
       navigate('/guardian/jobopening-management');
     } catch (error) {

@@ -1,6 +1,7 @@
 package com.kh.dolbomi.domain;
 
 import com.kh.dolbomi.enums.StatusEnum;
+import com.kh.dolbomi.enums.StatusEnum.Status;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -42,7 +43,7 @@ public class Patient {
     private String profileImage;
 
     @Column(name = "PAT_PHONE")
-    private Integer patPhone;
+    private String patPhone;
 
     @Column(name = "PAT_NAME", nullable = false, length = 10)
     private String patName;
@@ -55,7 +56,7 @@ public class Patient {
 
     @Column(name = "PAT_GENDER", nullable = false, length = 1)
     @Enumerated(EnumType.STRING)
-    private Gender patGender;
+    private StatusEnum.Gender patGender;
 
     @Column(name = "PAT_HEIGHT", nullable = false)
     private BigDecimal patHeight;
@@ -69,8 +70,12 @@ public class Patient {
     @Column(name = "STATUS", nullable = false, length = 1)
     @Enumerated(EnumType.STRING)
     private StatusEnum.Status status;
+
+
     //양방향 설정 환자 삭제시 관련 환자에 대한 질병태그들도 삭제
-    @OneToMany(mappedBy = "patient", cascade = CascadeType.ALL)
+    @Builder.Default
+    @OneToMany(mappedBy = "patient", cascade = CascadeType.ALL, orphanRemoval = true)
+
     private List<DiseaseTag> diseaseTags = new ArrayList<>();
 
     @PrePersist
@@ -80,7 +85,64 @@ public class Patient {
         }
     }
 
-    public enum Gender {
-        M, F
+
+    public void changePatPhone(String patPhone) {
+        if (patPhone != null && !patPhone.isEmpty()) {
+            this.patPhone = patPhone;
+        }
     }
+
+    // 수정관련 setter
+
+    public void changePatName(String patName) {
+        if (patName != null && !patName.isEmpty()) {
+            this.patName = patName;
+        }
+    }
+
+
+    public void changePatAge(Integer patAge) {
+        if (patAge != null && patAge != 0) {
+            this.patAge = patAge;
+        }
+    }
+
+    public void changePatGender(StatusEnum.Gender patGender) {
+        if (patGender != null) {
+            this.patGender = patGender;
+        }
+    }
+
+    public void changePatAddress(String patAddress) {
+        if (patAddress != null && !patAddress.isEmpty()) {
+            this.patAddress = patAddress;
+        }
+    }
+
+
+    public void changePatWeight(BigDecimal patWeight) {
+        if (patWeight != null) {
+            this.patWeight = patWeight;
+        }
+    }
+
+    public void changePatContent(String patContent) {
+        if (patContent != null) {
+            this.patContent = patContent;
+        }
+    }
+
+    public void changePatHeight(BigDecimal patHeight) {
+        if (patHeight != null) {
+            this.patHeight = patHeight;
+        }
+    }
+
+    public void changeStatus(String status) {
+        if (status != null && !status.isEmpty()) {
+            this.status = Status.valueOf(status);
+        }
+
+    }
+
 }

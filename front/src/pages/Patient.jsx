@@ -59,7 +59,7 @@ const Patient = () => {
 
               <ButtonDiv>
                 <MainMoveBtn onClick={() => navigate(`/guardian/patient/${pat.patNo}`)}>관리</MainMoveBtn>
-                <MainMoveBtn onClick={() => navigate(`/report/${pat.id}`, 1)}>일지</MainMoveBtn>
+                <MainMoveBtn onClick={() => navigate(`/report/${pat.patNo}`)}>일지</MainMoveBtn>
               </ButtonDiv>
             </Card>
           ))}

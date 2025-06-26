@@ -18,6 +18,7 @@ public class ReportDto {
     @Builder
     public static class Create {
         private Long pat_no;
+        private Long care_giver_no;
         private String report_title;
         private String report_content;
         private LocalDateTime create_date;
@@ -31,6 +32,36 @@ public class ReportDto {
                     .createDate(this.create_date)
                     .updateDate(this.update_date)
                     .status(this.status)
+                    .build();
+        }
+    }
+
+    @Getter
+    @Setter
+    @AllArgsConstructor
+    @NoArgsConstructor
+    @Builder
+    public static class Response {
+        private Long report_no;
+        private Long care_giver_no;
+        private Long pat_no;
+        private String report_title;
+        private String report_content;
+        private LocalDateTime create_date;
+        private LocalDateTime update_date;
+        private StatusEnum.Status status;
+        private String userName;
+
+        public static Response toDto(Report report, String userName) {
+            return Response.builder()
+                    .report_no(report.getReportNo())
+                    .userName(userName)
+                    .pat_no(report.getPatient().getPatNo())
+                    .report_title(report.getReportTitle())
+                    .report_content(report.getReportContent())
+                    .create_date(report.getCreateDate())
+                    .update_date(report.getUpdateDate())
+                    .status(report.getStatus())
                     .build();
         }
     }
