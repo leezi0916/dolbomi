@@ -36,6 +36,8 @@ const HireDetail = () => {
     setAlreadyApplied(true);
   };
 
+
+
   // 신청 취소 핸들러
   const handleCancel = async () => {
     const confirm = window.confirm('신청을 취소하시겠습니까?');
@@ -81,6 +83,8 @@ const HireDetail = () => {
       init();
     }
   }, [user, hiringNo, setValue]);
+
+
   return (
     <HireRegistSection>
       <HireContainer>
@@ -213,7 +217,7 @@ const HireDetail = () => {
             </SubmitButton1>
           )}
 
-          {isModalOpen && (
+          {isModalOpen && ( 
             <ResumeSelectModal
               hiringNo={hiringNo}
               onClose={handleCloseModal}

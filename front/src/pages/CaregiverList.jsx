@@ -35,7 +35,7 @@ const CaregiverList = () => {
       setLoading(true);
       setError(null);
 
-      const caregiverList = await jobSeekingService.getResumeList();
+      const caregiverList = await jobSeekingService.getResumeListAll();
       setCaregiverLists(caregiverList);
     } catch (error) {
       console.error(error);
@@ -200,11 +200,11 @@ const CaregiverList = () => {
                     <GrayText>지역</GrayText> {resume.address}
                   </LocationText>
                   <AccuontText>
-                    <GrayText>시급</GrayText> <BoldAccount>{resume.account}원</BoldAccount>
+                    <GrayText>시급</GrayText> <BoldAccount>{resume.resumeAccount}원</BoldAccount>
                   </AccuontText>
                 </LocationWage>
                 <USERINFO1>
-                  {resume.licenses && <AccommodationInfo>자격증 보유</AccommodationInfo>}
+                  {resume.has_license && <AccommodationInfo>자격증 보유</AccommodationInfo>}
                   {resume.careStatus ? (
                     <AccommodationInfo>상주 간병 O</AccommodationInfo>
                   ) : (

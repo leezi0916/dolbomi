@@ -13,12 +13,14 @@ import { jobSeekingService } from '../api/jobSeeking';
 import { useState, useEffect } from 'react';
 import { toast } from 'react-toastify';
 import useUserStore from '../store/userStore';
+
 const MyResume = () => {
   const { user } = useUserStore();
   const navigate = useNavigate();
   const { resumeNo } = useParams();
-  const { register, handleSubmit, errors, licenseList, handleLicenseChange, setValue } = useResumeForm();
-  const [careGiverResum, setCareGiverResum ] = useState();
+  const { register, handleSubmit, errors, handleLicenseChange, setValue } = useResumeForm();
+
+  const [careGiverResum, setCareGiverResum] = useState();
 
   useEffect(() => {
     const fetchAll = async () => {
@@ -28,8 +30,8 @@ const MyResume = () => {
       }
 
       try {
-        const careGiverResum = await jobSeekingService.getResume(resumeNo);
-        setCareGiverResum(careGiverResum)
+        const careGiverResum = await jobSeekingService.getResume(Number(resumeNo));
+        setCareGiverResum(careGiverResum);
         console.log(careGiverResum);
       } catch (error) {
         toast.error('이력서  중 문제가 발생하였습니다.');
@@ -45,7 +47,7 @@ const MyResume = () => {
       setValue('resumeContent', careGiverResum.resumeContent || '');
       setValue('account', careGiverResum.account || '');
       setValue('careStatus', careGiverResum.careStatus || '');
-      setValue('licenseList', licenseList || '');
+      setValue('licenseList', careGiverResum.licenseList || '');
     }
   }, [careGiverResum]);
 
@@ -74,135 +76,142 @@ const MyResume = () => {
       console.error('이력서 수정 에러 :', error);
     }
   };
+
   return (
-    <HireRegistSection>
-      <HireContainer>
-        <HireHead>
-          <HireHeadTitle>이력서 상세/수정</HireHeadTitle>
-        </HireHead>
+    <HireContainer>
+      <HireHead>
+  
+        <HireHeadTitle>이력서 상세/수정</HireHeadTitle>
+      </HireHead>
 
-        <form onSubmit={handleSubmit(onSubmit)}>
-          <ContentWrapper>
-            <div>
-              <ProfilImageWrapper>
-                <img src={profileImage} alt="프로필 이미지" />
-              </ProfilImageWrapper>
-            </div>
-            <Divider>
-              <InputRow>
-                <InputGroup>
-                  <Label>이름</Label>
-                  <Input type="text" value={careGiverResum?.userName || ''} readOnly />
-                </InputGroup>
-                <InputGroup>
-                  <Label>나이</Label>
-                  <Input type="text" value={careGiverResum?.age || ''} readOnly />
-                </InputGroup>
-              </InputRow>
-              <RadioGroup>
-                <Label>성별</Label>
-                <RadioWrapper>
-                  <input type="radio" id="male" name="gender" value="M" checked={careGiverResum?.gender === 'M'} readOnly />
-                  <label htmlFor="male">남성</label>
-                </RadioWrapper>
-                <RadioWrapper>
-                  <input
-                    type="radio"
-                    id="female"
-                    name="gender"
-                    value="F"
-                    checked={careGiverResum?.gender === 'F'}
-                    readOnly
-                  />
-                  <label htmlFor="female">여성</label>
-                </RadioWrapper>
-              </RadioGroup>
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <ContentWrapper>
+          <div>
+            <ProfilImageWrapper>
+              <img src={profileImage} alt="프로필 이미지" />
+            </ProfilImageWrapper>
+          </div>
+          <Divider>
+            <InputRow>
               <InputGroup>
-                <Label>전화번호</Label>
-                <Input type="text" value={careGiverResum?.phone || ''} readOnly />
+                <Label>이름</Label>
+                <Input type="text" value={careGiverResum?.userName || ''} readOnly />
               </InputGroup>
               <InputGroup>
-                <Label>주소</Label>
-                <Input type="text" value={careGiverResum?.address || ''} readOnly />
+                <Label>나이</Label>
+                <Input type="text" value={careGiverResum?.age || ''} readOnly />
               </InputGroup>
-            </Divider>
-          </ContentWrapper>
-          <input type="hidden" {...register('licenseList')}></input>
-          {careGiverResum.licenseList.map((license, index) => (
-            <ContentWrapper2>
-              <LicenseGroup>
-                <Label>자격증 명</Label>
-                <LicenseInput
-                  type="text"
-                  value={license.licenseName}
-                  onChange={(e) => handleLicenseChange(index, 'licenseName', e.target.value)}
+            </InputRow>
+            <RadioGroup>
+              <Label>성별</Label>
+              <RadioWrapper>
+                <input
+                  type="radio"
+                  id="male"
+                  name="gender"
+                  value="M"
+                  checked={careGiverResum?.gender === 'M'}
+                  readOnly
                 />
-              </LicenseGroup>
-              <LicenseGroup>
-                <Label>발행처</Label>
-                <LicenseInput
-                  type="text"
-                  value={license.licensePublisher}
-                  onChange={(e) => handleLicenseChange(index, 'licensePublisher', e.target.value)}
+                <label htmlFor="male">남성</label>
+              </RadioWrapper>
+              <RadioWrapper>
+                <input
+                  type="radio"
+                  id="female"
+                  name="gender"
+                  value="F"
+                  checked={careGiverResum?.gender === 'F'}
+                  readOnly
                 />
-              </LicenseGroup>
-              <LicenseGroup>
-                <Label>발행일</Label>
-                <LicenseInput
-                  type="date"
-                  value={license.licenseDate}
-                  onChange={(e) => handleLicenseChange(index, 'licenseDate', e.target.value)}
-                />
-              </LicenseGroup>
-            </ContentWrapper2>
-          ))}
+                <label htmlFor="female">여성</label>
+              </RadioWrapper>
+            </RadioGroup>
+            <InputGroup>
+              <Label>전화번호</Label>
+              <Input type="text" value={careGiverResum?.phone || ''} readOnly />
+            </InputGroup>
+            <InputGroup>
+              <Label>주소</Label>
+              <Input type="text" value={careGiverResum?.address || ''} readOnly />
+            </InputGroup>
+          </Divider>
+        </ContentWrapper>
+        <input type="hidden" {...register('licenseList')}></input>
+        {careGiverResum?.licenseList?.map((license, index) => (
+          <ContentWrapper2>
+            <LicenseGroup>
+              <Label>자격증 명</Label>
+              <LicenseInput
+                type="text"
+                value={license.licenseName}
+                onChange={(e) => handleLicenseChange(index, 'licenseName', e.target.value)}
+              />
+            </LicenseGroup>
+            <LicenseGroup>
+              <Label>발행처</Label>
+              <LicenseInput
+                type="text"
+                value={license.licensePublisher}
+                onChange={(e) => handleLicenseChange(index, 'licensePublisher', e.target.value)}
+              />
+            </LicenseGroup>
+            <LicenseGroup>
+              <Label>발행일</Label>
+              <LicenseInput
+                type="date"
+                value={license.licenseDate}
+                onChange={(e) => handleLicenseChange(index, 'licenseDate', e.target.value)}
+              />
+            </LicenseGroup>
+          </ContentWrapper2>
+        ))}
 
-          <HireBottom>
-            <HireBottomTitle>채용 정보</HireBottomTitle>
-          </HireBottom>
-          <ContentWrapper1>
-            <HireContent>
-              <Label>제목</Label>
-              <Input {...register('resumeTitle')} placeholder="제목" />
-              <p>{errors.resumeTitle?.message}</p>
-              <Label>내용</Label>
-              <Content {...register('resumeContent')} placeholder="내용" />
-              <p>{errors.resumeContent?.message}</p>
-              <RadioGroup>
-                <RadioContainer>
-                  <Label>숙식 가능</Label>
-                  <RadioWrapper>
-                    <input type="radio" value="Y" {...register('careStatus')} />
-                  </RadioWrapper>
-                  <Label>숙식 불가</Label>
-                  <RadioWrapper>
-                    <input type="radio" value="N" {...register('careStatus')} />
-                  </RadioWrapper>
-                  <p>{errors.careStatus?.message}</p>
-                </RadioContainer>
-                <AccountGroup>
-                  <InputGroup>
-                    <Label>희망 금액</Label>
-                    <Input {...register('account')} placeholder="희망 금액" />
-                    <p>{errors.account?.message}</p>
-                  </InputGroup>
-                </AccountGroup>
-              </RadioGroup>
-            </HireContent>
-          </ContentWrapper1>
+        <HireBottom>
+          <HireBottomTitle>채용 정보</HireBottomTitle>
+        </HireBottom>
+        <ContentWrapper1>
+          <HireContent>
+            <Label>제목</Label>
+            <Input {...register('resumeTitle')} placeholder="제목" />
+            <p>{errors.resumeTitle?.message}</p>
+            <Label>내용</Label>
+            <Content {...register('resumeContent')} placeholder="내용" />
+            <p>{errors.resumeContent?.message}</p>
+            <RadioGroup>
+              <RadioContainer>
+                <Label>숙식 가능</Label>
+                <RadioWrapper>
+                  <input type="radio" value="Y" {...register('careStatus')} />
+                </RadioWrapper>
+                <Label>숙식 불가</Label>
+                <RadioWrapper>
+                  <input type="radio" value="N" {...register('careStatus')} />
+                </RadioWrapper>
+                <p>{errors.careStatus?.message}</p>
+              </RadioContainer>
+              <AccountGroup>
+                <InputGroup>
+                  <Label>희망 금액</Label>
+                  <Input {...register('account')} placeholder="희망 금액" />
+                  <p>{errors.account?.message}</p>
+                </InputGroup>
+              </AccountGroup>
+            </RadioGroup>
+          </HireContent>
+        </ContentWrapper1>
 
-          <ButtonGroup>
-            <BackButton type="button" onClick={() => navigate(-1)}>
-              이전
-            </BackButton>
-            <SubmitButton1 type="button" onClick={handleDelete}>
-              삭제하기
-            </SubmitButton1>
-            <SubmitButton1 type="submit">수정하기</SubmitButton1>
-          </ButtonGroup>
-        </form>
-      </HireContainer>
-    </HireRegistSection>
+        <ButtonGroup>
+          <BackButton type="button" onClick={() => navigate(-1)}>
+            이전
+          </BackButton>
+          <SubmitButton1 type="button" onClick={handleDelete}>
+            삭제하기
+          </SubmitButton1>
+          <SubmitButton1 type="submit">수정하기</SubmitButton1>
+        </ButtonGroup>
+      </form>
+    </HireContainer>
   );
 };
 

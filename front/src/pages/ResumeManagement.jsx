@@ -14,8 +14,6 @@ const ResumeManagement = () => {
   const { user } = useUserStore();
   const [resumeLists, setResumeLists] = useState([]);
 
-  const [resumeStatus, setResumeStatus] = useState(false);
-
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -70,16 +68,14 @@ const ResumeManagement = () => {
                 <ProfileTextGray>
                   NO <ProfileTextStrong>{resume.resumeNo}</ProfileTextStrong>
                 </ProfileTextGray>
-                <StyledCheckbox checked={resume.status === 'Y'}>
-                  <Label htmlFor={`checkbox-${resume.resumeNo}`}>
-                    <HiddenCheckbox
-                      id={`checkbox-${resume.resumeNo}`}
-                      checked={resume.status === 'Y'}
-                      onChange={() => handleStatusToggle(resume.resumeNo, resume.status)}
-                    />
-                  </Label>
-                  {resume.status === 'Y' ? <IoCheckmarkOutline size="20px" color="white" /> : ''}
+                <StyledCheckbox checked={resume.status ==='Y'}>
+                  <HiddenCheckbox
+                    checked={resume.status === 'Y'}
+                    onChange={() => handleStatusToggle(resume.resumeNo, resume.status)}
+                  />
+                  {resume.status === 'Y' && <IoCheckmarkOutline size="20px" color="white" />}
                 </StyledCheckbox>
+
               </ProfileDiv>
 
               <ButtonDiv>
@@ -161,12 +157,12 @@ const HiddenCheckbox = styled.input.attrs({ type: 'checkbox' })`
   clip: rect(0 0 0 0);
   clip-path: inset(50%);
   height: 1px;
+  width: 1px;
   margin: -1px;
   overflow: hidden;
   padding: 0;
   position: absolute;
   white-space: nowrap;
-  width: 1px;
 `;
 const Label = styled.label`
   display: flex;
@@ -174,16 +170,16 @@ const Label = styled.label`
   cursor: pointer;
   gap: 8px;
 `;
-const StyledCheckbox = styled.div`
-  width: 18px;
-  height: 18px;
-  border: 1px solid ${({ theme, checked }) => (checked ? theme.colors.primary : theme.colors.gray[4])}; /* 회색 400으로 통일 */
-  border-radius: 4px;
+
+const StyledCheckbox = styled.label`
   display: flex;
-  justify-content: center;
   align-items: center;
-  background-color: ${({ theme, checked }) => (checked ? theme.colors.primary : 'white')};
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  background-color: ${({ checked, theme }) => (checked ? theme.colors.primary : '#eee')};
+  border-radius: 4px;
   cursor: pointer;
-  transition: all 0.2s ease-in-out;
+  transition: background-color 0.2s ease;
 `;
 export default ResumeManagement;

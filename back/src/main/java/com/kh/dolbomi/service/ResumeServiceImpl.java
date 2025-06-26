@@ -20,7 +20,7 @@ public class ResumeServiceImpl implements ResumeService {
 
     private final ResumeRepository resumeRepository;
     private final UserRepository userRepository;
-    private final ResumeRepositoryV2 reumeRepositoryV2;
+    private final ResumeRepositoryV2 resumeRepositoryV2;
 
     // 메인 구직글 조회
     @Override
@@ -61,7 +61,7 @@ public class ResumeServiceImpl implements ResumeService {
     @Override
     public ResumeDto.Response updateResume(Long userNo, ResumeDto.Update updatePatDto) {
 
-        Resume resume = reumeRepositoryV2.findById(userNo)
+        Resume resume = resumeRepositoryV2.findById(userNo)
                 .orElseThrow(() -> new IllegalArgumentException("유저가 존재하지 않습니다."));
 
         resume.changeResume(updatePatDto.getResume_title(), updatePatDto.getResume_content(),
@@ -70,6 +70,24 @@ public class ResumeServiceImpl implements ResumeService {
         resume.changeStatus(updatePatDto.getStatus());
 
         return ResumeDto.Response.ResumeDto(resume);
+    }
+
+    @Override
+    public ResumeDto.Response getResume(Long resumeNo) {
+
+        Resume resume = resumeRepositoryV2.findById(resumeNo)
+                .orElseThrow(() -> new IllegalArgumentException("유저가 존재하지 않습니다."));
+
+        return ResumeDto.Response.ResumeDto(resume);
+    }
+
+    @Override
+    public List<ResumeDto.Response> getResumListALL() {
+        List<Resume> resumes = resumeRepository.getResumeListAll();
+
+        return resumes.stream()
+                .map(ResumeDto.Response::mainResumeDto)
+                .collect(Collectors.toList());
     }
 
 

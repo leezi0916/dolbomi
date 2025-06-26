@@ -14,5 +14,9 @@ public interface ResumeService {
 
     List<Response> getResumList(Long userNo);
 
-    Response updateResume(Long userNo, Update updatePatDto);
+    ResumeDto.Response updateResume(Long userNo, Update updatePatDto);
+
+    ResumeDto.Response getResume(Long resumeNo);
+
+    List<ResumeDto.Response> getResumListALL();
 }
