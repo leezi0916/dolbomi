@@ -13,6 +13,8 @@ import { ClipLoader } from 'react-spinners';
 import { Link } from 'react-router-dom';
 import { hiringService } from '../api/hiring';
 import Paging from '../components/Paging';
+import { jobSeekingService } from '../api/jobSeeking';
+import useUserStore from '../store/userStore';
 
 const HireList = () => {
   const [hireLists, setHireLists] = useState([]);
@@ -28,6 +30,7 @@ const HireList = () => {
   const [page, setPage] = useState(1); // MUI Pagination은 1부터 시작
   const [size] = useState(10);
   const [totalPages, setTotalPages] = useState(0);
+  
 
   // 1. 컴포넌트가 처음 마운트될 때 전체 리스트를 불러옵니다.
   useEffect(() => {
@@ -59,6 +62,7 @@ const HireList = () => {
     setSearchKeyword(keyword);
     // 이 상태 변경은 위에 있는 useEffect를 트리거하여 자동으로 검색을 실행시킬 것입니다.
   };
+
 
   const handleCheckChange = (e) => {
     setCareStatus(e.target.checked);

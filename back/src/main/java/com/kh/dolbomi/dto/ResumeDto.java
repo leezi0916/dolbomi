@@ -30,8 +30,10 @@ public class ResumeDto {
         private Integer account;
 
         // ===== 유저 =====
+        private Long user_no;
         private String user_name;
         private Integer age;
+        private String phone;
         private StatusEnum.Gender gender;
         private String address;
         private String phone;
@@ -39,7 +41,7 @@ public class ResumeDto {
         private String profile_image;
         private Double avg_score; //이사람이 받은 리뷰의 평균점수
 
-        //         ===== 자격증 =====
+        // ===== 자격증 =====
         private List<License> license_list;
         private String license_name;
         private String license_publisher;
@@ -81,6 +83,7 @@ public class ResumeDto {
         public static Response ResumeListDto(Resume resume) {
             return Response.builder()
                     .resume_no(resume.getResumeNo())
+                    .resume_title(resume.getResumeTitle())
                     .status(resume.getStatus())
                     .build();
 
@@ -90,15 +93,17 @@ public class ResumeDto {
         //update-response
         public static Response ResumeDto(Resume resume) {
             return Response.builder()
+                    .user_no(resume.getUser().getUserNo())
                     .user_name(resume.getUser().getUserId())
                     .age(resume.getUser().getAge())
+                    .phone(resume.getUser().getPhone())
                     .address(resume.getUser().getAddress())
                     .gender(resume.getUser().getGender())
                     .profile_image(resume.getUser().getProfileImage())
-//                    .email(resume.getUser().getEmail())
+                    .email(resume.getUser().getEmail())
 
                     .resume_no(resume.getResumeNo())
-                    .account(resume.getAccount())
+                    .resume_account(resume.getAccount())
                     .resume_title(resume.getResumeTitle())
                     .resume_content(resume.getResumeContent())
                     .care_status(resume.getCareStatus())
