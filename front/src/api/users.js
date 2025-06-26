@@ -85,7 +85,7 @@ export const userService = {
       return data;
     } catch (error) {
       console.error('회원정보 수정 실패:', error.response?.data?.message || error.message);
-      throw error;
+      throw new Error('서버 통신 불량');
     }
   },
 };

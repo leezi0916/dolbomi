@@ -8,7 +8,7 @@ export const commuService = {
       return data;
     } catch (error) {
       console.log('게시판정보를 가져오지 못함 : ', error.response?.data?.message || '게시판목록 불러오기 실패');
-      throw error;
+      throw new Error('서버 통신 불량');
     }
   },
   getQuestion: async (status, role, id) => {
@@ -17,7 +17,7 @@ export const commuService = {
       return data;
     } catch (error) {
       console.log('게시판정보를 가져오지 못함 : ', error.response?.data?.message || '게시판목록 불러오기 실패');
-      throw error;
+      throw new Error('서버 통신 불량');
     }
   },
   getCommunityDetail: async (no) => {
@@ -28,7 +28,7 @@ export const commuService = {
       return data;
     } catch (error) {
       console.error('프로필 조회 실패:', error.response?.data?.message || error.message);
-      throw error;
+      throw new Error('서버 통신 불량');
     }
   },
 };

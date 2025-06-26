@@ -9,6 +9,7 @@ import com.kh.dolbomi.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -57,5 +58,10 @@ public class BoardServiceImpl implements BoardService {
 
         // 4. 게시글 저장 (Cascade로 파일도 함께 저장됨)
         return boardRepository.save(board).getBoardNo();
+    }
+
+    @Override
+    public List<BoardDto> getBoardList(String status, String role) {
+        return List.of();
     }
 }

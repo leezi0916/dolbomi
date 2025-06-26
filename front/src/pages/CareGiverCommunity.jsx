@@ -64,6 +64,22 @@ const CareGiverCommunity = () => {
   if (error) {
     return null;
   }
+  if (!communityList || communityList.length === 0) {
+    return (
+      <Page>
+        <PageInfo>
+          <div style={{ padding: '20px', textAlign: 'center' }}>
+            게시글이 없습니다.
+            {userId && (
+              <div style={{ marginTop: '10px' }}>
+                <Btn to="/community/create">글쓰기</Btn>
+              </div>
+            )}
+          </div>
+        </PageInfo>
+      </Page>
+    );
+  }
   return (
     <Page>
       <PageInfo>
