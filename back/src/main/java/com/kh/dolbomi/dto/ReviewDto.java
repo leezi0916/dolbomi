@@ -50,7 +50,12 @@ public class ReviewDto {
                     .user_no(review.getWriter().getUserNo())
                     .review_no(review.getReviewNo())
                     .profile_image(review.getWriter().getProfileImage())
-                    .user_name(review.getWriter().getUserName())
+                    .user_name(
+                            review.getMatchingList().stream()
+                                    .findFirst()
+                                    .map(m -> m.getCaregiver().getUserName())
+                                    .orElse(null) // 추후 에러로 대체
+                    )
                     .age(review.getWriter().getAge())
                     .gender(review.getWriter().getGender())
                     .address(review.getWriter().getAddress())

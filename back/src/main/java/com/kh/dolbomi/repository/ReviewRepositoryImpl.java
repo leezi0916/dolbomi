@@ -31,16 +31,27 @@ public class ReviewRepositoryImpl implements ReviewRepository {
     @Override
     public Page<Review> getMyWrittenReviewList(Status status, Pageable pageable, Long userNo) {
         // 게시글을 paging 처리해서 필요한 만큼만 가져오기
-        // String query = "SELECT r FROM Review r JOIN r.writer w WHERE r.status = :status";
-        String query = "SELECT r FROM Review r WHERE r.status = :status AND r.writer.userNo = :userNo";
+        String query = """
+                  SELECT r 
+                  FROM Review r
+                  JOIN r.matchingList m
+                  JOIN m.caregiver c
+                  WHERE r.status = :status AND r.writer.userNo = :userNo
+                """;
         List<Review> boards = em.createQuery(query, Review.class)
                 .setParameter("status", status)
                 .setParameter("userNo", userNo)
                 .setFirstResult((int) pageable.getOffset()) // 어디서부터 가지고 올것인가 - OFFSET
                 .setMaxResults(pageable.getPageSize())  // 몇개를 가지고 올것인가 - LIMIT
                 .getResultList();
-
-        String countQuery = "SELECT count(r) FROM Review r WHERE r.status = :status AND r.writer.userNo = :userNo";
+        
+        String countQuery = """
+                  SELECT count(r)
+                  FROM Review r
+                  JOIN r.matchingList m
+                  JOIN m.caregiver c
+                  WHERE r.status = :status AND r.writer.userNo = :userNo
+                """;
         Long totalCount = em.createQuery(countQuery, Long.class)
                 .setParameter("status", status)
                 .setParameter("userNo", userNo)
