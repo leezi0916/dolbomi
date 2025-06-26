@@ -26,6 +26,7 @@ export const useResumeForm = () => {
     register,
     handleSubmit,
     reset,
+    setValue,
     formState: { errors },
   } = useForm({
     resolver: yupResolver(resumeSchema),
@@ -91,36 +92,37 @@ export const useResumeForm = () => {
   }, [resumeNo, reset]);
 
   // 제출 핸들러
-  const onSubmit = async (formData) => {
-    if (!user) return;
+  // const onSubmit = async (formData) => {
+  //   if (!user) return;
 
-    const payload = {
-      ...formData,
-      userNo: user.userNo,
-    };
+  //   const payload = {
+  //     ...formData,
+  //     userNo: user.userNo,
+  //   };
 
-    try {
-      if (resumeNo) {
-        await jobSeekingService.updateResume(resumeNo, payload);
-        toast.success('이력서가 수정되었습니다!');
-      } else {
-        await jobSeekingService.postNewResume(payload); // API 함수명 그대로 사용
-        toast.success('이력서가 저장되었습니다!');
-      }
+  //   try {
+  //     if (resumeNo) {
+  //       await jobSeekingService.updateResume(resumeNo, payload);
+  //       toast.success('이력서가 수정되었습니다!');
+  //     } else {
+  //       await jobSeekingService.postNewResume(payload); // API 함수명 그대로 사용
+  //       toast.success('이력서가 저장되었습니다!');
+  //     }
 
-      navigate('/caregiver/resumemanagement');
-    } catch (error) {
-      console.error('이력서 저장/수정 실패:', error);
-      toast.error('이력서 저장 중 문제가 발생했습니다.');
-    }
-  };
+  //     navigate('/caregiver/resumemanagement');
+  //   } catch (error) {
+  //     console.error('이력서 저장/수정 실패:', error);
+  //     toast.error('이력서 저장 중 문제가 발생했습니다.');
+  //   }
+  // };
 
   return {
     register,
-    handleSubmit: handleSubmit(onSubmit),
+    handleSubmit,
     errors,
     user,
     licenseList,
     setLicenseList,
+    setValue
   };
 };

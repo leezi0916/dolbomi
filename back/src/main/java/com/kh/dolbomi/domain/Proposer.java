@@ -5,6 +5,7 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -46,9 +47,9 @@ public class Proposer {
     @Column(name = "PROPOSER_DATE", nullable = false)
     private LocalDateTime proposerDate;
 
-    //이력서 번호를 insert 시켜서 남김
-    @Column(name = "RESUME_NO", nullable = false)
-    private LocalDateTime resumeNo;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "RESUME_NO", nullable = false)
+    private Resume resume;
 
     @PrePersist
     public void prePersist() {

@@ -65,6 +65,7 @@ public class UserDto {
         private String phone;
         private String address;
         private Integer age;
+
         private StatusEnum.Status status;
 
         public static Response toDto(User user) {
@@ -88,7 +89,6 @@ public class UserDto {
     @NoArgsConstructor
     public static class Update {
 
-        //private String profileImage
         private String user_name;
         private Integer age;
         private StatusEnum.Gender gender;
@@ -97,7 +97,9 @@ public class UserDto {
         private String address;
 
         // 자격증 여러 개를 받도록 리스트로 수정
-        private List<LicenseDto> licenses;
+        private List<LicenseDto.Response> licenses;
+
+        private String profile_image;
     }
 
     @Getter
@@ -115,8 +117,7 @@ public class UserDto {
         private String address;
         private Integer age;
         private StatusEnum.Gender gender;
-
-        private List<LicenseDto> licenses;
+        private List<LicenseDto.Response> licenses;
 
         public static ProfileDto toDto(User user) {
             return ProfileDto.builder()

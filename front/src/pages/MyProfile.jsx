@@ -25,6 +25,7 @@ const MyProfile = () => {
   const userNo = useUserStore((state) => state.user?.userNo);
   const [profile, setProfile] = useState(null);
   const [licenseList, setLicenseList] = useState([]);
+  const [selectedFile, setSelectedFile] = useState(null); // 추가
   const [formData, setFormData] = useState({
     userId: '',
     userName: '',
@@ -110,15 +111,16 @@ const MyProfile = () => {
     inputRef.current?.click(); // 파일 선택창 열기
   };
 
+  // 파일 선택 핸들러 수정
   const handleFileChange = (e) => {
     const file = e.target.files?.[0];
     if (file) {
-      console.log('선택된 파일:', file.name);
+      setSelectedFile(file); // 파일 저장
       const reader = new FileReader();
       reader.onloadend = () => {
-        setPreviewUrl(reader.result); // base64 저장
+        setPreviewUrl(reader.result);
       };
-      reader.readAsDataURL(file); // base64 인코딩
+      reader.readAsDataURL(file);
     }
   };
 
@@ -139,7 +141,7 @@ const MyProfile = () => {
     }
     try {
       // userNo 포함해서 넘기기
-      await validateAndSubmit({ ...formData, userNo }, licenseList);
+      await validateAndSubmit({ ...formData, userNo }, licenseList, selectedFile);
     } catch (err) {
       toast.error('회원정보 수정 중 문제가 발생했습니다.');
     }
@@ -180,19 +182,19 @@ const MyProfile = () => {
     <AuthContainer>
       <FromWrap>
         <NewTitle>회원정보 수정 / 탈퇴</NewTitle>
-        <ProfileImage onClick={handleDivClick}>
-          {previewUrl ? (
-            <img
-              src={previewUrl || profileImg}
-              alt="미리보기"
-              style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '50%' }}
-            />
-          ) : (
-            <Plus />
-          )}
-        </ProfileImage>
-        <input type="file" accept="image/*" ref={inputRef} onChange={handleFileChange} style={{ display: 'none' }} />
         <Form onSubmit={handleSubmit}>
+          <ProfileImage onClick={handleDivClick}>
+            {previewUrl ? (
+              <img
+                src={previewUrl || profileImg}
+                alt="미리보기"
+                style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '50%' }}
+              />
+            ) : (
+              <Plus />
+            )}
+          </ProfileImage>
+          <input type="file" accept="image/*" ref={inputRef} onChange={handleFileChange} style={{ display: 'none' }} />
           <InputGroup>
             <Label htmlFor="userId">아이디</Label>
             <Input type="text" id="userId" value={formData.userId} readOnly />

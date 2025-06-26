@@ -6,6 +6,7 @@ export const proposerSevice = {
   getcareGiverLists: async (hiringNo) => {
     try {
       const { data } = await api.get(API_ENDPOINTS.PROPOSER.LIST(hiringNo));
+      console.log(data);
       return snakeToCamel(data);
     } catch (error) {
       console.error(
@@ -22,6 +23,19 @@ export const proposerSevice = {
       await api.post(API_ENDPOINTS.PROPOSER.BASE, camelToSnake({ hiringNo, resumeNo, caregiverNo }));
     } catch (error) {
       console.error('지원 신청 실패:', error.response?.data?.message || error.message);
+      throw error;
+    }
+  },
+
+  // 신청 여부 확인 (프론트에서 버튼 조건 분기용)
+  getProposerStatus: async ({ hiringNo, caregiverNo }) => {
+    try {
+      const { data } = await api.get(API_ENDPOINTS.PROPOSER.STATUS, {
+        params: { hiringNo, caregiverNo },
+      });
+      return data.applied; // true 또는 false 반환한다고 가정
+    } catch (error) {
+      console.error('신청 여부 확인 실패:', error.response?.data?.message || error.message);
       throw error;
     }
   },
