@@ -16,7 +16,6 @@ public interface ResumeRepository {
     void save(Resume resume);
 
     List<Resume> getResumeList(Long userNo);
-
-    List<Resume> getResumeListAll();
+    
 
 }

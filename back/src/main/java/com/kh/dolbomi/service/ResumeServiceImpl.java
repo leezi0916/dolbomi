@@ -86,7 +86,7 @@ public class ResumeServiceImpl implements ResumeService {
 
         return ResumeDto.Response.ResumeDto(resume);
     }
-    
+
     @Override
     public ResumeDto.Response getResume(Long resumeNo) {
 
@@ -96,13 +96,5 @@ public class ResumeServiceImpl implements ResumeService {
         return ResumeDto.Response.ResumeDto(resume);
     }
 
-    @Override
-    public List<ResumeDto.Response> getResumListALL() {
-        List<Resume> resumes = resumeRepository.getResumeListAll();
-
-        return resumes.stream()
-                .map(ResumeDto.Response::mainResumeDto)
-                .collect(Collectors.toList());
-    }
 
 }

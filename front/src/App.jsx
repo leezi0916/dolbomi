@@ -21,6 +21,7 @@ import CaregiverList from './pages/CaregiverList';
 import HireRegistration from './pages/HireRegistration';
 import HireDetail from './pages/HireDetail';
 import ResumeRegistration from './pages/ResumeRegistration';
+
 import ResumeDetail from './pages/ResumeDetail';
 import GuardianMainPage from './pages/GuardianMainPage';
 import CareGiverMainPage from './pages/CareGiverMainPage';
@@ -31,7 +32,9 @@ import ReportMain from './pages/ReportMain';
 import CreateCommuBoardForm from './pages/CreateCommuBoardForm';
 import UpdateCommuBoardForm from './pages/UpdateCommuBoardForm';
 import ReviewModal from './components/ReviewModal';
+
 import CareGiverSupportBoard from './pages/CareGiverSupportBoard';
+
 import ResumeManagement from './pages/ResumeManagement';
 import ScrollToTop from './utils/scrollToTop';
 import ReceivedReviews from './pages/ReceivedReviews';
@@ -71,12 +74,16 @@ function AppRoutes() {
           <Route path="/caregiver/hirelist" element={<HireList />} />
           <Route path="/caregiver/resumeregistration" element={<ResumeRegistration />} />
           <Route path="/caregiver/reportform/:patNo" element={<ReportForm />} />
+
+
           <Route path="/caregiver/resumemanagement" element={<ResumeManagement />} />
           <Route path="/caregiver/review" element={<ReceivedReviews />} />
           <Route path="/caregiver/matchpage" element={<MatchToPatient />} />
           <Route path="/caregiver/myresume/:resumeNo" element={<MyResume />} />
           <Route path="/caregiver/post-management" element={<PostManagement />} />
+
           <Route path="/caregiver/resumeDetail/:resumeNo" element={<ResumeDetail />} />
+
           {/* 보호자 */}
           <Route path="/guardian" element={<GuardianMainPage />} />
           <Route path="/guardian/caregiverlist" element={<CaregiverList />} />
@@ -106,6 +113,7 @@ function AppRoutes() {
           <Route path="/myprofile" element={<MyProfile />} />
           <Route path="/caregiverProfile/:userNo" element={<CareGviverProfile />} />
           <Route path="/hireDetail/:hiringNo" element={<HireDetail />} />
+
 
           <Route path="/report/:patNo" element={<ReportMain />} />
           <Route path="/report/detail/:reportNo" element={<ReportDetail />} />

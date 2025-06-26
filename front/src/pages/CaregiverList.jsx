@@ -189,7 +189,7 @@ const CaregiverList = () => {
       ) : (
         <HireListSection>
           {caregiverLists.map((resume) => (
-            <HireListCard onClick={() => navigate(`/resumeDetail/${resume.resumeNo}`)} key={resume.resumeNo}>
+            <HireListCard onClick={() => navigate(`/caregiver/resumeDetail/${resume.resumeNo}`)} key={resume.resumeNo}>
               <CardHeader>
                 <ProfileImage src={resume.profileImage || profileImage} alt="프로필" />
                 <HeaderContent>

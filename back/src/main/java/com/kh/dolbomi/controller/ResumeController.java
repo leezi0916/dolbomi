@@ -31,11 +31,6 @@ public class ResumeController {
         return ResponseEntity.ok(resumeService.getMainResumeList());
     }
 
-    //이력서 전체 목록
-    @GetMapping("/list")
-    public ResponseEntity<List<ResumeDto.Response>> getResumeListAll() {
-        return ResponseEntity.ok(resumeService.getResumListALL());
-    }
 
     //내가 작성한 이력서 불러오기
     @GetMapping("/user/{userNo}")
@@ -68,7 +63,7 @@ public class ResumeController {
 
     //이력서 수정하기
     @PatchMapping("/{userNo}")
-    public ResponseEntity<ResumeDto.Response> UpdatePaient(
+    public ResponseEntity<ResumeDto.Response> UpdateResume(
             @PathVariable Long userNo,
             @RequestBody ResumeDto.Update updatePatDto) {
         return ResponseEntity.ok(resumeService.updateResume(userNo, updatePatDto));
