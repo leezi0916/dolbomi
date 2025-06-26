@@ -14,6 +14,7 @@ public class SecurityConfig {
     /*
      @Bean : 메서드 단위로 빈에 등록할 때, 외부라이브러리의 객체를 등록하고 싶을 때
      */
+
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.csrf(AbstractHttpConfigurer::disable)
@@ -21,6 +22,44 @@ public class SecurityConfig {
                 .formLogin(AbstractHttpConfigurer::disable);
         return http.build();
     }
+
+//    @Bean
+//    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+//        http
+//                .cors(cors -> {
+//                })
+//                .csrf(AbstractHttpConfigurer::disable)
+//                .httpBasic(AbstractHttpConfigurer::disable)
+//                .formLogin(AbstractHttpConfigurer::disable);
+//        return http.build();
+//    }
+
+//    // ✅ 전역 CORS 설정
+//    @Bean
+//    public WebMvcConfigurer corsConfigurer() {
+//        return new WebMvcConfigurer() {
+//            @Override
+//            public void addCorsMappings(CorsRegistry registry) {
+//                registry.addMapping("/**")
+//                        .allowedOrigins("http://localhost:5173")
+//                        .allowedMethods("*")
+//                        .allowedHeaders("*")
+//                        .allowCredentials(true);
+//            }
+//        };
+//    }
+//    @Bean
+//    public CorsConfigurationSource corsConfigurationSource() {
+//        CorsConfiguration configuration = new CorsConfiguration();
+//        configuration.addAllowedOrigin("http://localhost:5173");
+//        configuration.addAllowedMethod("*");
+//        configuration.addAllowedHeader("*");
+//        configuration.setAllowCredentials(true); // 인증 정보 포함 허용
+//
+//        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+//        source.registerCorsConfiguration("/**", configuration);
+//        return source;
+//    }
 
     /*
     BCryptPasswordEncoder 객체를 스프링 빈에 등록하고 사용하고 싶지만 외부객체이기 때문에
@@ -31,4 +70,5 @@ public class SecurityConfig {
     public BCryptPasswordEncoder bCryptPasswordEncoder() {
         return new BCryptPasswordEncoder();
     }
+
 }

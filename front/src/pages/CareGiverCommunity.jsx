@@ -11,7 +11,7 @@ const CareGiverCommunity = () => {
   const userId = useUserStore((state) => state.user?.userId);
 
   const ROLE = 'C';
-  const STATUS = 'Y';
+  // const STATUS = 'Y';
 
   const [error, setError] = useState(null);
   const [communityList, setCommunityList] = useState([]);
@@ -37,7 +37,7 @@ const CareGiverCommunity = () => {
   useEffect(() => {
     const loadCommunity = async () => {
       try {
-        const community = await commuService.getCommunity(STATUS, ROLE);
+        const community = await commuService.getCommunity(ROLE);
         console.log(community);
         setCommunityList(community);
       } catch (error) {

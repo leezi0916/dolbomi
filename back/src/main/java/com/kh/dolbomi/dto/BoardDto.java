@@ -6,6 +6,7 @@ import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 public class BoardDto {
 
@@ -29,6 +30,7 @@ public class BoardDto {
 
     @Getter
     @AllArgsConstructor
+    @NoArgsConstructor
     @Builder
     public static class Response {
         private Long board_no;
@@ -40,7 +42,7 @@ public class BoardDto {
         private String user_name;
         private StatusEnum.Role role;
 
-        private static Response toDto(Board board) {
+        public static Response toDto(Board board) {
             return Response.builder()
                     .board_no(board.getBoardNo())
                     .board_title(board.getBoardTitle())
@@ -65,5 +67,4 @@ public class BoardDto {
                     .build();
         }
     }
-
 }

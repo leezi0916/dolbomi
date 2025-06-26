@@ -25,7 +25,7 @@ const QuestionFull = () => {
   const userId = useUserStore((state) => state.user?.userId);
 
   const ROLE = 'Q';
-  const STATUS = 'Y';
+  // const STATUS = 'Y';
 
   const [error, setError] = useState(null);
   const [communityList, setCommunityList] = useState([]);
@@ -50,7 +50,7 @@ const QuestionFull = () => {
   useEffect(() => {
     const loadCommunity = async () => {
       try {
-        const community = await commuService.getCommunity(STATUS, ROLE);
+        const community = await commuService.getCommunity(ROLE);
         console.log(community);
         setCommunityList(community);
       } catch (error) {
