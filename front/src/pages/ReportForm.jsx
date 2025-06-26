@@ -52,7 +52,7 @@ const ReportForm = () => {
       <form id="report">
         <TopContainer>
           <Top>
-            <Input name="reportTitle" placeholder="제목" value={formData.reportTitle} onChange={handleChange} />
+            <Input name="reportTitle" placeholder="제목" value={formData.reportTitle || ''} onChange={handleChange} />
             <Name>{patName}</Name>
             <Name>{new Date().toISOString().slice(0, 10)}</Name>
           </Top>
