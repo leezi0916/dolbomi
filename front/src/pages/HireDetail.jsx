@@ -68,13 +68,8 @@ const HireDetail = () => {
   const handleApply = () => {
     setAlreadyApplied(true);
   };
-
-<<<<<<< HEAD
-
-=======
   //지원 현황 관련
   const [proposerList, setproposerList] = useState([]);
->>>>>>> 6071b4ed8c26a140cb77a2db38a02916173507e7
 
   // 신청 취소 핸들러
   const handleCancel = async () => {

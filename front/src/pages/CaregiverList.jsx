@@ -179,7 +179,7 @@ setCaregiverLists(caregiverList); // 이게 구조를 보여줌
       ) : (
         <HireListSection>
           {caregiverLists.map((resume) => (
-            <HireListCard onClick={() => navigate(`/resumeDetail/${resume.resumeNo}`)} key={resume.resumeNo}>
+            <HireListCard onClick={() => navigate(`/caregiver/resumeDetail/${resume.resumeNo}`)} key={resume.resumeNo}>
               <CardHeader>
                 <ProfileImage src={resume.profileImage || profileImage} alt="프로필" />
                 <HeaderContent>

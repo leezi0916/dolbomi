@@ -108,7 +108,7 @@ function ResumeDetail() {
         <ContentWrapper>
           <div>
             <ProfilImageWrapper>
-              <img src={resumeData.profileImage || profileImage} alt="프로필" />
+              <img src={resumeData?.profileImage || profileImage} alt="프로필" />
             </ProfilImageWrapper>
             <ChatButton>
               <img src={chatImage} alt="프로필 이미지" />1 : 1 채팅하기
