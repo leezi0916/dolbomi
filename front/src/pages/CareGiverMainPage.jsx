@@ -363,10 +363,22 @@ export const CardRegion = styled.span`
   color: ${({ theme }) => theme.colors.gray[1]};
   font-weight: ${({ theme }) => theme.fontWeights.bold};
 
+  // 말줄임 처리
+  display: inline-block;
+  max-width: 150px;
+  white-space: nowrap; // 줄바꿈 방지
+  overflow: hidden; // 넘친 부분 숨김
+  text-overflow: ellipsis; // 넘친 텍스트를 ...으로 표시
+  vertical-align: middle;
+
   span {
     color: ${({ theme }) => theme.colors.gray[3]};
     font-weight: ${({ theme }) => theme.fontWeights.medium};
   }
+
+  ${media.sm`
+    max-width: 130px; 
+  `}
 `;
 
 // ************* 하단(숙식 제공 돌봄 대상자) 섹션 *************
