@@ -23,8 +23,6 @@ export const reportService = {
         status: 'Y',
       };
 
-      console.log(reportInfo);
-
       const createReportContent = (report) => {
         // 필터링: subTitle 및 content와 관련된 키들만 추출
         const subTitles = Object.entries(report).filter(([key]) => key.startsWith('subTitle'));
@@ -41,8 +39,6 @@ export const reportService = {
 
       // 변환
       const updatedReport = createReportContent(reportInfo);
-
-      console.log(updatedReport);
 
       const { data } = await api.post(API_ENDPOINTS.REPORT.BASE, camelToSnake(updatedReport));
       return data;
@@ -62,7 +58,9 @@ export const reportService = {
         updateDate: new Date().toISOString(),
       };
 
-      const { data } = await api.patch(API_ENDPOINTS.REPORT.SEARCH(report.reportNo), camelToSnake(reportInfo));
+      console.log('요청 : ' + reportInfo);
+      const { data } = await api.patch(API_ENDPOINTS.REPORT.BASE, camelToSnake(reportInfo));
+
       return data;
     } catch (error) {
       if (error.response) {
@@ -73,15 +71,10 @@ export const reportService = {
       throw new Error('서버 통신 불량');
     }
   },
-  removeReports: async (report) => {
+  removeReports: async (reportNo) => {
     try {
-      const reportInfo = {
-        ...report,
-        status: 'N',
-      };
-
-      const { data } = await api.patch(API_ENDPOINTS.REPORT.SEARCH(report.reportNo), camelToSnake(reportInfo));
-      return data;
+      await api.patch(API_ENDPOINTS.REPORT.SEARCH(reportNo));
+      return 1;
     } catch (error) {
       if (error.response) {
         const message = error.response?.data?.message || '일지삭제에 실패했습니다.';

@@ -128,7 +128,7 @@ function AppRoutes() {
 
           <Route path="/resumeDetail/:resumeNo" element={<ResumeDetail />} />
           <Route path="/report/:patNo" element={<ReportMain />} />
-          <Route path="/report/:patNo/detail/:reportNo" element={<ReportDetail />} />
+          <Route path="/report/detail/:reportNo" element={<ReportDetail />} />
 
           <Route path="/privacy-policy" element={<PrivacyPolicy />} />
           <Route path="/terms-of-service" element={<TermsOfService />} />

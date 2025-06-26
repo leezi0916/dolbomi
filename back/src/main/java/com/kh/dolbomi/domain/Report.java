@@ -77,4 +77,20 @@ public class Report {
     public void changeUser(User user) {
         this.user = user;
     }
+
+    public void changeStatus(StatusEnum.Status status) {
+        this.status = status;
+    }
+
+    public void changReportTitle(String reportTitle) {
+        this.reportTitle = reportTitle;
+    }
+
+    public void changReportContent(String reportContent) {
+        this.reportContent = reportContent;
+    }
+
+    public void changUpdateDate(LocalDateTime updateDate) {
+        this.updateDate = updateDate;
+    }
 }
