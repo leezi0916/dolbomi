@@ -55,6 +55,17 @@ const CaregiverList = () => {
     }
   };
 
+  // 이름 첫글자 O 처리하기
+  const maskName = (name) => {
+    if (name.length === 2) {
+      return name[0] + '○';
+    } else if (name.length >= 3) {
+      return name[0] + '○' + name.slice(2);
+    }
+
+    return name;
+  };
+
   // SearchBar에서 검색 버튼을 눌렀을 때 호출되는 함수
   const handleSearchSubmit = (keyword) => {
     // SearchBar로부터 받은 키워드를 searchKeyword 상태에 저장합니다.
@@ -185,7 +196,7 @@ const CaregiverList = () => {
                   <Divder>
                     <UserInfo>
                       <UserName>
-                        {resume.userName} <GrayText>님</GrayText>
+                        {maskName(resume.userName)} <GrayText>님</GrayText>
                       </UserName>
                       <UserAge>
                         <GrayText>나이</GrayText> {resume.age}세(
@@ -201,10 +212,10 @@ const CaregiverList = () => {
               <CardFooter>
                 <LocationWage>
                   <LocationText>
-                    <GrayText>지역</GrayText> {resume.address}
+                    <GrayText>시급</GrayText> <BoldAccount>{resume.account}원</BoldAccount>
                   </LocationText>
                   <AccuontText>
-                    <GrayText>시급</GrayText> <BoldAccount>{resume.account}원</BoldAccount>
+                    <GrayText>지역</GrayText> {resume.address}
                   </AccuontText>
                 </LocationWage>
                 <USERINFO1>

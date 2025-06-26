@@ -18,7 +18,7 @@ const MyResume = () => {
   const navigate = useNavigate();
   const { resumeNo } = useParams();
   const { register, handleSubmit, errors, licenseList, handleLicenseChange, setValue } = useResumeForm();
-  const [careGiverResum, setCareGiverResum ] = useState();
+  const [careGiverResum, setCareGiverResum] = useState();
 
   useEffect(() => {
     const fetchAll = async () => {
@@ -29,7 +29,7 @@ const MyResume = () => {
 
       try {
         const careGiverResum = await jobSeekingService.getResume(resumeNo);
-        setCareGiverResum(careGiverResum)
+        setCareGiverResum(careGiverResum);
         console.log(careGiverResum);
       } catch (error) {
         toast.error('이력서  중 문제가 발생하였습니다.');
@@ -102,7 +102,14 @@ const MyResume = () => {
               <RadioGroup>
                 <Label>성별</Label>
                 <RadioWrapper>
-                  <input type="radio" id="male" name="gender" value="M" checked={careGiverResum?.gender === 'M'} readOnly />
+                  <input
+                    type="radio"
+                    id="male"
+                    name="gender"
+                    value="M"
+                    checked={careGiverResum?.gender === 'M'}
+                    readOnly
+                  />
                   <label htmlFor="male">남성</label>
                 </RadioWrapper>
                 <RadioWrapper>

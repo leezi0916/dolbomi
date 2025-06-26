@@ -19,6 +19,9 @@ public class ResumeDto {
     @Builder
     @Setter
     public static class Response {
+
+        ResumeDto dto;
+        UserDto user;
         // ===== 이력서 =====
         private Long resume_no;
         private String resume_title;
