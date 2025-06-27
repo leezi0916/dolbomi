@@ -61,4 +61,9 @@ public class Proposer {
             this.status = StatusEnum.Status.N;
         }
     }
+
+    //매칭 수락시 신청상태도 같이 수락된 상태로 변경
+    public void updateStatus(StatusEnum.Status newStatus) {
+        this.status = newStatus;
+    }
 }

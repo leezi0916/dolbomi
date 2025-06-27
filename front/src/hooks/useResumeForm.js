@@ -19,7 +19,7 @@ const resumeSchema = yup.object().shape({
 export const useResumeForm = (resumeNo) => {
   const { user } = useUserStore();
   // const [user, setUser] = useState(null);
-  const [licenseList, setLicenseList] = useState([{ licenseName: '', licensePublisher: '', licenseDate: '' }]);
+  // const [licenseList, setLicenseList] = useState([{ licenseName: '', licensePublisher: '', licenseDate: '' }]);
   const [careGiverResume, setCareGiverResume] = useState();
   const navigate = useNavigate();
 
@@ -33,19 +33,20 @@ export const useResumeForm = (resumeNo) => {
     mode: 'onChange',
   });
 
-  useEffect(() => {
-    const fetchAll = async () => {
-      try {
-        const getcareGiverResume = await jobSeekingService.getResume(Number(resumeNo));
-        setCareGiverResume(getcareGiverResume);
-        console.log('시작 ', getcareGiverResume);
-      } catch (error) {
-        toast.error('상세 이력서 불러오기 중 문제가 발생하였습니다.');
-        console.error('이력서 불러오기 오류 : ', error);
-      }
-    };
-    fetchAll();
-  }, [user]);
+  // useEffect(() => {
+  //   const fetchAll = async () => {
+
+  // //     try {
+  // //       const getcareGiverResume = await jobSeekingService.getResume(Number(resumeNo));
+  // //       setCareGiverResume(getcareGiverResume);
+  // //       console.log('시작 ', getcareGiverResume);
+  // //     } catch (error) {
+  // //       toast.error('상세 이력서 불러오기 중 문제가 발생하였습니다.');
+  // //       console.error('이력서 불러오기 오류 : ', error);
+  // //     }
+  // //   };
+  // //   fetchAll();
+  // // }, [user]);
 
   // // resumeNo가 있으면 이력서 데이터 불러와서 폼 초기화
   // useEffect(() => {
@@ -104,8 +105,8 @@ export const useResumeForm = (resumeNo) => {
     handleSubmit,
     errors,
     user,
-    licenseList,
-    setLicenseList,
+    // licenseList,
+    // setLicenseList,
     setValue,
     careGiverResume,
     setCareGiverResume,

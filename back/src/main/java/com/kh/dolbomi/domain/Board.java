@@ -36,7 +36,7 @@ public class Board {
     @JoinColumn(name = "USER_NO", nullable = false)
     private User user;
 
-    @Column(name = "BOARD_TITLE", nullable = false, length = 20)
+    @Column(name = "BOARD_TITLE", nullable = false, length = 50)
     private String boardTitle;
 
     @Column(name = "BOARD_CONTENT", nullable = false, length = 200)

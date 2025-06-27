@@ -26,6 +26,8 @@ import { useParams } from 'react-router-dom';
 import { jobSeekingService } from '../api/jobSeeking';
 import { reviewService } from '../api/reviews';
 import useUserStore from '../store/userStore';
+import { toast } from 'react-toastify';
+import { proposerService } from '../api/propose';
 
 function ResumeDetail() {
   const { user } = useUserStore();
@@ -34,7 +36,7 @@ function ResumeDetail() {
   const ITEMS_PER_PAGE = 4;
   const [reviews, setReviews] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const { resumeNo } = useParams();
+  const { resumeNo, hiringNo } = useParams(); //hiringNo가 없을 수도 있음 (어떤 구인글에 이 이력서로 신청했는지)
   console.log(resumeNo);
 
   const navigate = useNavigate();
@@ -62,7 +64,7 @@ function ResumeDetail() {
   const offset = (currentPage - 1) * ITEMS_PER_PAGE;
   const totalPage = Math.ceil(reviews.length / ITEMS_PER_PAGE);
   const averageScore = (reviews.reduce((acc, cur) => acc + cur.score, 0) / reviews.length || 0).toFixed(1);
- 
+
   const chagneCurrentPage = (value) => {
     setCurrentPage(value);
   };
@@ -98,6 +100,19 @@ function ResumeDetail() {
     }
   };
 
+  const handleAcceptMatching = async () => {
+    const confirm = window.confirm('매칭을 수락하시겠습니까?');
+    if (!confirm) return;
+
+    try {
+      await proposerService.acceptMatching({ resumeNo, hiringNo });
+      toast.success('매칭이 수락되었습니다!');
+      navigate('/'); // 혹은 다른 경로
+    } catch (error) {
+      console.error(error);
+      toast.error('매칭 수락 중 오류가 발생했습니다.');
+    }
+  };
 
   return (
     <HireRegistSection>
@@ -242,7 +257,7 @@ function ResumeDetail() {
 
         <ButtonGroup>
           <BackButton onClick={() => navigate(-1)}>이전</BackButton>
-
+          {hiringNo && <SubmitButton1 onClick={handleAcceptMatching}>매칭 수락</SubmitButton1>}
           {resumeData?.userNo === user?.userNo ? (
             <SubmitButton1 type="button" onClick={() => navigate(`/caregiver/myresume/${resumeData?.resumeNo}`)}>
               수정하기
@@ -250,9 +265,7 @@ function ResumeDetail() {
           ) : (
             ''
           )}
-
         </ButtonGroup>
-
       </HireContainer>
     </HireRegistSection>
   );
@@ -407,7 +420,7 @@ const HireBottom = styled.div`
 `;
 const HireBottomTitle = styled(Title)`
   margin: 0;
-  color: ${({ $active, theme }) => ($active? theme.colors.black1 : theme.colors.gray[3])};
+  color: ${({ $active, theme }) => ($active ? theme.colors.black1 : theme.colors.gray[3])};
   cursor: pointer;
 `;
 

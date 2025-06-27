@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Container, Section } from '../styles/common/Container';
-import profileImage from '../assets/images/pat.png'; // 프로필 이미지 경로
+import profileImage from '../assets/profileImg/img_간병인.png'; // 프로필 이미지 경로
 import styled from 'styled-components';
 import { Input, InputGroup, Title } from '../styles/Auth.styles';
 import { media } from '../styles/MediaQueries';
@@ -16,7 +16,7 @@ import { useNavigate } from 'react-router-dom';
 
 const ResumeRegistration = () => {
   const { user } = useUserStore();
-  const { register, handleSubmit, errors, licenseList, handleLicenseChange } = useResumeForm();
+  const { register, handleSubmit, errors, handleLicenseChange } = useResumeForm();
   const [careGiver, setCareGiver] = useState('');
   const navigate = useNavigate();
 
@@ -29,9 +29,8 @@ const ResumeRegistration = () => {
 
       try {
         const careGiverProfile = await userService.getUserProfile(user.userNo);
-
+        console.log(careGiverProfile);
         setCareGiver(careGiverProfile);
-       
       } catch (error) {
         toast.error('이력서 등록 중 문제가 발생하였습니다.');
         console.error('이력서 등록 에러 : ', error);
@@ -109,7 +108,7 @@ const ResumeRegistration = () => {
               </InputGroup>
             </Divider>
           </ContentWrapper>
-          {licenseList.map((license, index) => (
+          {careGiver?.licenses?.map((license, index) => (
             <ContentWrapper2>
               <LicenseGroup>
                 <Label>자격증 명</Label>

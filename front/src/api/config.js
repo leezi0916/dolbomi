@@ -31,7 +31,8 @@ export const API_ENDPOINTS = {
 
     CHECK_ID: '/users/v1/check', //아이디 중복 검사
     PROFILE: (userNo) => `/users/v1?user_no=${userNo}`,
-    LOGIN: '/users/v1/login', 
+    LOGIN: '/users/v1/login',
+    MY: '/users/v1/me',
     //실제에는 이렇게 해야함 아래는 JsonServer 사용시
 
     // LOGIN: (userId, userPwd) => `/users?user_id=${userId}&user_pwd=${userPwd}`,
@@ -90,6 +91,7 @@ export const API_ENDPOINTS = {
     BASE: '/proposer/v1',
     LIST: (hiringNo) => `/proposer/v1?hiring_no=${hiringNo}`,
     CANCEL: (hiringNo, caregiverNo) => `/proposer/v1/${hiringNo}/${caregiverNo}`,
+    ACCEPT: '/proposer/v1/accept',
   },
 
   MATCHING: {
