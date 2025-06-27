@@ -3,12 +3,7 @@ import { userService } from '../api/users';
 import { toast } from 'react-toastify';
 import { useState } from 'react';
 
-const licenseSchema = yup.object().shape({
-  licenseDate: yup.date().required('발행일을 입력해주세요.').typeError('유효한 날짜를 입력해주세요.'),
-  // 다른 필드도 같이 작성
-  licenseName: yup.string().required('자격증명을 입력해주세요.'),
-  licensePublisher: yup.string().required('발급기관을 입력해주세요.'),
-});
+
 // 유효성 스키마
 const updateSchema = yup.object().shape({
   userName: yup

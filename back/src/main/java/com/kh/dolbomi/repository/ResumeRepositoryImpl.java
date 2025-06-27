@@ -61,10 +61,5 @@ public class ResumeRepositoryImpl implements ResumeRepository {
 
     }
 
-    @Override
-    public List<Resume> getResumeListAll() {
-        String query = "SELECT r FROM Resume r  WHERE r.status = 'Y'";
-        return em.createQuery(query, Resume.class)
-                .getResultList();
-    }
+
 }

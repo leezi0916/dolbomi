@@ -1,6 +1,5 @@
 package com.kh.dolbomi.dto;
 
-import com.kh.dolbomi.domain.License;
 import com.kh.dolbomi.domain.Resume;
 import com.kh.dolbomi.domain.User;
 import com.kh.dolbomi.enums.StatusEnum;
@@ -19,6 +18,8 @@ public class ResumeDto {
     @Builder
     @Setter
     public static class Response {
+
+
         // ===== 이력서 =====
         private Long resume_no;
         private String resume_title;
@@ -27,7 +28,6 @@ public class ResumeDto {
         private LocalDateTime resume_update_date; // create_date는 업데이트시 값을 추적못하기 때문에 update_date로 설정
         private StatusEnum.CareStatus care_status;
         private StatusEnum.Status status;
-        private Integer account;
 
         // ===== 유저 =====
         private Long user_no;
@@ -41,7 +41,8 @@ public class ResumeDto {
         private Double avg_score; //이사람이 받은 리뷰의 평균점수
 
         // ===== 자격증 =====
-        private List<License> license_list;
+//        private List<License> license_list;
+        private List<LicenseDto.Response> license_list;
         private String license_name;
         private String license_publisher;
         private LocalDateTime license_date;
@@ -72,7 +73,7 @@ public class ResumeDto {
                     .user_name(resume.getUser().getUserName())
                     .age(resume.getUser().getAge())
                     .gender(resume.getUser().getGender())
-                    .account(resume.getAccount())
+                    .resume_account(resume.getAccount())
                     .address(resume.getUser().getAddress())
                     .has_license(resume.getUser().getLicenses() != null && !resume.getUser().getLicenses().isEmpty())
                     .avg_score(avgScore != null ? avgScore : 0.0)
@@ -108,8 +109,13 @@ public class ResumeDto {
                     .care_status(resume.getCareStatus())
 
 //                     자격증정보 (List<license>)
+//                    .license_list(
+//                            resume.getUser().getLicenses().stream().toList()
+//                    )
                     .license_list(
-                            resume.getUser().getLicenses().stream().toList()
+                            resume.getUser().getLicenses().stream()
+                                    .map(LicenseDto::toDto)
+                                    .toList()
                     )
                     .build();
         }

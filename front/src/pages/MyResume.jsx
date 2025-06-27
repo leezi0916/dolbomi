@@ -19,7 +19,6 @@ const MyResume = () => {
   const navigate = useNavigate();
   const { resumeNo } = useParams();
   const { register, handleSubmit, errors, handleLicenseChange, setValue } = useResumeForm();
-
   const [careGiverResum, setCareGiverResum] = useState();
 
   useEffect(() => {
@@ -80,7 +79,6 @@ const MyResume = () => {
   return (
     <HireContainer>
       <HireHead>
-  
         <HireHeadTitle>이력서 상세/수정</HireHeadTitle>
       </HireHead>
 

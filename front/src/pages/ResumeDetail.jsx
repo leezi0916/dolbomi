@@ -168,11 +168,11 @@ function ResumeDetail() {
         </ContentWrapper2>
 
         <HireBottom>
-          <HireBottomTitle onClick={() => handleTabChange('info')} active={activeTab === 'info'}>
+          <HireBottomTitle onClick={() => handleTabChange('info')} $active={activeTab === 'info'}>
             지원 정보
           </HireBottomTitle>
 
-          <HireBottomTitle onClick={() => handleTabChange('review')} active={activeTab === 'review'}>
+          <HireBottomTitle onClick={() => handleTabChange('review')} $active={activeTab === 'review'}>
             리뷰
           </HireBottomTitle>
         </HireBottom>
@@ -404,7 +404,7 @@ const HireBottom = styled.div`
 `;
 const HireBottomTitle = styled(Title)`
   margin: 0;
-  color: ${({ active, theme }) => (active ? theme.colors.black1 : theme.colors.gray[3])};
+  color: ${({ $active, theme }) => ($active? theme.colors.black1 : theme.colors.gray[3])};
   cursor: pointer;
 `;
 
