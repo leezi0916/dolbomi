@@ -62,7 +62,7 @@ function ResumeDetail() {
   const offset = (currentPage - 1) * ITEMS_PER_PAGE;
   const totalPage = Math.ceil(reviews.length / ITEMS_PER_PAGE);
   const averageScore = (reviews.reduce((acc, cur) => acc + cur.score, 0) / reviews.length || 0).toFixed(1);
- 
+
   const chagneCurrentPage = (value) => {
     setCurrentPage(value);
   };
@@ -71,8 +71,7 @@ function ResumeDetail() {
   useEffect(() => {
     const fetchResume = async () => {
       try {
-        const data = await jobSeekingService.getResume(Number(resumeNo));
-        console.log('정보', data);
+        const data = await jobSeekingService.getResume(resumeNo);
         setResumeData(data);
       } catch (error) {
         console.log(error);
@@ -97,7 +96,6 @@ function ResumeDetail() {
       navigate('/guardian/matchpage'); // 원하는 경로로 이동
     }
   };
-
 
   return (
     <HireRegistSection>
@@ -250,9 +248,7 @@ function ResumeDetail() {
           ) : (
             ''
           )}
-
         </ButtonGroup>
-
       </HireContainer>
     </HireRegistSection>
   );
@@ -407,7 +403,7 @@ const HireBottom = styled.div`
 `;
 const HireBottomTitle = styled(Title)`
   margin: 0;
-  color: ${({ $active, theme }) => ($active? theme.colors.black1 : theme.colors.gray[3])};
+  color: ${({ $active, theme }) => ($active ? theme.colors.black1 : theme.colors.gray[3])};
   cursor: pointer;
 `;
 

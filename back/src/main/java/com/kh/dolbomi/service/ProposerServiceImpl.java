@@ -7,10 +7,12 @@ import com.kh.dolbomi.domain.Resume;
 import com.kh.dolbomi.domain.User;
 import com.kh.dolbomi.dto.ProposerDto;
 import com.kh.dolbomi.repository.HiringRepository;
+import com.kh.dolbomi.repository.ProposerRepository;
 import com.kh.dolbomi.repository.ProposerRepositoryV2;
 import com.kh.dolbomi.repository.ResumeRepositoryV2;
 import com.kh.dolbomi.repository.UserRepositoryV2;
 import java.util.List;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -18,6 +20,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class ProposerServiceImpl implements ProposerService {
 
+    private final ProposerRepository proposerRepository;
     private final ProposerRepositoryV2 proposerRepositoryV2;
     private final HiringRepository hiringRepository;
     private final ResumeRepositoryV2 resumeRepositoryV2;
@@ -52,4 +55,21 @@ public class ProposerServiceImpl implements ProposerService {
 
         return proposer.getProposerNo();
     }
+
+    @Override
+    public boolean findProposerNo(Long hiringNo, Long caregiverNo) {
+        return proposerRepository.existsByHiringNoAndCaregiverNo(hiringNo, caregiverNo);
+    }
+
+    @Override
+    public void cancel(Long hiringNo, Long caregiverNo) {
+        Optional<Proposer> proposerOpt = proposerRepositoryV2.findByHiring_HiringNoAndCaregiver_UserNo(hiringNo,
+                caregiverNo);
+
+        Proposer proposer = proposerOpt.orElseThrow(() ->
+                new IllegalArgumentException("신청자가 존재하지 않습니다."));
+        proposerRepositoryV2.delete(proposer);
+    }
+
+
 }

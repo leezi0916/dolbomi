@@ -44,7 +44,7 @@ const MyResume = () => {
     if (careGiverResum) {
       setValue('resumeTitle', careGiverResum.resumeTitle || '');
       setValue('resumeContent', careGiverResum.resumeContent || '');
-      setValue('account', careGiverResum.account || '');
+      setValue('resumeAccount', careGiverResum.resumeAccount || '');
       setValue('careStatus', careGiverResum.careStatus || '');
       setValue('licenseList', careGiverResum.licenseList || '');
     }
@@ -191,8 +191,8 @@ const MyResume = () => {
               <AccountGroup>
                 <InputGroup>
                   <Label>희망 금액</Label>
-                  <Input {...register('account')} placeholder="희망 금액" />
-                  <p>{errors.account?.message}</p>
+                  <Input {...register('resumeAccount')} placeholder="희망 금액" />
+                  <p>{errors.resumeAccount?.message}</p>
                 </InputGroup>
               </AccountGroup>
             </RadioGroup>

@@ -8,4 +8,9 @@ public interface ProposerService {
 
 
     Long createProposer(Create createProposerDto);
+
+    boolean findProposerNo(Long hiringNo, Long caregiverNo);
+
+
+    void cancel(Long hiringNo, Long caregiverNo);
 }

@@ -10,8 +10,8 @@ const patientsSchema = yup.object().shape({
   patName: yup
     .string()
     .required('이름을 입력하세요.')
-    .matches(/^[가-힣]+$/, '이름은 한글만 입력 가능합니다.')
-    .max(4, '이름은 최대 4자까지만 입력 가능합니다.'),
+    .matches(/^[가-힣a-zA-Z]+$/, '이름은 영어 또는 한글만 입력 가능합니다.')
+    .max(10, '이름은 최대 10자까지만 입력 가능합니다.'),
 
   patAge: yup
     .number()

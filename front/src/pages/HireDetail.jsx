@@ -15,6 +15,7 @@ import { useParams } from 'react-router-dom';
 import { guardianHiringForm } from '../hooks/guardianHiringForm';
 import ResumeSelectModal from '../components/ResumeSelectModal';
 import { proposerService } from '../api/propose';
+import { set } from 'react-hook-form';
 
 const HireDetail = () => {
   const navigate = useNavigate();
@@ -68,6 +69,21 @@ const HireDetail = () => {
   const handleApply = () => {
     setAlreadyApplied(true);
   };
+
+  //신청된 글인지 확인하는 기능
+  const checkProposer = async () => {
+    try {
+      const checkProposer = await proposerService.getProposerStatus({
+        caregiverNo: Number(user.userNo),
+        hiringNo: Number(hiringNo),
+      });
+      setAlreadyApplied(checkProposer);
+    } catch (error) {
+      console.error('신청확인실패 ');
+    }
+  };
+  checkProposer();
+
   //지원 현황 관련
   const [proposerList, setproposerList] = useState([]);
 
@@ -79,6 +95,7 @@ const HireDetail = () => {
       await proposerService.cancelProposer({
         caregiverNo: user.userNo,
         hiringNo: Number(hiringNo),
+        status : null
       });
       alert('신청이 취소되었습니다.');
       setAlreadyApplied(false);
@@ -291,7 +308,8 @@ const HireDetail = () => {
                 {recruitmentClosed ? '마감' : '모집 마감'}
               </SubmitButton1>
             </>
-          ) : alreadyApplied ? (
+          ) : // 본인이 작성한 글이 아닐 경우
+          alreadyApplied ? (
             // 다른 사람이 작성하고 내가 신청한 글일 경우
             <SubmitButton1 type="button" onClick={handleCancel}>
               신청취소
