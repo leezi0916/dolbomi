@@ -48,7 +48,7 @@ const WrittenReviews = () => {
       </TopSection>
 
       <RecivedReviewsGridContainer>
-        {reviews.content?.map((review) => (
+        {reviews.myWrittenReview?.content?.map((review) => (
           <Card key={review.reviewNo}>
             <CardTopContent>
               <CardImage src={review.profileImage} />
