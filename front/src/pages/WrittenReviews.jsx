@@ -29,6 +29,7 @@ const WrittenReviews = () => {
     const fetchReviews = async () => {
       try {
         const data = await reviewService.getMyWrittenReviews(currentPage, user.userNo);
+        console.log(data);
         setReviews(data);
       } catch (error) {
         console.error('리뷰 로딩 실패:', error);
@@ -55,7 +56,7 @@ const WrittenReviews = () => {
               <CardTextGroup>
                 <CardTitle>{review.userName} 간병사</CardTitle>
                 <CardText>
-                  나이 {review.age}세({review.gender === 'male' ? '남' : '여'})
+                  나이 {review.age}세({review.gender === 'M' ? '남' : '여'})
                 </CardText>
               </CardTextGroup>
             </CardTopContent>
