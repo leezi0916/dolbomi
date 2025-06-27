@@ -1,5 +1,6 @@
 package com.kh.dolbomi.domain;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.kh.dolbomi.enums.StatusEnum;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -44,6 +45,7 @@ public class Proposer {
     @Enumerated(EnumType.STRING)
     private StatusEnum.Status status;
 
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
     @Column(name = "PROPOSER_DATE", nullable = false)
     private LocalDateTime proposerDate;
 
@@ -56,7 +58,7 @@ public class Proposer {
         this.proposerDate = LocalDateTime.now();
 
         if (status == null) {
-            this.status = StatusEnum.Status.Y;
+            this.status = StatusEnum.Status.N;
         }
     }
 }
