@@ -32,11 +32,11 @@ public class Proposer {
     @Column(name = "PROPOSER_NO")
     private Long proposerNo;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "HIRING_NO", nullable = false)
     private Hiring hiring;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "CAREGIVER_NO", nullable = false)
     private User caregiver;
 
