@@ -226,7 +226,7 @@ const HireDetail = () => {
           <ContentWrapper1>
             <HireContent>
               <Label>제목</Label>
-              <Input type="text" id="hiring_title" {...register('hiring_title')} readOnly />
+              <Input type="text" id="hiring_title" {...register('hiringTitle')} readOnly />
               <InputRow>
                 <InputGroup>
                   <Label>지급 금액 (시급)</Label>

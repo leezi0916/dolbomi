@@ -29,7 +29,7 @@ public class ResumeDto {
         private LocalDateTime resume_update_date; // create_date는 업데이트시 값을 추적못하기 때문에 update_date로 설정
         private StatusEnum.CareStatus care_status;
         private StatusEnum.Status status;
-        
+
         // ===== 유저 =====
         private Long user_no;
         private String user_name;
