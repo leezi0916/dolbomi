@@ -42,7 +42,6 @@ const WrittenReviews = () => {
     setCurrentPage(value);
   };
 
-  console.log(currentPage);
   return (
     <ReviewWrapper>
       <TopSection>
@@ -50,14 +49,14 @@ const WrittenReviews = () => {
       </TopSection>
 
       <RecivedReviewsGridContainer>
-        {reviews.content?.map((review) => (
+        {reviews.myWrittenReview?.content?.map((review) => (
           <Card key={review.reviewNo}>
             <CardTopContent>
               <CardImage src={review.profileImage} />
               <CardTextGroup>
                 <CardTitle>{review.userName} 간병사</CardTitle>
                 <CardText>
-                  나이 {review.age}세({review.gender === 'male' ? '남' : '여'})
+                  나이 {review.age}세({review.gender === 'M' ? '남' : '여'})
                 </CardText>
               </CardTextGroup>
             </CardTopContent>
