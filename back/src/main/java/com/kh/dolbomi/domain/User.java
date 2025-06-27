@@ -76,7 +76,6 @@ public class User {
 
     // User <-> License 양방향 설정
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
-
     private List<License> licenses = new ArrayList<>();
 
     public void updateUserInfo(String userName, Integer age, StatusEnum.Gender gender, String phone, String email,

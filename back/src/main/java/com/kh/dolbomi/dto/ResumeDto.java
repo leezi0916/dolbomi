@@ -1,6 +1,5 @@
 package com.kh.dolbomi.dto;
 
-import com.kh.dolbomi.domain.License;
 import com.kh.dolbomi.domain.Resume;
 import com.kh.dolbomi.domain.User;
 import com.kh.dolbomi.enums.StatusEnum;
@@ -42,7 +41,8 @@ public class ResumeDto {
         private Double avg_score; //이사람이 받은 리뷰의 평균점수
 
         // ===== 자격증 =====
-        private List<License> license_list;
+//        private List<License> license_list;
+        private List<LicenseDto.Response> license_list;
         private String license_name;
         private String license_publisher;
         private LocalDateTime license_date;
@@ -109,8 +109,13 @@ public class ResumeDto {
                     .care_status(resume.getCareStatus())
 
 //                     자격증정보 (List<license>)
+//                    .license_list(
+//                            resume.getUser().getLicenses().stream().toList()
+//                    )
                     .license_list(
-                            resume.getUser().getLicenses().stream().toList()
+                            resume.getUser().getLicenses().stream()
+                                    .map(LicenseDto::toDto)
+                                    .toList()
                     )
                     .build();
         }
