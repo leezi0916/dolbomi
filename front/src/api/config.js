@@ -31,7 +31,7 @@ export const API_ENDPOINTS = {
 
     CHECK_ID: '/users/v1/check', //아이디 중복 검사
     PROFILE: (userNo) => `/users/v1?user_no=${userNo}`,
-    LOGIN: '/users/v1/login', 
+    LOGIN: '/users/v1/login',
     //실제에는 이렇게 해야함 아래는 JsonServer 사용시
 
     // LOGIN: (userId, userPwd) => `/users?user_id=${userId}&user_pwd=${userPwd}`,
@@ -78,9 +78,8 @@ export const API_ENDPOINTS = {
 
   REPORT: {
     BASE: `/report/v1`,
-    PROFILE: (patNo) => `/report/v1?pat_no=${patNo}`,
     LIST: (patNo) => `/report/v1/${patNo}`,
-    SEARCH: (reportNo) => `/report/report_no=${reportNo}`,
+    SEARCH: (reportNo) => `/report/v1/detail/${reportNo}`,
   },
 
   PROPOSER: {
