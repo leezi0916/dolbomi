@@ -6,13 +6,20 @@ public class StatusEnum {
         N, // 비활성 또는 삭제
         W  // 대기 (Waiting)
     }
+
     public enum Gender {
-        M,F
+        M, F
     }
 
     public enum CareStatus {
         Y, // 숙식 제공 가능
         N  // 숙식 제공 불가
+    }
+
+    //모집 마감상태
+    public enum HiringStatus {
+        Y, // 모집중 (구인글 등록시 Y)
+        N // 모집마감
     }
 
     //게시판에 필요한상태

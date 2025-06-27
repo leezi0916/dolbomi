@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { Container, Section } from '../styles/common/Container';
-import profileImage from '../assets/images/pat.png'; // 프로필 이미지 경로
+// import profileImage from '../assets/images/pat.png'; // 프로필 이미지 경로
 import caregiverImage from '../assets/profileImg/img_간병인.png'; //간병인 기본 이미지
 import chatImage from '../assets/icons/icon_채팅아이콘.png'; // 채팅 이미지 경로
 import styled from 'styled-components';
-import { SubmitButton } from '../styles/common/Button';
+import { DeleteButton, SubmitButton } from '../styles/common/Button';
 import { FaPlus } from 'react-icons/fa6';
 import { media } from '../styles/MediaQueries';
 import { useNavigate } from 'react-router-dom';
@@ -14,7 +14,7 @@ import { hiringService } from '../api/hiring';
 import { useParams } from 'react-router-dom';
 import { guardianHiringForm } from '../hooks/guardianHiringForm';
 import ResumeSelectModal from '../components/ResumeSelectModal';
-import { proposerSevice } from '../api/propose';
+import { proposerService } from '../api/propose';
 
 const HireDetail = () => {
   const navigate = useNavigate();
@@ -24,7 +24,39 @@ const HireDetail = () => {
   const [alreadyApplied, setAlreadyApplied] = useState(false); // 신청 여부 상태 추가
 
   // 폼 관련 훅 (여기서는 읽기 전용으로 사용)
-  const { register, handleSubmit, errors, isSubmitting, watch, setValue } = guardianHiringForm();
+  const { register, setValue, watch, errors } = guardianHiringForm();
+
+  //모집 마감상태
+  const [recruitmentClosed, setRecruitmentClosed] = useState(false);
+
+  const handleToggleRecruitmentStatus = async (hiringNo) => {
+    if (!window.confirm(`정말 이 구인글의 모집마감 하시겠습니까?`)) return;
+
+    try {
+      await hiringService.toggleRecruitmentStatus(Number(hiringNo));
+      setRecruitmentClosed((prev) => !prev);
+      alert(`구인글 모집이 성공적으로 모집마감 되었습니다.`);
+      // 상태 최신화 위해 getHirngById 다시 호출해도 좋음
+    } catch (err) {
+      alert(`구인글 모집 마감 실패`);
+      console.error(err);
+    }
+  };
+
+  //구인글 삭제 기능
+  const deleteOnClick = async (hiringNo) => {
+    if (!window.confirm('구인글을 삭제하시겠습니까?')) return;
+
+    try {
+      await hiringService.deleteHiring(hiringNo);
+      alert('삭제가 완료되었습니다.');
+      navigate('/guardian/jobopening-management');
+    } catch (err) {
+      console.error('삭제 실패', err);
+      alert('삭제에 실패했습니다.');
+    }
+  };
+
   const currentGender = watch('patGender');
 
   // 이력서 선택 모달 상태
@@ -36,7 +68,6 @@ const HireDetail = () => {
   const handleApply = () => {
     setAlreadyApplied(true);
   };
-
   //지원 현황 관련
   const [proposerList, setproposerList] = useState([]);
 
@@ -45,7 +76,7 @@ const HireDetail = () => {
     const confirm = window.confirm('신청을 취소하시겠습니까?');
     if (!confirm) return;
     try {
-      await proposerSevice.cancelProposer({
+      await proposerService.cancelProposer({
         caregiverNo: user.userNo,
         hiringNo: Number(hiringNo),
       });
@@ -57,59 +88,36 @@ const HireDetail = () => {
     }
   };
 
-  // 모집 상태 토글 핸들러
-  const handleToggleRecruitmentStatus = async () => {
-    if (!jobOpening) return;
-
-    const action = jobOpening.recruitmentClosed ? '모집을 재개' : '모집을 마감';
-    const confirmToggle = window.confirm(`정말 이 구인글의 ${action}하시겠습니까?`);
-    if (!confirmToggle) return;
-
-    try {
-      // 서버에 모집 상태 변경 API 호출
-      // 백엔드에서 recruitmentClosed 상태를 토글하는 API가 필요합니다.
-      // 예: await hiringService.toggleRecruitmentStatus(Number(hiringNo));
-      // 여기서는 예시로 로컬 상태만 변경하고 실제 API는 연동 필요
-      await hiringService.toggleRecruitmentStatus(Number(hiringNo)); // 실제 API 호출
-      setJobOpening((prev) => ({
-        ...prev,
-        recruitmentClosed: !prev.recruitmentClosed,
-      }));
-      alert(`구인글 모집이 성공적으로 ${action}되었습니다.`);
-    } catch (err) {
-      alert(`구인글 모집 ${action} 실패`);
-      console.error(err);
-    }
-  };
-
   useEffect(() => {
     const init = async () => {
       try {
         const data = await hiringService.getHirngById(Number(hiringNo), user?.userNo);
-        console.log(data); // 콘솔에서 데이터 구조 다시 한번 확인
+        console.log(data);
         setJobOpening(data);
-        setAlreadyApplied(data.applied); // 신청 여부 설정
+        setAlreadyApplied(data.applied);
 
-        // 폼 필드 초기화
-        setValue('hiring_title', data.hiringTitle);
+        setRecruitmentClosed(data.hiringStatus === 'N');
+        setValue('hiringStatus', data.hiringStatus);
+        setValue('hiringTitle', data.hiringTitle);
         setValue('hiringContent', data.hiringContent);
         setValue('account', data.account);
-        setValue('startDate', data.startDate.slice(0, 10)); // YYYY-MM-dd 형식
+        setValue('startDate', data.startDate.slice(0, 10));
         setValue('endDate', data.endDate.slice(0, 10));
         setValue('maxApplicants', data.maxApplicants);
         setValue('careStatus', data.careStatus);
-        setValue('patGender', data.patGender); // 성별도 설정
+        setValue('patGender', data.patGender);
       } catch (error) {
         console.error('구인글 상세 및 신청 상태 불러오기 실패', error);
       }
     };
+
     if (user?.userNo && hiringNo) {
       init();
     }
-    // 구직글을 가져온다. => 신청테이블에서 구인글의 번호로(hiringNo) 구직글을 가져온다
+
     const getList = async () => {
-      const data = await proposerSevice.getcareGiverLists(hiringNo);
-      setproposerList(data.proposers); // proposers 배열만 상태로 저장
+      const data = await proposerService.getcareGiverLists(hiringNo);
+      setproposerList(data.proposers);
     };
     getList();
   }, [user, hiringNo, setValue]);
@@ -123,7 +131,6 @@ const HireDetail = () => {
   // DTO의 userNo 필드가 구인글 작성자의 userNo입니다.
   const isMyJobOpening = user?.userNo === jobOpening?.userNo;
   // 모집 마감 상태 확인 (DTO에 hire_status 필드가 있다고 가정)
-  const isRecruitmentClosed = jobOpening?.hire_status;
 
   return (
     <HireRegistSection>
@@ -219,7 +226,7 @@ const HireDetail = () => {
           <ContentWrapper1>
             <HireContent>
               <Label>제목</Label>
-              <Input type="text" id="hiring_title" {...register('hiring_title')} readOnly />
+              <Input type="text" id="hiring_title" {...register('hiringTitle')} readOnly />
               <InputRow>
                 <InputGroup>
                   <Label>지급 금액 (시급)</Label>
@@ -263,14 +270,25 @@ const HireDetail = () => {
             </HireContent>
           </ContentWrapper1>
         </form>
-
         <ButtonGroup>
           <BackButton onClick={() => navigate(-1)}>이전</BackButton>
+          <DeleteButton type="button" onClick={() => deleteOnClick(hiringNo)}>
+            삭제
+          </DeleteButton>
           {isMyJobOpening ? (
             // 본인이 작성한 글일 경우
             <>
-              <SubmitButton1 type="button" onClick={handleToggleRecruitmentStatus}>
-                {isRecruitmentClosed ? '모집재개' : '모집마감'}
+              <SubmitButton1
+                type="button"
+                onClick={() => {
+                  if (!recruitmentClosed) {
+                    handleToggleRecruitmentStatus(hiringNo);
+                  }
+                }}
+                disabled={recruitmentClosed}
+                $disabled={recruitmentClosed}
+              >
+                {recruitmentClosed ? '마감' : '모집 마감'}
               </SubmitButton1>
             </>
           ) : alreadyApplied ? (
@@ -289,7 +307,7 @@ const HireDetail = () => {
             <ResumeSelectModal
               hiringNo={hiringNo}
               onClose={handleCloseModal}
-              onSuccess={(resumeNo) => {
+              onSuccess={() => {
                 handleApply();
                 setModalOpen(false);
               }}
@@ -543,9 +561,11 @@ const RoomImage = styled.div`
 
 const ButtonGroup = styled.div`
   display: flex;
-  width: 100%;
-  padding: 30px;
+  width: 80%;
+  margin: 0 auto;
   gap: ${({ theme }) => theme.spacing[3]};
+  margin-bottom: ${({ theme }) => theme.spacing[5]};
+  height: 50px;
   justify-content: center;
 `;
 
@@ -559,11 +579,12 @@ const BackButton = styled.button`
 
 const SubmitButton1 = styled(SubmitButton)`
   width: 65%;
-  border: 1px solid ${({ theme, $error }) => ($error ? theme.colors.error : theme.colors.gray[5])};
-  border-radius: ${({ theme }) => theme.borderRadius.md};
+  border: 1px solid ${({ theme, $disabled }) => ($disabled ? theme.colors.gray[5] : theme.colors.gray[5])};
+  background-color: ${({ theme, $disabled }) => ($disabled ? theme.colors.gray[5] : theme.colors.primary)};
   font-size: ${({ theme }) => theme.fontSizes.md};
   font-weight: ${({ theme }) => theme.fontWeights.medium};
-  color: white;
+  color: ${({ theme, $disabled }) => ($disabled ? theme.colors.gray[600] : 'white')};
+  cursor: ${({ $disabled }) => ($disabled ? 'not-allowed' : 'pointer')};
 `;
 
 const Plus = styled(FaPlus)`

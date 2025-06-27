@@ -26,7 +26,6 @@ public class ResumeServiceImpl implements ResumeService {
     private final UserRepository userRepository;
     private final ResumeRepositoryV2 resumeRepositoryV2;
 
-
     // 메인 구직글 조회
     @Override
     @Transactional(readOnly = true)
@@ -37,7 +36,6 @@ public class ResumeServiceImpl implements ResumeService {
                 .map(ResumeDto.Response::mainResumeDto)
                 .collect(Collectors.toList());
     }
-
 
     //간병사 모집 리스트 페이징
     @Override
@@ -50,7 +48,6 @@ public class ResumeServiceImpl implements ResumeService {
             return ResumeDto.Response.caregiverListDto(resume, avgScore);
         });
     }
-
 
     @Override
     public Long createResume(ResumeDto.Create createResumeDto) {
@@ -89,5 +86,15 @@ public class ResumeServiceImpl implements ResumeService {
 
         return ResumeDto.Response.ResumeDto(resume);
     }
+
+    @Override
+    public ResumeDto.Response getResume(Long resumeNo) {
+
+        Resume resume = resumeRepositoryV2.findById(resumeNo)
+                .orElseThrow(() -> new IllegalArgumentException("유저가 존재하지 않습니다."));
+
+        return ResumeDto.Response.ResumeDto(resume);
+    }
+
 
 }

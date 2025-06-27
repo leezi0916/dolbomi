@@ -1,11 +1,10 @@
 import { useState, useEffect } from 'react';
 import { jobSeekingService } from '../api/jobSeeking';
 import useUserStore from '../store/userStore';
-import { proposerSevice } from '../api/propose';
+import { proposerService } from '../api/propose';
 
 export const useProposerForm = (hiringNo, onSuccess) => {
   const { user } = useUserStore();
-
   const [resumeList, setResumeList] = useState([]);
   const [selectedResumeNo, setSelectedResumeNo] = useState('');
 
@@ -14,6 +13,7 @@ export const useProposerForm = (hiringNo, onSuccess) => {
     const fetchMyResumes = async () => {
       try {
         const resumes = await jobSeekingService.getMyResumeList(user.userNo);
+        console.log(resumes);
         setResumeList(resumes);
       } catch (err) {
         alert('이력서를 불러오는 데 실패했습니다.');
@@ -40,7 +40,7 @@ export const useProposerForm = (hiringNo, onSuccess) => {
     if (!confirmed) return;
 
     try {
-      await proposerSevice.proposerToHiring({
+      await proposerService.proposerToHiring({
         hiringNo: Number(hiringNo),
         resumeNo: Number(selectedResumeNo),
         caregiverNo: user.userNo, // 또는 caregiver_no

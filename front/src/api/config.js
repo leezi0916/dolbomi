@@ -29,9 +29,10 @@ export const API_ENDPOINTS = {
   USERS: {
     BASE: '/users/v1',
 
-    CHECK_ID: 'users/v1/check', //아이디 중복 검사
+    CHECK_ID: '/users/v1/check', //아이디 중복 검사
     PROFILE: (userNo) => `/users/v1?user_no=${userNo}`,
-    LOGIN: '/users/v1/login', //실제에는 이렇게 해야함 아래는 JsonServer 사용시
+    LOGIN: '/users/v1/login', 
+    //실제에는 이렇게 해야함 아래는 JsonServer 사용시
 
     // LOGIN: (userId, userPwd) => `/users?user_id=${userId}&user_pwd=${userPwd}`,
     DETAIL: (userId) => `/users/v1?user_id=${userId}`,
@@ -39,22 +40,27 @@ export const API_ENDPOINTS = {
     CAREPROFILE: (userNo) => `/users/v1?user_no=${userNo}`,
   },
   REVIEWS: {
-    BASE: '/review/v1/simple-list',
+    BASE: '/review/v1',
+    SIMPLE_LIST: '/review/v1/simple-list',
+    LIST: (currentPage, userNo) => `/review/v1/list?page=${currentPage - 1}&userNo=${userNo}`,
     DETAIL: (userNo) => `/reviews/v1?user_no=${userNo}`,
   },
+
   HIRING: {
-    BASE: '/hiring/v1/simple-list',
+    BASE: '/hiring/v1',
+    SIMPLE_LIST: '/hiring/v1/simple-list',
     LIST: '/hiring/v1/list',
-    DETAIL: (hiringNo) => `/hiring/v1/${hiringNo}`,
+    DETAIL: (hiringNo) => `/hiring/v1/${hiringNo}`, //get
+    STATUS: (hiringNo) => `/hiring/v1/${hiringNo}/status`,
+    DELETE: (hiringNo) => `/hiring/v1/${hiringNo}`, //patch
   },
 
   RESUME: {
-    BASE: '/resume/v1/simple-list',
+    BASE: '/resume/v1',
+    SIMPLE_LIST: '/resume/v1/simple-list',
     LIST: '/resume/v1/list',
-
-    DETAIL: (resumeNo) => `/resume/v1?resume_no=${resumeNo}`,
-    MYRESUME: (userNo) => `resume/v1?user_no=${userNo}`,
-
+    DETAIL: (resumeNo) => `/resume/v1/detail/${resumeNo}`,
+    MYRESUME: (userNo) => `/resume/v1/user/${userNo}`,
     UPDATE: (resumeNo) => `/resume/v1/${resumeNo}`,
   },
 
@@ -74,7 +80,7 @@ export const API_ENDPOINTS = {
     BASE: `/report/v1`,
     PROFILE: (patNo) => `/report/v1?pat_no=${patNo}`,
     LIST: (patNo) => `/report/v1/${patNo}`,
-    SEARCH: (reportNo) => `/report/v1/detail/${reportNo}`,
+    SEARCH: (reportNo) => `/report/report_no=${reportNo}`,
   },
 
   PROPOSER: {

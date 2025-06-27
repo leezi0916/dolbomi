@@ -18,8 +18,6 @@ import { reviewService } from '../api/reviews';
 import Paging from '../components/Paging';
 import { media } from '../styles/MediaQueries';
 
-const ITEMS_PER_PAGE = 6;
-
 const ReceivedReviews = () => {
   const [reviews, setReviews] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
@@ -35,9 +33,6 @@ const ReceivedReviews = () => {
     };
     fetchReviews();
   }, []);
-
-  const offset = (currentPage - 1) * ITEMS_PER_PAGE;
-  const totalPage = Math.ceil(reviews.length / ITEMS_PER_PAGE);
 
   const maskName = (name) => {
     if (name.length === 2) return name[0] + '○';

@@ -37,8 +37,8 @@ public class HiringDto {
 
         public Hiring toEntity(Patient patient, User user) {
             return Hiring.builder()
-                    .patient(patient)                // pat_no 대신 Patient 객체 세팅
-                    .user(user)                // User 엔티티 직접 할당
+                    .patient(patient)    // pat_no 대신 Patient 객체 세팅
+                    .user(user)          // User 엔티티 직접 할당
                     .hiringTitle(this.hiring_title)
                     .hiringContent(this.hiring_content)
                     .account(this.account)
@@ -70,7 +70,7 @@ public class HiringDto {
         private Integer max_applicants;
         private StatusEnum.CareStatus care_status;
         private String room_image;
-
+        private StatusEnum.HiringStatus hiring_status;
         //환자 정보
         private Long pat_no;
         private String pat_name;
@@ -145,7 +145,7 @@ public class HiringDto {
                     .max_applicants(hiring.getMaxApplicants())
                     .care_status(hiring.getCareStatus())
                     .room_image(hiring.getRoomImage())
-
+                    .hiring_status(hiring.getHiringStatus())
                     // 환자 정보
                     .pat_no(patient.getPatNo())
                     .pat_name(patient.getPatName())

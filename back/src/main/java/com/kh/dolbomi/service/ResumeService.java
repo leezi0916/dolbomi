@@ -11,7 +11,7 @@ import org.springframework.data.domain.Pageable;
 public interface ResumeService {
     // 메인 구직글 조회
     List<ResumeDto.Response> getMainResumeList();
-    
+
     // 간병사 모집 페이징 리스트 조회 (상태 Y)
     Page<ResumeDto.Response> getResumePage(Pageable pageable);
 
@@ -19,6 +19,9 @@ public interface ResumeService {
 
     List<Response> getResumList(Long userNo);
 
-    Response updateResume(Long userNo, Update updatePatDto);
+    ResumeDto.Response updateResume(Long userNo, Update updatePatDto);
+
+    ResumeDto.Response getResume(Long resumeNo);
+
 
 }

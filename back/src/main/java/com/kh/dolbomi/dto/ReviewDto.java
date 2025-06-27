@@ -17,6 +17,7 @@ public class ReviewDto {
     @Setter
     public static class Response {
         // ===== 유저 =====
+        private Long user_no;
         private String user_name;
         private Integer age;
         private StatusEnum.Gender gender;
@@ -35,6 +36,26 @@ public class ReviewDto {
                     .review_no(review.getReviewNo())
                     .profile_image(review.getWriter().getProfileImage())
                     .user_name(review.getWriter().getUserName())
+                    .age(review.getWriter().getAge())
+                    .gender(review.getWriter().getGender())
+                    .address(review.getWriter().getAddress())
+                    .review_content(review.getReviewContent())
+                    .review_score(review.getScore())
+                    .review_update_date(review.getUpdateDate())
+                    .build();
+        }
+
+        public static Response ReviewDto(Review review) {
+            return Response.builder()
+                    .user_no(review.getWriter().getUserNo())
+                    .review_no(review.getReviewNo())
+                    .profile_image(review.getWriter().getProfileImage())
+                    .user_name(
+                            review.getMatchingList().stream()
+                                    .findFirst()
+                                    .map(m -> m.getCaregiver().getUserName())
+                                    .orElse(null) // 추후 에러로 대체
+                    )
                     .age(review.getWriter().getAge())
                     .gender(review.getWriter().getGender())
                     .address(review.getWriter().getAddress())
