@@ -19,7 +19,6 @@ export const proposerService = {
 
   // 간병인 신청 등록
   proposerToHiring: async ({ hiringNo, resumeNo, caregiverNo }) => {
-
     try {
       const res = await api.post(API_ENDPOINTS.PROPOSER.BASE, camelToSnake({ hiringNo, resumeNo, caregiverNo }));
       console.log(res);
@@ -50,6 +49,17 @@ export const proposerService = {
       await api.delete(API_ENDPOINTS.PROPOSER.CANCEL(camelToSnake({ hiringNo, caregiverNo })));
     } catch (error) {
       console.error('신청 취소 실패:', error.response?.data?.message || error.message);
+      throw error;
+    }
+  },
+
+  //지원현황에서 이력서 보고 수락하기
+  acceptMatching: async ({ hiringNo, resumeNo }) => {
+    try {
+      const res = await api.post(API_ENDPOINTS.PROPOSER.ACCEPT, camelToSnake({ hiringNo, resumeNo }));
+      return res.data;
+    } catch (error) {
+      console.error('매칭 수락 실패:', error.response?.data?.message || error.message);
       throw error;
     }
   },

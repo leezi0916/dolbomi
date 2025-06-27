@@ -43,7 +43,7 @@ public class Resume {
     @JoinColumn(name = "USER_NO", nullable = false)
     private User user;
 
-    @Column(name = "RESUME_TITLE", nullable = false, length = 20)
+    @Column(name = "RESUME_TITLE", nullable = false, length = 50)
     private String resumeTitle;
 
     @Column(name = "RESUME_CONTENT", nullable = false, columnDefinition = "TEXT")

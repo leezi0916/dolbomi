@@ -46,7 +46,7 @@ public class Patient {
     @Column(name = "PAT_PHONE")
     private String patPhone;
 
-    @Column(name = "PAT_NAME", nullable = false, length = 10)
+    @Column(name = "PAT_NAME", nullable = false, length = 20)
     private String patName;
 
     @Column(name = "PAT_ADDRESS", nullable = false, length = 50)

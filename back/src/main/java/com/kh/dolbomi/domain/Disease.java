@@ -30,7 +30,7 @@ public class Disease {
     @Column(name = "DIS_NO")
     private Long disNo;
 
-    @Column(name = "DIS_NAME", length = 10, nullable = false)
+    @Column(name = "DIS_NAME", length = 30, nullable = false)
     private String disName;
 
     //양방향 관계 원한다면 cascade 설정을 통해서 질병이 저장되면

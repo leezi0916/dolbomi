@@ -32,13 +32,12 @@ export const useLoginForm = () => {
     try {
       setIsLoading(true);
       //로그인API호출
-      const user = await userService.login(data.userId, data.userPwd);
-      console.log('로그인시 userNO ', user);
-      if (!user) {
-        throw new Error('아이디 또는 비밀번호 불일치');
-      }
-      console.log('로그인 API 반환값:', user); // 이걸로 구조 확인
-      //로그인 성공시 store에 로그인 정보를 저장
+      const { token } = await userService.login(data.userId, data.userPwd);
+      if (!token) throw new Error('로그인 실패: 토큰 없음');
+      // 2. 토큰으로 내 정보 조회
+      const user = await userService.getMyInfo();
+
+      // 3. store에 유저 저장
       login({
         userNo: user.userNo,
         userId: user.userId,
@@ -48,7 +47,7 @@ export const useLoginForm = () => {
       toast.success('로그인 성공!');
       navigate('/');
     } catch (error) {
-      toast.error('아이디 또는 비밀번호 불일치');
+      toast.error(error.message || '로그인 중 오류 발생');
       console.error('로그인 에러 : ', error);
     } finally {
       setIsLoading(false);
