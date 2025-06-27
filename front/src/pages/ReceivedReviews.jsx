@@ -25,20 +25,14 @@ const ReceivedReviews = () => {
   useEffect(() => {
     const fetchReviews = async () => {
       try {
-        const data = await reviewService.getReviews();
+        const data = await reviewService.getReviews(currentPage, user.userNo);
         setReviews(data);
       } catch (error) {
         console.error('리뷰 로딩 실패:', error);
       }
     };
     fetchReviews();
-  }, []);
-
-  const maskName = (name) => {
-    if (name.length === 2) return name[0] + '○';
-    if (name.length >= 3) return name[0] + '○' + name.slice(2);
-    return name;
-  };
+  }, [currentPage]);
 
   const averageScore = (reviews.reduce((acc, cur) => acc + cur.score, 0) / reviews.length || 0).toFixed(1);
 
@@ -59,12 +53,12 @@ const ReceivedReviews = () => {
       </TopSection>
 
       <RecivedReviewsGridContainer>
-        {reviews.slice(offset, offset + ITEMS_PER_PAGE).map((review) => (
+        {reviews.map((review) => (
           <Card key={review.reviewNo}>
             <CardTopContent>
               <CardImage src={review.profileImage} />
               <CardTextGroup>
-                <CardTitle>{maskName(review.userName)} 님</CardTitle>
+                <CardTitle>{review.userName} 님</CardTitle>
                 <CardText>
                   나이 {review.age}세({review.gender === 'male' ? '남' : '여'})
                 </CardText>
@@ -74,7 +68,7 @@ const ReceivedReviews = () => {
               <ReviewTextBox>{review.reviewContent}</ReviewTextBox>
               <ReviewFooter>
                 <ReviewScore>
-                  평점 <strong>{review.score.toFixed(1)}</strong>
+                  평점 <strong>{review.reviewScore.toFixed(1)}</strong>
                 </ReviewScore>
                 <ReviewDate>작성일 {review.createDate}</ReviewDate>
               </ReviewFooter>
@@ -83,7 +77,7 @@ const ReceivedReviews = () => {
         ))}
       </RecivedReviewsGridContainer>
 
-      <Paging currentPage={currentPage} totalPage={totalPage} chagneCurrentPage={chagneCurrentPage} />
+      <Paging currentPage={currentPage} totalPage={reviews.totalPage} chagneCurrentPage={chagneCurrentPage} />
     </ReviewWrapper>
   );
 };
