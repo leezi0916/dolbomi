@@ -10,6 +10,9 @@ public interface ReviewService {
     // 메인(보호자 메인) 리뷰 조회
     List<Response> getMainReviewList();
 
-    // 내가쓴 리뷰, 내가 받은 리뷰 조회
+    // 내가쓴 리뷰 조회
     Page<Response> getMyWrittenReviewList(Pageable pageable, Long userNo);
+
+    // 내가 받은 리뷰 조회
+    Page<Response> getReceivedReviewList(Pageable pageable, Long userNo);
 }

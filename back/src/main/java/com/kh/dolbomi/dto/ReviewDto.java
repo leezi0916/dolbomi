@@ -45,17 +45,41 @@ public class ReviewDto {
                     .build();
         }
 
-        public static Response ReviewDto(Review review) {
+        public static Response MyWrittenReviewDto(Review review) {
             return Response.builder()
-                    .user_no(review.getWriter().getUserNo())
                     .review_no(review.getReviewNo())
-                    .profile_image(review.getWriter().getProfileImage())
+                    .profile_image(review.getMatchingList().stream()
+                            .findFirst()
+                            .map(m -> m.getCaregiver().getProfileImage())
+                            .orElse(null) // 추후 에러로 대체)
+                    )
                     .user_name(
                             review.getMatchingList().stream()
                                     .findFirst()
                                     .map(m -> m.getCaregiver().getUserName())
                                     .orElse(null) // 추후 에러로 대체
                     )
+                    .age(review.getMatchingList().stream()
+                            .findFirst()
+                            .map(m -> m.getCaregiver().getAge())
+                            .orElse(null) // 추후 에러로 대체)
+                    )
+                    .gender(review.getMatchingList().stream()
+                            .findFirst()
+                            .map(m -> m.getCaregiver().getGender())
+                            .orElse(null) // 추후 에러로 대체)
+                    )
+                    .review_content(review.getReviewContent())
+                    .review_score(review.getScore())
+                    .review_update_date(review.getUpdateDate())
+                    .build();
+        }
+
+        public static Response ReceivedReviewDto(Review review) {
+            return Response.builder()
+                    .review_no(review.getReviewNo())
+                    .profile_image(review.getWriter().getProfileImage()) // 리뷰 작성자 정보
+                    .user_name(review.getWriter().getUserName())
                     .age(review.getWriter().getAge())
                     .gender(review.getWriter().getGender())
                     .address(review.getWriter().getAddress())
