@@ -62,7 +62,7 @@ function ResumeDetail() {
   const offset = (currentPage - 1) * ITEMS_PER_PAGE;
   const totalPage = Math.ceil(reviews.length / ITEMS_PER_PAGE);
   const averageScore = (reviews.reduce((acc, cur) => acc + cur.score, 0) / reviews.length || 0).toFixed(1);
- 
+
   const chagneCurrentPage = (value) => {
     setCurrentPage(value);
   };
@@ -72,7 +72,7 @@ function ResumeDetail() {
     const fetchResume = async () => {
       try {
         const data = await jobSeekingService.getResume(Number(resumeNo));
-        console.log('정보', data);
+        console.log(data);
         setResumeData(data);
       } catch (error) {
         console.log(error);
@@ -98,7 +98,6 @@ function ResumeDetail() {
     }
   };
 
-
   return (
     <HireRegistSection>
       <HireContainer>
@@ -108,7 +107,7 @@ function ResumeDetail() {
         <ContentWrapper>
           <div>
             <ProfilImageWrapper>
-              <img src={resumeData.profileImage || profileImage} alt="프로필" />
+              <img src={resumeData?.profileImage || profileImage} alt="프로필" />
             </ProfilImageWrapper>
             <ChatButton>
               <img src={chatImage} alt="프로필 이미지" />1 : 1 채팅하기
@@ -250,9 +249,7 @@ function ResumeDetail() {
           ) : (
             ''
           )}
-
         </ButtonGroup>
-
       </HireContainer>
     </HireRegistSection>
   );

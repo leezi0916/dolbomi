@@ -29,7 +29,6 @@ const WrittenReviews = () => {
     const fetchReviews = async () => {
       try {
         const data = await reviewService.getMyWrittenReviews(currentPage, user.userNo);
-        console.log(data);
         setReviews(data);
       } catch (error) {
         console.error('리뷰 로딩 실패:', error);
@@ -42,7 +41,6 @@ const WrittenReviews = () => {
     setCurrentPage(value);
   };
 
-  console.log(currentPage);
   return (
     <ReviewWrapper>
       <TopSection>
