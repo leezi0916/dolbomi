@@ -4,6 +4,7 @@ import { Section } from '../styles/common/Container';
 import { ButtonText, SubmitButton } from '../styles/common/Button';
 import { useParams, useLocation, useNavigate } from 'react-router-dom';
 import { reportService } from '../api/report';
+import TextareaAutosize from 'react-textarea-autosize';
 import useUserStore from '../store/userStore';
 import { toast } from 'react-toastify';
 
@@ -30,8 +31,8 @@ const ReportForm = () => {
 
   const handleSubmit = async () => {
     try {
-      const save = await reportService.addReports(formData);
-      console.log('1이면 등록 성공' + save); //확인용
+      await reportService.addReports(formData);
+      alert('일지가 등록되었습니다.');
     } catch (error) {
       console.error(error);
       const errorMessage = '일지 등록에 실패했습니다.';
@@ -48,7 +49,6 @@ const ReportForm = () => {
   return (
     <Wrap>
       <MainTitle>진단 일지 등록 / 수정</MainTitle>
-      <br />
       <form id="report">
         <TopContainer>
           <Top>
@@ -76,6 +76,7 @@ const ReportForm = () => {
                 placeholder="내용"
                 value={formData[`content${index}`] || ''}
                 onChange={handleChange}
+                minRows={5}
               />
             </Body>
           </Container>
@@ -101,17 +102,20 @@ const ReportForm = () => {
 };
 
 const Wrap = styled.div`
-  padding: ${({ theme }) => theme.spacing[4]};
-  margin: 0;
+  padding: ${({ theme }) => theme.spacing[8]} 0;
+  max-width: 950px;
+  margin: 0 auto;
 `;
 
 const MainTitle = styled.p`
   font-size: ${({ theme }) => theme.fontSizes['2xl']};
   font-weight: ${({ theme }) => theme.fontWeights.bold};
   display: flex;
+  padding-bottom: ${({ theme }) => theme.spacing[8]};
 `;
+
 const TopContainer = styled(Section)`
-  box-shadow: ${({ theme }) => theme.shadows.lg};
+  box-shadow: ${({ theme }) => theme.shadows.base};
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -134,13 +138,14 @@ const Top = styled.div`
   padding: 16px;
 `;
 
-const Input = styled.input`
+const Input = styled(TextareaAutosize)`
   border: 1px solid ${({ theme }) => theme.colors.gray[5]};
   border-radius: 4px;
-  font-size: ${({ theme }) => theme.fontSizes.lg};
+  font-size: ${({ theme }) => theme.fontSizes.base};
   width: 100%;
   padding: 10px 20px;
-  margin: 10px 0;
+  margin: 10px 0 5px 0;
+  resize: none;
 `;
 
 const Name = styled.div`
@@ -148,7 +153,7 @@ const Name = styled.div`
   border: 1px solid ${({ theme }) => theme.colors.gray[5]};
   border-radius: 4px;
   padding: 10px 20px;
-  font-size: ${({ theme }) => theme.fontSizes.lg};
+  font-size: ${({ theme }) => theme.fontSizes.sm};
   margin: 10px 0;
 `;
 
@@ -161,19 +166,20 @@ const Header = styled.div`
 
 const Contents = styled.div`
   margin: 8px 16px;
+
   > img {
     filter: brightness(300%) saturate(0%);
   }
 `;
 
-const MainInput = styled.input`
+const MainInput = styled(TextareaAutosize)`
   border: 1px solid ${({ theme }) => theme.colors.gray[5]};
   border-radius: 4px;
-  font-size: ${({ theme }) => theme.fontSizes.lg};
+  font-size: ${({ theme }) => theme.fontSizes.sm};
   width: 100%;
   height: 200px;
   padding: 10px 20px;
-  margin: 10px 0;
+  resize: none;
 `;
 
 const Body = styled.div`

@@ -78,7 +78,6 @@ export const jobSeekingService = {
     try {
       console.log('요청할 resumeNo: ', resumeNo);
       const { data } = await api.get(API_ENDPOINTS.RESUME.DETAIL(resumeNo));
-      console.log('데이터 확인 : ', data);
       return snakeToCamel(data);
     } catch (error) {
       console.log(error);

@@ -68,6 +68,7 @@ const HireDetail = () => {
   const handleApply = () => {
     setAlreadyApplied(true);
   };
+
   //지원 현황 관련
   const [proposerList, setproposerList] = useState([]);
 

@@ -74,7 +74,7 @@ function ResumeDetail() {
     const fetchResume = async () => {
       try {
         const data = await jobSeekingService.getResume(Number(resumeNo));
-        console.log('정보', data);
+        console.log(data);
         setResumeData(data);
       } catch (error) {
         console.log(error);

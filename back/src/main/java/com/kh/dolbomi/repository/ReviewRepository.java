@@ -13,4 +13,7 @@ public interface ReviewRepository {
 
     // 내가쓴 리뷰 조회
     Page<Review> getMyWrittenReviewList(Status status, Pageable pageable, Long userNo);
+
+    // 내가 받은 리뷰 조회
+    Page<Review> getReceivedReviewList(Status status, Pageable pageable, Long userNo);
 }

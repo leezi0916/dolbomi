@@ -3,7 +3,9 @@ package com.kh.dolbomi.controller;
 import com.kh.dolbomi.dto.PageResponse;
 import com.kh.dolbomi.dto.ReviewDto;
 import com.kh.dolbomi.service.ReviewService;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -31,10 +33,15 @@ public class ReviewController {
 
     // 내가쓴 리뷰, 내가 받은 리뷰 조회
     @GetMapping("/list")
-    public ResponseEntity<PageResponse<ReviewDto.Response>> getReviewsByPage(
+    public ResponseEntity<Map<String, PageResponse<ReviewDto.Response>>> getReviewsByPage(
             @PageableDefault(size = 6, sort = "updateDate", direction = Sort.Direction.DESC) Pageable pageable,
             @RequestParam Long userNo) {
-        return ResponseEntity.ok(new PageResponse<>(reviewService.getMyWrittenReviewList(pageable, userNo)));
+
+        Map<String, PageResponse<ReviewDto.Response>> result = new HashMap<>();
+        result.put("myWrittenReview", new PageResponse<>(reviewService.getMyWrittenReviewList(pageable, userNo)));
+        result.put("receivedReview", new PageResponse<>(reviewService.getReceivedReviewList(pageable, userNo)));
+
+        return ResponseEntity.ok(result);
     }
 
 }
