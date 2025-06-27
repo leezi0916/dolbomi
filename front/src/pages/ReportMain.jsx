@@ -73,7 +73,6 @@ const ReportMain = () => {
   return (
     <Wrap>
       <MainTitle>돌봄 대상자 정보</MainTitle>
-      <br />
       <Container>
         <Title>돌봄 대상자</Title>
         <SubTitle>
@@ -154,20 +153,24 @@ const ReportMain = () => {
 };
 
 const Wrap = styled.div`
-  padding: ${({ theme }) => theme.spacing[4]};
+  padding: ${({ theme }) => theme.spacing[8]} 0;
+  max-width: 950px;
+  margin: 0 auto;
 `;
 
 const MainTitle = styled.p`
+  padding-bottom: ${({ theme }) => theme.spacing[8]};
   font-size: ${({ theme }) => theme.fontSizes['2xl']};
   font-weight: ${({ theme }) => theme.fontWeights.bold};
   display: flex;
 `;
 
 const Container = styled(Section)`
-  box-shadow: ${({ theme }) => theme.shadows.lg};
+  box-shadow: ${({ theme }) => theme.shadows.base};
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+  padding: ${({ theme }) => theme.spacing[6]};
 `;
 
 const Title = styled.p`

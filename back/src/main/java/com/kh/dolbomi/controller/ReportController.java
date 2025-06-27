@@ -39,8 +39,9 @@ public class ReportController {
 
     //진단일지 수정
     @PatchMapping
-    public void updateReport(@RequestBody ReportDto.Update update) {
+    public ResponseEntity<Void> updateReport(@RequestBody ReportDto.Update update) {
         reportService.updateReport(update);
+        return ResponseEntity.ok().build();
     }
 
     //  진단일지 삭제
