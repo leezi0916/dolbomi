@@ -71,7 +71,8 @@ function ResumeDetail() {
   useEffect(() => {
     const fetchResume = async () => {
       try {
-        const data = await jobSeekingService.getResume(resumeNo);
+        const data = await jobSeekingService.getResume(Number(resumeNo));
+
         setResumeData(data);
       } catch (error) {
         console.log(error);

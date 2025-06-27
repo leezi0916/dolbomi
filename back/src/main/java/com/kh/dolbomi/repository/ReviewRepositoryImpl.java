@@ -30,7 +30,6 @@ public class ReviewRepositoryImpl implements ReviewRepository {
     // 내가쓴 리뷰 조회
     @Override
     public Page<Review> getMyWrittenReviewList(Status status, Pageable pageable, Long userNo) {
-        // 게시글을 paging 처리해서 필요한 만큼만 가져오기
         String query = """
                   SELECT r 
                   FROM Review r
@@ -38,13 +37,13 @@ public class ReviewRepositoryImpl implements ReviewRepository {
                   JOIN m.caregiver c
                   WHERE r.status = :status AND r.writer.userNo = :userNo
                 """;
-        List<Review> boards = em.createQuery(query, Review.class)
+        List<Review> reviews = em.createQuery(query, Review.class)
                 .setParameter("status", status)
                 .setParameter("userNo", userNo)
                 .setFirstResult((int) pageable.getOffset()) // 어디서부터 가지고 올것인가 - OFFSET
                 .setMaxResults(pageable.getPageSize())  // 몇개를 가지고 올것인가 - LIMIT
                 .getResultList();
-        
+
         String countQuery = """
                   SELECT count(r)
                   FROM Review r
@@ -59,6 +58,42 @@ public class ReviewRepositoryImpl implements ReviewRepository {
 
         // Page<T> 인터페이스의 기본구현체를 통해서 paging한 정보를 한번에 전달할 수 있음
         // new PageImpl<>(content,pageable,total);
-        return new PageImpl<Review>(boards, pageable, totalCount);
+        return new PageImpl<Review>(reviews, pageable, totalCount);
+    }
+
+    // 내가 받은 리뷰 조회
+    @Override
+    public Page<Review> getReceivedReviewList(Status status, Pageable pageable, Long userNo) {
+
+        String query = """
+                  SELECT r 
+                  FROM Review r
+                  JOIN r.matchingList m
+                  JOIN m.caregiver c
+                  WHERE r.status = :status AND c.userNo = :userNo
+                """;
+        List<Review> reviews = em.createQuery(query, Review.class)
+                .setParameter("status", status)
+                .setParameter("userNo", userNo)
+                .setFirstResult((int) pageable.getOffset()) // 어디서부터 가지고 올것인가 - OFFSET
+                .setMaxResults(pageable.getPageSize())  // 몇개를 가지고 올것인가 - LIMIT
+                .getResultList();
+
+        String countQuery = """
+                SELECT count(r)
+                  FROM Review r
+                  JOIN r.matchingList m
+                  JOIN m.caregiver c
+                  WHERE r.status = :status AND c.userNo = :userNo
+                """;
+        
+        Long totalCount = em.createQuery(countQuery, Long.class)
+                .setParameter("status", status)
+                .setParameter("userNo", userNo)
+                .getSingleResult();
+
+        // Page<T> 인터페이스의 기본구현체를 통해서 paging한 정보를 한번에 전달할 수 있음
+        // new PageImpl<>(content,pageable,total);
+        return new PageImpl<Review>(reviews, pageable, totalCount);
     }
 }

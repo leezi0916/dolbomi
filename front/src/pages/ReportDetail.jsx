@@ -23,8 +23,8 @@ const ReportDetail = () => {
 
   const handleSubmit = async () => {
     try {
-      const save = await reportService.modifyReports(report);
-      save && alert('수정 완료');
+      await reportService.modifyReports(report);
+      alert('일지가 수정되었습니다.');
     } catch (error) {
       console.error(error);
       const errorMessage = '리뷰를 불러오는데 실패했습니다.';
@@ -36,7 +36,7 @@ const ReportDetail = () => {
   const handleDelete = async () => {
     try {
       const result = await reportService.removeReports(reportNo);
-      result && alert('일지 삭제');
+      result && alert('일지가 삭제되었습니다.');
       navigate(-1);
     } catch (error) {
       console.error(error);
@@ -74,7 +74,7 @@ const ReportDetail = () => {
           </Btn>
         </Buttons>
       </Head>
-      <br />
+
       <Container>
         {state ? (
           <>
@@ -106,13 +106,15 @@ const ReportDetail = () => {
 };
 
 const Wrap = styled.div`
-  padding: ${({ theme }) => theme.spacing[4]};
-  margin-top: 20px;
+  max-width: 950px;
+  padding: ${({ theme }) => theme.spacing[8]} 0;
+  margin: 0 auto;
 `;
 
 const Head = styled.div`
   display: flex;
   justify-content: space-between;
+  padding-bottom: ${({ theme }) => theme.spacing[8]};
 `;
 const Buttons = styled.div`
   display: flex;
@@ -130,7 +132,7 @@ const MainTitle = styled.p`
 `;
 
 const Container = styled(Section)`
-  box-shadow: ${({ theme }) => theme.shadows.lg};
+  box-shadow: ${({ theme }) => theme.shadows.base};
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -150,6 +152,8 @@ const Contents = styled.pre`
   text-align: left;
   font-size: ${({ theme }) => theme.fontSizes.lg};
   font-weight: ${({ theme }) => theme.fontWeights.medium};
+
+  white-space: pre-wrap;
 `;
 
 const Edit = styled(TextareaAutosize)`
@@ -157,7 +161,6 @@ const Edit = styled(TextareaAutosize)`
   font-size: ${({ theme }) => theme.fontSizes.lg};
   font-weight: ${({ theme }) => theme.fontWeights.medium};
   width: 100%;
-  white-space: 'pre-wrap';
   resize: none;
   box-sizing: border-box;
   padding: 10px;
@@ -169,7 +172,6 @@ const EditTitle = styled(TextareaAutosize)`
   font-size: ${({ theme }) => theme.fontSizes.lg};
   font-weight: ${({ theme }) => theme.fontWeights.medium};
   width: 100%;
-  white-space: 'pre-wrap';
   resize: none;
   box-sizing: border-box;
   font-size: ${({ theme }) => theme.fontSizes.xl};

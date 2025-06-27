@@ -31,7 +31,6 @@ public class ResumeController {
         return ResponseEntity.ok(resumeService.getMainResumeList());
     }
 
-
     //내가 작성한 이력서 불러오기
     @GetMapping("/user/{userNo}")
     public ResponseEntity<List<ResumeDto.Response>> getResumeList(@PathVariable Long userNo) {

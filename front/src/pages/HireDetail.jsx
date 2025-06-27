@@ -15,7 +15,7 @@ import { useParams } from 'react-router-dom';
 import { guardianHiringForm } from '../hooks/guardianHiringForm';
 import ResumeSelectModal from '../components/ResumeSelectModal';
 import { proposerService } from '../api/propose';
-import { set } from 'react-hook-form';
+
 
 const HireDetail = () => {
   const navigate = useNavigate();
@@ -83,6 +83,7 @@ const HireDetail = () => {
     }
   };
   checkProposer();
+
 
   //지원 현황 관련
   const [proposerList, setproposerList] = useState([]);
