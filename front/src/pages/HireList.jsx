@@ -13,6 +13,8 @@ import { ClipLoader } from 'react-spinners';
 import { Link } from 'react-router-dom';
 import { hiringService } from '../api/hiring';
 import Paging from '../components/Paging';
+import { jobSeekingService } from '../api/jobSeeking';
+import useUserStore from '../store/userStore';
 
 const HireList = () => {
   const [hireLists, setHireLists] = useState([]);
@@ -33,6 +35,17 @@ const HireList = () => {
   useEffect(() => {
     loadHireLists(page - 1, size); // API에선 0부터 시작일 가능성 있어 -1 처리
   }, [page]);
+
+  // 이름 첫글자 O 처리하기
+  const maskName = (name) => {
+    if (name.length === 2) {
+      return name[0] + '○';
+    } else if (name.length >= 3) {
+      return name[0] + '○' + name.slice(2);
+    }
+
+    return name;
+  };
 
   const loadHireLists = async (pageNumber, pageSize) => {
     try {
@@ -170,7 +183,7 @@ const HireList = () => {
                 <HeaderContent>
                   <Divder>
                     <UserInfo>
-                      <UserName>{hire.patName}</UserName>
+                      <UserName>{maskName(hire.patName)}</UserName>
                       <UserAge>
                         나이 {hire.patAge}세(
                         {hire.patGender === 'M' ? '남' : hire.patGender === 'F' ? '여' : ''})
@@ -187,11 +200,11 @@ const HireList = () => {
               <CardFooter>
                 <LocationWage>
                   <LocationText>
-                    <GrayText>지역 </GrayText>
-                    {hire.patAddress}
+                    <GrayText>시급</GrayText> <BoldAccount>{hire.account}원</BoldAccount>
                   </LocationText>
                   <AccuontText>
-                    <GrayText>시급</GrayText> <BoldAccount>{hire.account}원</BoldAccount>
+                    <GrayText>지역 </GrayText>
+                    {hire.patAddress}
                   </AccuontText>
                 </LocationWage>
                 {hire.careStatus === 'Y' && <AccommodationInfo>숙식 제공 가능</AccommodationInfo>}

@@ -31,6 +31,18 @@ public class ResumeController {
         return ResponseEntity.ok(resumeService.getMainResumeList());
     }
 
+    //내가 작성한 이력서 불러오기
+    @GetMapping("/user/{userNo}")
+    public ResponseEntity<List<ResumeDto.Response>> getResumeList(@PathVariable Long userNo) {
+        return ResponseEntity.ok(resumeService.getResumList(userNo));
+    }
+
+    //이력서 상세보기
+    @GetMapping("/detail/{resumeNo}")
+    public ResponseEntity<ResumeDto.Response> getResume(@PathVariable Long resumeNo) {
+        System.out.println("resumeNo : " + resumeNo);
+        return ResponseEntity.ok(resumeService.getResume(resumeNo));
+    }
 
     //간병사 모집 리스트 불러오기
     @GetMapping("/list")
@@ -48,17 +60,16 @@ public class ResumeController {
         return ResponseEntity.ok(resumeNo);
     }
 
-    @GetMapping("/{userNo}")
-    public ResponseEntity<List<ResumeDto.Response>> getResumeList(@PathVariable Long userNo) {
-        return ResponseEntity.ok(resumeService.getResumList(userNo));
-    }
-
+    //이력서 수정하기
     @PatchMapping("/{userNo}")
-    public ResponseEntity<ResumeDto.Response> UpdatePaient(
+    public ResponseEntity<ResumeDto.Response> UpdateResume(
             @PathVariable Long userNo,
             @RequestBody ResumeDto.Update updatePatDto) {
         return ResponseEntity.ok(resumeService.updateResume(userNo, updatePatDto));
     }
+<<<<<<< HEAD
     
+=======
+>>>>>>> 9a7314f38c6715f09adb6898b9dfa153140597c2
 }
 

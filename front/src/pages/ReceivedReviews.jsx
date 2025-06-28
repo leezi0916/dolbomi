@@ -17,36 +17,33 @@ import {
 import { reviewService } from '../api/reviews';
 import Paging from '../components/Paging';
 import { media } from '../styles/MediaQueries';
-
-const ITEMS_PER_PAGE = 6;
+import useUserStore from '../store/userStore';
 
 const ReceivedReviews = () => {
   const [reviews, setReviews] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
 
+  const { user } = useUserStore();
+
   useEffect(() => {
     const fetchReviews = async () => {
       try {
-        const data = await reviewService.getReviews();
+        const data = await reviewService.getReceivedReviews(currentPage, user.userNo);
+        console.log(data);
         setReviews(data);
       } catch (error) {
         console.error('리뷰 로딩 실패:', error);
       }
     };
     fetchReviews();
-  }, []);
+  }, [currentPage]);
 
-  const offset = (currentPage - 1) * ITEMS_PER_PAGE;
-  const totalPage = Math.ceil(reviews.length / ITEMS_PER_PAGE);
-
-  const maskName = (name) => {
-    if (name.length === 2) return name[0] + '○';
-    if (name.length >= 3) return name[0] + '○' + name.slice(2);
-    return name;
-  };
-
-  const averageScore = (reviews.reduce((acc, cur) => acc + cur.score, 0) / reviews.length || 0).toFixed(1);
-
+  const averageScore = reviews.receivedReview?.content?.length
+    ? (
+        reviews.receivedReview.content.reduce((acc, cur) => acc + cur.reviewScore, 0) /
+        reviews.receivedReview.content.length
+      ).toFixed(1)
+    : '0.0';
   const chagneCurrentPage = (value) => {
     setCurrentPage(value);
   };
@@ -58,20 +55,21 @@ const ReceivedReviews = () => {
         <RightSummary>
           <strong>홍길동 님</strong>
           <ScoreText>
-            평점 <AverageScore>{averageScore}</AverageScore> <span>({reviews.length})</span>
+            평점 <AverageScore>{averageScore}</AverageScore>
+            <span>({reviews.receivedReview?.content?.length})</span>
           </ScoreText>
         </RightSummary>
       </TopSection>
 
-      <RecivedReviewsGridContainer>
-        {reviews.slice(offset, offset + ITEMS_PER_PAGE).map((review) => (
+      <ReceivedReviewsGridContainer>
+        {reviews.receivedReview?.content?.map((review) => (
           <Card key={review.reviewNo}>
             <CardTopContent>
               <CardImage src={review.profileImage} />
               <CardTextGroup>
-                <CardTitle>{maskName(review.userName)} 님</CardTitle>
+                <CardTitle>{review.userName} 님</CardTitle>
                 <CardText>
-                  나이 {review.age}세({review.gender === 'male' ? '남' : '여'})
+                  나이 {review.age}세({review.gender === 'M' ? '남' : '여'})
                 </CardText>
               </CardTextGroup>
             </CardTopContent>
@@ -79,23 +77,23 @@ const ReceivedReviews = () => {
               <ReviewTextBox>{review.reviewContent}</ReviewTextBox>
               <ReviewFooter>
                 <ReviewScore>
-                  평점 <strong>{review.score.toFixed(1)}</strong>
+                  평점 <strong>{review.reviewScore.toFixed(1)}</strong>
                 </ReviewScore>
-                <ReviewDate>작성일 {review.createDate}</ReviewDate>
+                <ReviewDate>작성일 {review.reviewUpdateDate.slice(0, 10)}</ReviewDate>
               </ReviewFooter>
             </CardMidBottomContent>
           </Card>
         ))}
-      </RecivedReviewsGridContainer>
+      </ReceivedReviewsGridContainer>
 
-      <Paging currentPage={currentPage} totalPage={totalPage} chagneCurrentPage={chagneCurrentPage} />
+      <Paging currentPage={currentPage} totalPage={reviews.totalPage} chagneCurrentPage={chagneCurrentPage} />
     </ReviewWrapper>
   );
 };
 
 export default ReceivedReviews;
 
-const RecivedReviewsGridContainer = styled(GridContainer)`
+const ReceivedReviewsGridContainer = styled(GridContainer)`
   display: grid;
   grid-template-columns: repeat(1, 1fr);
   gap: ${({ theme }) => theme.spacing[5]};

@@ -21,7 +21,7 @@ import {
   NewTitle,
 } from '../styles/Card.styles.js';
 
-import { proposerSevice } from '../api/propose.js';
+import { proposerService } from '../api/propose.js';
 import { useNavigate, useParams } from 'react-router-dom';
 const SupportBoard = () => {
   const { user } = useUserStore();
@@ -43,7 +43,7 @@ const SupportBoard = () => {
 
     const fetchList = async () => {
       try {
-        const getList = await proposerSevice.getcareGiverLists(Number(hiringNo));
+        const getList = await proposerService.getcareGiverLists(Number(hiringNo));
         setproposerList(getList.proposers || []); // 응답에 proposers 배열이 있다면 할당
       } catch (error) {
         console.error('간병사 지원목록 불러오기 실패:', error);
@@ -99,7 +99,9 @@ const SupportBoard = () => {
                           <span>지역</span> {resume.address}
                         </CardRegionText>
                       </CardBottomTextSection>
-                      <CardButton onClick={() => navigate(`/resumeDetail/${resume.resumeNo}`)}>상세보기</CardButton>
+                      <CardButton onClick={() => navigate(`/caregiver/resumeDetail/${resume.resumeNo}/${hiringNo}`)}>
+                        상세보기
+                      </CardButton>
                     </HiringCardBottomContent>
                   </HiringCard>
                 ))}

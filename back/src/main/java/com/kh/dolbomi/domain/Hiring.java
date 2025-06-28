@@ -5,6 +5,7 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -32,15 +33,15 @@ public class Hiring {
     @Column(name = "HIRING_NO")
     private Long hiringNo;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "PAT_NO", nullable = false)
     private Patient patient;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "USER_NO", nullable = false)
     private User user;
 
-    @Column(name = "HIRING_TITLE", nullable = false, length = 20)
+    @Column(name = "HIRING_TITLE", nullable = false, length = 50)
     private String hiringTitle;
 
     @Column(name = "HIRING_CONTENT", nullable = false, columnDefinition = "TEXT")
@@ -68,7 +69,7 @@ public class Hiring {
 
     @Column(name = "HIRING_STATUS", nullable = false, length = 1)
     @Enumerated(EnumType.STRING)
-    private StatusEnum.Status hiringStatus;
+    private StatusEnum.HiringStatus hiringStatus;
 
     @Column(name = "STATUS", nullable = false, length = 1)
     @Enumerated(EnumType.STRING)
@@ -90,7 +91,7 @@ public class Hiring {
         }
 
         if (hiringStatus == null) {
-            this.hiringStatus = StatusEnum.Status.Y;
+            this.hiringStatus = StatusEnum.HiringStatus.Y;
         }
 
         // 상주 여부를 프론트에서는 라디오 버튼임 (무조건 고르게 하면 상관 없지만 혹시 몰라서 추가함)
@@ -102,6 +103,12 @@ public class Hiring {
     @PreUpdate
     public void preUpdate() {
         this.updateDate = LocalDateTime.now();
+    }
+
+
+    //모집 마감 상태로 바꾸기
+    public void closeHiring() {
+        this.hiringStatus = StatusEnum.HiringStatus.N;
     }
 
     //삭제 상태로 바꾸기

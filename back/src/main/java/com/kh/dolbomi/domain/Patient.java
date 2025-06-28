@@ -7,6 +7,7 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -35,7 +36,7 @@ public class Patient {
     @Column(name = "PAT_NO")
     private Long patNo;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "GUARDIAN_NO", nullable = false)
     private User guardian;
 
@@ -45,7 +46,7 @@ public class Patient {
     @Column(name = "PAT_PHONE")
     private String patPhone;
 
-    @Column(name = "PAT_NAME", nullable = false, length = 10)
+    @Column(name = "PAT_NAME", nullable = false, length = 20)
     private String patName;
 
     @Column(name = "PAT_ADDRESS", nullable = false, length = 50)

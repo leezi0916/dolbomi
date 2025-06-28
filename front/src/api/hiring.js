@@ -7,7 +7,7 @@ export const hiringService = {
   // 구인 목록 가져오기
   getJobOpeningList: async () => {
     try {
-      const { data } = await api.get(API_ENDPOINTS.HIRING.BASE);
+      const { data } = await api.get(API_ENDPOINTS.HIRING.SIMPLE_LIST);
       return snakeToCamel(data);
     } catch (error) {
       if (error.response) {
@@ -64,6 +64,34 @@ export const hiringService = {
         throw new Error(message);
       }
 
+      throw new Error('서버 통신 불량');
+    }
+  },
+
+  //구인글 모집 마감 시키기
+  toggleRecruitmentStatus: async (hiringNo) => {
+    try {
+      const { data } = await api.patch(API_ENDPOINTS.HIRING.STATUS(hiringNo));
+      return snakeToCamel(data);
+    } catch (error) {
+      if (error.response) {
+        const message = error.response?.data?.message || '모집 상태 변경에 실패했습니다.';
+        throw new Error(message);
+      }
+      throw new Error('서버 통신 불량');
+    }
+  },
+
+  //구인글 삭제
+  deleteHiring: async (hiringNo) => {
+    try {
+      const { data } = await api.patch(API_ENDPOINTS.HIRING.DELETE(hiringNo));
+      return snakeToCamel(data);
+    } catch (error) {
+      if (error.response) {
+        const message = error.response?.data?.message || '구인글 삭제를 실패했습니다.';
+        throw new Error(message);
+      }
       throw new Error('서버 통신 불량');
     }
   },

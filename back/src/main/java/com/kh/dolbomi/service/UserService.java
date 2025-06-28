@@ -1,13 +1,17 @@
 package com.kh.dolbomi.service;
 
+import com.kh.dolbomi.domain.User;
 import com.kh.dolbomi.dto.UserDto;
 
 public interface UserService {
+    //회원가입
     Long createUser(UserDto.Create createDto);
 
     boolean isUserIdAvailable(String userId);
 
-    UserDto.Response loginUser(String userId, String userPwd);
+    User loginUser(UserDto.Login loginDto);
+
+    UserDto.Response getUserInfoByUserId(String userId);
 
 
     UserDto.ProfileDto getUserProfile(Long userNo);

@@ -6,8 +6,11 @@ import styled from 'styled-components';
 import closeIcon from '../assets/icons/icon_닫기.png';
 import logo from '../assets/mainImg/logo.png';
 
+
 const ResumeSelectModal = ({ onClose, hiringNo, onSuccess }) => {
   const { resumeList, selectedResumeNo, handleChange, submitApplication } = useProposerForm(hiringNo, onSuccess);
+
+
 
   return (
     <ModalOverlay>

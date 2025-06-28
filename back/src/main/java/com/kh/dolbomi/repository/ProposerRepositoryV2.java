@@ -6,4 +6,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface ProposerRepositoryV2 extends JpaRepository<Proposer, Integer> {
     List<Proposer> findByHiring_HiringNo(Long hiringNo);
+
+
 }

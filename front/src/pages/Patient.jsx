@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Title, AuthContainer } from '../styles/Auth.styles';
+import { AuthContainer } from '../styles/Auth.styles';
 import { SubmitButton, ButtonText, MainMoveButton, MainSubmitButton } from '../styles/common/Button';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
@@ -86,6 +86,11 @@ const Head = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
+`;
+const Title = styled.p`
+  font-size: ${({ theme }) => theme.fontSizes['2xl']};
+  font-weight: ${({ theme }) => theme.fontWeights.bold};
+  padding-bottom: ${({ theme }) => theme.spacing[8]};
 `;
 
 const MainMoveBtn = styled(MainMoveButton)`

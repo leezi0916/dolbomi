@@ -5,16 +5,19 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -33,7 +36,7 @@ public class Review {
     @Column(name = "REVIEW_NO")
     private Long reviewNo;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "REVIEW_WRITER_NO", nullable = false)
     private User writer;
 
@@ -52,6 +55,9 @@ public class Review {
     @Column(name = "STATUS", nullable = false, length = 1)
     @Enumerated(EnumType.STRING)
     private StatusEnum.Status status;
+
+    @OneToMany(mappedBy = "review")
+    private List<Matching> matchingList;
 
     @PrePersist
     public void prePersist() {

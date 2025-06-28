@@ -22,6 +22,9 @@ public interface HiringService {
     // 상세보기 메서드 (DetailResponse DTO 사용)
     HiringDto.Response getHiringDetail(Long hiringNo, Long caregiverNo);
 
+    //구인글 모집 마감
+    void closeHiring(Long hiringNo);
+
     //구인글 삭제하기
-//    void deleteHiring(Long hiringNo);
+    void deleteHiring(Long hiringNo);
 }

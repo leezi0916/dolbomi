@@ -5,12 +5,15 @@ import com.kh.dolbomi.domain.License;
 import com.kh.dolbomi.domain.User;
 import com.kh.dolbomi.dto.LicenseDto;
 import com.kh.dolbomi.dto.UserDto;
+import com.kh.dolbomi.dto.UserDto.Login;
+import com.kh.dolbomi.exception.UserNotFoundException;
 import com.kh.dolbomi.repository.LicenseRepository;
 import com.kh.dolbomi.repository.UserRepository;
-import jakarta.persistence.EntityNotFoundException;
+import com.kh.dolbomi.repository.UserRepositoryV2;
 import java.util.List;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,8 +24,11 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final LicenseRepository licenseRepository;
-    // PasswordEncoder 주입
-    private final BCryptPasswordEncoder passwordEncoder;
+
+    //    private final BCryptPasswordEncoder passwordEncoder; 구버전
+// PasswordEncoder 주입
+    private final PasswordEncoder passwordEncoder;
+    private final UserRepositoryV2 userRepositoryV2;
 
     @Override
     public Long createUser(UserDto.Create createDto) {
@@ -39,25 +45,33 @@ public class UserServiceImpl implements UserService {
     @Override
     public boolean isUserIdAvailable(String userId) {
         return userRepository.findByUserId(userId).isEmpty();
+
     }
 
-
     @Override
-    public UserDto.Response loginUser(String userId, String userPwd) {
-        List<User> users = userRepository.findByUserId(userId);
+    public User loginUser(Login loginDto) {
+        Optional<User> optUser = userRepositoryV2.findByUserId(loginDto.getUser_id());
 
-        if (users.isEmpty()) {
-            throw new EntityNotFoundException("해당 아이디를 찾을 수 없습니다.");
+        if (!optUser.isPresent()) {
+            throw new UserNotFoundException("해당 아이디를 찾을 수 없습니다.");
         }
 
-        User user = users.get(0);
+        User user = optUser.get();
 
-        if (!passwordEncoder.matches(userPwd, user.getUserPwd())) {
+        if (!passwordEncoder.matches(loginDto.getUser_pwd(), user.getUserPwd())) {
             throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
         }
 
+        return user;
+    }
+
+    @Override
+    public UserDto.Response getUserInfoByUserId(String userId) {
+        User user = userRepositoryV2.findByUserId(userId)
+                .orElseThrow(() -> new UserNotFoundException("회원정보를 찾을 수 없습니다."));
         return UserDto.Response.toDto(user);
     }
+
 
     @Override
     @Transactional(readOnly = true)

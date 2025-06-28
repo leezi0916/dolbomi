@@ -7,7 +7,7 @@ export const jobSeekingService = {
   // 이력서(구직) 목록 가져오기
   getResumeList: async () => {
     try {
-      const { data } = await api.get(API_ENDPOINTS.RESUME.BASE);
+      const { data } = await api.get(API_ENDPOINTS.RESUME.SIMPLE_LIST);
       return snakeToCamel(data);
     } catch (error) {
       if (error.response) {
@@ -26,6 +26,21 @@ export const jobSeekingService = {
       const { data } = await api.get(API_ENDPOINTS.RESUME.LIST, {
         params: { page, size },
       });
+      return snakeToCamel(data);
+    } catch (error) {
+      if (error.response) {
+        const message = error.response?.data?.message || '이력서 리스트를 가져오는데에 실패했습니다.';
+        throw new Error(message);
+      }
+
+      throw new Error('서버 통신 불량');
+    }
+  },
+
+  // 이력서(구직) 전체목록 가져오기
+  getResumeListAll: async () => {
+    try {
+      const { data } = await api.get(API_ENDPOINTS.RESUME.LIST);
       return snakeToCamel(data);
     } catch (error) {
       if (error.response) {
@@ -61,8 +76,8 @@ export const jobSeekingService = {
   // 특정 이력서 가져오기
   getResume: async (resumeNo) => {
     try {
+      console.log('요청할 resumeNo: ', resumeNo);
       const { data } = await api.get(API_ENDPOINTS.RESUME.DETAIL(resumeNo));
-      console.log('이력서 상세보기 데이터', data);
       return snakeToCamel(data);
     } catch (error) {
       console.log(error);

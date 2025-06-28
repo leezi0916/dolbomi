@@ -4,10 +4,6 @@ const { VITE_JSON_SERVER_URL, VITE_SPRING_URL, VITE_API_TIMEOUT = 5000, VITE_API
 
 export const API_CONFIG = {
   BASE_URL: `${VITE_SPRING_URL}`, // Spring 들어가면 여기 변수만 VITE_SPRING_URL로 변경해야함
-
-  // 회원가입 로그인 기능 추가하느라 url 변경함..
-  // BASE_URL: `${VITE_SPRING_URL}`,
-
   TIMEOUT: VITE_API_TIMEOUT,
   HEADERS: {
     'Content-Type': 'application/json',
@@ -16,10 +12,13 @@ export const API_CONFIG = {
 };
 
 export const API_ENDPOINTS = {
+<<<<<<< HEAD
   // PRODUCTS: {
   //   BASE: '/products',
   // },
 
+=======
+>>>>>>> 9a7314f38c6715f09adb6898b9dfa153140597c2
   COMMUNITY: {
     BASE: '/community/v1',
     CAREGIVER: `/community/v1/caregiver`,
@@ -32,32 +31,36 @@ export const API_ENDPOINTS = {
   USERS: {
     BASE: '/users/v1',
 
-    CHECK_ID: 'users/v1/check', //아이디 중복 검사
+    CHECK_ID: '/users/v1/check', //아이디 중복 검사
     PROFILE: (userNo) => `/users/v1?user_no=${userNo}`,
-    LOGIN: '/users/v1/login', //실제에는 이렇게 해야함 아래는 JsonServer 사용시
-
-    // LOGIN: (userId, userPwd) => `/users?user_id=${userId}&user_pwd=${userPwd}`,
+    LOGIN: '/users/v1/login',
+    MY: '/users/v1/me',
     DETAIL: (userId) => `/users/v1?user_id=${userId}`,
     PROFILE_UPDATE: (userNo) => `/users/v1/${userNo}`,
     CAREPROFILE: (userNo) => `/users/v1?user_no=${userNo}`,
   },
   REVIEWS: {
-    BASE: '/review/v1/simple-list',
+    BASE: '/review/v1',
+    SIMPLE_LIST: '/review/v1/simple-list',
+    LIST: (currentPage, userNo) => `/review/v1/list?page=${currentPage - 1}&userNo=${userNo}`,
     DETAIL: (userNo) => `/reviews/v1?user_no=${userNo}`,
   },
+
   HIRING: {
-    BASE: '/hiring/v1/simple-list',
+    BASE: '/hiring/v1',
+    SIMPLE_LIST: '/hiring/v1/simple-list',
     LIST: '/hiring/v1/list',
-    DETAIL: (hiringNo) => `/hiring/v1/${hiringNo}`,
+    DETAIL: (hiringNo) => `/hiring/v1/${hiringNo}`, //get
+    STATUS: (hiringNo) => `/hiring/v1/${hiringNo}/status`,
+    DELETE: (hiringNo) => `/hiring/v1/${hiringNo}`, //patch
   },
 
   RESUME: {
-    BASE: '/resume/v1/simple-list',
+    BASE: '/resume/v1',
+    SIMPLE_LIST: '/resume/v1/simple-list',
     LIST: '/resume/v1/list',
-
-    DETAIL: (resumeNo) => `/resume/v1?resume_no=${resumeNo}`,
-    MYRESUME: (userNo) => `resume/v1?user_no=${userNo}`,
-
+    DETAIL: (resumeNo) => `/resume/v1/detail/${resumeNo}`,
+    MYRESUME: (userNo) => `/resume/v1/user/${userNo}`,
     UPDATE: (resumeNo) => `/resume/v1/${resumeNo}`,
   },
 
@@ -75,18 +78,15 @@ export const API_ENDPOINTS = {
 
   REPORT: {
     BASE: `/report/v1`,
-
-    PROFILE: (patNo) => `/report/v1?pat_no=${patNo}`,
-    // SEARCH: (reportNo) => `/report/v1/report_no=${reportNo}`,
-
     LIST: (patNo) => `/report/v1/${patNo}`,
-    SEARCH: (reportNo) => `/report/report_no=${reportNo}`,
+    SEARCH: (reportNo) => `/report/v1/detail/${reportNo}`,
   },
 
   PROPOSER: {
     BASE: '/proposer/v1',
     LIST: (hiringNo) => `/proposer/v1?hiring_no=${hiringNo}`,
     CANCEL: (hiringNo, caregiverNo) => `/proposer/v1/${hiringNo}/${caregiverNo}`,
+    ACCEPT: '/proposer/v1/accept',
   },
 
   MATCHING: {

@@ -1,6 +1,9 @@
 package com.kh.dolbomi.dto;
 
+import com.kh.dolbomi.domain.Hiring;
 import com.kh.dolbomi.domain.Proposer;
+import com.kh.dolbomi.domain.Resume;
+import com.kh.dolbomi.domain.User;
 import com.kh.dolbomi.enums.StatusEnum;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -45,7 +48,7 @@ public class ProposerDto {
                     .resume_no(proposer.getResume().getResumeNo())
                     .resume_title(proposer.getResume().getResumeTitle())
                     .proposer_date(proposer.getProposerDate())
-                    .status(proposer.getStatus())
+                    .status(proposer.getStatus()) //신청 상태
                     .build();
         }
 
@@ -61,5 +64,22 @@ public class ProposerDto {
     public static class ResponseWithCount {
         private int count;
         private List<Response> proposers;
+    }
+
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class Create {
+        private Long hiring_no;
+        private Long resume_no;
+        private Long caregiver_no;
+
+        public Proposer toEntity(Hiring hiring, Resume resume, User caregiver) {
+            return Proposer.builder()
+                    .hiring(hiring)
+                    .resume(resume)
+                    .caregiver(caregiver)
+                    .build();
+        }
     }
 }

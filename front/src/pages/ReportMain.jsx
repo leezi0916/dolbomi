@@ -18,8 +18,8 @@ const ReportMain = () => {
   const [error, setError] = useState(null);
 
   // 일지목록에서 가져온, 드롭다운박스에 넣을 날짜들과 작성자들
-  const uniqueDates = [...new Set(allReport.map((report) => report.createDate.slice(0, 7)))];
-  const uniqueAuthors = [...new Set(allReport.map((report) => report.careGiverNo))];
+  const uniqueDates = [...new Set(allReport.map((report) => report.createDate.slice(0, 10)))];
+  const uniqueAuthors = [...new Set(allReport.map((report) => report.userName))];
 
   const formatPhoneNumber = (phone = '') => {
     return phone.replace(/(\d{3})(\d{4})(\d{4})/, '$1-$2-$3');
@@ -48,7 +48,7 @@ const ReportMain = () => {
           setReportList(
             reports.filter((report) => {
               const date = dateFilter ? report.createDate.startsWith(dateFilter) : true;
-              const author = authorFilter ? report.careGiverNo === authorFilter : true;
+              const author = authorFilter ? report.userName === authorFilter : true;
               return date && author;
             })
           );
@@ -73,7 +73,6 @@ const ReportMain = () => {
   return (
     <Wrap>
       <MainTitle>돌봄 대상자 정보</MainTitle>
-      <br />
       <Container>
         <Title>돌봄 대상자</Title>
         <SubTitle>
@@ -133,11 +132,11 @@ const ReportMain = () => {
           <div>작성 일자</div>
         </BoardItemTop>
         {reportList && reportList.length > 0 ? (
-          reportList.reverse().map((report, index) => (
-            <BoardItem key={report.reportNo} to={`/report/${patNo}/detail/${report.reportNo}`} state={{ report }}>
+          reportList.map((report, index) => (
+            <BoardItem key={report.reportNo} to={`/report/detail/${report.reportNo}`} state={{ report }}>
               <div>{reportList.length - index}</div>
               <div>{report.reportTitle}</div>
-              <div>{report.careGiverNo}</div>
+              <div>{report.userName}</div>
               <div>{report.createDate.slice(0, 10)}</div>
             </BoardItem>
           ))
@@ -154,20 +153,24 @@ const ReportMain = () => {
 };
 
 const Wrap = styled.div`
-  padding: ${({ theme }) => theme.spacing[4]};
+  padding: ${({ theme }) => theme.spacing[8]} 0;
+  max-width: 950px;
+  margin: 0 auto;
 `;
 
 const MainTitle = styled.p`
+  padding-bottom: ${({ theme }) => theme.spacing[8]};
   font-size: ${({ theme }) => theme.fontSizes['2xl']};
   font-weight: ${({ theme }) => theme.fontWeights.bold};
   display: flex;
 `;
 
 const Container = styled(Section)`
-  box-shadow: ${({ theme }) => theme.shadows.lg};
+  box-shadow: ${({ theme }) => theme.shadows.base};
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+  padding: ${({ theme }) => theme.spacing[6]};
 `;
 
 const Title = styled.p`

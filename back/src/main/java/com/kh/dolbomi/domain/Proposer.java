@@ -1,5 +1,6 @@
 package com.kh.dolbomi.domain;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.kh.dolbomi.enums.StatusEnum;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -32,11 +33,11 @@ public class Proposer {
     @Column(name = "PROPOSER_NO")
     private Long proposerNo;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "HIRING_NO", nullable = false)
     private Hiring hiring;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "CAREGIVER_NO", nullable = false)
     private User caregiver;
 
@@ -44,6 +45,7 @@ public class Proposer {
     @Enumerated(EnumType.STRING)
     private StatusEnum.Status status;
 
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
     @Column(name = "PROPOSER_DATE", nullable = false)
     private LocalDateTime proposerDate;
 
@@ -56,7 +58,12 @@ public class Proposer {
         this.proposerDate = LocalDateTime.now();
 
         if (status == null) {
-            this.status = StatusEnum.Status.Y;
+            this.status = StatusEnum.Status.N;
         }
+    }
+
+    //매칭 수락시 신청상태도 같이 수락된 상태로 변경
+    public void updateStatus(StatusEnum.Status newStatus) {
+        this.status = newStatus;
     }
 }

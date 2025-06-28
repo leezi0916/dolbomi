@@ -5,6 +5,7 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -32,15 +33,15 @@ public class Report {
     @Column(name = "REPORT_NO")
     private Long reportNo;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "CARE_GIVER_NO", nullable = false)
     private User user;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "PAT_NO", nullable = false)
     private Patient patient;
 
-    @Column(name = "REPORT_TITLE", nullable = false, length = 20)
+    @Column(name = "REPORT_TITLE", nullable = false, length = 50)
     private String reportTitle;
 
     @Column(name = "REPORT_CONTENT", nullable = false, columnDefinition = "TEXT")
@@ -76,5 +77,21 @@ public class Report {
 
     public void changeUser(User user) {
         this.user = user;
+    }
+
+    public void changeStatus(StatusEnum.Status status) {
+        this.status = status;
+    }
+
+    public void changReportTitle(String reportTitle) {
+        this.reportTitle = reportTitle;
+    }
+
+    public void changReportContent(String reportContent) {
+        this.reportContent = reportContent;
+    }
+
+    public void changUpdateDate(LocalDateTime updateDate) {
+        this.updateDate = updateDate;
     }
 }

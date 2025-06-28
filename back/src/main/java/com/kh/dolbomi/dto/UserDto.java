@@ -2,6 +2,8 @@ package com.kh.dolbomi.dto;
 
 import com.kh.dolbomi.domain.User;
 import com.kh.dolbomi.enums.StatusEnum;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
@@ -17,14 +19,26 @@ public class UserDto {
     @AllArgsConstructor
     @NoArgsConstructor
     public static class Create {
+
+        @NotBlank(message = "아이디는 필수입니다.")
         private String user_id;
+
+        @NotBlank(message = "비밀번호는 필수입니다.")
         private String user_pwd;
+
+        @NotBlank(message = "이름은 필수입니다.")
         private String user_name;
+
+
         private Integer age;
         private StatusEnum.Gender gender;
         private String phone;
         private String address;
+
+        @NotBlank(message = "이메일은 필수입니다.")
+        @Email(message = "올바른 이메일 형식이 아닙니다.")
         private String email;
+
 
         public User toEntity() {
             return User.builder()
@@ -46,7 +60,11 @@ public class UserDto {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class Login {
+
+        @NotBlank(message = "아이디는 필수입니다.")
         private String user_id;
+
+        @NotBlank(message = "비밀번호는 필수입니다.")
         private String user_pwd;
     }
 

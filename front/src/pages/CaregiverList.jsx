@@ -37,8 +37,8 @@ const CaregiverList = () => {
       setLoading(true);
       setError(null);
 
-      const caregiverList = await jobSeekingService.getCaregiverList({ page: pageNumber, size: pageSize });
-      console.log('API Response:', caregiverList); // 이게 구조를 보여줌
+      const caregiverList = await jobSeekingService.getResumeListAll();
+      setCaregiverLists(caregiverList); // 이게 구조를 보여줌
       if (caregiverList.totalElements === 0) {
         setCaregiverLists([]);
         setError('등록된 간병사 모집 글이 없습니다.');
@@ -53,6 +53,17 @@ const CaregiverList = () => {
     } finally {
       setLoading(false);
     }
+  };
+
+  // 이름 첫글자 O 처리하기
+  const maskName = (name) => {
+    if (name.length === 2) {
+      return name[0] + '○';
+    } else if (name.length >= 3) {
+      return name[0] + '○' + name.slice(2);
+    }
+
+    return name;
   };
 
   // SearchBar에서 검색 버튼을 눌렀을 때 호출되는 함수
@@ -178,14 +189,14 @@ const CaregiverList = () => {
       ) : (
         <HireListSection>
           {caregiverLists.map((resume) => (
-            <HireListCard onClick={() => navigate(`/resumeDetail/${resume.resumeNo}`)} key={resume.resumeNo}>
+            <HireListCard onClick={() => navigate(`/caregiver/resumeDetail/${resume.resumeNo}`)} key={resume.resumeNo}>
               <CardHeader>
                 <ProfileImage src={resume.profileImage || profileImage} alt="프로필" />
                 <HeaderContent>
                   <Divder>
                     <UserInfo>
                       <UserName>
-                        {resume.userName} <GrayText>님</GrayText>
+                        {maskName(resume.userName)} <GrayText>님</GrayText>
                       </UserName>
                       <UserAge>
                         <GrayText>나이</GrayText> {resume.age}세(
@@ -201,15 +212,19 @@ const CaregiverList = () => {
               <CardFooter>
                 <LocationWage>
                   <LocationText>
-                    <GrayText>지역</GrayText> {resume.address}
+                    <GrayText>시급</GrayText> <BoldAccount>{resume.resumeAccount}원</BoldAccount>
                   </LocationText>
                   <AccuontText>
-                    <GrayText>시급</GrayText> <BoldAccount>{resume.account}원</BoldAccount>
+                    <GrayText>지역</GrayText> {resume.address}
                   </AccuontText>
                 </LocationWage>
                 <USERINFO1>
-                  {resume.licenses && <AccommodationInfo>자격증 보유</AccommodationInfo>}
-                  {resume.careStatus === 'Y' && <AccommodationInfo>상주 간병 가능</AccommodationInfo>}
+                  {resume.has_license && <AccommodationInfo>자격증 보유</AccommodationInfo>}
+                  {resume.careStatus ? (
+                    <AccommodationInfo>상주 간병 O</AccommodationInfo>
+                  ) : (
+                    <AccommodationInfo>상주 간병 X</AccommodationInfo>
+                  )}
                 </USERINFO1>
               </CardFooter>
             </HireListCard>
