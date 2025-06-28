@@ -10,7 +10,7 @@ import Paging from '../components/Paging';
 const GuardianCommunity = () => {
   const userId = useUserStore((state) => state.user?.userId);
 
-  const ROLE = 'G';
+  // const ROLE = 'G';
   // const STATUS = 'Y';
 
   const [error, setError] = useState(null);
@@ -21,6 +21,8 @@ const GuardianCommunity = () => {
   const ITEMS_PER_PAGE = 10;
   const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
   const endIndex = startIndex + ITEMS_PER_PAGE;
+  console.log('test ');
+  console.log(communityList);
   const currentList = communityList.slice(startIndex, endIndex);
   const totalPage = Math.ceil(communityList.length / ITEMS_PER_PAGE);
 
@@ -37,9 +39,10 @@ const GuardianCommunity = () => {
   useEffect(() => {
     const loadCommunity = async () => {
       try {
-        const community = await commuService.getCommunity(ROLE);
+        const community = await commuService.getGuardian();
         console.log(community);
-        setCommunityList(community);
+        setCommunityList(community.content);
+        
       } catch (error) {
         console.error(error);
         const errorMessage = '목록을 불러오는데 실패했습니다.';

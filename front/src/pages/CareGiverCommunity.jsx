@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { commuService } from '../api/community';
 import { toast } from 'react-toastify';
 import { ClipLoader } from 'react-spinners';
@@ -8,9 +8,10 @@ import useUserStore from '../store/userStore';
 import Paging from '../components/Paging';
 
 const CareGiverCommunity = () => {
+  const navigate = useNavigate();
   const userId = useUserStore((state) => state.user?.userId);
 
-  const ROLE = 'C';
+  // const ROLE = 'C';
   // const STATUS = 'Y';
 
   const [error, setError] = useState(null);
@@ -37,7 +38,7 @@ const CareGiverCommunity = () => {
   useEffect(() => {
     const loadCommunity = async () => {
       try {
-        const community = await commuService.getCommunity(ROLE);
+        const community = await commuService.getCareGiver();
         console.log(community);
         setCommunityList(community);
       } catch (error) {
@@ -72,7 +73,7 @@ const CareGiverCommunity = () => {
             게시글이 없습니다.
             {userId && (
               <div style={{ marginTop: '10px' }}>
-                <Btn to="/community/create">글쓰기</Btn>
+                <Btn onClick={() => navigate('/community/create')}>글쓰기</Btn>
               </div>
             )}
           </div>
@@ -98,7 +99,7 @@ const CareGiverCommunity = () => {
             </Drop>
             <Input type="text" />
             <SearchBtn>검색</SearchBtn>
-            {userId && <Btn to="/community/create">글쓰기</Btn>}
+            {userId && <Btn onClick={() => navigate('/community/careGiver/create')}>글쓰기</Btn>}
           </Right>
         </BoardTop>
         <BoardItemTop>
@@ -166,7 +167,7 @@ export const Input = styled.input`
   border-radius: 4px;
   padding: 2px 4px;
 `;
-const Btn = styled(Link)`
+const Btn = styled.button`
   align-content: center;
   width: 10%;
   background-color: ${({ theme }) => theme.colors.primary};
