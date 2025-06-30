@@ -308,14 +308,18 @@ const HireDetail = () => {
                 {recruitmentClosed ? '마감' : '모집 마감'}
               </SubmitButton1>
             </>
-          ) : // 본인이 작성한 글이 아닐 경우
-          alreadyApplied ? (
-            // 다른 사람이 작성하고 내가 신청한 글일 경우
+          ) : recruitmentClosed ? (
+            // 모집 마감된 글인데 내가 작성자가 아니면 신청 버튼 대신 비활성 모집 마감 버튼 표시
+            <SubmitButton1 type="button" disabled $disabled>
+              모집 마감
+            </SubmitButton1>
+          ) : alreadyApplied ? (
+            // 모집 중이고 내가 신청한 경우 → 신청취소 버튼
             <SubmitButton1 type="button" onClick={handleCancel}>
               신청취소
             </SubmitButton1>
           ) : (
-            // 다른 사람이 작성하고 내가 신청하지 않은 글일 경우
+            // 모집 중이고 내가 신청하지 않은 경우 → 신청하기 버튼
             <SubmitButton1 type="button" onClick={handleOpenModal}>
               신청하기
             </SubmitButton1>

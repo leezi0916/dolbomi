@@ -56,7 +56,8 @@ public class HiringRepositoryImpl implements HiringRepository {
     public Page<Hiring> findByStatus(StatusEnum.Status status, Pageable pageable) {
         // 1. 페이징된 데이터 조회
         List<Hiring> content = em.createQuery(
-                        "SELECT h FROM Hiring h WHERE h.status = :status ORDER BY h.hiringNo DESC", Hiring.class)
+                        "SELECT h FROM Hiring h WHERE h.status = :status AND h.hiringStatus = 'Y' ORDER BY h.hiringNo DESC",
+                        Hiring.class)
                 .setParameter("status", status)
                 .setFirstResult((int) pageable.getOffset())
                 .setMaxResults(pageable.getPageSize())
@@ -64,7 +65,7 @@ public class HiringRepositoryImpl implements HiringRepository {
 
         // 2. 전체 개수 조회
         Long total = em.createQuery(
-                        "SELECT COUNT(h) FROM Hiring h WHERE h.status = :status", Long.class)
+                        "SELECT COUNT(h) FROM Hiring h WHERE h.status = :status AND h.hiringStatus = 'Y'", Long.class)
                 .setParameter("status", status)
                 .getSingleResult();
 

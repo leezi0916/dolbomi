@@ -21,7 +21,6 @@ export const API_ENDPOINTS = {
 
   USERS: {
     BASE: '/users/v1',
-
     CHECK_ID: '/users/v1/check', //아이디 중복 검사
     PROFILE: (userNo) => `/users/v1?user_no=${userNo}`,
     LOGIN: '/users/v1/login',
@@ -81,6 +80,7 @@ export const API_ENDPOINTS = {
     STATUS: (hiringNo, caregiverNo) => `/proposer/v1/check?hiring_no=${hiringNo}&caregiver_no=${caregiverNo}`,
     CANCEL: (hiringNo, caregiverNo) => `/proposer/v1/cancel?hiring_no=${hiringNo}&caregiver_no=${caregiverNo}`,
     ACCEPT: '/proposer/v1/accept',
+    CHECK_ACCEPTED: (hiringNo, resumeNo) => `/proposer/v1/accept/check?hiring_no=${hiringNo}&resume_no=${resumeNo}`,
   },
 
   MATCHING: {
