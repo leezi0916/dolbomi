@@ -480,6 +480,7 @@ const MenuButton = styled(GiHamburgerMenu)`
 `;
 
 const MobileMenu = styled.div`
+  border: 1px solid ${({ theme }) => theme.colors.gray[5]};
   display: flex;
   flex-direction: column;
   gap: ${({ theme }) => theme.spacing[4]};

@@ -29,12 +29,10 @@ export const proposerService = {
   },
 
   // 신청 여부 확인 (프론트에서 버튼 조건 분기용)
-  getProposerStatus: async ({ hiringNo, caregiverNo }) => {
+  getProposerStatus: async ({ caregiverNo, hiringNo }) => {
     try {
-      const { data } = await api.get(API_ENDPOINTS.PROPOSER.STATUS, {
-        params: { hiringNo, caregiverNo },
-      });
-      return data.applied; // true 또는 false 반환한다고 가정
+      const { data } = await api.get(API_ENDPOINTS.PROPOSER.STATUS(hiringNo, caregiverNo));
+      return data;
     } catch (error) {
       console.error('신청 여부 확인 실패:', error.response?.data?.message || error.message);
       throw error;
@@ -46,7 +44,7 @@ export const proposerService = {
   cancelProposer: async ({ caregiverNo, hiringNo }) => {
     try {
       // 삭제라면
-      await api.delete(API_ENDPOINTS.PROPOSER.CANCEL(camelToSnake({ hiringNo, caregiverNo })));
+      await api.delete(API_ENDPOINTS.PROPOSER.CANCEL(hiringNo, caregiverNo));
     } catch (error) {
       console.error('신청 취소 실패:', error.response?.data?.message || error.message);
       throw error;
@@ -60,6 +58,17 @@ export const proposerService = {
       return res.data;
     } catch (error) {
       console.error('매칭 수락 실패:', error.response?.data?.message || error.message);
+      throw error;
+    }
+  },
+
+  //이미 매칭된 이력서인지
+  checkAccepted: async ({ hiringNo, resumeNo }) => {
+    try {
+      const { data } = await api.get(API_ENDPOINTS.PROPOSER.CHECK_ACCEPTED(hiringNo, resumeNo));
+      return snakeToCamel(data);
+    } catch (error) {
+      console.error('매칭 여부 확인 실패:', error.response?.data?.message || error.message);
       throw error;
     }
   },

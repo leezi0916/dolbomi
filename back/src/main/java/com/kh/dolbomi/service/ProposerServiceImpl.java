@@ -17,6 +17,7 @@ import com.kh.dolbomi.repository.ResumeRepositoryV2;
 import com.kh.dolbomi.repository.UserRepositoryV2;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -63,8 +64,23 @@ public class ProposerServiceImpl implements ProposerService {
     }
 
     @Override
+    public boolean findProposerNo(Long hiringNo, Long caregiverNo) {
+        return proposerRepository.existsByHiringNoAndCaregiverNo(hiringNo, caregiverNo);
+    }
+
+    @Override
+    public void cancel(Long hiringNo, Long caregiverNo) {
+        Optional<Proposer> proposerOpt = proposerRepositoryV2.findByHiring_HiringNoAndCaregiver_UserNo(hiringNo,
+                caregiverNo);
+
+        Proposer proposer = proposerOpt.orElseThrow(() ->
+                new IllegalArgumentException("신청자가 존재하지 않습니다."));
+        proposerRepositoryV2.delete(proposer);
+    }
+
+
     public void acceptMatching(Long resumeNo, Long hiringNo) {
-        
+
         // 1. 프로포저 상태 업데이트
         Proposer proposer = proposerRepository.findByHiringNoAndResumeNo(hiringNo, resumeNo)
                 .orElseThrow(() -> new IllegalArgumentException("신청 정보가 없습니다."));
@@ -85,4 +101,12 @@ public class ProposerServiceImpl implements ProposerService {
 
         matchingRepositoryV2.save(matching);
     }
+
+    @Override
+    public boolean isAccepted(Long resumeNo, Long hiringNo) {
+        return proposerRepositoryV2.existsByResume_ResumeNoAndHiring_HiringNoAndStatus(
+                resumeNo, hiringNo, StatusEnum.Status.Y
+        );
+    }
+
 }

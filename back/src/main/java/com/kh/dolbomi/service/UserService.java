@@ -18,4 +18,8 @@ public interface UserService {
 
 
     UserDto.Response updateUser(Long userNo, UserDto.Update updateDto);
+
+    // 회원 탈퇴 (논리 삭제)
+    void deleteUser(Long userNo);
+
 }

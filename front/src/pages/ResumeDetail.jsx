@@ -32,49 +32,21 @@ import { proposerService } from '../api/propose';
 function ResumeDetail() {
   const { user } = useUserStore();
   const [activeTab, setActiveTab] = useState('info');
-
-  const ITEMS_PER_PAGE = 4;
   const [reviews, setReviews] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
+
   const { resumeNo, hiringNo } = useParams(); //hiringNo가 없을 수도 있음 (어떤 구인글에 이 이력서로 신청했는지)
   console.log(resumeNo);
-
   const navigate = useNavigate();
-
   const [resumeData, setResumeData] = useState(null);
-
-  /*작성자의 리뷰를 갖고오는 코드 */
-  useEffect(() => {
-    if (activeTab === 'review' && resumeData?.userNo) {
-      const fetchUserReviews = async () => {
-        try {
-          const userReviews = await reviewService.getReviewsByUser(resumeData.userNo);
-          setReviews(userReviews);
-          setCurrentPage(1); // 탭 전환 시 페이지 초기화
-        } catch (error) {
-          console.error('리뷰 로딩 실패:', error);
-        }
-      };
-
-      fetchUserReviews();
-    }
-  }, [activeTab]);
-
-  /*페이지 처리 */
-  const offset = (currentPage - 1) * ITEMS_PER_PAGE;
-  const totalPage = Math.ceil(reviews.length / ITEMS_PER_PAGE);
-  const averageScore = (reviews.reduce((acc, cur) => acc + cur.score, 0) / reviews.length || 0).toFixed(1);
-
-  const chagneCurrentPage = (value) => {
-    setCurrentPage(value);
-  };
+  const [isMatched, setIsMatched] = useState(false);
 
   /*이력서 정보를 갖고오는 (유저 정보 담아서) */
   useEffect(() => {
     const fetchResume = async () => {
       try {
         const data = await jobSeekingService.getResume(Number(resumeNo));
-        console.log(data);
+
         setResumeData(data);
       } catch (error) {
         console.log(error);
@@ -83,21 +55,29 @@ function ResumeDetail() {
     fetchResume();
   }, []);
 
-  const handleTabChange = (tab) => {
-    setActiveTab(tab);
+  /*작성자의 리뷰를 갖고오는 코드 */
+  useEffect(() => {
+    if (activeTab === 'review' && resumeData?.userNo) {
+      const fetchReviews = async () => {
+        try {
+          const data = await reviewService.getReceivedReviews(currentPage, Number(user.userNo));
+          console.log(data);
+          setReviews(data);
+          setCurrentPage(1); // 탭 전환 시 페이지 초기화
+        } catch (error) {
+          console.error('리뷰 로딩 실패:', error);
+        }
+      };
+      fetchReviews();
+    }
+  }, [activeTab, currentPage]);
+
+  const chagneCurrentPage = (value) => {
+    setCurrentPage(value);
   };
 
-  const [isModalOpen, setModalOpen] = useState(false);
-
-  const handleOpenModal = () => setModalOpen(true);
-  const handleCloseModal = () => setModalOpen(false);
-  const handleSubmitModal = () => {
-    const confirm = window.confirm('돌봄 대상자를 신청하시겠습니까?');
-    if (confirm) {
-      console.log('간병신청 완료');
-      setModalOpen(false);
-      navigate('/guardian/matchpage'); // 원하는 경로로 이동
-    }
+  const handleTabChange = (tab) => {
+    setActiveTab(tab);
   };
 
   const handleAcceptMatching = async () => {
@@ -113,6 +93,21 @@ function ResumeDetail() {
       toast.error('매칭 수락 중 오류가 발생했습니다.');
     }
   };
+
+  //이미 매칭 수락된 이력서 인지 판단
+  useEffect(() => {
+    const checkMatched = async () => {
+      if (hiringNo) {
+        try {
+          const matched = await proposerService.checkAccepted({ resumeNo, hiringNo });
+          setIsMatched(matched);
+        } catch (error) {
+          console.error('매칭 상태 확인 실패:', error);
+        }
+      }
+    };
+    checkMatched();
+  }, [resumeNo, hiringNo]);
 
   return (
     <HireRegistSection>
@@ -227,37 +222,43 @@ function ResumeDetail() {
           <>
             <ContentWrapper1>
               <RecivedReviewsGridContainer>
-                {reviews.slice(offset, offset + ITEMS_PER_PAGE).map((review) => (
+                {reviews.receivedReview?.content?.map((review) => (
                   <Card key={review.reviewNo}>
                     <CardTopContent>
                       <CardImage src={review.profileImage} />
                       <CardTextGroup>
-                        <CardTitle>{review.userName} 돌봄대상자</CardTitle>
+                        <CardTitle>{review.userName} 님</CardTitle>
                         <CardText>
-                          나이 {review.age}세({review.gender === 'male' ? '남' : '여'})
+                          나이 {review.age}세({review.gender === 'M' ? '남' : '여'})
                         </CardText>
                       </CardTextGroup>
                     </CardTopContent>
                     <CardMidBottomContent>
                       <ReviewTextBox>{review.reviewContent}</ReviewTextBox>
                       <ReviewFooter>
-                        <ReviewScore>
-                          평점 <strong>{review.score.toFixed(1)}</strong>
-                        </ReviewScore>
-                        <ReviewDate>작성일 {review.createDate}</ReviewDate>
+                        {/* <ReviewScore>
+                  평점 <strong>{review.reviewScore.toFixed(1)}</strong>
+                </ReviewScore> */}
+                        <ReviewDate>작성일 {review.reviewUpdateDate.slice(0, 10)}</ReviewDate>
                       </ReviewFooter>
                     </CardMidBottomContent>
                   </Card>
                 ))}
               </RecivedReviewsGridContainer>
             </ContentWrapper1>
-            <Paging></Paging>
+            <Paging currentPage={currentPage} totalPage={reviews.totalPage} chagneCurrentPage={chagneCurrentPage} />
           </>
         )}
 
         <ButtonGroup>
           <BackButton onClick={() => navigate(-1)}>이전</BackButton>
-          {hiringNo && <SubmitButton1 onClick={handleAcceptMatching}>매칭 수락</SubmitButton1>}
+
+          {hiringNo && (
+            <SubmitButton1 onClick={handleAcceptMatching} disabled={isMatched} $disabled={isMatched}>
+              {isMatched ? '매칭 완료' : '매칭 수락'}
+            </SubmitButton1>
+          )}
+
           {resumeData?.userNo === user?.userNo ? (
             <SubmitButton1 type="button" onClick={() => navigate(`/caregiver/myresume/${resumeData?.resumeNo}`)}>
               수정하기
@@ -476,11 +477,12 @@ const BackButton = styled.button`
 
 const SubmitButton1 = styled(SubmitButton)`
   width: 65%;
-  border: 1px solid ${({ theme, $error }) => ($error ? theme.colors.error : theme.colors.gray[5])};
-  border-radius: ${({ theme }) => theme.borderRadius.md};
+  border: 1px solid ${({ theme, $disabled }) => ($disabled ? theme.colors.gray[5] : theme.colors.gray[5])};
+  background-color: ${({ theme, $disabled }) => ($disabled ? theme.colors.gray[5] : theme.colors.primary)};
   font-size: ${({ theme }) => theme.fontSizes.md};
   font-weight: ${({ theme }) => theme.fontWeights.medium};
   color: white;
+  cursor: ${({ $disabled }) => ($disabled ? 'not-allowed' : 'pointer')};
 `;
 
 const LicenseGroup = styled.div`

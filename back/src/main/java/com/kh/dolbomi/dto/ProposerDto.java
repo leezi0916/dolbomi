@@ -82,4 +82,14 @@ public class ProposerDto {
                     .build();
         }
     }
+
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class Update {
+        private Long hiring_no;
+        private Long caregiver_no;
+    }
+
+
 }

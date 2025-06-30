@@ -1,17 +1,16 @@
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
-import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
-import useUserStore from '../store/userStore';
+
 
 //환자등록 폼의 유효성 검사 스키마
 const patientsSchema = yup.object().shape({
   patName: yup
     .string()
     .required('이름을 입력하세요.')
-    .matches(/^[가-힣]+$/, '이름은 한글만 입력 가능합니다.')
-    .max(4, '이름은 최대 4자까지만 입력 가능합니다.'),
+    .matches(/^[가-힣a-zA-Z]+$/, '이름은 영어 또는 한글만 입력 가능합니다.')
+    .max(10, '이름은 최대 10자까지만 입력 가능합니다.'),
 
   patAge: yup
     .number()
@@ -26,10 +25,9 @@ const patientsSchema = yup.object().shape({
   patWeight: yup.number().typeError('몸무게는 숫자여야 합니다.'),
   patHeight: yup.number().typeError('키는 숫자여야 합니다.'),
   patPhone: yup
-    .string()
-    .required('전화번호를 입력하세요.')
-    .matches(/^01[016789]\d{3,4}\d{4}$/, '유효하지 않은 전화번호입니다.'),
-
+  .string()
+  .matches(/^010-\d{4}-\d{4}$/, '전화번호 형식은 010-0000-0000 이어야 합니다')
+  .required('전화번호를 입력해주세요'),
 
   patAddress: yup
     .string()
@@ -39,8 +37,7 @@ const patientsSchema = yup.object().shape({
 });
 
 export const usepatientRegistrationForm = () => {
-  const navigate = useNavigate();
-  const { user } = useUserStore();
+
 
   //react-hook-form으로 폼 상태 초기화및 유효성 검사
   const {
@@ -59,13 +56,24 @@ export const usepatientRegistrationForm = () => {
     },
   });
 
+  const formatPhoneNumber = (value) => {
+    // 숫자만 남기기
+    const numbersOnly = value.replace(/\D/g, '');
+  
+    // 010부터 시작하고 길이에 따라 포맷팅
+    if (numbersOnly.length < 4) return numbersOnly;
+    if (numbersOnly.length < 8)
+      return `${numbersOnly.slice(0, 3)}-${numbersOnly.slice(3)}`;
+    return `${numbersOnly.slice(0, 3)}-${numbersOnly.slice(3, 7)}-${numbersOnly.slice(7, 11)}`;
+  };
+
   //컴포넌트에서 사용할 값들 반환
   return {
     register,
     handleSubmit,
-    errors,
-    isSubmitting,
+   errors, isSubmitting , //유효성 에러및 제출중 상태
     setValue,
+    formatPhoneNumber,
     watch, // watch 함수를 반환합니다.
   };
 };

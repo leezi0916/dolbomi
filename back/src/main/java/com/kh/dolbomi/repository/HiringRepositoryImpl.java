@@ -56,7 +56,8 @@ public class HiringRepositoryImpl implements HiringRepository {
     public Page<Hiring> findByStatus(StatusEnum.Status status, Pageable pageable) {
         // 1. 페이징된 데이터 조회
         List<Hiring> content = em.createQuery(
-                        "SELECT h FROM Hiring h WHERE h.status = :status ORDER BY h.hiringNo DESC", Hiring.class)
+                        "SELECT h FROM Hiring h WHERE h.status = :status AND h.hiringStatus = 'Y' ORDER BY h.hiringNo DESC",
+                        Hiring.class)
                 .setParameter("status", status)
                 .setFirstResult((int) pageable.getOffset())
                 .setMaxResults(pageable.getPageSize())
@@ -64,7 +65,7 @@ public class HiringRepositoryImpl implements HiringRepository {
 
         // 2. 전체 개수 조회
         Long total = em.createQuery(
-                        "SELECT COUNT(h) FROM Hiring h WHERE h.status = :status", Long.class)
+                        "SELECT COUNT(h) FROM Hiring h WHERE h.status = :status AND h.hiringStatus = 'Y'", Long.class)
                 .setParameter("status", status)
                 .getSingleResult();
 
@@ -78,6 +79,38 @@ public class HiringRepositoryImpl implements HiringRepository {
         if (hiring != null) {
             hiring.hiringDeleted(); // 상태를 'N'으로 변경
         }
+    }
+
+    // 내 구인글 조회
+    @Override
+    public Page<Hiring> getMyHiringLists(Status status, Pageable pageable, Long userNo) {
+        String query = """
+                  SELECT h
+                  FROM Hiring h
+                  WHERE h.status = :status AND h.user.userNo = :userNo
+                """;
+
+        List<Hiring> hirings = em.createQuery(query, Hiring.class)
+                .setParameter("status", status)
+                .setParameter("userNo", userNo)
+                .setFirstResult((int) pageable.getOffset()) // 어디서부터 가지고 올것인가 - OFFSET
+                .setMaxResults(pageable.getPageSize())  // 몇개를 가지고 올것인가 - LIMIT
+                .getResultList();
+
+        String countQuery = """
+                    SELECT COUNT(DISTINCT h.hiringNo)
+                    FROM Hiring h                
+                    WHERE h.status = :status AND h.user.userNo = :userNo
+                """;
+
+        Long totalCount = em.createQuery(countQuery, Long.class)
+                .setParameter("status", status)
+                .setParameter("userNo", userNo)
+                .getSingleResult();
+
+        // Page<T> 인터페이스의 기본구현체를 통해서 paging한 정보를 한번에 전달할 수 있음
+        // new PageImpl<>(content,pageable,total);
+        return new PageImpl<Hiring>(hirings, pageable, totalCount);
     }
 
 }

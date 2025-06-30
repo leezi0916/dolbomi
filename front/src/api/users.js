@@ -102,4 +102,16 @@ export const userService = {
       throw new Error('서버 통신 불량');
     }
   },
+
+  //회원탈퇴 기능
+  deleteUser: async (userNo) => {
+    try {
+      const { data } = await api.patch(API_ENDPOINTS.USERS.DELETE(userNo));
+      console.log(data);
+      return data;
+    } catch (error) {
+      console.error('회원탈퇴 실패:', error.response?.data?.message || error.message);
+      throw error;
+    }
+  },
 };

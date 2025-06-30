@@ -1,6 +1,7 @@
 package com.kh.dolbomi.service;
 
 import com.kh.dolbomi.dto.HiringDto;
+import com.kh.dolbomi.dto.HiringDto.Response;
 import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -27,4 +28,7 @@ public interface HiringService {
 
     //구인글 삭제하기
     void deleteHiring(Long hiringNo);
+
+    // 내 구인글 조회
+    Page<Response> getMyHiringLists(Long userNo, Pageable pageable);
 }

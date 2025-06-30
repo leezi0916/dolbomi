@@ -8,6 +8,7 @@ const api = axios.create({
   headers: API_CONFIG.HEADERS,
 });
 
+// 요청 인터셉터 - 토큰 자동 추가
 api.interceptors.request.use(
   (config) => {
     const token = sessionStorage.getItem('token');
@@ -20,6 +21,7 @@ api.interceptors.request.use(
     return Promise.reject(error);
   }
 );
+
 
 api.interceptors.response.use(
   (response) => response,

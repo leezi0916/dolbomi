@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { AuthContainer } from '../styles/Auth.styles';
 import {
   GridForm,
   GridInerContainer,
@@ -14,7 +13,7 @@ import {
   BtnWrap,
   BackBtn,
 } from '../styles/PatientRegistration';
-import { Label, Input, InputGroup } from '../styles/Auth.styles';
+import { AuthContainer, Label, Input, InputGroup, ErrorMessage } from '../styles/Auth.styles';
 import { usepatientRegistrationForm } from '../hooks/usePatientRegistrationForm';
 import useUserStore from '../store/userStore';
 import { useNavigate } from 'react-router-dom';
@@ -25,7 +24,7 @@ import Tags from '../components/Tags';
 const PatientRegistration = () => {
   const { user } = useUserStore();
   const navigate = useNavigate();
-  const { register, handleSubmit, errors, isSubmitting, watch, setValue } = usepatientRegistrationForm();
+  const { register, handleSubmit, errors, isSubmitting, watch, setValue, formatPhoneNumber } = usepatientRegistrationForm();
 
   useEffect(() => {
     // 일단 접근가능하게 로그인 구현 되면 user -> !user 바꿀것
@@ -40,15 +39,16 @@ const PatientRegistration = () => {
 
   const [tags, setTags] = useState([]);
   useEffect(() => {
+
     setValue('tags', tags);
   }, [tags, setValue]);
 
   const handleTagChange = (newVal) => {
+    
     setTags(newVal); // set을 대체하는 커스텀 함수
   };
 
-  const onSubmit = async (data, e) => {
-    e.preventDefault(); // 기본 제출 동작 막기
+  const onSubmit = async (data) => {
     try {
       await patientService.postNewPatient({
     
@@ -82,14 +82,16 @@ const PatientRegistration = () => {
             <GridInerContainer>
               <Label htmlFor="patName">이름</Label>
               <Label htmlFor="patAge">나이</Label>
-              <Input type="text" id="patName" {...register('patName')} />
-              <Input type="number" id="patAge" {...register('patAge')} />
+              <Input type="text" id="patName" {...register('patName')} $error={errors.patName} />
+              <Input type="number" id="patAge" {...register('patAge')}  $error={errors.patAge} />
+              {errors.patName && <ErrorMessage>{errors.patName.message}</ErrorMessage>}
+              {errors.patAge && <ErrorMessage>{errors.patAge.message}</ErrorMessage>}
             </GridInerContainer>
 
             <GenderRadioGroup>
               <Label>성별</Label>
               <RadioWrapper checked={currentGender === 'M'}>
-                {' '}
+      
                 {/* checked prop 전달 */}
                 <input
                   type="radio"
@@ -97,7 +99,7 @@ const PatientRegistration = () => {
                   name="patGender"
                   value="M"
                   checked={currentGender === 'M'} // watch 값으로 제어
-                  {...register('patGender')} // register만 남김
+                  {...register('patGender')} $error={errors.patGender}// register만 남김
                 />
                 <label htmlFor="M">남성</label>
               </RadioWrapper>
@@ -109,43 +111,53 @@ const PatientRegistration = () => {
                   name="patGender"
                   value="F"
                   checked={currentGender === 'F'} // watch 값으로 제어
-                  {...register('patGender')} // register만 남김
+                  {...register('patGender')} $error={errors.patGender} // register만 남김
                 />
                 <label htmlFor="F">여성</label>
               </RadioWrapper>
+              {errors.patGender && <ErrorMessage>{errors.patGender.message}</ErrorMessage>}
             </GenderRadioGroup>
 
             <InputGroup>
               <Label htmlFor="phone">비상연락망</Label>
-              <Input type="text" id="phone" {...register('patPhone')} />
+              <Input type="text" id="phone" {...register('patPhone')}  $error={errors.patPhone}   onChange={(e) => {
+    const formatted = formatPhoneNumber(e.target.value);
+    setValue('patPhone', formatted); // react-hook-form의 값도 갱신
+  }}/>
+              {errors.patPhone && <ErrorMessage>{errors.patPhone.message}</ErrorMessage>}
             </InputGroup>
 
             <InputGroup>
               <Label htmlFor="patAddress">주소</Label>
-              <Input type="text" id="patAddress" {...register('patAddress')} />
+              <Input type="text" id="patAddress" {...register('patAddress')}  $error={errors.patAddress} />
+              {errors.patAddress && <ErrorMessage>{errors.patAddress.message}</ErrorMessage>}
             </InputGroup>
 
             <GridInerContainer>
               <Label htmlFor="height">키</Label>
               <Label htmlFor="weight">몸무게</Label>
               <HeightWegithDiv>
-                <Input type="number" id="patHeight" {...register('patHeight')} />
+                <Input type="number" id="patHeight" {...register('patHeight')} $error={errors.patHeight}  />
                 <span>cm</span>
+                {errors.patHeight && <ErrorMessage>{errors.patHeight.message}</ErrorMessage>}
               </HeightWegithDiv>
 
               <HeightWegithDiv>
-                <Input type="number" id="patWeight" {...register('patWeight')} />
+                <Input type="number" id="patWeight" {...register('patWeight')} $error={errors.patWeight} />
                 <span>kg</span>
               </HeightWegithDiv>
+              {errors.patWeight && <ErrorMessage>{errors.patWeight.message}</ErrorMessage>}
             </GridInerContainer>
 
             <InputGroup>
-              <Tags tags={tags} handleTagChange={handleTagChange} {...register('tags')} />
+              <Tags tags={tags} handleTagChange={handleTagChange} {...register('tags')}  $error={errors.tags}/>
+              {errors.tags && <ErrorMessage>{errors.tags.message}</ErrorMessage>}
             </InputGroup>
 
             <InputGroup>
               <Label htmlFor="patContent">환자 특이사항</Label>
-              <NotesTexttarea id="notes" className="textarea-field" rows="5" {...register('patContent')} />
+              <NotesTexttarea id="notes" className="textarea-field" rows="5" {...register('patContent')} $error={errors.patContent} />
+              {errors.patContent && <ErrorMessage>{errors.patContent.message}</ErrorMessage>}
             </InputGroup>
 
             <BtnWrap>
