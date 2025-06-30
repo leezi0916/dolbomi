@@ -1,6 +1,7 @@
 package com.kh.dolbomi.controller;
 
 
+import com.kh.dolbomi.dto.MatchingDto;
 import com.kh.dolbomi.dto.ProposerDto;
 import com.kh.dolbomi.service.ProposerService;
 import lombok.RequiredArgsConstructor;
@@ -56,4 +57,18 @@ public class ProposerController {
         return ResponseEntity.ok().build();
 
     }
+
+    @PostMapping("/accept")
+    public ResponseEntity<String> acceptMatching(@RequestBody MatchingDto matchingDto) {
+        proposerService.acceptMatching(matchingDto.getResume_no(), matchingDto.getHiring_no());
+        return ResponseEntity.ok("매칭이 수락되었습니다.");
+    }
+
+    @GetMapping("/accept/check")
+    public ResponseEntity<Boolean> checkAccepted(@RequestParam("hiring_no") Long hiringNo,
+                                                 @RequestParam("resume_no") Long resumeNo) {
+        boolean isAccepted = proposerService.isAccepted(resumeNo, hiringNo);
+        return ResponseEntity.ok(isAccepted);
+    }
+
 }

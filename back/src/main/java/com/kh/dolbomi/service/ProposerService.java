@@ -17,4 +17,6 @@ public interface ProposerService {
     // 매칭 수락 (지원현황의 이력서 보고 수락!)
     void acceptMatching(Long resumeNo, Long hiringNo);
 
+    // 매칭이 이미 수락된 이력서인지
+    boolean isAccepted(Long resumeNo, Long hiringNo);
 }
