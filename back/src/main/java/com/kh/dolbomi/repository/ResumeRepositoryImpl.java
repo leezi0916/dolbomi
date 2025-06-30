@@ -27,7 +27,6 @@ public class ResumeRepositoryImpl implements ResumeRepository {
     }
 
     @Override
-
     public Page<Resume> findByStatus(StatusEnum.Status status, Pageable pageable) {
         // 1. 페이징된 데이터 조회
         List<Resume> content = em.createQuery(
