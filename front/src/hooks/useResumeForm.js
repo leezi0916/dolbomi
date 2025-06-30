@@ -1,11 +1,9 @@
-import { useEffect, useState } from 'react';
+import {  useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
-import { toast } from 'react-toastify';
-import { useNavigate, useParams } from 'react-router-dom';
-import { userService } from '../api/users';
-import { jobSeekingService } from '../api/jobSeeking';
+
+import { useNavigate } from 'react-router-dom';
 import useUserStore from '../store/userStore';
 
 // 유효성 스키마
@@ -35,18 +33,19 @@ export const useResumeForm = (resumeNo) => {
 
   // useEffect(() => {
   //   const fetchAll = async () => {
+<<<<<<< HEAD
+  //     try {
+  //       const getcareGiverResume = await jobSeekingService.getResume(Number(resumeNo));
+  //       setCareGiverResume(getcareGiverResume);
+  //       console.log('시작 ', getcareGiverResume);
+  //     } catch (error) {
+  //       toast.error('상세 이력서 불러오기 중 문제가 발생하였습니다.');
+  //       console.error('이력서 불러오기 오류 : ', error);
+  //     }
+  //   };
+  //   fetchAll();
+  // }, [user]);
 
-  // //     try {
-  // //       const getcareGiverResume = await jobSeekingService.getResume(Number(resumeNo));
-  // //       setCareGiverResume(getcareGiverResume);
-  // //       console.log('시작 ', getcareGiverResume);
-  // //     } catch (error) {
-  // //       toast.error('상세 이력서 불러오기 중 문제가 발생하였습니다.');
-  // //       console.error('이력서 불러오기 오류 : ', error);
-  // //     }
-  // //   };
-  // //   fetchAll();
-  // // }, [user]);
 
   // // resumeNo가 있으면 이력서 데이터 불러와서 폼 초기화
   // useEffect(() => {
