@@ -35,7 +35,7 @@ public class SecurityConfig {
                                 "/users/v1",
                                 "/users/v1/login",
                                 "/hiring/v1/simple-list",
-                                "/resume/v1/simple-list'",
+                                "/resume/v1/simple-list",
                                 "/"
 
                         ).permitAll()

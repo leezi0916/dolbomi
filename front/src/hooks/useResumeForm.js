@@ -33,7 +33,6 @@ export const useResumeForm = (resumeNo) => {
 
   // useEffect(() => {
   //   const fetchAll = async () => {
-<<<<<<< HEAD
   //     try {
   //       const getcareGiverResume = await jobSeekingService.getResume(Number(resumeNo));
   //       setCareGiverResume(getcareGiverResume);
