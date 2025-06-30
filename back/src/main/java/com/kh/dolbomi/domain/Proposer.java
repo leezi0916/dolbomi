@@ -2,7 +2,6 @@ package com.kh.dolbomi.domain;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.kh.dolbomi.enums.StatusEnum;
-import com.kh.dolbomi.enums.StatusEnum.Status;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -64,10 +63,11 @@ public class Proposer {
     }
 
 
-    public void changeStatus(String status) {
-        if (status != null && !status.isEmpty()) {
-            this.status = Status.valueOf(status);
+    public void updateStatus(StatusEnum.Status status) {
+        if (status != null) {
+            this.status = status;
         }
-
     }
+
+
 }

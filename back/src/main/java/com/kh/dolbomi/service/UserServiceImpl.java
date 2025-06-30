@@ -6,6 +6,7 @@ import com.kh.dolbomi.domain.User;
 import com.kh.dolbomi.dto.LicenseDto;
 import com.kh.dolbomi.dto.UserDto;
 import com.kh.dolbomi.dto.UserDto.Login;
+import com.kh.dolbomi.enums.StatusEnum;
 import com.kh.dolbomi.exception.UserNotFoundException;
 import com.kh.dolbomi.repository.LicenseRepository;
 import com.kh.dolbomi.repository.UserRepository;
@@ -57,6 +58,11 @@ public class UserServiceImpl implements UserService {
         }
 
         User user = optUser.get();
+
+        // 상태가 탈퇴(N)면 예외 발생
+        if (user.getStatus() == StatusEnum.Status.N) {
+            throw new IllegalArgumentException("탈퇴된 계정입니다.");
+        }
 
         if (!passwordEncoder.matches(loginDto.getUser_pwd(), user.getUserPwd())) {
             throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
@@ -140,6 +146,16 @@ public class UserServiceImpl implements UserService {
         }
 
         return UserDto.Response.toDto(user);
+    }
+
+    @Override
+    public void deleteUser(Long userNo) {
+        User user = userRepository.findById(userNo)
+                .orElseThrow(() -> new IllegalArgumentException("유저가 존재하지 않습니다."));
+        user.changeStatus(StatusEnum.Status.N);
+
+        //영속성 컨텍스트가 활성화된 상태라면 없어도 변경 가능
+        userRepository.save(user);
     }
 
 }

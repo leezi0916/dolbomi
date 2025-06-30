@@ -81,4 +81,15 @@ public class UserController {
 
         return ResponseEntity.ok(userService.updateUser(userNo, updateDto));
     }
+
+    //회원 탈퇴
+    @PatchMapping("/{userNo}/delete")
+    public ResponseEntity<String> deleteUser(@PathVariable Long userNo) {
+        userService.deleteUser(userNo);
+        return ResponseEntity.ok("회원탈퇴가 완료되었습니다.");
+    }
+
+    //비밀번호 변경
 }
+
+
