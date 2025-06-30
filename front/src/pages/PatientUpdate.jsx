@@ -14,7 +14,7 @@ import {
   BackBtn,
   BtnWrap,
 } from '../styles/PatientRegistration';
-import { Label, Input, InputGroup } from '../styles/Auth.styles';
+import { Label, Input, InputGroup, ErrorMessage } from '../styles/Auth.styles';
 import { usepatientRegistrationForm } from '../hooks/usePatientRegistrationForm';
 import { useNavigate, useParams } from 'react-router-dom';
 import useUserStore from '../store/userStore';
@@ -88,11 +88,10 @@ const PatientUpdate = () => {
   };
 
   const deletePatient = async (patNo) => {
-  
     const confirmDelete = window.confirm('정말로 삭제하시겠습니까?');
 
     if (!confirmDelete) return; // 사용자가 취소하면 함수 종료
-  
+
     const updatedPatient = {
       ...patient,
       status: 'N',
@@ -172,7 +171,7 @@ const PatientUpdate = () => {
 
             <InputGroup>
               <Label htmlFor="patAddress">주소</Label>
-              <Input type="text" id="patAddress" {...register('patAddress')}   $error={errors.patAddress}/>
+              <Input type="text" id="patAddress" {...register('patAddress')} $error={errors.patAddress} />
               {errors.patAddress && <ErrorMessage>{errors.patAddress.message}</ErrorMessage>}
             </InputGroup>
 
@@ -180,25 +179,39 @@ const PatientUpdate = () => {
               <Label htmlFor="patHeight">키</Label>
               <Label htmlFor="patWeight">몸무게</Label>
               <HeightWegithDiv>
-                <Input type="number" id="patHeight" {...register('patHeight')} $error={errors.patHeight}  />
+                <Input type="number" id="patHeight" {...register('patHeight')} $error={errors.patHeight} />
                 <span>cm</span>
-                {errors.patHeight && <ErrorMessage>{errors.patHeight.message}</ErrorMessage>}
               </HeightWegithDiv>
 
               <HeightWegithDiv>
-                <Input type="number" id="patWeight" {...register('patWeight')}  $error={errors.patWeight}  />
+                <Input type="number" id="patWeight" {...register('patWeight')} $error={errors.patWeight} />
                 <span>kg</span>
-                {errors.patWeight && <ErrorMessage>{errors.patWeight.message}</ErrorMessage>}
               </HeightWegithDiv>
+
+
+              {errors.patWeight && <ErrorMessage>{errors.patWeight.message}</ErrorMessage>}
+              {errors.patHeight && <ErrorMessage>{errors.patHeight.message}</ErrorMessage>}
             </GridInerContainer>
 
             <InputGroup>
-              <Tags tags={tags} id="diseaseTags" handleTagChange={handleTagChange} {...register('diseaseTags')} />
+              <Tags
+                tags={tags}
+                id="diseaseTags"
+                handleTagChange={handleTagChange}
+                {...register('diseaseTags')}
+                $error={errors.tags}
+              />
             </InputGroup>
 
             <InputGroup>
               <Label htmlFor="patContent">환자 특이사항</Label>
-              <NotesTexttarea id="notes" className="textarea-field" rows="5" {...register('patContent')}   $error={errors.tags}/>
+              <NotesTexttarea
+                id="notes"
+                className="textarea-field"
+                rows="5"
+                {...register('patContent')}
+                $error={errors.patContent}
+              />
               {errors.patContent && <ErrorMessage>{errors.patContent.message}</ErrorMessage>}
             </InputGroup>
             <BtnWrap>

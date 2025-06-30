@@ -24,8 +24,8 @@ public class PatientDto {
         private Integer pat_age;
         private String pat_phone;
         private StatusEnum.Gender pat_gender;
-        private Integer pat_weight;
-        private Integer pat_height;
+        private BigDecimal pat_weight;
+        private BigDecimal pat_height;
         private String pat_address;
         private String pat_content;
         private String status;
@@ -37,8 +37,8 @@ public class PatientDto {
                     .patName(this.pat_name)
                     .patPhone(this.pat_phone)
                     .patAge(this.pat_age)
-                    .patWeight(BigDecimal.valueOf(this.pat_weight))
-                    .patHeight(BigDecimal.valueOf(this.pat_height))
+                    .patWeight(this.pat_weight)
+                    .patHeight(this.pat_height)
                     .profileImage(null)
                     .patContent(this.pat_content)
                     .patGender(this.pat_gender)
@@ -60,8 +60,8 @@ public class PatientDto {
         private Integer pat_age;
         private String pat_phone;
         private StatusEnum.Gender pat_gender;
-        private Integer pat_weight;
-        private Integer pat_height;
+        private BigDecimal pat_weight;
+        private BigDecimal pat_height;
         private String pat_address;
         private String pat_content;
         private String status;
@@ -86,8 +86,8 @@ public class PatientDto {
                     .pat_age(patient.getPatAge())
                     .pat_phone(patient.getPatPhone())
                     .pat_gender(patient.getPatGender())
-                    .pat_weight(patient.getPatWeight().intValue())
-                    .pat_height(patient.getPatHeight().intValue())
+                    .pat_weight(patient.getPatWeight())
+                    .pat_height(patient.getPatHeight())
                     .pat_address(patient.getPatAddress())
                     .pat_content(patient.getPatContent())
 
@@ -120,8 +120,8 @@ public class PatientDto {
         private Integer pat_age;
         private String pat_phone;
         private StatusEnum.Gender pat_gender;
-        private Integer pat_weight;
-        private Integer pat_height;
+        private BigDecimal pat_weight;
+        private BigDecimal pat_height;
         private String pat_address;
         private String pat_content;
         private String status;

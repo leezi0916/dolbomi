@@ -37,6 +37,8 @@ const updateSchema = yup.object().shape({
 const useUserUpdateForm = ({ profile }) => {
   const [updating, setUpdating] = useState(false);
 
+
+
   const validateAndSubmit = async (formData, licenseList, profileImageFile) => {
     try {
       // 변경된 값만 필터링
@@ -57,6 +59,7 @@ const useUserUpdateForm = ({ profile }) => {
         toast.info('변경된 정보가 없습니다.');
         return;
       }
+
 
       // 유효성 검사
       await updateSchema.validate(formData, { abortEarly: false });

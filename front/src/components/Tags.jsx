@@ -29,9 +29,9 @@ const Tags = ({ tags, handleTagChange }) => {
           placeholder="질병 입력"
           value={inputValue}
           onChange={handleInputChange}
-          // 문제생길시 onKeyUp이든 onKeyDown이든 해결 방법 찾기
-          onKeyPress={(e) => {
-            if (e.key === 'Enter') {
+
+          onKeyDown={(e) => {
+            if (e.key === 'Enter' && !e.nativeEvent.isComposing) {
               e.preventDefault(); // 엔터 눌렀을 때 폼 제출 막기
               addTags(); // 대신 태그 추가 동작 실행
             }

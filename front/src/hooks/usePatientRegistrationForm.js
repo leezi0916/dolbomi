@@ -24,6 +24,7 @@ const patientsSchema = yup.object().shape({
 
   patWeight: yup.number().typeError('몸무게는 숫자여야 합니다.'),
   patHeight: yup.number().typeError('키는 숫자여야 합니다.'),
+  
   patPhone: yup
   .string()
   .matches(/^010-\d{4}-\d{4}$/, '전화번호 형식은 010-0000-0000 이어야 합니다')
