@@ -9,6 +9,7 @@ import { hiringService } from '../api/hiring';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 import { MainMoveButton } from '../styles/common/Button';
+import defaultImage from '../assets/images/pat.png';
 
 const CareGiverMainPage = () => {
   const [jobOpeningList, setJobOpeningList] = useState([]);
@@ -304,7 +305,7 @@ export const CardImage = styled.div`
   width: 120px;
   height: 120px;
   border-radius: 50%; // 원형 처리
-  background-image: ${({ src }) => (src ? `url(${src})` : 'none')};
+  background-image: ${({ src }) => `url(${src || defaultImage})`};
   background-size: cover;
   background-position: center;
   flex-shrink: 0; // 축소 방지

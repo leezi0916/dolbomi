@@ -10,6 +10,7 @@ import { jobSeekingService } from '../api/jobSeeking';
 import { reviewService } from '../api/reviews';
 import { useNavigate } from 'react-router-dom';
 import { MainMoveButton } from '../styles/common/Button';
+import defaultImage from '../assets/images/cargiver.png';
 
 const GuardianMainPage = () => {
   const [resumeLiset, setResumeLiset] = useState([]);
@@ -319,7 +320,7 @@ export const CardImage = styled.div`
   width: 120px;
   height: 120px;
   border-radius: 50%; // 원형 처리
-  background-image: ${({ src }) => (src ? `url(${src})` : 'none')};
+  background-image: ${({ src }) => `url(${src || defaultImage})`};
   background-size: cover;
   background-position: center;
   flex-shrink: 0; // 축소 방지
