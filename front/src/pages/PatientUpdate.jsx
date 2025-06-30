@@ -27,7 +27,8 @@ const PatientUpdate = () => {
   const { patNo } = useParams();
   const [patient, setPatinet] = useState();
 
-  const { register, handleSubmit, errors, isSubmitting, watch, setValue } = usepatientRegistrationForm();
+  const { register, handleSubmit, errors, isSubmitting, formatPhoneNumber, watch, setValue } =
+    usepatientRegistrationForm();
   const currentGender = watch('patGender');
 
   const navigate = useNavigate();
@@ -83,19 +84,22 @@ const PatientUpdate = () => {
       navigate('/guardian/patient');
     } catch (error) {
       console.log(error);
-      
     }
   };
 
   const deletePatient = async (patNo) => {
-    
+  
+    const confirmDelete = window.confirm('정말로 삭제하시겠습니까?');
+
+    if (!confirmDelete) return; // 사용자가 취소하면 함수 종료
+  
     const updatedPatient = {
       ...patient,
       status: 'N',
     };
 
     try {
-      await patientService.updatePatient(patNo, updatedPatient );
+      await patientService.updatePatient(patNo, updatedPatient);
       toast.success('돌봄대상자 삭제완료!');
       navigate('/guardian/patient');
     } catch (error) {
@@ -113,8 +117,10 @@ const PatientUpdate = () => {
             <GridInerContainer>
               <Label htmlFor="patName">이름</Label>
               <Label htmlFor="patAge">나이</Label>
-              <Input type="text" id="patName" {...register('patName')} />
-              <Input type="number" id="patAge" {...register('patAge')} />
+              <Input type="text" id="patName" {...register('patName')} $error={errors.patName} />
+              <Input type="number" id="patAge" {...register('patAge')} $error={errors.patAge} />
+              {errors.patName && <ErrorMessage>{errors.patName.message}</ErrorMessage>}
+              {errors.patAge && <ErrorMessage>{errors.patAge.message}</ErrorMessage>}
             </GridInerContainer>
 
             <GenderRadioGroup>
@@ -129,6 +135,7 @@ const PatientUpdate = () => {
                   value="M"
                   checked={currentGender === 'M'} // watch 값으로 제어
                   {...register('patGender')} // register만 남김
+                  $error={errors.patGender}
                 />
                 <label htmlFor="M">남성</label>
               </RadioWrapper>
@@ -141,32 +148,47 @@ const PatientUpdate = () => {
                   value="F"
                   checked={currentGender === 'F'} // watch 값으로 제어
                   {...register('patGender')} // register만 남김
+                  $error={errors.patGender}
                 />
                 <label htmlFor="F">여성</label>
               </RadioWrapper>
+              {errors.patGender && <ErrorMessage>{errors.patGender.message}</ErrorMessage>}
             </GenderRadioGroup>
 
             <InputGroup>
               <Label htmlFor="phone">보호자 전화번호</Label>
-              <Input type="text" id="phone" {...register('patPhone')} />
+              <Input
+                type="text"
+                id="phone"
+                {...register('patPhone')}
+                $error={errors.patPhone}
+                onChange={(e) => {
+                  const formatted = formatPhoneNumber(e.target.value);
+                  setValue('patPhone', formatted); // react-hook-form의 값도 갱신
+                }}
+              />{' '}
+              {errors.patPhone && <ErrorMessage>{errors.patPhone.message}</ErrorMessage>}
             </InputGroup>
 
             <InputGroup>
               <Label htmlFor="patAddress">주소</Label>
-              <Input type="text" id="patAddress" {...register('patAddress')} />
+              <Input type="text" id="patAddress" {...register('patAddress')}   $error={errors.patAddress}/>
+              {errors.patAddress && <ErrorMessage>{errors.patAddress.message}</ErrorMessage>}
             </InputGroup>
 
             <GridInerContainer>
               <Label htmlFor="patHeight">키</Label>
               <Label htmlFor="patWeight">몸무게</Label>
               <HeightWegithDiv>
-                <Input type="number" id="patHeight" {...register('patHeight')} />
+                <Input type="number" id="patHeight" {...register('patHeight')} $error={errors.patHeight}  />
                 <span>cm</span>
+                {errors.patHeight && <ErrorMessage>{errors.patHeight.message}</ErrorMessage>}
               </HeightWegithDiv>
 
               <HeightWegithDiv>
-                <Input type="number" id="patWeight" {...register('patWeight')} />
+                <Input type="number" id="patWeight" {...register('patWeight')}  $error={errors.patWeight}  />
                 <span>kg</span>
+                {errors.patWeight && <ErrorMessage>{errors.patWeight.message}</ErrorMessage>}
               </HeightWegithDiv>
             </GridInerContainer>
 
@@ -176,7 +198,8 @@ const PatientUpdate = () => {
 
             <InputGroup>
               <Label htmlFor="patContent">환자 특이사항</Label>
-              <NotesTexttarea id="notes" className="textarea-field" rows="5" {...register('patContent')} />
+              <NotesTexttarea id="notes" className="textarea-field" rows="5" {...register('patContent')}   $error={errors.tags}/>
+              {errors.patContent && <ErrorMessage>{errors.patContent.message}</ErrorMessage>}
             </InputGroup>
             <BtnWrap>
               <BackBtn type="button" onClick={() => navigate(-1)}>

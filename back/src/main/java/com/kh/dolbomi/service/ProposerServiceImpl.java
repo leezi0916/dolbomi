@@ -102,4 +102,11 @@ public class ProposerServiceImpl implements ProposerService {
         matchingRepositoryV2.save(matching);
     }
 
+    @Override
+    public boolean isAccepted(Long resumeNo, Long hiringNo) {
+        return proposerRepositoryV2.existsByResume_ResumeNoAndHiring_HiringNoAndStatus(
+                resumeNo, hiringNo, StatusEnum.Status.Y
+        );
+    }
+
 }

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Container, Section } from '../styles/common/Container';
-// import profileImage from '../assets/images/pat.png'; // 프로필 이미지 경로
+import profileImage from '../assets/images/pat.png'; // 프로필 이미지 경로
 import caregiverImage from '../assets/profileImg/img_간병인.png'; //간병인 기본 이미지
 import chatImage from '../assets/icons/icon_채팅아이콘.png'; // 채팅 이미지 경로
 import styled from 'styled-components';
@@ -178,7 +178,7 @@ const HireDetail = () => {
           <ContentWrapper>
             <div>
               <ProfilImageWrapper>
-                <img src={jobOpening?.profileImage} alt="프로필 이미지" />
+                <img src={jobOpening.profileImage ? jobOpening.profileImage : profileImage} alt="프로필" />
               </ProfilImageWrapper>
               <ChatButton>
                 <img src={chatImage} alt="프로필 이미지" />1 : 1 채팅하기
@@ -308,14 +308,18 @@ const HireDetail = () => {
                 {recruitmentClosed ? '마감' : '모집 마감'}
               </SubmitButton1>
             </>
-          ) : // 본인이 작성한 글이 아닐 경우
-          alreadyApplied ? (
-            // 다른 사람이 작성하고 내가 신청한 글일 경우
+          ) : recruitmentClosed ? (
+            // 모집 마감된 글인데 내가 작성자가 아니면 신청 버튼 대신 비활성 모집 마감 버튼 표시
+            <SubmitButton1 type="button" disabled $disabled>
+              모집 마감
+            </SubmitButton1>
+          ) : alreadyApplied ? (
+            // 모집 중이고 내가 신청한 경우 → 신청취소 버튼
             <SubmitButton1 type="button" onClick={handleCancel}>
               신청취소
             </SubmitButton1>
           ) : (
-            // 다른 사람이 작성하고 내가 신청하지 않은 글일 경우
+            // 모집 중이고 내가 신청하지 않은 경우 → 신청하기 버튼
             <SubmitButton1 type="button" onClick={handleOpenModal}>
               신청하기
             </SubmitButton1>

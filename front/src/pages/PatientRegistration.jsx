@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { AuthContainer } from '../styles/Auth.styles';
 import {
   GridForm,
   GridInerContainer,
@@ -14,7 +13,7 @@ import {
   BtnWrap,
   BackBtn,
 } from '../styles/PatientRegistration';
-import { Label, Input, InputGroup, ErrorMessage } from '../styles/Auth.styles';
+import { AuthContainer, Label, Input, InputGroup, ErrorMessage } from '../styles/Auth.styles';
 import { usepatientRegistrationForm } from '../hooks/usePatientRegistrationForm';
 import useUserStore from '../store/userStore';
 import { useNavigate } from 'react-router-dom';
@@ -25,7 +24,7 @@ import Tags from '../components/Tags';
 const PatientRegistration = () => {
   const { user } = useUserStore();
   const navigate = useNavigate();
-  const { register, handleSubmit, errors, isSubmitting, watch, setValue } = usepatientRegistrationForm();
+  const { register, handleSubmit, errors, isSubmitting, watch, setValue, formatPhoneNumber } = usepatientRegistrationForm();
 
   useEffect(() => {
     // 일단 접근가능하게 로그인 구현 되면 user -> !user 바꿀것
@@ -40,15 +39,16 @@ const PatientRegistration = () => {
 
   const [tags, setTags] = useState([]);
   useEffect(() => {
+
     setValue('tags', tags);
   }, [tags, setValue]);
 
   const handleTagChange = (newVal) => {
+    
     setTags(newVal); // set을 대체하는 커스텀 함수
   };
 
-  const onSubmit = async (data, e) => {
-    e.preventDefault(); // 기본 제출 동작 막기
+  const onSubmit = async (data) => {
     try {
       await patientService.postNewPatient({
     
@@ -91,7 +91,7 @@ const PatientRegistration = () => {
             <GenderRadioGroup>
               <Label>성별</Label>
               <RadioWrapper checked={currentGender === 'M'}>
-                {' '}
+      
                 {/* checked prop 전달 */}
                 <input
                   type="radio"
@@ -120,7 +120,10 @@ const PatientRegistration = () => {
 
             <InputGroup>
               <Label htmlFor="phone">비상연락망</Label>
-              <Input type="text" id="phone" {...register('patPhone')}  $error={errors.patPhone}/>
+              <Input type="text" id="phone" {...register('patPhone')}  $error={errors.patPhone}   onChange={(e) => {
+    const formatted = formatPhoneNumber(e.target.value);
+    setValue('patPhone', formatted); // react-hook-form의 값도 갱신
+  }}/>
               {errors.patPhone && <ErrorMessage>{errors.patPhone.message}</ErrorMessage>}
             </InputGroup>
 
@@ -136,7 +139,7 @@ const PatientRegistration = () => {
               <HeightWegithDiv>
                 <Input type="number" id="patHeight" {...register('patHeight')} $error={errors.patHeight}  />
                 <span>cm</span>
-                {errors.patHeight && <ErrorMessage>{errors.patpatHeightAddress.message}</ErrorMessage>}
+                {errors.patHeight && <ErrorMessage>{errors.patHeight.message}</ErrorMessage>}
               </HeightWegithDiv>
 
               <HeightWegithDiv>

@@ -37,6 +37,7 @@ public class SecurityConfig {
                                 "/hiring/v1/simple-list",
                                 "/resume/v1/simple-list",
                                 "/review/v1/simple-list",
+
                                 "/"
 
                         ).permitAll()
