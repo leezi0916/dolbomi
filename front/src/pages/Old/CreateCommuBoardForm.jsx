@@ -1,16 +1,33 @@
-import React, { useRef, useState } from 'react';
+// import React from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Page, PageInfo } from './CommunityBoard';
 import styled from 'styled-components';
+import { commuService } from '../api/community';
+import { toast } from 'react-toastify';
+import { ClipLoader } from 'react-spinners';
+import useUserStore from '../store/userStore';
 import { Icons } from './CommunityDetail';
+import { useNavigate, useParams } from 'react-router-dom';
 
 const CreateCommuBoardForm = () => {
-  //
-  //이미지 관련
+  const navigate = useNavigate();
+  const { role } = useParams(); // 'guardian', 'caregiver', 'question' 등
+  const userId = useUserStore((state) => state.user?.userId);
+
+  const [error, setError] = useState(null);
+  const [communityDetail, setCommunityDetail] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  const [title, setTitle] = useState('');
+  const [content, setContent] = useState('');
+
   const [images, setImages] = useState([]);
   const fileInputRef = useRef(null);
+  const userName = communityDetail.find((info) => info.id === userId);
   const handleClick = () => {
     fileInputRef.current.click(); // 숨겨진 input을 클릭
   };
+
   const handleFilesChange = (e) => {
     const files = Array.from(e.target.files);
     const newImages = files.map((file) => ({
@@ -30,8 +47,62 @@ const CreateCommuBoardForm = () => {
       return filtered;
     });
   };
-  //여기까지 이미지 관련
 
+  const handleSubmit = async () => {
+    if (!title || !content) {
+      toast.warning('제목과 내용을 모두 입력해 주세요.');
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append('title', title);
+    formData.append('content', content);
+    formData.append('userId', userId);
+    images.forEach((img) => {
+      formData.append('files', img.file);
+    });
+
+    try {
+      await commuService.createPost(role, formData); // ← 이 API 함수가 있어야 합니다
+      toast.success('글이 등록되었습니다.');
+      navigate(`/community/${role}`);
+    } catch (err) {
+      console.error(err);
+      toast.error('등록에 실패했습니다.');
+    }
+  };
+
+  useEffect(() => {
+    const loadCommunity = async () => {
+      try {
+        const community = await commuService.createPage(role);
+        console.log(community);
+        if (community) {
+          setCommunityDetail(community);
+        }
+      } catch (error) {
+        console.error(error);
+        const errorMessage = '목록을 불러오는데 실패했습니다.';
+        setError(errorMessage);
+        toast.error(errorMessage);
+      } finally {
+        setLoading(false);
+      }
+    };
+    loadCommunity();
+  }, [role]);
+
+  if (loading) {
+    return (
+      <div>
+        <ClipLoader size={50} aria-label="Loading Spinner" />
+      </div>
+    );
+  }
+
+  if (error) {
+    return null;
+  }
   return (
     <Page>
       <PageInfo>
@@ -40,9 +111,19 @@ const CreateCommuBoardForm = () => {
           <RightBtn>뒤로가기</RightBtn>
         </PageTop>
         <PageBody>
-          <TitleInput type="text" placeholder="제목을 입력해 주세요" />
-          <UserName>유저이름</UserName>
-          <TextInput type="text" placeholder="내용을 입력해 주세요" />
+          <TitleInput
+            type="text"
+            placeholder="제목을 입력해 주세요"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+          />
+          {userName && <UserName key={userName.no}>{userName.name}</UserName>}
+          <TextInput
+            type="text"
+            placeholder="내용을 입력해 주세요"
+            value={content}
+            onChange={(e) => setContent(e.target.value)}
+          />
           <FileBox>
             <FileTitle>
               <Icons src="/src/assets/icons/icon_사진.png" alt="" />
@@ -73,8 +154,8 @@ const CreateCommuBoardForm = () => {
             </InputFile>
           </FileBox>
           <BtnBox>
-            <button>이전으로</button>
-            <button>등록하기</button>
+            <button onClick={() => navigate(-1)}>이전으로</button>
+            <button onClick={handleSubmit}>등록하기</button>
           </BtnBox>
         </PageBody>
         <PageEndBox>
@@ -93,6 +174,7 @@ const CreateCommuBoardForm = () => {
     </Page>
   );
 };
+export default CreateCommuBoardForm;
 const PageTop = styled.div`
   width: 100%;
   display: flex;
@@ -216,5 +298,3 @@ const PageEndBox = styled.div`
     font-weight: ${({ theme }) => theme.fontWeights.light};
   }
 `;
-
-export default CreateCommuBoardForm;
