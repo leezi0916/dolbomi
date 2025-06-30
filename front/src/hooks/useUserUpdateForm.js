@@ -3,7 +3,6 @@ import { userService } from '../api/users';
 import { toast } from 'react-toastify';
 import { useState } from 'react';
 
-
 // 유효성 스키마
 const updateSchema = yup.object().shape({
   userName: yup
@@ -66,7 +65,7 @@ const useUserUpdateForm = ({ profile }) => {
       const updatedData = {
         ...changedFields,
         licenses: licenseList || [],
-        profileImage: 's3url보내야함', //나중에 s3 url
+        // profileImage: 's3url보내야함', //나중에 s3 url
       };
 
       console.log('보내는 데이터:', updatedData);

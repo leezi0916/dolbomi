@@ -71,7 +71,10 @@ const CareGiverMainPage = () => {
             {jobOpeningList.all?.map((jobOpening) => (
               <Card key={jobOpening.hiringNo}>
                 <CardTopContent>
-                  <CardImage src={jobOpening.profileImage} />
+                  <CardImage
+                    src={jobOpening.profileImage ? jobOpening.profileImage : '../assets/images/cargiver.png'}
+                    alt="프로필"
+                  />
                   <CardTextGroup>
                     <CardTitle>{maskName(jobOpening.patName)} 님</CardTitle>
                     <CardText>
