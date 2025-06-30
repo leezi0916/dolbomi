@@ -116,6 +116,10 @@ public class User {
         }
     }
 
+    public void changeStatus(StatusEnum.Status status) {
+        this.status = status;
+    }
+
     @PrePersist
     public void prePersist() {
         if (status == null) {

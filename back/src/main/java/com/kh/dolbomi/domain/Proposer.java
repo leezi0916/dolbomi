@@ -2,7 +2,6 @@ package com.kh.dolbomi.domain;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.kh.dolbomi.enums.StatusEnum;
-import com.kh.dolbomi.enums.StatusEnum.Status;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -64,16 +63,9 @@ public class Proposer {
     }
 
 
-    public void changeStatus(String status) {
-        if (status != null && !status.isEmpty()) {
-            this.status = Status.valueOf(status);
-        }
-
-    }
-
-
     //매칭 수락시 신청상태도 같이 수락된 상태로 변경
     public void updateStatus(StatusEnum.Status newStatus) {
         this.status = newStatus;
     }
+
 }
