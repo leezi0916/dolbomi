@@ -53,7 +53,7 @@ const CareGiverCommunity = () => {
     };
 
     loadCommunity();
-  }, [userId]);
+  }, []);
 
   if (loading) {
     return (
@@ -73,7 +73,7 @@ const CareGiverCommunity = () => {
         <div style={{ width: '400px', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
           <div style={{ marginBottom: '10px' }}>게시글이 없습니다.</div>
           {userId && (
-            <Btn style={{ margin: 'auto' }} to="/community/create">
+            <Btn style={{ margin: 'auto', padding: '10px' }} to="/community/create">
               글쓰기
             </Btn>
           )}
@@ -104,17 +104,17 @@ const CareGiverCommunity = () => {
         </BoardTop>
         <BoardItemTop>
           <div>No</div>
-          <div style={{ flex: '2' }}>제목</div>
+          <div style={{ flex: '3' }}>제목</div>
           <div>작성자</div>
-          <div>작성 일자</div>
+          <div style={{ flex: '2' }}>작성 일자</div>
           <div>조회수</div>
         </BoardItemTop>
         {currentList.map((community) => (
-          <BoardItem key={community.no} to={`/community/detail/${community.no}`}>
-            <div>{community.no}</div>
-            <div style={{ flex: '2' }}>{community.title}</div>
-            <div>{community.name}</div>
-            <div>{community.create_date}</div>
+          <BoardItem key={community.boardNo} to={`/community/detail/${community.boardNo}`}>
+            <div>{community.boardNo}</div>
+            <div style={{ flex: '3' }}>{community.boardTitle}</div>
+            <div>{community.userName}</div>
+            <div style={{ flex: '2' }}>{community.createDate}</div>
             <div>{community.count}</div>
           </BoardItem>
         ))}
@@ -168,7 +168,6 @@ const Btn = styled(Link)`
   background-color: ${({ theme }) => theme.colors.primary};
   color: ${({ theme }) => theme.colors.white};
   border-radius: 4px;
-  padding: 10px;
 `;
 const SearchBtn = styled.button`
   align-content: center;
@@ -186,7 +185,7 @@ const Left = styled.div`
 const Right = styled.div`
   display: flex;
   justify-content: flex-end;
-  flex: 5;
+  flex: 7;
   padding-right: 10px;
   gap: 6px;
 `;

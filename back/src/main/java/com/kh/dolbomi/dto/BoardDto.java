@@ -41,6 +41,7 @@ public class BoardDto {
         private Long user_no;
         private String user_name;
         private StatusEnum.Role role;
+        private StatusEnum.QuestionStatus questionStatus;
 
         public static Response toDto(Board board) {
             return Response.builder()
@@ -52,6 +53,7 @@ public class BoardDto {
                     .user_no(board.getUser().getUserNo())
                     .user_name(board.getUser().getUserName())
                     .role(board.getRole())
+                    .questionStatus(board.getQuestionStatus())
                     .build();
         }
 
@@ -64,6 +66,7 @@ public class BoardDto {
                     .user_no(board.getUser().getUserNo())
                     .user_name(board.getUser().getUserName())
                     .role(board.getRole())
+                    .questionStatus(board.getQuestionStatus())
                     .build();
         }
     }

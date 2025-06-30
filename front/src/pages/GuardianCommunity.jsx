@@ -54,7 +54,7 @@ const GuardianCommunity = () => {
     };
 
     loadCommunity();
-  }, [userId]);
+  }, []);
 
   if (loading) {
     return (
