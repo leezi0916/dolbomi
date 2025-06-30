@@ -42,7 +42,9 @@ public class SecurityConfig {
                                 "/hiring/v1/simple-list",
                                 "/resume/v1/simple-list",
                                 "/review/v1/simple-list",
-
+                                "/community/v1/caregiver",
+                                "/community/v1/guardian",
+                                "/community/v1/question",
                                 "/"
 
                         ).permitAll()

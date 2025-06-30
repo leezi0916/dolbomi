@@ -57,12 +57,17 @@ public class Board {
     private StatusEnum.Status status;
 
     @Column(name = "ROLE", nullable = false, length = 1)
+    @Enumerated(EnumType.STRING)
     private StatusEnum.Role role;
 
-    private Integer count;
+    @Column(name = "QUESTION_STATUS", length = 1)
+    @Enumerated(EnumType.STRING)
+    private StatusEnum.QuestionStatus questionStatus;
 
     @OneToMany(mappedBy = "board", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<File> files = new ArrayList<>();
+
+    private int count;
 
     public void addFile(File file) {
         files.add(file);

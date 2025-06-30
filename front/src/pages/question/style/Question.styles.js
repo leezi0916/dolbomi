@@ -38,7 +38,6 @@ export const BoardMenu = styled.div`
   display: flex;
   gap: 30px;
   padding: 10px;
-  border-bottom: 1px solid ${({ theme }) => theme.colors.gray[3]};
 `;
 export const MenuDiv = styled.div`
   font-weight: ${({ theme }) => theme.fontWeights.bold};
@@ -58,11 +57,15 @@ export const BoardTop = styled.div`
   display: flex;
   justify-content: center;
   padding: 5px 0;
+  border-top: 1px solid ${({ theme }) => theme.colors.gray[3]};
   border-bottom: 1px solid ${({ theme }) => theme.colors.gray[3]};
 `;
-export const BoardTopLeft = styled(FlexGrow)``;
+export const BoardTopLeft = styled.div`
+  align-content: center;
+  flex: 1;
+`;
 export const BoardTopRight = styled(alignRight)`
-  flex: 5;
+  flex: 6;
   padding-right: 10px;
   gap: 6px;
 `;

@@ -82,11 +82,13 @@ const QuestionHistory = () => {
       <PageInfo>
         <PageTop>
           <PageTitle> 1:1 문의사항 </PageTitle>
-          <BoardMenu>
-            <MenuLink to="/question/full">전체</MenuLink>
-            <MenuDiv>문의내역</MenuDiv>
-            {userId && <MenuLink to="/question/create"> 문의하기</MenuLink>}{' '}
-          </BoardMenu>
+          {userId && (
+            <BoardMenu>
+              <MenuLink to="/question/full">전체</MenuLink>
+              <MenuDiv>문의내역</MenuDiv>
+              <MenuLink to="/question/create"> 문의하기</MenuLink>
+            </BoardMenu>
+          )}
         </PageTop>
 
         <BoardTop>
@@ -104,16 +106,16 @@ const QuestionHistory = () => {
           <div>No</div>
           <div style={{ flex: '2' }}>제목</div>
           <div>작성자</div>
-          <div>작성 일자</div>
+          <div style={{ flex: '2' }}>작성 일자</div>
           <div>처리 현황</div>
         </BoardItemTop>
         {currentList.map((info) => (
-          <BoardItem key={info.no} to={`/community/detail/${info.no}`}>
-            <div>{info.no}</div>
-            <div style={{ flex: '2' }}>{info.title}</div>
-            <div>{info.name}</div>
-            <div>{info.create_date}</div>
-            {info.question_status == 'Y' ? <div>완료</div> : <div>대기</div>}
+          <BoardItem key={info.boardNo} to={`/community/detail/${info.boardNo}`}>
+            <div>{info.boardNo}</div>
+            <div style={{ flex: '2' }}>{info.boardTitle}</div>
+            <div>{info.userName}</div>
+            <div style={{ flex: '2' }}>{info.createDate}</div>
+            {info.questionStatus == 'Y' ? <div>완료</div> : <div>대기</div>}
           </BoardItem>
         ))}
 
