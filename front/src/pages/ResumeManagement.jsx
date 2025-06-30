@@ -39,9 +39,21 @@ const ResumeManagement = () => {
   const handleStatusToggle = async (resumeNo, currentStatus) => {
     const newStatus = currentStatus === 'Y' ? 'W' : 'Y';
 
+    if (newStatus === 'Y') {
+      const confirmPost = window.confirm('이 이력서를 간병사 모집에 게시하시겠습니까?');
+      if (!confirmPost) return;
+
+      // 2. 이미 등록된 resume가 3개 이상인지 검사
+      const activeResumes = resumeLists.filter((resume) => resume.status === 'Y');
+      if (activeResumes.length >= 3) {
+        toast.error('이력서는 최대 3개까지만 등록할 수 있습니다.');
+        return;
+      }
+    }
+
     try {
       await jobSeekingService.updateResume(resumeNo, { status: newStatus });
-      toast.success('상태가 변경되었습니다.');
+      toast.success('이력서가 간병인 모집에 게시되었습니다.');
 
       setResumeLists((prev) =>
         prev.map((resume) => (resume.resumeNo === resumeNo ? { ...resume, status: newStatus } : resume))
@@ -58,7 +70,7 @@ const ResumeManagement = () => {
           <Title>이력서 목록</Title>
           <Text>체크 클릭시 이력서가 간병사로 신청됩니다!</Text>
           <RegistrationButton>
-            <ButtonText onClick={() => navigate('/caregiver/resumeregistration')}>등록</ButtonText>
+            <ButtonText onClick={() => navigate('/caregiver/resumeregistration')}>이력서 등록</ButtonText>
           </RegistrationButton>
         </Head>
 
@@ -69,14 +81,13 @@ const ResumeManagement = () => {
                 <ProfileTextGray>
                   NO <ProfileTextStrong>{resume.resumeNo}</ProfileTextStrong>
                 </ProfileTextGray>
-                <StyledCheckbox checked={resume.status ==='Y'}>
+                <StyledCheckbox checked={resume.status === 'Y'}>
                   <HiddenCheckbox
                     checked={resume.status === 'Y'}
                     onChange={() => handleStatusToggle(resume.resumeNo, resume.status)}
                   />
                   {resume.status === 'Y' && <IoCheckmarkOutline size="20px" color="white" />}
                 </StyledCheckbox>
-
               </ProfileDiv>
 
               <ButtonDiv>

@@ -64,11 +64,13 @@ public class ProposerController {
         return ResponseEntity.ok("매칭이 수락되었습니다.");
     }
 
+
     @GetMapping("/accept/check")
     public ResponseEntity<Boolean> checkAccepted(@RequestParam("hiring_no") Long hiringNo,
                                                  @RequestParam("resume_no") Long resumeNo) {
         boolean isAccepted = proposerService.isAccepted(resumeNo, hiringNo);
         return ResponseEntity.ok(isAccepted);
     }
+
 
 }
