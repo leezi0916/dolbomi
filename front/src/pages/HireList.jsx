@@ -30,7 +30,7 @@ const HireList = () => {
   const [page, setPage] = useState(1); // MUI Pagination은 1부터 시작
   const [size] = useState(10);
   const [totalPages, setTotalPages] = useState(0);
-  const [visible, setVisible] = useState(true);
+  const [visible, setVisible] = useState(false);
 
   // 1. 컴포넌트가 처음 마운트될 때 전체 리스트를 불러옵니다.
   useEffect(() => {
