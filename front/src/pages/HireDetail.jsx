@@ -16,7 +16,6 @@ import { guardianHiringForm } from '../hooks/guardianHiringForm';
 import ResumeSelectModal from '../components/ResumeSelectModal';
 import { proposerService } from '../api/propose';
 
-
 const HireDetail = () => {
   const navigate = useNavigate();
   const { hiringNo } = useParams();
@@ -79,11 +78,10 @@ const HireDetail = () => {
       });
       setAlreadyApplied(checkProposer);
     } catch (error) {
-      console.error('신청확인실패 ');
+      console.error(error + ': 신청확인실패 ');
     }
   };
   checkProposer();
-
 
   //지원 현황 관련
   const [proposerList, setproposerList] = useState([]);
@@ -96,7 +94,7 @@ const HireDetail = () => {
       await proposerService.cancelProposer({
         caregiverNo: user.userNo,
         hiringNo: Number(hiringNo),
-        status : null
+        status: null,
       });
       alert('신청이 취소되었습니다.');
       setAlreadyApplied(false);
