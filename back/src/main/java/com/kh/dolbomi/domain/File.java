@@ -32,6 +32,23 @@ public class File {
     @JoinColumn(name = "BOARD_NO", nullable = false)
     private Board board;
 
-    @Column(name = "FILE_NAME", length = 100)
-    private String fileName;
+//    @Column(name = "FILE_NAME", length = 100)
+//    private String fileName; 사용안함
+
+    @Column(name = "ORIGIN_NAME", length = 100)
+    private String originName;
+
+    @Column(name = "CHANGE_NAME", length = 100)
+    private String changeName;
+
+    private String filePath;
+
+    public void changeFile(String originName, String changeName) {
+        this.originName = originName;
+        this.changeName = changeName;
+    }
+
+    public void setBoard(Board board) {
+        this.board = board;
+    }
 }
