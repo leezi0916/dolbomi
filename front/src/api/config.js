@@ -42,6 +42,7 @@ export const API_ENDPOINTS = {
     BASE: '/hiring/v1',
     SIMPLE_LIST: '/hiring/v1/simple-list',
     LIST: '/hiring/v1/list',
+    MYLIST: (currentPage, userNo) => `/hiring/v1/my-list?page=${currentPage - 1}&userNo=${userNo}`,
     DETAIL: (hiringNo) => `/hiring/v1/${hiringNo}`, //get
     STATUS: (hiringNo) => `/hiring/v1/${hiringNo}/status`,
     DELETE: (hiringNo) => `/hiring/v1/${hiringNo}`, //patch
@@ -77,11 +78,9 @@ export const API_ENDPOINTS = {
   PROPOSER: {
     BASE: '/proposer/v1',
     LIST: (hiringNo) => `/proposer/v1?hiring_no=${hiringNo}`,
-    STATUS : (hiringNo, caregiverNo) =>
-    `/proposer/v1/check?hiring_no=${hiringNo}&caregiver_no=${caregiverNo}`,
-    CANCEL:  (hiringNo, caregiverNo) => `/proposer/v1/cancel?hiring_no=${hiringNo}&caregiver_no=${caregiverNo}`,
+    STATUS: (hiringNo, caregiverNo) => `/proposer/v1/check?hiring_no=${hiringNo}&caregiver_no=${caregiverNo}`,
+    CANCEL: (hiringNo, caregiverNo) => `/proposer/v1/cancel?hiring_no=${hiringNo}&caregiver_no=${caregiverNo}`,
     ACCEPT: '/proposer/v1/accept',
-
   },
 
   MATCHING: {

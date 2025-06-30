@@ -52,6 +52,7 @@ public class HiringDto {
     }
 
     @Getter
+    @Setter
     @AllArgsConstructor
     @NoArgsConstructor
     @Builder
@@ -62,6 +63,7 @@ public class HiringDto {
         private String hiring_title;
         private String hiring_content;
         private Integer account;
+        private LocalDateTime create_date;
 
         private LocalDateTime start_date;
         private LocalDateTime end_date;
@@ -71,6 +73,10 @@ public class HiringDto {
         private StatusEnum.CareStatus care_status;
         private String room_image;
         private StatusEnum.HiringStatus hiring_status;
+
+        // 내 구인글 관리 -> 몇명 신청했는지
+        private Integer applied_count;
+
         //환자 정보
         private Long pat_no;
         private String pat_name;
@@ -183,23 +189,32 @@ public class HiringDto {
 
         }
 
-    }
+        public static Response myHiringDto(Hiring hiring) {
+            return Response.builder()
+                    .hiring_no(hiring.getHiringNo())
+                    .hiring_title(hiring.getHiringTitle())
+                    .create_date(hiring.getCreateDate())
+                    .hiring_status(hiring.getHiringStatus())
+                    .applied_count(hiring.getProposerList() != null ? hiring.getProposerList().size() : 0)
+                    .build();
+        }
 
 
-    @Getter
-    @Setter
-    @AllArgsConstructor
-    @NoArgsConstructor
-    public static class Update {
+        @Getter
+        @Setter
+        @AllArgsConstructor
+        @NoArgsConstructor
+        public static class Update {
 
-        private String hiring_title;
-        private String hiring_content;
-        private Integer account;
-        private LocalDateTime start_date;
-        private LocalDateTime end_date;
-        private Integer max_applicants;
-        private StatusEnum.CareStatus care_status;
-        private String room_image;
+            private String hiring_title;
+            private String hiring_content;
+            private Integer account;
+            private LocalDateTime start_date;
+            private LocalDateTime end_date;
+            private Integer max_applicants;
+            private StatusEnum.CareStatus care_status;
+            private String room_image;
+        }
     }
 }
 

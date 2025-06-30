@@ -16,7 +16,6 @@ import { guardianHiringForm } from '../hooks/guardianHiringForm';
 import ResumeSelectModal from '../components/ResumeSelectModal';
 import { proposerService } from '../api/propose';
 
-
 const HireDetail = () => {
   const navigate = useNavigate();
   const { hiringNo } = useParams();
@@ -84,7 +83,6 @@ const HireDetail = () => {
   };
   checkProposer();
 
-
   //지원 현황 관련
   const [proposerList, setproposerList] = useState([]);
 
@@ -96,7 +94,7 @@ const HireDetail = () => {
       await proposerService.cancelProposer({
         caregiverNo: user.userNo,
         hiringNo: Number(hiringNo),
-        status : null
+        status: null,
       });
       alert('신청이 취소되었습니다.');
       setAlreadyApplied(false);
@@ -290,12 +288,13 @@ const HireDetail = () => {
         </form>
         <ButtonGroup>
           <BackButton onClick={() => navigate(-1)}>이전</BackButton>
-          <DeleteButton type="button" onClick={() => deleteOnClick(hiringNo)}>
-            삭제
-          </DeleteButton>
+
           {isMyJobOpening ? (
             // 본인이 작성한 글일 경우
             <>
+              <DeleteButton type="button" onClick={() => deleteOnClick(hiringNo)}>
+                삭제
+              </DeleteButton>
               <SubmitButton1
                 type="button"
                 onClick={() => {

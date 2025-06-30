@@ -25,7 +25,7 @@ const GuardianMainPage = () => {
         setReviewList(reviewList);
       } catch (error) {
         console.error(error);
-        const errorMessage = '구인 목록을 불러오는데 실패했습니다.';
+        const errorMessage = '구직 목록을 불러오는데 실패했습니다.';
         toast.error(errorMessage);
       }
     };
@@ -100,7 +100,9 @@ const GuardianMainPage = () => {
                       <span>지역</span> {resume.address}
                     </CardRegionText>
                   </CardBottomTextSection>
-                  <MainMoveButton onClick={() => navigate(`/caregiver/resumeDetail/${resume.resumeNo}`)}>상세보기</MainMoveButton>
+                  <MainMoveButton onClick={() => navigate(`/caregiver/resumeDetail/${resume.resumeNo}`)}>
+                    상세보기
+                  </MainMoveButton>
                 </CardBottomContent>
               </Card>
             ))}

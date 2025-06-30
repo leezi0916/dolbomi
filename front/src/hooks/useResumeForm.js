@@ -1,4 +1,4 @@
-import {  useState } from 'react';
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
@@ -33,7 +33,6 @@ export const useResumeForm = (resumeNo) => {
 
   // useEffect(() => {
   //   const fetchAll = async () => {
-<<<<<<< HEAD
   //     try {
   //       const getcareGiverResume = await jobSeekingService.getResume(Number(resumeNo));
   //       setCareGiverResume(getcareGiverResume);
@@ -45,7 +44,6 @@ export const useResumeForm = (resumeNo) => {
   //   };
   //   fetchAll();
   // }, [user]);
-
 
   // // resumeNo가 있으면 이력서 데이터 불러와서 폼 초기화
   // useEffect(() => {
