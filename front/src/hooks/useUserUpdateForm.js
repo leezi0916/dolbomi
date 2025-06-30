@@ -65,7 +65,7 @@ const useUserUpdateForm = ({ profile }) => {
       const updatedData = {
         ...changedFields,
         licenses: licenseList || [],
-        // profileImage: 's3url보내야함', //나중에 s3 url
+        profileImage: 's3url보내야함', //나중에 s3 url
       };
 
       console.log('보내는 데이터:', updatedData);

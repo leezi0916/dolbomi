@@ -25,6 +25,7 @@ const Header = () => {
     logout(); // Zustand에서 사용자 상태 초기화
     sessionStorage.removeItem('token');
     localStorage.removeItem('user-storage'); // persist 저장소 삭제
+    localStorage.removeItem('status-storage');
     alert('로그아웃 되었습니다.');
     navigate('/'); // 홈으로 이동
     setIsMenuOpen(false);
