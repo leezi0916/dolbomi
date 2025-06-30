@@ -40,8 +40,7 @@ server:
 
 jwt:
   secret: JaOmRTrD8ApXk2p/E5i04AxX6HdV3QCF0HntfC8Xmf3YW76APVb9xgTOffrCOC44Khjjb2/WZB3IxTRshBATbw==
-  expiration: 3000 #분단위
-
+  expiration: 3000
 ---
 spring:
   config:
