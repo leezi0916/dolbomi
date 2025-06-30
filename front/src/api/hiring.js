@@ -19,6 +19,22 @@ export const hiringService = {
     }
   },
 
+  // 내 구인글 가져오기
+  getMyJobOpeningList: async (currentPage, userNo) => {
+    try {
+      const { data } = await api.get(API_ENDPOINTS.HIRING.MYLIST(currentPage, userNo));
+      console.log(currentPage, userNo);
+      return snakeToCamel(data);
+    } catch (error) {
+      if (error.response) {
+        const message = error.response?.data?.message || '구인 리스트를 가져오는데에 실패했습니다.';
+        throw new Error(message);
+      }
+
+      throw new Error('서버 통신 불량');
+    }
+  },
+
   //돌봄대상자 모집 리스트
   getHiringList: async ({ page = 0, size = 10 } = {}) => {
     try {

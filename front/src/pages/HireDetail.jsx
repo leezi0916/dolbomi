@@ -16,7 +16,6 @@ import { guardianHiringForm } from '../hooks/guardianHiringForm';
 import ResumeSelectModal from '../components/ResumeSelectModal';
 import { proposerService } from '../api/propose';
 
-
 const HireDetail = () => {
   const navigate = useNavigate();
   const { hiringNo } = useParams();
@@ -84,7 +83,6 @@ const HireDetail = () => {
   };
   checkProposer();
 
-
   //지원 현황 관련
   const [proposerList, setproposerList] = useState([]);
 
@@ -96,7 +94,7 @@ const HireDetail = () => {
       await proposerService.cancelProposer({
         caregiverNo: user.userNo,
         hiringNo: Number(hiringNo),
-        status : null
+        status: null,
       });
       alert('신청이 취소되었습니다.');
       setAlreadyApplied(false);
@@ -290,12 +288,13 @@ const HireDetail = () => {
         </form>
         <ButtonGroup>
           <BackButton onClick={() => navigate(-1)}>이전</BackButton>
-          <DeleteButton type="button" onClick={() => deleteOnClick(hiringNo)}>
-            삭제
-          </DeleteButton>
+
           {isMyJobOpening ? (
             // 본인이 작성한 글일 경우
             <>
+              <DeleteButton type="button" onClick={() => deleteOnClick(hiringNo)}>
+                삭제
+              </DeleteButton>
               <SubmitButton1
                 type="button"
                 onClick={() => {
@@ -309,14 +308,18 @@ const HireDetail = () => {
                 {recruitmentClosed ? '마감' : '모집 마감'}
               </SubmitButton1>
             </>
-          ) : // 본인이 작성한 글이 아닐 경우
-          alreadyApplied ? (
-            // 다른 사람이 작성하고 내가 신청한 글일 경우
+          ) : recruitmentClosed ? (
+            // 모집 마감된 글인데 내가 작성자가 아니면 신청 버튼 대신 비활성 모집 마감 버튼 표시
+            <SubmitButton1 type="button" disabled $disabled>
+              모집 마감
+            </SubmitButton1>
+          ) : alreadyApplied ? (
+            // 모집 중이고 내가 신청한 경우 → 신청취소 버튼
             <SubmitButton1 type="button" onClick={handleCancel}>
               신청취소
             </SubmitButton1>
           ) : (
-            // 다른 사람이 작성하고 내가 신청하지 않은 글일 경우
+            // 모집 중이고 내가 신청하지 않은 경우 → 신청하기 버튼
             <SubmitButton1 type="button" onClick={handleOpenModal}>
               신청하기
             </SubmitButton1>

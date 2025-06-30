@@ -39,7 +39,7 @@ function ResumeDetail() {
   console.log(resumeNo);
   const navigate = useNavigate();
   const [resumeData, setResumeData] = useState(null);
-
+  const [isMatched, setIsMatched] = useState(false);
 
   /*이력서 정보를 갖고오는 (유저 정보 담아서) */
   useEffect(() => {
@@ -94,6 +94,21 @@ function ResumeDetail() {
     }
   };
 
+  //이미 매칭 수락된 이력서 인지 판단
+  useEffect(() => {
+    const checkMatched = async () => {
+      if (hiringNo) {
+        try {
+          const matched = await proposerService.checkAccepted({ resumeNo, hiringNo });
+          setIsMatched(matched);
+        } catch (error) {
+          console.error('매칭 상태 확인 실패:', error);
+        }
+      }
+    };
+    checkMatched();
+  }, [resumeNo, hiringNo]);
+
   return (
     <HireRegistSection>
       <HireContainer>
@@ -110,11 +125,10 @@ function ResumeDetail() {
             </ChatButton>
           </div>
           <Divider>
-
             <InputRow>
               <InputGroup>
                 <Label>이름</Label>
-                <Input type="text" value={resumeData?.userName || ''} readOnly /> 
+                <Input type="text" value={resumeData?.userName || ''} readOnly />
               </InputGroup>
               <InputGroup>
                 <Label>나이</Label>
@@ -238,7 +252,13 @@ function ResumeDetail() {
 
         <ButtonGroup>
           <BackButton onClick={() => navigate(-1)}>이전</BackButton>
-          {hiringNo && <SubmitButton1 onClick={handleAcceptMatching}>매칭 수락</SubmitButton1>}
+
+          {hiringNo && (
+            <SubmitButton1 onClick={handleAcceptMatching} disabled={isMatched} $disabled={isMatched}>
+              {isMatched ? '매칭 완료' : '매칭 수락'}
+            </SubmitButton1>
+          )}
+
           {resumeData?.userNo === user?.userNo ? (
             <SubmitButton1 type="button" onClick={() => navigate(`/caregiver/myresume/${resumeData?.resumeNo}`)}>
               수정하기
@@ -457,11 +477,12 @@ const BackButton = styled.button`
 
 const SubmitButton1 = styled(SubmitButton)`
   width: 65%;
-  border: 1px solid ${({ theme, $error }) => ($error ? theme.colors.error : theme.colors.gray[5])};
-  border-radius: ${({ theme }) => theme.borderRadius.md};
+  border: 1px solid ${({ theme, $disabled }) => ($disabled ? theme.colors.gray[5] : theme.colors.gray[5])};
+  background-color: ${({ theme, $disabled }) => ($disabled ? theme.colors.gray[5] : theme.colors.primary)};
   font-size: ${({ theme }) => theme.fontSizes.md};
   font-weight: ${({ theme }) => theme.fontWeights.medium};
   color: white;
+  cursor: ${({ $disabled }) => ($disabled ? 'not-allowed' : 'pointer')};
 `;
 
 const LicenseGroup = styled.div`

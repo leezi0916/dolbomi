@@ -29,5 +29,6 @@ public interface HiringRepository {
     // 구인글 삭제
     void softDeleteByHiringNo(Long hiringNo);
 
-
+    // 내 구인글 조회
+    Page<Hiring> getMyHiringLists(Status status, Pageable pageable, Long userNo);
 }
