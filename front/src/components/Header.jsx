@@ -27,6 +27,8 @@ const Header = () => {
     sessionStorage.removeItem('token');
     localStorage.removeItem('user-storage'); // persist 저장소 삭제
     localStorage.removeItem('status-storage'); // persist 저장소 삭제
+
+
     alert('로그아웃 되었습니다.');
     navigate('/'); // 홈으로 이동
     setIsMenuOpen(false);
@@ -482,6 +484,7 @@ const MenuButton = styled(GiHamburgerMenu)`
 `;
 
 const MobileMenu = styled.div`
+  border: 1px solid ${({ theme }) => theme.colors.gray[5]};
   display: flex;
   flex-direction: column;
   gap: ${({ theme }) => theme.spacing[4]};

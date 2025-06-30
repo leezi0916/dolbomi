@@ -79,9 +79,14 @@ public class User {
     @Builder.Default
     private Role role = Role.USER;
 
+
     // User <-> License 양방향 설정
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private List<License> licenses = new ArrayList<>();
+
+    // User <-> board 양방향 설정
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    private List<Board> boards = new ArrayList<>();
 
     public void updateUserInfo(String userName, Integer age, StatusEnum.Gender gender, String phone, String email,
                                String address,

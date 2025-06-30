@@ -30,6 +30,7 @@ const HireList = () => {
   const [page, setPage] = useState(1); // MUI Pagination은 1부터 시작
   const [size] = useState(10);
   const [totalPages, setTotalPages] = useState(0);
+  const [visible, setVisible] = useState(true);
 
   // 1. 컴포넌트가 처음 마운트될 때 전체 리스트를 불러옵니다.
   useEffect(() => {
@@ -61,7 +62,7 @@ const HireList = () => {
         setTotalPages(res.totalPage);
       }
     } catch (err) {
-      setError('돌봄 대상자 구인 리스트를 가져오지 못했습니다.');
+      setError('돌봄 대상자 구인 리스트를 가져오지 못했습니다. ' + err);
     } finally {
       setLoading(false);
     }
@@ -76,14 +77,23 @@ const HireList = () => {
   const handleCheckChange = (e) => {
     setCareStatus(e.target.checked);
   };
+
+  const handleDetail = () => {
+    setVisible((prev) => !prev);
+  };
   return (
     <>
+      {/* test */}
       <SearchSection>
         <Title>돌봄대상자 모집</Title>
-        <SearchContainer>
-          <SearchDivder>
-            <Section1>
-              <SearchDivder1>
+        <SearchContainer2>
+          <Search>
+            <SearchBar onSearch={handleSearchSubmit} />
+            <DetailBtn onClick={handleDetail}>상세검색</DetailBtn>
+          </Search>
+          {visible && (
+            <Detail visible={visible}>
+              <Item>
                 <SelectBox value={patAddress} onChange={(e) => setPatAddress(e.target.value)}>
                   <option value="">지역</option>
                   <option value="서울">서울</option>
@@ -91,68 +101,59 @@ const HireList = () => {
                   <option value="제주">제주</option>
                   {/* 더 많은 지역 옵션 */}
                 </SelectBox>
-              </SearchDivder1>
-
-              <SearchDivder1>
+              </Item>
+              <DateBox>
+                <DateInput type="date" value={startDate} onChange={(e) => setStartDate(e.target.value)} />
+                <DateSeparator>-</DateSeparator>
+                <DateInput type="date" value={endDate} onChange={(e) => setEndDate(e.target.value)} />
+              </DateBox>
+              <Item>
                 <ACCOUNT
                   type="number"
                   placeholder="시급 ~ 이상"
                   value={account}
                   onChange={(e) => setAccount(e.target.value)}
                 />
-              </SearchDivder1>
-            </Section1>
-            <Section2>
-              <SearchDivder1>
-                <DateInput type="date" value={startDate} onChange={(e) => setStartDate(e.target.value)} />
-                <DateSeparator>-</DateSeparator>
-                <DateInput type="date" value={endDate} onChange={(e) => setEndDate(e.target.value)} />
-              </SearchDivder1>
-              <SearchDivder1>
-                <SearchBar onSearch={handleSearchSubmit} />
-              </SearchDivder1>
-            </Section2>
-            <Section3>
-              <SearchDivder1>
-                <RadioGroup>
-                  <RadioWrapper>
-                    {/* checked prop 전달 */}
-                    <input
-                      type="radio"
-                      id="male"
-                      name="patGender"
-                      value="male"
-                      checked={patGender === 'M'}
-                      onChange={() => setPatGender('M')}
-                    />
-                    <label htmlFor="male">남성</label>
-                  </RadioWrapper>
-                  <RadioWrapper>
-                    {/* checked prop 전달 */}
-                    <input
-                      type="radio"
-                      id="female"
-                      name="patGender"
-                      value="F"
-                      checked={patGender === 'F'}
-                      onChange={() => setPatGender('F')}
-                    />
-                    <label htmlFor="F">여성</label>
-                  </RadioWrapper>
-                  <RadioWrapper>
-                    <input
-                      type="radio"
-                      id="anyGender"
-                      name="gender"
-                      value="" // 성별 무관을 위해 빈 문자열로 설정
-                      checked={patGender === ''}
-                      onChange={() => setPatGender('')}
-                    />
-                    <label htmlFor="anyGender">성별 무관</label>
-                  </RadioWrapper>
-                </RadioGroup>
-              </SearchDivder1>
-              <SearchDivder2>
+              </Item>
+
+              <RadioGroup2>
+                <RadioWrapper>
+                  {/* checked prop 전달 */}
+                  <input
+                    type="radio"
+                    id="male"
+                    name="patGender"
+                    value="male"
+                    checked={patGender === 'M'}
+                    onChange={() => setPatGender('M')}
+                  />
+                  <Label htmlFor="male">남성</Label>
+                </RadioWrapper>
+                <RadioWrapper>
+                  {/* checked prop 전달 */}
+                  <input
+                    type="radio"
+                    id="female"
+                    name="patGender"
+                    value="F"
+                    checked={patGender === 'F'}
+                    onChange={() => setPatGender('F')}
+                  />
+                  <Label htmlFor="F">여성</Label>
+                </RadioWrapper>
+                <RadioWrapper>
+                  <input
+                    type="radio"
+                    id="anyGender"
+                    name="gender"
+                    value="" // 성별 무관을 위해 빈 문자열로 설정
+                    checked={patGender === ''}
+                    onChange={() => setPatGender('')}
+                  />
+                  <Label2 htmlFor="anyGender">성별 무관</Label2>
+                </RadioWrapper>
+              </RadioGroup2>
+              <Item>
                 <AccommodationCheckboxLabel>
                   <HiddenCheckbox type="checkbox" checked={careStatus} onChange={handleCheckChange} />
                   <StyledCheckbox checked={careStatus}>
@@ -160,10 +161,10 @@ const HireList = () => {
                   </StyledCheckbox>
                   숙식 제공
                 </AccommodationCheckboxLabel>
-              </SearchDivder2>
-            </Section3>
-          </SearchDivder>
-        </SearchContainer>
+              </Item>
+            </Detail>
+          )}
+        </SearchContainer2>
       </SearchSection>
 
       {/* 여기부턴 돌봄 대상자 리스트 */}
@@ -229,57 +230,36 @@ const Title = styled.h1`
   justify-content: flex-start;
 `;
 
-const SearchContainer = styled(Container)`
-  height: 300px;
+const Detail = styled.div`
+  margin-top: 30px;
+  grid-template-columns: repeat(3, 1fr);
+  grid-auto-rows: min-content;
+  row-gap: 20px;
+  user-select: none;
+
+  display: ${({ visible }) => (visible ? 'grid' : 'none')};
+`;
+
+const SearchContainer2 = styled(Container)`
+  padding: 20px;
+  width: 100%;
   background-color: ${({ theme }) => theme.colors.gray[5]};
   border-radius: 4px;
 `;
-const SearchDivder1 = styled.div`
-  height: 50%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: ${({ theme }) => theme.spacing[6]};
+
+const DetailBtn = styled.p`
+  width: 100px;
+  padding-left: 16px;
+  color: ${({ theme }) => theme.colors.gray[3]};
+  cursor: pointer;
+  user-select: none;
+  &:hover {
+    color: ${({ theme }) => theme.colors.gray[2]};
+  }
 `;
 
-const SearchDivder2 = styled.div`
-  width: 100%;
-  height: 50%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: flex-start;
-  padding: 0 ${({ theme }) => theme.spacing[3]};
-`;
-const SearchDivder = styled.div`
-  display: flex;
-  height: 100%;
-`;
-
-const SearchSection = styled(Section)``;
-
-const Section1 = styled(Section)`
-  width: 25%;
-  display: flex;
-  flex-direction: column;
-  gap: ${({ theme }) => theme.spacing[5]};
-  justify-content: center;
-  text-align: center;
-`;
-const Section2 = styled(Section)`
-  width: 50%;
-  display: flex;
-  flex-direction: column;
-  gap: ${({ theme }) => theme.spacing[5]};
-`;
-const Section3 = styled(Section)`
-  width: 25%;
-  display: flex;
-  flex-direction: column;
-  gap: ${({ theme }) => theme.spacing[5]};
-  justify-content: center;
-  text-align: center;
-  align-items: center;
+const SearchSection = styled(Section)`
+  padding-bottom: 0;
 `;
 
 const SelectBox = styled.select`
@@ -293,7 +273,7 @@ const SelectBox = styled.select`
 
 const DateInput = styled.input`
   height: 50px;
-
+  width: 100%;
   border-radius: ${({ theme }) => theme.spacing[1]};
   padding: 0 ${({ theme }) => theme.spacing[4]};
   font-size: ${({ theme }) => theme.spacing[4]};
@@ -302,14 +282,26 @@ const DateInput = styled.input`
 
 const DateSeparator = styled.span`
   margin: 0 5px;
+  align-items: center;
   font-weight: ${({ theme }) => theme.fontWeights.bold};
   color: ${({ theme }) => theme.colors.gray[1]};
 `;
-const RadioGroup = styled.div`
+
+const RadioGroup2 = styled.div`
   display: flex;
+  align-items: center;
   gap: ${({ theme }) => theme.spacing[4]};
 `;
 
+const Label = styled.label`
+  width: 30px;
+  text-align: center;
+`;
+
+const Label2 = styled.label`
+  width: 70px;
+  text-align: center;
+`;
 const RadioWrapper = styled.div`
   display: flex;
   align-items: center;
@@ -497,13 +489,33 @@ const CareContent = styled.span`
   `}
 `;
 
+const Item = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
+const Search = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  grid-column: span 3;
+`;
+
+const DateBox = styled.div`
+  display: flex;
+  align-items: center;
+  grid-column: span 2;
+  width: 100%;
+`;
+
 const DateInfo = styled.span`
-  grid-column: 1 / span 2; /* 작은 화면에서는 1줄 전체 사용 */
+  grid-column: 1 / span 2; //작은 화면에서는 1줄 전체 사용
   grid-row: auto;
   font-size: ${({ theme }) => theme.fontSizes.xs}; /* 작은 화면 폰트 크기 */
   color: ${({ theme }) => theme.colors.gray[500]};
   white-space: nowrap;
-  align-self: center; /* 수직 중앙 정렬 */
+  align-self: center;
   text-align: center; /* 작은 화면에서 중앙 정렬 */
 
   ${media.sm`

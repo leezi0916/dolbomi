@@ -21,6 +21,7 @@ const HireRegistration = () => {
   const [userPatients, setUserpatients] = useState();
   const [patient, setPatient] = useState();
   const [selectPatientNo, setSelectPatientNo] = useState(undefined);
+  const [careStatus, setCareStatus] = useState('');
   const navigate = useNavigate();
 
   //숙소 이미지 넣기
@@ -92,6 +93,10 @@ const HireRegistration = () => {
       };
       reader.readAsDataURL(file); // base64 인코딩
     }
+  };
+
+  const handleCareStatusChange = (e) => {
+    setCareStatus(e.target.value);
   };
 
   const onSubmit = async (data) => {
@@ -252,38 +257,56 @@ const HireRegistration = () => {
               <RadioGroup>
                 <Label>숙식 제공 여부</Label>
                 <RadioWrapper>
-                  <input type="radio" id="Y" name="careStatus" value="Y" {...register('careStatus')} $error={errors.careStatus}  />
+
+                  <input
+                    type="radio"
+                    id="Y"
+                    name="careStatus"
+                    value="Y"
+                    {...register('careStatus')}
+                    onChange={handleCareStatusChange}
+                    $error={errors.careStatus} />
                   <label htmlFor="Y">숙식 가능</label>
-  
                 </RadioWrapper>
+               
                 <RadioWrapper>
-                  <input type="radio" id="N" name="careStatus" value="N" {...register('careStatus')} $error={errors.careStatus} />
+                  <input
+                    type="radio"
+                    id="N"
+                    name="careStatus"
+                    value="N"
+                    {...register('careStatus')}
+                    onChange={handleCareStatusChange}
+                    $error={errors.careStatus}
+                  />
                   <label htmlFor="N">숙식 불가능</label>
                   {errors.careStatus && <ErrorMessage>{errors.careStatus.message}</ErrorMessage>}
                 </RadioWrapper>
               </RadioGroup>
-              <InputGroup>
-                <Label>숙소 정보</Label>
-                {/* 클릭 가능한 div */}
-                <RoomImage onClick={handleDivClick}>
-                  {previewUrl ? (
-                    <img
-                      src={previewUrl}
-                      alt="미리보기"
-                      style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '4px' }}
-                    />
-                  ) : (
-                    <Plus />
-                  )}
-                </RoomImage>
-                <input
-                  type="file"
-                  accept="image/*"
-                  ref={inputRef}
-                  onChange={handleFileChange}
-                  style={{ display: 'none' }}
-                />
-              </InputGroup>
+
+              {careStatus === 'Y' && (
+                <InputGroup>
+                  <Label>숙소 정보</Label>
+                  <RoomImage onClick={handleDivClick}>
+                    {previewUrl ? (
+                      <img
+                        src={previewUrl}
+                        alt="미리보기"
+                        style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '4px' }}
+                      />
+                    ) : (
+                      <Plus />
+                    )}
+                  </RoomImage>
+                  <input
+                    type="file"
+                    accept="image/*"
+                    ref={inputRef}
+                    onChange={handleFileChange}
+                    style={{ display: 'none' }}
+                  />
+                </InputGroup>
+              )}
             </HireContent>
           </ContentWrapper1>
 

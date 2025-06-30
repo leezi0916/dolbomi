@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Container, Section } from '../styles/common/Container';
-// import profileImage from '../assets/images/pat.png'; // 프로필 이미지 경로
+import profileImage from '../assets/images/pat.png'; // 프로필 이미지 경로
 import caregiverImage from '../assets/profileImg/img_간병인.png'; //간병인 기본 이미지
 import chatImage from '../assets/icons/icon_채팅아이콘.png'; // 채팅 이미지 경로
 import styled from 'styled-components';
@@ -78,7 +78,7 @@ const HireDetail = () => {
       });
       setAlreadyApplied(checkProposer);
     } catch (error) {
-      console.error('신청확인실패 ');
+      console.error(error + ': 신청확인실패 ');
     }
   };
   checkProposer();
@@ -178,7 +178,7 @@ const HireDetail = () => {
           <ContentWrapper>
             <div>
               <ProfilImageWrapper>
-                <img src={jobOpening?.profileImage} alt="프로필 이미지" />
+                <img src={jobOpening.profileImage ? jobOpening.profileImage : profileImage} alt="프로필" />
               </ProfilImageWrapper>
               <ChatButton>
                 <img src={chatImage} alt="프로필 이미지" />1 : 1 채팅하기

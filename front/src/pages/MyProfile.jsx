@@ -41,6 +41,16 @@ const MyProfile = () => {
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
+  const formatPhoneNumber = (value) => {
+    // 숫자만 남기기
+    const numbersOnly = value.replace(/\D/g, '');
+
+    // 010부터 시작하고 길이에 따라 포맷팅
+    if (numbersOnly.length < 4) return numbersOnly;
+    if (numbersOnly.length < 8) return `${numbersOnly.slice(0, 3)}-${numbersOnly.slice(3)}`;
+    return `${numbersOnly.slice(0, 3)}-${numbersOnly.slice(3, 7)}-${numbersOnly.slice(7, 11)}`;
+  };
+
   useEffect(() => {
     const loadProfile = async () => {
       if (!userNo) {
@@ -101,9 +111,11 @@ const MyProfile = () => {
         address: 'address',
       }[id] || id; // 매핑되지 않으면 id 그대로 사용
 
+    const newValue = fieldName === 'phone' ? formatPhoneNumber(value) : value;
+
     setFormData((prevData) => ({
       ...prevData,
-      [fieldName]: value,
+      [fieldName]: newValue,
     }));
   };
 

@@ -9,6 +9,7 @@ import { hiringService } from '../api/hiring';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 import { MainMoveButton } from '../styles/common/Button';
+import defaultImage from '../assets/images/pat.png';
 
 const CareGiverMainPage = () => {
   const [jobOpeningList, setJobOpeningList] = useState([]);
@@ -68,30 +69,37 @@ const CareGiverMainPage = () => {
 
         <HiringCardSection>
           <GridContainer>
-            {jobOpeningList.all?.map((jobOpening) => (
-              <Card key={jobOpening.hiringNo}>
-                <CardTopContent>
-                  <CardImage src={jobOpening.profileImage} />
-                  <CardTextGroup>
-                    <CardTitle>{maskName(jobOpening.patName)} 님</CardTitle>
-                    <CardText>
-                      <span>나이</span> : {jobOpening.patAge}세({jobOpening.patGender == 'M' ? '남' : '여'})
-                    </CardText>
-                    <CardText>
-                      <span>시급</span> : {jobOpening.account.toLocaleString()}원
-                    </CardText>
-                  </CardTextGroup>
-                </CardTopContent>
-                <CardBottomContent>
-                  <CardRegion>
-                    <span>지역</span> {jobOpening.patAddress}
-                  </CardRegion>
-                  <MainMoveButton onClick={() => navigate(`/hireDetail/${jobOpening.hiringNo}`)}>
-                    상세보기
-                  </MainMoveButton>
-                </CardBottomContent>
-              </Card>
-            ))}
+            {!jobOpeningList.all || jobOpeningList.all.length === 0 ? (
+              <EmptyMessage>등록된 구인글이 없습니다.</EmptyMessage>
+            ) : (
+              jobOpeningList.all?.map((jobOpening) => (
+                <Card key={jobOpening.hiringNo}>
+                  <CardTopContent>
+                    <CardImage
+                      src={jobOpening.profileImage ? jobOpening.profileImage : '../assets/images/cargiver.png'}
+                      alt="프로필"
+                    />
+                    <CardTextGroup>
+                      <CardTitle>{maskName(jobOpening.patName)} 님</CardTitle>
+                      <CardText>
+                        <span>나이</span> : {jobOpening.patAge}세({jobOpening.patGender == 'M' ? '남' : '여'})
+                      </CardText>
+                      <CardText>
+                        <span>시급</span> : {jobOpening.account.toLocaleString()}원
+                      </CardText>
+                    </CardTextGroup>
+                  </CardTopContent>
+                  <CardBottomContent>
+                    <CardRegion>
+                      <span>지역</span> {jobOpening.patAddress}
+                    </CardRegion>
+                    <MainMoveButton onClick={() => navigate(`/hireDetail/${jobOpening.hiringNo}`)}>
+                      상세보기
+                    </MainMoveButton>
+                  </CardBottomContent>
+                </Card>
+              ))
+            )}
           </GridContainer>
         </HiringCardSection>
       </HiringSection>
@@ -103,30 +111,34 @@ const CareGiverMainPage = () => {
 
         <RoomAndBoardCardSection>
           <GridContainer>
-            {jobOpeningList.careOnly?.map((jobOpening) => (
-              <Card key={jobOpening.hiringNo}>
-                <CardTopContent>
-                  <CardImage src={jobOpening.profileImage} />
-                  <CardTextGroup>
-                    <CardTitle>{maskName(jobOpening.patName)} 님</CardTitle>
-                    <CardText>
-                      <span>나이</span> : {jobOpening.patAge}세({jobOpening.patGender == 'M' ? '남' : '여'})
-                    </CardText>
-                    <CardText>
-                      <span>시급</span> : {jobOpening.account.toLocaleString()}원
-                    </CardText>
-                  </CardTextGroup>
-                </CardTopContent>
-                <CardBottomContent>
-                  <CardRegion>
-                    <span>지역</span> {jobOpening.patAddress}
-                  </CardRegion>
-                  <MainMoveButton onClick={() => navigate(`/hireDetail/${jobOpening.hiringNo}`)}>
-                    상세보기
-                  </MainMoveButton>
-                </CardBottomContent>
-              </Card>
-            ))}
+            {!jobOpeningList.careOnly || jobOpeningList.careOnly?.length === 0 ? (
+              <EmptyMessage>등록된 숙식 제공 구인글이 없습니다.</EmptyMessage>
+            ) : (
+              jobOpeningList.careOnly?.map((jobOpening) => (
+                <Card key={jobOpening.hiringNo}>
+                  <CardTopContent>
+                    <CardImage src={jobOpening.profileImage} />
+                    <CardTextGroup>
+                      <CardTitle>{maskName(jobOpening.patName)} 님</CardTitle>
+                      <CardText>
+                        <span>나이</span> : {jobOpening.patAge}세({jobOpening.patGender == 'M' ? '남' : '여'})
+                      </CardText>
+                      <CardText>
+                        <span>시급</span> : {jobOpening.account.toLocaleString()}원
+                      </CardText>
+                    </CardTextGroup>
+                  </CardTopContent>
+                  <CardBottomContent>
+                    <CardRegion>
+                      <span>지역</span> {jobOpening.patAddress}
+                    </CardRegion>
+                    <MainMoveButton onClick={() => navigate(`/hireDetail/${jobOpening.hiringNo}`)}>
+                      상세보기
+                    </MainMoveButton>
+                  </CardBottomContent>
+                </Card>
+              ))
+            )}
           </GridContainer>
         </RoomAndBoardCardSection>
       </RoomAndBoardSection>
@@ -304,7 +316,7 @@ export const CardImage = styled.div`
   width: 120px;
   height: 120px;
   border-radius: 50%; // 원형 처리
-  background-image: ${({ src }) => (src ? `url(${src})` : 'none')};
+  background-image: ${({ src }) => `url(${src || defaultImage})`};
   background-size: cover;
   background-position: center;
   flex-shrink: 0; // 축소 방지
@@ -397,3 +409,12 @@ export const RoomAndBoardTextSectionTitle = styled(MessageLine)`
 `;
 
 export const RoomAndBoardCardSection = styled(HiringCardSection)``;
+
+// 비어있음 메세지
+export const EmptyMessage = styled.p`
+  width: 100%;
+  text-align: center;
+  padding: ${({ theme }) => theme.spacing[10]} 0;
+  color: ${({ theme }) => theme.colors.gray[3]};
+  font-size: ${({ theme }) => theme.fontSizes.base};
+`;

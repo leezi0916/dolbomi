@@ -29,6 +29,7 @@ const Tags = ({ tags, handleTagChange }) => {
           placeholder="질병 입력"
           value={inputValue}
           onChange={handleInputChange}
+
           onKeyDown={(e) => {
             if (e.key === 'Enter' && !e.nativeEvent.isComposing) {
               e.preventDefault(); // 엔터 눌렀을 때 폼 제출 막기
