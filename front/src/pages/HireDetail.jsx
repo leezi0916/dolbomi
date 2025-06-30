@@ -69,6 +69,20 @@ const HireDetail = () => {
     setAlreadyApplied(true);
   };
 
+  //신청된 글인지 확인하는 기능
+  const checkProposer = async () => {
+    try {
+      const checkProposer = await proposerService.getProposerStatus({
+        caregiverNo: Number(user.userNo),
+        hiringNo: Number(hiringNo),
+      });
+      setAlreadyApplied(checkProposer);
+    } catch (error) {
+      console.error('신청확인실패 ');
+    }
+  };
+  checkProposer();
+
   //지원 현황 관련
   const [proposerList, setproposerList] = useState([]);
 
@@ -80,6 +94,7 @@ const HireDetail = () => {
       await proposerService.cancelProposer({
         caregiverNo: user.userNo,
         hiringNo: Number(hiringNo),
+        status: null,
       });
       alert('신청이 취소되었습니다.');
       setAlreadyApplied(false);
@@ -273,12 +288,13 @@ const HireDetail = () => {
         </form>
         <ButtonGroup>
           <BackButton onClick={() => navigate(-1)}>이전</BackButton>
-          <DeleteButton type="button" onClick={() => deleteOnClick(hiringNo)}>
-            삭제
-          </DeleteButton>
+
           {isMyJobOpening ? (
             // 본인이 작성한 글일 경우
             <>
+              <DeleteButton type="button" onClick={() => deleteOnClick(hiringNo)}>
+                삭제
+              </DeleteButton>
               <SubmitButton1
                 type="button"
                 onClick={() => {
@@ -292,7 +308,8 @@ const HireDetail = () => {
                 {recruitmentClosed ? '마감' : '모집 마감'}
               </SubmitButton1>
             </>
-          ) : alreadyApplied ? (
+          ) : // 본인이 작성한 글이 아닐 경우
+          alreadyApplied ? (
             // 다른 사람이 작성하고 내가 신청한 글일 경우
             <SubmitButton1 type="button" onClick={handleCancel}>
               신청취소

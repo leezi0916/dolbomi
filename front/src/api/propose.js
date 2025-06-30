@@ -19,7 +19,6 @@ export const proposerService = {
 
   // 간병인 신청 등록
   proposerToHiring: async ({ hiringNo, resumeNo, caregiverNo }) => {
-
     try {
       const res = await api.post(API_ENDPOINTS.PROPOSER.BASE, camelToSnake({ hiringNo, resumeNo, caregiverNo }));
       console.log(res);
@@ -30,12 +29,10 @@ export const proposerService = {
   },
 
   // 신청 여부 확인 (프론트에서 버튼 조건 분기용)
-  getProposerStatus: async ({ hiringNo, caregiverNo }) => {
+  getProposerStatus: async ({ caregiverNo, hiringNo }) => {
     try {
-      const { data } = await api.get(API_ENDPOINTS.PROPOSER.STATUS, {
-        params: { hiringNo, caregiverNo },
-      });
-      return data.applied; // true 또는 false 반환한다고 가정
+      const { data } = await api.get(API_ENDPOINTS.PROPOSER.STATUS(hiringNo, caregiverNo));
+      return data;
     } catch (error) {
       console.error('신청 여부 확인 실패:', error.response?.data?.message || error.message);
       throw error;
@@ -44,12 +41,23 @@ export const proposerService = {
 
   // 신청 취소 (삭제)
   //취소는 현재 json-server 사용중이라 백엔드 들어갈시 다시 수정해야할듯
-  cancelProposer: async ({ caregiverNo, hiringNo }) => {
+  cancelProposer: async ({ caregiverNo, hiringNo}) => {
     try {
       // 삭제라면
-      await api.delete(API_ENDPOINTS.PROPOSER.CANCEL(camelToSnake({ hiringNo, caregiverNo })));
+      await api.delete(API_ENDPOINTS.PROPOSER.CANCEL(hiringNo, caregiverNo));
     } catch (error) {
       console.error('신청 취소 실패:', error.response?.data?.message || error.message);
+      throw error;
+    }
+  },
+
+  //지원현황에서 이력서 보고 수락하기
+  acceptMatching: async ({ hiringNo, resumeNo }) => {
+    try {
+      const res = await api.post(API_ENDPOINTS.PROPOSER.ACCEPT, camelToSnake({ hiringNo, resumeNo }));
+      return res.data;
+    } catch (error) {
+      console.error('매칭 수락 실패:', error.response?.data?.message || error.message);
       throw error;
     }
   },

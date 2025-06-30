@@ -98,7 +98,7 @@ export const DiseaseDiv = styled.div`
   grid-template-columns: 4fr 1fr;
 
   input {
-    border-radius: ${({ theme }) => theme.borderRadius.md} 0 ${({ theme }) => theme.borderRadius.md} 0;
+    border-radius: ${({ theme }) => theme.borderRadius.md} 0 0 ${({ theme }) => theme.borderRadius.md} ;
   }
 `;
 
@@ -109,6 +109,7 @@ export const NotesTexttarea = styled.textarea`
   width: 100%;
   border: 1px solid ${({ theme }) => theme.colors.gray[5]};
   border-radius:  ${({ theme }) => theme.borderRadius.md};
+  padding: ${({ theme }) => theme.spacing[3]};
   resize: none;
 `;
 export const BtnWrap = styled.div`

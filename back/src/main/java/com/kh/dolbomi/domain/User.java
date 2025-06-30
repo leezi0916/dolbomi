@@ -1,5 +1,6 @@
 package com.kh.dolbomi.domain;
 
+import com.kh.dolbomi.enums.Role;
 import com.kh.dolbomi.enums.StatusEnum;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -37,7 +38,7 @@ public class User {
     @Column(name = "USER_NO")
     private Long userNo;
 
-    @Column(name = "USER_ID", nullable = false, unique = true, length = 20)
+    @Column(name = "USER_ID", nullable = false, unique = true, length = 50)
     private String userId;
 
     //암호화 적용시 길어져서 length 늘림
@@ -45,7 +46,7 @@ public class User {
     private String userPwd;
 
 
-    @Column(name = "USER_NAME", nullable = false, length = 10)
+    @Column(name = "USER_NAME", nullable = false, length = 20)
     private String userName;
 
     @Column(name = "AGE", nullable = false)
@@ -58,10 +59,10 @@ public class User {
     @Column(name = "PHONE", nullable = false, length = 13)
     private String phone;
 
-    @Column(name = "ADDRESS", nullable = false, length = 40)
+    @Column(name = "ADDRESS", nullable = false, length = 50)
     private String address;
 
-    @Column(name = "EMAIL", nullable = false, length = 40)
+    @Column(name = "EMAIL", nullable = false, length = 50)
     private String email;
 
     @Column(name = "STATUS", nullable = false, length = 1)
@@ -73,6 +74,10 @@ public class User {
 
 //    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
 
+    //ROLE
+    @Enumerated(EnumType.STRING)
+    @Builder.Default
+    private Role role = Role.USER;
 
     // User <-> License 양방향 설정
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
@@ -109,6 +114,10 @@ public class User {
         if (profileImage != null && !profileImage.trim().isEmpty()) {
             this.profileImage = profileImage.trim();
         }
+    }
+
+    public void changeStatus(StatusEnum.Status status) {
+        this.status = status;
     }
 
     @PrePersist

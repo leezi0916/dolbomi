@@ -54,14 +54,17 @@ export const userService = {
 
   login: async (userId, userPwd) => {
     try {
-      //json-server용
-      // const { data } = await api.get(API_ENDPOINTS.USERS.LOGIN(userId, userPwd));
-
       //백엔드 서버 용
       const { data } = await api.post(API_ENDPOINTS.USERS.LOGIN, { user_id: userId, user_pwd: userPwd });
-      // return snakeToCamel(data[0]); // json-server 용
 
-      return snakeToCamel(data); //서버용
+      const loginData = snakeToCamel(data);
+
+      // 토큰 저장
+      if (loginData.token) {
+        sessionStorage.setItem('token', loginData.token);
+      }
+
+      return loginData;
     } catch (error) {
       if (error.response) {
         const message = error.response?.data?.message || '로그인에 실패했습니다.';
@@ -69,6 +72,17 @@ export const userService = {
       }
 
       throw new Error('서버 통신 불량');
+    }
+  },
+
+  //  내 정보 조회 (JWT 토큰 사용)
+  getMyInfo: async () => {
+    try {
+      const response = await api.get(API_ENDPOINTS.USERS.MY);
+      return snakeToCamel(response.data);
+    } catch (error) {
+      console.error('내 정보 조회 실패 : ', error);
+      throw error;
     }
   },
 
@@ -85,6 +99,18 @@ export const userService = {
       return data;
     } catch (error) {
       console.error('회원정보 수정 실패:', error.response?.data?.message || error.message);
+      throw error;
+    }
+  },
+
+  //회원탈퇴 기능
+  deleteUser: async (userNo) => {
+    try {
+      const { data } = await api.patch(API_ENDPOINTS.USERS.DELETE(userNo));
+      console.log(data);
+      return data;
+    } catch (error) {
+      console.error('회원탈퇴 실패:', error.response?.data?.message || error.message);
       throw error;
     }
   },

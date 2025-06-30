@@ -44,7 +44,7 @@ public class Hiring {
     @JoinColumn(name = "USER_NO", nullable = false)
     private User user;
 
-    @Column(name = "HIRING_TITLE", nullable = false, length = 20)
+    @Column(name = "HIRING_TITLE", nullable = false, length = 50)
     private String hiringTitle;
 
     @Column(name = "HIRING_CONTENT", nullable = false, columnDefinition = "TEXT")

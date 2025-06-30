@@ -61,4 +61,13 @@ public class Proposer {
             this.status = StatusEnum.Status.N;
         }
     }
+
+
+    public void updateStatus(StatusEnum.Status status) {
+        if (status != null) {
+            this.status = status;
+        }
+    }
+
+
 }

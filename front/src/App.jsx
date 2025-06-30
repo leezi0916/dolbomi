@@ -74,15 +74,14 @@ function AppRoutes() {
           <Route path="/caregiver/hirelist" element={<HireList />} />
           <Route path="/caregiver/resumeregistration" element={<ResumeRegistration />} />
           <Route path="/caregiver/reportform/:patNo" element={<ReportForm />} />
-
-
           <Route path="/caregiver/resumemanagement" element={<ResumeManagement />} />
           <Route path="/caregiver/review" element={<ReceivedReviews />} />
           <Route path="/caregiver/matchpage" element={<MatchToPatient />} />
           <Route path="/caregiver/myresume/:resumeNo" element={<MyResume />} />
           <Route path="/caregiver/post-management" element={<PostManagement />} />
-
+          {/* 같은 컴포넌트로 신청했는지 url로 처리 */}
           <Route path="/caregiver/resumeDetail/:resumeNo" element={<ResumeDetail />} />
+          <Route path="/caregiver/resumeDetail/:resumeNo/:hiringNo" element={<ResumeDetail />} />
 
           {/* 보호자 */}
           <Route path="/guardian" element={<GuardianMainPage />} />
@@ -96,7 +95,6 @@ function AppRoutes() {
           <Route path="/guardian/matchpage" element={<MatchToCaregiver />} />
           <Route path="/guardian/careGiverSupportBorad/:hiringNo" element={<CareGiverSupportBoard />} />
           <Route path="/guardian/jobopening-management" element={<JobOpeningManagement />} />
-
           {/* 공용 */}
           <Route path="/community/create" element={<CreateCommuBoardForm />} />
           <Route path="/community/free" element={<CommunityBoard />} />
@@ -113,8 +111,6 @@ function AppRoutes() {
           <Route path="/myprofile" element={<MyProfile />} />
           <Route path="/caregiverProfile/:userNo" element={<CareGviverProfile />} />
           <Route path="/hireDetail/:hiringNo" element={<HireDetail />} />
-
-
           <Route path="/report/:patNo" element={<ReportMain />} />
           <Route path="/report/detail/:reportNo" element={<ReportDetail />} />
           <Route path="/privacy-policy" element={<PrivacyPolicy />} />

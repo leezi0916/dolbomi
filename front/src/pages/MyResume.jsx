@@ -31,7 +31,6 @@ const MyResume = () => {
       try {
         const careGiverResum = await jobSeekingService.getResume(Number(resumeNo));
         setCareGiverResum(careGiverResum);
-        console.log(careGiverResum);
       } catch (error) {
         toast.error('상세 이력서 불러오기 중 문제가 발생하였습니다.');
         console.error('이력서 불러오기 오류 : ', error);
@@ -44,7 +43,7 @@ const MyResume = () => {
     if (careGiverResum) {
       setValue('resumeTitle', careGiverResum.resumeTitle || '');
       setValue('resumeContent', careGiverResum.resumeContent || '');
-      setValue('account', careGiverResum.account || '');
+      setValue('resumeAccount', careGiverResum.resumeAccount || '');
       setValue('careStatus', careGiverResum.careStatus || '');
       setValue('licenseList', careGiverResum.licenseList || '');
     }
@@ -191,8 +190,8 @@ const MyResume = () => {
               <AccountGroup>
                 <InputGroup>
                   <Label>희망 금액</Label>
-                  <Input {...register('account')} placeholder="희망 금액" />
-                  <p>{errors.account?.message}</p>
+                  <Input {...register('resumeAccount')} placeholder="희망 금액" />
+                  <p>{errors.resumeAccount?.message}</p>
                 </InputGroup>
               </AccountGroup>
             </RadioGroup>

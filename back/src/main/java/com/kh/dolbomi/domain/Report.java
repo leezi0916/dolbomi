@@ -41,7 +41,7 @@ public class Report {
     @JoinColumn(name = "PAT_NO", nullable = false)
     private Patient patient;
 
-    @Column(name = "REPORT_TITLE", nullable = false, length = 20)
+    @Column(name = "REPORT_TITLE", nullable = false, length = 50)
     private String reportTitle;
 
     @Column(name = "REPORT_CONTENT", nullable = false, columnDefinition = "TEXT")

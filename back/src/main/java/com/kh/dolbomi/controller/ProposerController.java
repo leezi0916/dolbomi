@@ -6,6 +6,7 @@ import com.kh.dolbomi.service.ProposerService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -29,11 +30,30 @@ public class ProposerController {
         return ResponseEntity.ok(response);
     }
 
+    @GetMapping("/check")
+    public ResponseEntity<Boolean> getCheckProposer(
+            @RequestParam("hiring_no") Long hiringNo,
+            @RequestParam("caregiver_no") Long caregiverNo
+    ) {
+        boolean proposerBoolean = proposerService.findProposerNo(hiringNo, caregiverNo);
+        return ResponseEntity.ok(proposerBoolean);
+    }
+
+
     @PostMapping
     public ResponseEntity<Long> getProposers(@RequestBody ProposerDto.Create createProposerDto) {
-
         Long proposerNo = proposerService.createProposer(createProposerDto);
 
         return ResponseEntity.ok(proposerNo);
+    }
+
+    @DeleteMapping("/cancel")
+    public ResponseEntity<Void> cancelProposer(
+            @RequestParam("hiring_no") Long hiringNo,
+            @RequestParam("caregiver_no") Long caregiverNo
+    ) {
+        proposerService.cancel(hiringNo, caregiverNo);
+        return ResponseEntity.ok().build();
+
     }
 }

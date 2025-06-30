@@ -42,6 +42,7 @@ public class ReviewServiceImpl implements ReviewService {
     @Override
     public Page<Response> getReceivedReviewList(Pageable pageable, Long userNo) {
         Page<Review> review = reviewRepository.getReceivedReviewList(StatusEnum.Status.Y, pageable, userNo);
+
         return review.map(ReviewDto.Response::ReceivedReviewDto);
     }
 }

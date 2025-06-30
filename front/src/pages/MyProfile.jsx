@@ -3,6 +3,7 @@ import { toast } from 'react-toastify';
 import { userService } from '../api/users';
 import { ClipLoader } from 'react-spinners';
 import { FaPlus } from 'react-icons/fa6';
+import { FaMinus } from 'react-icons/fa6';
 import useUserStore from '../store/userStore';
 import useUserUpdateForm from '../hooks/useUserUpdateForm';
 import profileImg from '../assets/profileImg/img_간병인.png';
@@ -15,6 +16,7 @@ import {
   SubmitBtn,
   Img,
   NewTitle,
+  BackBtn,
 } from '../styles/PatientRegistration';
 
 import { AuthContainer, Label, Input, InputGroup } from '../styles/Auth.styles';
@@ -162,6 +164,28 @@ const MyProfile = () => {
     setLicenseList(licenseList.filter((_, i) => i !== index));
   };
 
+  //회원 탈퇴 기능
+  const handleDeleteUser = async (userNo) => {
+    if (!userNo) {
+      toast.error('사용자 번호가 없습니다.');
+      return;
+    }
+
+    const confirmed = window.confirm('정말 회원탈퇴하시겠습니까? 탈퇴 시 복구할 수 없습니다.');
+    if (!confirmed) return;
+
+    try {
+      await userService.deleteUser(userNo);
+      toast.success('회원탈퇴가 완료되었습니다.');
+      sessionStorage.removeItem('token');
+      localStorage.removeItem('user-storage');
+      navigate('/login');
+    } catch (error) {
+      console.error(error);
+      toast.error('회원탈퇴 처리 중 오류가 발생했습니다.');
+    }
+  };
+
   if (loading) {
     return (
       <AuthContainer>
@@ -264,17 +288,20 @@ const MyProfile = () => {
                   value={license.licenseDate}
                   onChange={(e) => handleLicenseChange(index, 'licenseDate', e.target.value)}
                 />
-                <Button type="button" onClick={() => removeLicense(index)}>
-                  삭제
-                </Button>
+                <MinusButton type="button" onClick={() => removeLicense(index)}>
+                  <FaMinus></FaMinus>
+                </MinusButton>
               </div>
             ))}
-            <Button type="button" onClick={addLicense}>
-              자격증 추가
-            </Button>
+            <PlustButton type="button" onClick={addLicense}>
+              <Plus></Plus>
+            </PlustButton>
           </LicenseGroup>
           <ButtonGroup>
-            <Button type="button" onClick={() => toast.info('회원탈퇴 기능은 아직 구현되지 않았습니다.')}>
+            <BackBtn type="button" onClick={() => navigate(-1)}>
+              이전
+            </BackBtn>
+            <Button type="button" onClick={() => handleDeleteUser(userNo)}>
               회원탈퇴
             </Button>
             <Button type="button" onClick={() => toast.info('비밀번호 변경 기능은 아직 구현되지 않았습니다.')}>
@@ -283,10 +310,7 @@ const MyProfile = () => {
 
             <Button type="submit" disabled={updating}>
               {' '}
-              {updating ? '수정 중...' : '수정하기'}
-            </Button>
-            <Button type="button" onClick={() => navigate(-1)}>
-              뒤로가기
+              {updating ? '저장 중...' : '저장하기'}
             </Button>
           </ButtonGroup>
         </Form>
@@ -296,6 +320,7 @@ const MyProfile = () => {
 };
 
 const ButtonGroup = styled.div`
+  margin-top: ${({ theme }) => theme.spacing[8]};
   display: flex;
   justify-content: center;
   width: 100%;
@@ -310,6 +335,20 @@ const Form = styled(GridForm)`
 const Button = styled(SubmitBtn)`
   font-size: ${({ theme }) => theme.fontSizes.md};
   border-radius: ${({ theme }) => theme.borderRadius.md};
+  margin-bottom: 0px;
+`;
+
+const PlustButton = styled(SubmitBtn)`
+  font-size: ${({ theme }) => theme.fontSizes.sm};
+  border-radius: ${({ theme }) => theme.borderRadius.md};
+  background-color: ${({ theme }) => theme.colors.gray[5]};
+  margin-bottom: 0px;
+`;
+
+const MinusButton = styled(SubmitBtn)`
+  font-size: ${({ theme }) => theme.fontSizes['3xl']};
+  border-radius: ${({ theme }) => theme.borderRadius.md};
+  background-color: ${({ theme }) => theme.colors.gray[5]};
   margin-bottom: 0px;
 `;
 

@@ -26,53 +26,27 @@ import { useParams } from 'react-router-dom';
 import { jobSeekingService } from '../api/jobSeeking';
 import { reviewService } from '../api/reviews';
 import useUserStore from '../store/userStore';
+import { toast } from 'react-toastify';
+import { proposerService } from '../api/propose';
 
 function ResumeDetail() {
   const { user } = useUserStore();
   const [activeTab, setActiveTab] = useState('info');
-
-  const ITEMS_PER_PAGE = 4;
   const [reviews, setReviews] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const { resumeNo } = useParams();
+
+  const { resumeNo, hiringNo } = useParams(); //hiringNo가 없을 수도 있음 (어떤 구인글에 이 이력서로 신청했는지)
   console.log(resumeNo);
-
   const navigate = useNavigate();
-
   const [resumeData, setResumeData] = useState(null);
 
-  /*작성자의 리뷰를 갖고오는 코드 */
-  useEffect(() => {
-    if (activeTab === 'review' && resumeData?.userNo) {
-      const fetchUserReviews = async () => {
-        try {
-          const userReviews = await reviewService.getReviewsByUser(resumeData.userNo);
-          setReviews(userReviews);
-          setCurrentPage(1); // 탭 전환 시 페이지 초기화
-        } catch (error) {
-          console.error('리뷰 로딩 실패:', error);
-        }
-      };
-
-      fetchUserReviews();
-    }
-  }, [activeTab]);
-
-  /*페이지 처리 */
-  const offset = (currentPage - 1) * ITEMS_PER_PAGE;
-  const totalPage = Math.ceil(reviews.length / ITEMS_PER_PAGE);
-  const averageScore = (reviews.reduce((acc, cur) => acc + cur.score, 0) / reviews.length || 0).toFixed(1);
-
-  const chagneCurrentPage = (value) => {
-    setCurrentPage(value);
-  };
 
   /*이력서 정보를 갖고오는 (유저 정보 담아서) */
   useEffect(() => {
     const fetchResume = async () => {
       try {
         const data = await jobSeekingService.getResume(Number(resumeNo));
-        console.log(data);
+
         setResumeData(data);
       } catch (error) {
         console.log(error);
@@ -81,20 +55,42 @@ function ResumeDetail() {
     fetchResume();
   }, []);
 
+  /*작성자의 리뷰를 갖고오는 코드 */
+  useEffect(() => {
+    if (activeTab === 'review' && resumeData?.userNo) {
+      const fetchReviews = async () => {
+        try {
+          const data = await reviewService.getReceivedReviews(currentPage, Number(user.userNo));
+          console.log(data);
+          setReviews(data);
+          setCurrentPage(1); // 탭 전환 시 페이지 초기화
+        } catch (error) {
+          console.error('리뷰 로딩 실패:', error);
+        }
+      };
+      fetchReviews();
+    }
+  }, [activeTab, currentPage]);
+
+  const chagneCurrentPage = (value) => {
+    setCurrentPage(value);
+  };
+
   const handleTabChange = (tab) => {
     setActiveTab(tab);
   };
 
-  const [isModalOpen, setModalOpen] = useState(false);
+  const handleAcceptMatching = async () => {
+    const confirm = window.confirm('매칭을 수락하시겠습니까?');
+    if (!confirm) return;
 
-  const handleOpenModal = () => setModalOpen(true);
-  const handleCloseModal = () => setModalOpen(false);
-  const handleSubmitModal = () => {
-    const confirm = window.confirm('돌봄 대상자를 신청하시겠습니까?');
-    if (confirm) {
-      console.log('간병신청 완료');
-      setModalOpen(false);
-      navigate('/guardian/matchpage'); // 원하는 경로로 이동
+    try {
+      await proposerService.acceptMatching({ resumeNo, hiringNo });
+      toast.success('매칭이 수락되었습니다!');
+      navigate('/'); // 혹은 다른 경로
+    } catch (error) {
+      console.error(error);
+      toast.error('매칭 수락 중 오류가 발생했습니다.');
     }
   };
 
@@ -114,10 +110,11 @@ function ResumeDetail() {
             </ChatButton>
           </div>
           <Divider>
+
             <InputRow>
               <InputGroup>
                 <Label>이름</Label>
-                <Input type="text" value={resumeData?.userName || ''} readOnly />
+                <Input type="text" value={resumeData?.userName || ''} readOnly /> 
               </InputGroup>
               <InputGroup>
                 <Label>나이</Label>
@@ -211,37 +208,37 @@ function ResumeDetail() {
           <>
             <ContentWrapper1>
               <RecivedReviewsGridContainer>
-                {reviews.slice(offset, offset + ITEMS_PER_PAGE).map((review) => (
+                {reviews.receivedReview?.content?.map((review) => (
                   <Card key={review.reviewNo}>
                     <CardTopContent>
                       <CardImage src={review.profileImage} />
                       <CardTextGroup>
-                        <CardTitle>{review.userName} 돌봄대상자</CardTitle>
+                        <CardTitle>{review.userName} 님</CardTitle>
                         <CardText>
-                          나이 {review.age}세({review.gender === 'male' ? '남' : '여'})
+                          나이 {review.age}세({review.gender === 'M' ? '남' : '여'})
                         </CardText>
                       </CardTextGroup>
                     </CardTopContent>
                     <CardMidBottomContent>
                       <ReviewTextBox>{review.reviewContent}</ReviewTextBox>
                       <ReviewFooter>
-                        <ReviewScore>
-                          평점 <strong>{review.score.toFixed(1)}</strong>
-                        </ReviewScore>
-                        <ReviewDate>작성일 {review.createDate}</ReviewDate>
+                        {/* <ReviewScore>
+                  평점 <strong>{review.reviewScore.toFixed(1)}</strong>
+                </ReviewScore> */}
+                        <ReviewDate>작성일 {review.reviewUpdateDate.slice(0, 10)}</ReviewDate>
                       </ReviewFooter>
                     </CardMidBottomContent>
                   </Card>
                 ))}
               </RecivedReviewsGridContainer>
             </ContentWrapper1>
-            <Paging></Paging>
+            <Paging currentPage={currentPage} totalPage={reviews.totalPage} chagneCurrentPage={chagneCurrentPage} />
           </>
         )}
 
         <ButtonGroup>
           <BackButton onClick={() => navigate(-1)}>이전</BackButton>
-
+          {hiringNo && <SubmitButton1 onClick={handleAcceptMatching}>매칭 수락</SubmitButton1>}
           {resumeData?.userNo === user?.userNo ? (
             <SubmitButton1 type="button" onClick={() => navigate(`/caregiver/myresume/${resumeData?.resumeNo}`)}>
               수정하기
@@ -404,7 +401,7 @@ const HireBottom = styled.div`
 `;
 const HireBottomTitle = styled(Title)`
   margin: 0;
-  color: ${({ $active, theme }) => ($active? theme.colors.black1 : theme.colors.gray[3])};
+  color: ${({ $active, theme }) => ($active ? theme.colors.black1 : theme.colors.gray[3])};
   cursor: pointer;
 `;
 

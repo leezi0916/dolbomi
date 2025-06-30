@@ -1,8 +1,11 @@
 package com.kh.dolbomi.repository;
 
+import com.kh.dolbomi.domain.Proposer;
 import com.kh.dolbomi.enums.StatusEnum.Status;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
+import java.util.List;
+import java.util.Optional;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -27,6 +30,50 @@ public class ProposerRepositoryImpl implements ProposerRepository {
                 .getSingleResult();
 
         return count > 0;
+    }
+
+    @Override
+    public boolean existsByHiringNoAndCaregiverNo(Long hiringNo, Long caregiverNo) {
+        String jpql = "SELECT COUNT(p) FROM Proposer p " +
+                "WHERE p.hiring.hiringNo = :hiringNo " +
+                "AND p.caregiver.userNo = :caregiverNo ";
+
+        Long count = em.createQuery(jpql, Long.class)
+                .setParameter("hiringNo", hiringNo)
+                .setParameter("caregiverNo", caregiverNo)
+                .getSingleResult();
+
+        return count > 0;
+    }
+
+    @Override
+    public Optional<Proposer> getProposer(Long caregiverNo, Long hiringNo) {
+
+        String jpql = "SELECT p FROM Proposer p " +
+                "WHERE p.hiring.hiringNo = :hiringNo" +
+                "AND p.caregiver.userNo = :caregiverNo";
+
+        return Optional.ofNullable(em.createQuery(jpql, Proposer.class)
+                .setParameter("hiringNo", hiringNo)
+                .setParameter("caregiverNo", caregiverNo)
+                .getSingleResult());
+    }
+
+
+    //신청 테이블에서 구인번호와 이력서 번호로 조회하기
+    @Override
+    public Optional<Proposer> findByHiringNoAndResumeNo(Long hiringNo, Long resumeNo) {
+        List<Proposer> resultList = em.createQuery(
+                        "SELECT p FROM Proposer p WHERE p.hiring.hiringNo = :hiringNo AND p.resume.resumeNo = :resumeNo",
+                        Proposer.class)
+                .setParameter("hiringNo", hiringNo)
+                .setParameter("resumeNo", resumeNo)
+                .getResultList();
+
+        if (resultList.isEmpty()) {
+            return Optional.empty();
+        }
+        return Optional.of(resultList.get(0));
     }
 
 

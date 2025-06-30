@@ -34,4 +34,6 @@ public class StatusEnum {
         Y, // 읽음
         N  // 안 읽음
     }
+
+    
 }

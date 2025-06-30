@@ -55,7 +55,7 @@ const JobOpeningManagement = () => {
               <td>{jobOpening.hiringNo}</td>
               <td className="title">{jobOpening.hiringTitle}</td>
               <td>{jobOpening.createDate.slice(0, 10)}</td>
-              <td>{jobOpening.appliedCount === null ? '0명' : appliedCount}</td>
+              <td>{jobOpening.appliedCount === 0 ? '0명' : jobOpening.appliedCount + '명'}</td>
               <td style={{ color: jobOpening.hiringStatus === 'Y' ? theme.colors.success : theme.colors.gray[4] }}>
                 {jobOpening.hiringStatus === 'Y' ? '모집중' : '모집마감'}
               </td>
