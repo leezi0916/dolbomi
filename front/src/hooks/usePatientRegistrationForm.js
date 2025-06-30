@@ -1,9 +1,8 @@
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
-import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
-import useUserStore from '../store/userStore';
+
 
 //환자등록 폼의 유효성 검사 스키마
 const patientsSchema = yup.object().shape({
@@ -26,10 +25,9 @@ const patientsSchema = yup.object().shape({
   patWeight: yup.number().typeError('몸무게는 숫자여야 합니다.'),
   patHeight: yup.number().typeError('키는 숫자여야 합니다.'),
   patPhone: yup
-    .string()
-    .required('전화번호를 입력하세요.')
-    .matches(/^01[016789]\d{3,4}\d{4}$/, '유효하지 않은 전화번호입니다.'),
-
+  .string()
+  .matches(/^010-\d{4}-\d{4}$/, '전화번호 형식은 010-0000-0000 이어야 합니다')
+  .required('전화번호를 입력해주세요'),
 
   patAddress: yup
     .string()
@@ -39,8 +37,7 @@ const patientsSchema = yup.object().shape({
 });
 
 export const usepatientRegistrationForm = () => {
-  const navigate = useNavigate();
-  const { user } = useUserStore();
+
 
   //react-hook-form으로 폼 상태 초기화및 유효성 검사
   const {
@@ -63,8 +60,7 @@ export const usepatientRegistrationForm = () => {
   return {
     register,
     handleSubmit,
-    errors,
-    isSubmitting,
+   errors, isSubmitting , //유효성 에러및 제출중 상태
     setValue,
     watch, // watch 함수를 반환합니다.
   };

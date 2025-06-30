@@ -86,7 +86,7 @@ export const API_ENDPOINTS = {
     BASE: '/proposer/v1',
     LIST: (hiringNo) => `/proposer/v1?hiring_no=${hiringNo}`,
     STATUS : (hiringNo, caregiverNo) =>
-  `/proposer/v1/check?hiring_no=${hiringNo}&caregiver_no=${caregiverNo}`,
+    `/proposer/v1/check?hiring_no=${hiringNo}&caregiver_no=${caregiverNo}`,
     CANCEL:  (hiringNo, caregiverNo) => `/proposer/v1/cancel?hiring_no=${hiringNo}&caregiver_no=${caregiverNo}`
   },
 
