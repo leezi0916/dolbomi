@@ -6,12 +6,13 @@ import { ClipLoader } from 'react-spinners';
 import styled from 'styled-components';
 import useUserStore from '../store/userStore';
 import Paging from '../components/Paging';
+import { Page } from '../styles/common/Board';
 
 const GuardianCommunity = () => {
   const userId = useUserStore((state) => state.user?.userId);
 
-  const ROLE = 'G';
-  const STATUS = 'Y';
+  // const ROLE = 'G';
+  // const STATUS = 'Y';
 
   const [error, setError] = useState(null);
   const [communityList, setCommunityList] = useState([]);
@@ -21,6 +22,8 @@ const GuardianCommunity = () => {
   const ITEMS_PER_PAGE = 10;
   const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
   const endIndex = startIndex + ITEMS_PER_PAGE;
+  console.log('test ');
+  console.log(communityList);
   const currentList = communityList.slice(startIndex, endIndex);
   const totalPage = Math.ceil(communityList.length / ITEMS_PER_PAGE);
 
@@ -37,9 +40,9 @@ const GuardianCommunity = () => {
   useEffect(() => {
     const loadCommunity = async () => {
       try {
-        const community = await commuService.getCommunity(STATUS, ROLE);
+        const community = await commuService.getGuardian();
         console.log(community);
-        setCommunityList(community);
+        setCommunityList(community.content);
       } catch (error) {
         console.error(error);
         const errorMessage = '목록을 불러오는데 실패했습니다.';
@@ -51,7 +54,7 @@ const GuardianCommunity = () => {
     };
 
     loadCommunity();
-  }, [userId]);
+  }, []);
 
   if (loading) {
     return (
@@ -64,6 +67,22 @@ const GuardianCommunity = () => {
   if (error) {
     return null;
   }
+
+  if (!communityList || communityList.length === 0) {
+    return (
+      <Page>
+        <div style={{ width: '400px', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+          <div style={{ marginBottom: '10px' }}>게시글이 없습니다.</div>
+          {userId && (
+            <Btn style={{ margin: 'auto' }} to="/community/create">
+              글쓰기
+            </Btn>
+          )}
+        </div>
+      </Page>
+    );
+  }
+
   return (
     <Page>
       <PageInfo>
@@ -107,12 +126,6 @@ const GuardianCommunity = () => {
     </Page>
   );
 };
-export const Page = styled.div`
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  margin-top: 70px;
-`;
 export const PageInfo = styled.div`
   width: 74%;
   > div {
@@ -152,10 +165,11 @@ export const Input = styled.input`
 `;
 const Btn = styled(Link)`
   align-content: center;
-  width: 10%;
+  width: 80px;
   background-color: ${({ theme }) => theme.colors.primary};
   color: ${({ theme }) => theme.colors.white};
   border-radius: 4px;
+  padding: 10px;
 `;
 const SearchBtn = styled.button`
   align-content: center;

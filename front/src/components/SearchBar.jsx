@@ -53,7 +53,7 @@ const SearchInputContainer = styled.div`
   display: flex;
   align-items: center;
   width: 100%;
-  max-width: 400px; /* 이미지와 유사한 최대 너비 설정 */
+  /* max-width: 400px; */
   border: 1px solid #ccc; /* 테두리 색상 */
   border-radius: ${({ theme }) => theme.borderRadius.md};
   overflow: hidden; /* 내부 요소가 넘치지 않도록 */

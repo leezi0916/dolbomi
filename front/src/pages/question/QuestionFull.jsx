@@ -24,8 +24,8 @@ import {
 const QuestionFull = () => {
   const userId = useUserStore((state) => state.user?.userId);
 
-  const ROLE = 'Q';
-  const STATUS = 'Y';
+  // const ROLE = 'Q';
+  // const STATUS = 'Y';
 
   const [error, setError] = useState(null);
   const [communityList, setCommunityList] = useState([]);
@@ -50,9 +50,9 @@ const QuestionFull = () => {
   useEffect(() => {
     const loadCommunity = async () => {
       try {
-        const community = await commuService.getCommunity(STATUS, ROLE);
+        const community = await commuService.getQuestion();
         console.log(community);
-        setCommunityList(community);
+        setCommunityList(community.content);
       } catch (error) {
         console.error(error);
         const errorMessage = '목록을 불러오는데 실패했습니다.';
@@ -82,11 +82,13 @@ const QuestionFull = () => {
       <PageInfo>
         <PageTop>
           <PageTitle> 1:1 문의사항 </PageTitle>
-          <BoardMenu>
-            <MenuDiv>전체</MenuDiv>
-            <MenuLink to="/question/history">문의내역</MenuLink>
-            {userId && <MenuLink to="/question/create"> 문의하기</MenuLink>}{' '}
-          </BoardMenu>
+          {userId && (
+            <BoardMenu>
+              <MenuDiv>전체</MenuDiv>
+              <MenuLink to="/question/history">문의내역</MenuLink>
+              <MenuLink to="/question/create"> 문의하기</MenuLink>
+            </BoardMenu>
+          )}
         </PageTop>
 
         <BoardTop>
@@ -102,16 +104,16 @@ const QuestionFull = () => {
         </BoardTop>
         <BoardItemTop>
           <div>No</div>
-          <div style={{ flex: '2' }}>제목</div>
+          <div style={{ flex: '3' }}>제목</div>
           <div>작성자</div>
-          <div>작성 일자</div>
+          <div style={{ flex: '2' }}>작성 일자</div>
         </BoardItemTop>
         {currentList.map((community) => (
-          <BoardItem key={community.no} to={`/community/detail/${community.no}`}>
-            <div>{community.no}</div>
-            <div style={{ flex: '2' }}>{community.title}</div>
-            <div>{community.name}</div>
-            <div>{community.create_date}</div>
+          <BoardItem key={community.boardNo} to={`/community/detail/${community.boardNo}`}>
+            <div>{community.boardNo}</div>
+            <div style={{ flex: '3' }}>{community.boardTitle}</div>
+            <div>{community.userName}</div>
+            <div style={{ flex: '2' }}>{community.createDate}</div>
           </BoardItem>
         ))}
 

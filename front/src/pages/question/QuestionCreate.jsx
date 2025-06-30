@@ -52,6 +52,7 @@ const QuestionCreate = () => {
 };
 
 const PageBody = styled.div`
+  border-top: 1px solid ${({ theme }) => theme.colors.gray[3]};
   padding: 20px 20px 0 20px;
   > div {
     display: flex;

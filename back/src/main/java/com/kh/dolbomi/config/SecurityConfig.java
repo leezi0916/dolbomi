@@ -20,7 +20,12 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 @RequiredArgsConstructor
 public class SecurityConfig {
 
+    /*
+     @Bean : 메서드 단위로 빈에 등록할 때, 외부라이브러리의 객체를 등록하고 싶을 때
+     */
+
     private final JwtTokenFilter jwtTokenFilter;
+
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -37,6 +42,9 @@ public class SecurityConfig {
                                 "/hiring/v1/simple-list",
                                 "/resume/v1/simple-list",
                                 "/review/v1/simple-list",
+                                "/community/v1/caregiver",
+                                "/community/v1/guardian",
+                                "/community/v1/question",
                                 "/"
 
                         ).permitAll()
@@ -45,6 +53,13 @@ public class SecurityConfig {
                 .addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
     }
+
+    /*
+    BCryptPasswordEncoder 객체를 스프링 빈에 등록하고 사용하고 싶지만 외부객체이기 때문에
+    직접 클래스 구현부에 @Component를 입력해 등록할 수 없음
+    그래서 해당 객체를 만들어서 리턴하는 함수를 만들고 해당 함수를 Bean에 등록하여 객체를 사용한다.
+     */
+
 
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
@@ -68,4 +83,9 @@ public class SecurityConfig {
     public PasswordEncoder passwordEncoder() {
         return PasswordEncoderFactories.createDelegatingPasswordEncoder();
     }
+
 }
+
+
+
+

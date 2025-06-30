@@ -78,7 +78,7 @@ const HireDetail = () => {
       });
       setAlreadyApplied(checkProposer);
     } catch (error) {
-      console.error('신청확인실패 ');
+      console.error(error + ': 신청확인실패 ');
     }
   };
   checkProposer();
