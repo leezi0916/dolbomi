@@ -26,15 +26,20 @@ import { useParams } from 'react-router-dom';
 import { jobSeekingService } from '../api/jobSeeking';
 import { reviewService } from '../api/reviews';
 import useUserStore from '../store/userStore';
+import { toast } from 'react-toastify';
+import { proposerService } from '../api/propose';
 
 function ResumeDetail() {
   const { user } = useUserStore();
   const [activeTab, setActiveTab] = useState('info');
   const [reviews, setReviews] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const { resumeNo } = useParams();
-  const [resumeData, setResumeData] = useState(null);
+
+  const { resumeNo, hiringNo } = useParams(); //hiringNo가 없을 수도 있음 (어떤 구인글에 이 이력서로 신청했는지)
+  console.log(resumeNo);
   const navigate = useNavigate();
+  const [resumeData, setResumeData] = useState(null);
+
 
   /*이력서 정보를 갖고오는 (유저 정보 담아서) */
   useEffect(() => {
@@ -73,6 +78,20 @@ function ResumeDetail() {
 
   const handleTabChange = (tab) => {
     setActiveTab(tab);
+  };
+
+  const handleAcceptMatching = async () => {
+    const confirm = window.confirm('매칭을 수락하시겠습니까?');
+    if (!confirm) return;
+
+    try {
+      await proposerService.acceptMatching({ resumeNo, hiringNo });
+      toast.success('매칭이 수락되었습니다!');
+      navigate('/'); // 혹은 다른 경로
+    } catch (error) {
+      console.error(error);
+      toast.error('매칭 수락 중 오류가 발생했습니다.');
+    }
   };
 
   return (
@@ -219,7 +238,7 @@ function ResumeDetail() {
 
         <ButtonGroup>
           <BackButton onClick={() => navigate(-1)}>이전</BackButton>
-
+          {hiringNo && <SubmitButton1 onClick={handleAcceptMatching}>매칭 수락</SubmitButton1>}
           {resumeData?.userNo === user?.userNo ? (
             <SubmitButton1 type="button" onClick={() => navigate(`/caregiver/myresume/${resumeData?.resumeNo}`)}>
               수정하기

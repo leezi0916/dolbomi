@@ -99,7 +99,9 @@ const SupportBoard = () => {
                           <span>지역</span> {resume.address}
                         </CardRegionText>
                       </CardBottomTextSection>
-                      <CardButton onClick={() => navigate(`/caregiver/resumeDetail/${resume.resumeNo}`)}>상세보기</CardButton>
+                      <CardButton onClick={() => navigate(`/caregiver/resumeDetail/${resume.resumeNo}/${hiringNo}`)}>
+                        상세보기
+                      </CardButton>
                     </HiringCardBottomContent>
                   </HiringCard>
                 ))}

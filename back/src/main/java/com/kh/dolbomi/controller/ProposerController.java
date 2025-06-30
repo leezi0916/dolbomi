@@ -54,5 +54,6 @@ public class ProposerController {
     ) {
         proposerService.cancel(hiringNo, caregiverNo);
         return ResponseEntity.ok().build();
+
     }
 }

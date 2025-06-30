@@ -2,15 +2,20 @@ package com.kh.dolbomi.service;
 
 
 import com.kh.dolbomi.domain.Hiring;
+import com.kh.dolbomi.domain.Matching;
+import com.kh.dolbomi.domain.Patient;
 import com.kh.dolbomi.domain.Proposer;
 import com.kh.dolbomi.domain.Resume;
 import com.kh.dolbomi.domain.User;
 import com.kh.dolbomi.dto.ProposerDto;
+import com.kh.dolbomi.enums.StatusEnum;
 import com.kh.dolbomi.repository.HiringRepository;
+import com.kh.dolbomi.repository.MatchingRepositoryV2;
 import com.kh.dolbomi.repository.ProposerRepository;
 import com.kh.dolbomi.repository.ProposerRepositoryV2;
 import com.kh.dolbomi.repository.ResumeRepositoryV2;
 import com.kh.dolbomi.repository.UserRepositoryV2;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
@@ -25,6 +30,8 @@ public class ProposerServiceImpl implements ProposerService {
     private final HiringRepository hiringRepository;
     private final ResumeRepositoryV2 resumeRepositoryV2;
     private final UserRepositoryV2 userRepositoryV2;
+    private final MatchingRepositoryV2 matchingRepositoryV2;
+
 
     @Override
     public ProposerDto.ResponseWithCount findProposersByHiringNo(Long hiringNo) {
@@ -71,5 +78,28 @@ public class ProposerServiceImpl implements ProposerService {
         proposerRepositoryV2.delete(proposer);
     }
 
+
+    public void acceptMatching(Long resumeNo, Long hiringNo) {
+
+        // 1. 프로포저 상태 업데이트
+        Proposer proposer = proposerRepository.findByHiringNoAndResumeNo(hiringNo, resumeNo)
+                .orElseThrow(() -> new IllegalArgumentException("신청 정보가 없습니다."));
+        proposer.updateStatus(StatusEnum.Status.Y); // 수락 상태로 변경
+
+        // 2. 매칭 생성
+        User caregiver = proposer.getCaregiver();
+        Hiring hiring = proposer.getHiring();
+        Patient patient = hiring.getPatient();
+        //추후 이력서 번호도 매칭할때 같이 넣고싶으면 추가해도 될듯?
+
+        Matching matching = Matching.builder()
+                .caregiver(caregiver)
+                .patient(patient)
+                .status(StatusEnum.Status.Y)
+                .startDate(LocalDateTime.now())
+                .build();
+
+        matchingRepositoryV2.save(matching);
+    }
 
 }

@@ -31,7 +31,6 @@ const MyResume = () => {
       try {
         const careGiverResum = await jobSeekingService.getResume(Number(resumeNo));
         setCareGiverResum(careGiverResum);
-        console.log(careGiverResum);
       } catch (error) {
         toast.error('상세 이력서 불러오기 중 문제가 발생하였습니다.');
         console.error('이력서 불러오기 오류 : ', error);

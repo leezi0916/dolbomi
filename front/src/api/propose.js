@@ -50,4 +50,15 @@ export const proposerService = {
       throw error;
     }
   },
+
+  //지원현황에서 이력서 보고 수락하기
+  acceptMatching: async ({ hiringNo, resumeNo }) => {
+    try {
+      const res = await api.post(API_ENDPOINTS.PROPOSER.ACCEPT, camelToSnake({ hiringNo, resumeNo }));
+      return res.data;
+    } catch (error) {
+      console.error('매칭 수락 실패:', error.response?.data?.message || error.message);
+      throw error;
+    }
+  },
 };

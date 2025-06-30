@@ -63,9 +63,11 @@ public class Proposer {
         }
     }
 
+
     public void changeStatus(String status) {
         if (status != null && !status.isEmpty()) {
             this.status = Status.valueOf(status);
         }
+
     }
 }

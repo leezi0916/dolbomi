@@ -9,7 +9,6 @@ const useUserStore = create(
 
       //로그인
       login: (userData) => {
-
         set({
           user: {
             userNo: userData.userNo,

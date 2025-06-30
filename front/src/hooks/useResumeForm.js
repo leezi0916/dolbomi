@@ -17,7 +17,7 @@ const resumeSchema = yup.object().shape({
 export const useResumeForm = (resumeNo) => {
   const { user } = useUserStore();
   // const [user, setUser] = useState(null);
-  const [licenseList, setLicenseList] = useState([{ licenseName: '', licensePublisher: '', licenseDate: '' }]);
+  // const [licenseList, setLicenseList] = useState([{ licenseName: '', licensePublisher: '', licenseDate: '' }]);
   const [careGiverResume, setCareGiverResume] = useState();
   const navigate = useNavigate();
 
@@ -33,6 +33,7 @@ export const useResumeForm = (resumeNo) => {
 
   // useEffect(() => {
   //   const fetchAll = async () => {
+<<<<<<< HEAD
   //     try {
   //       const getcareGiverResume = await jobSeekingService.getResume(Number(resumeNo));
   //       setCareGiverResume(getcareGiverResume);
@@ -44,6 +45,7 @@ export const useResumeForm = (resumeNo) => {
   //   };
   //   fetchAll();
   // }, [user]);
+
 
   // // resumeNo가 있으면 이력서 데이터 불러와서 폼 초기화
   // useEffect(() => {
@@ -102,8 +104,8 @@ export const useResumeForm = (resumeNo) => {
     handleSubmit,
     errors,
     user,
-    licenseList,
-    setLicenseList,
+    // licenseList,
+    // setLicenseList,
     setValue,
     careGiverResume,
     setCareGiverResume,
