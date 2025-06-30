@@ -29,6 +29,7 @@ export const API_ENDPOINTS = {
     DETAIL: (userId) => `/users/v1?user_id=${userId}`,
     PROFILE_UPDATE: (userNo) => `/users/v1/${userNo}`,
     CAREPROFILE: (userNo) => `/users/v1?user_no=${userNo}`,
+    DELETE: (userNo) => `/users/v1/${userNo}/delete`,
   },
   REVIEWS: {
     BASE: '/review/v1',
