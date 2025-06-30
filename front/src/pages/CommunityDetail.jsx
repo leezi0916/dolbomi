@@ -7,7 +7,6 @@ import styled from 'styled-components';
 import { Page, PageInfo } from './CommunityBoard';
 import theme from '../styles/theme';
 import useUserStore from '../store/userStore';
-import { FileBox, FileTitle } from './CreateCommuBoardForm';
 
 const CommunityDetail = () => {
   const userId = useUserStore((state) => state.user?.userId);
