@@ -52,7 +52,7 @@ const QuestionFull = () => {
       try {
         const community = await commuService.getQuestion();
         console.log(community);
-        setCommunityList(community);
+        setCommunityList(community.content);
       } catch (error) {
         console.error(error);
         const errorMessage = '목록을 불러오는데 실패했습니다.';

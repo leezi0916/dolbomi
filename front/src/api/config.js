@@ -12,13 +12,10 @@ export const API_CONFIG = {
 };
 
 export const API_ENDPOINTS = {
-<<<<<<< HEAD
   // PRODUCTS: {
   //   BASE: '/products',
   // },
 
-=======
->>>>>>> 9a7314f38c6715f09adb6898b9dfa153140597c2
   COMMUNITY: {
     BASE: '/community/v1',
     CAREGIVER: `/community/v1/caregiver`,

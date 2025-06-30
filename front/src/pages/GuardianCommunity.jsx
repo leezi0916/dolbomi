@@ -6,6 +6,7 @@ import { ClipLoader } from 'react-spinners';
 import styled from 'styled-components';
 import useUserStore from '../store/userStore';
 import Paging from '../components/Paging';
+import { Page } from '../styles/common/Board';
 
 const GuardianCommunity = () => {
   const userId = useUserStore((state) => state.user?.userId);
@@ -42,7 +43,6 @@ const GuardianCommunity = () => {
         const community = await commuService.getGuardian();
         console.log(community);
         setCommunityList(community.content);
-        
       } catch (error) {
         console.error(error);
         const errorMessage = '목록을 불러오는데 실패했습니다.';
@@ -71,16 +71,14 @@ const GuardianCommunity = () => {
   if (!communityList || communityList.length === 0) {
     return (
       <Page>
-        <PageInfo>
-          <div style={{ padding: '20px', textAlign: 'center' }}>
-            게시글이 없습니다.
-            {userId && (
-              <div style={{ marginTop: '10px' }}>
-                <Btn to="/community/create">글쓰기</Btn>
-              </div>
-            )}
-          </div>
-        </PageInfo>
+        <div style={{ width: '400px', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+          <div style={{ marginBottom: '10px' }}>게시글이 없습니다.</div>
+          {userId && (
+            <Btn style={{ margin: 'auto' }} to="/community/create">
+              글쓰기
+            </Btn>
+          )}
+        </div>
       </Page>
     );
   }
@@ -128,12 +126,6 @@ const GuardianCommunity = () => {
     </Page>
   );
 };
-export const Page = styled.div`
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  margin-top: 70px;
-`;
 export const PageInfo = styled.div`
   width: 74%;
   > div {
@@ -173,10 +165,11 @@ export const Input = styled.input`
 `;
 const Btn = styled(Link)`
   align-content: center;
-  width: 10%;
+  width: 80px;
   background-color: ${({ theme }) => theme.colors.primary};
   color: ${({ theme }) => theme.colors.white};
   border-radius: 4px;
+  padding: 10px;
 `;
 const SearchBtn = styled.button`
   align-content: center;

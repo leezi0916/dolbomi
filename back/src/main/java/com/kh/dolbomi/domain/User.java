@@ -2,7 +2,6 @@ package com.kh.dolbomi.domain;
 
 import com.kh.dolbomi.enums.Role;
 import com.kh.dolbomi.enums.StatusEnum;
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -75,14 +74,12 @@ public class User {
 
 //    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
 
-<<<<<<< HEAD
-=======
     //ROLE
     @Enumerated(EnumType.STRING)
     @Builder.Default
     private Role role = Role.USER;
 
->>>>>>> 9a7314f38c6715f09adb6898b9dfa153140597c2
+
     // User <-> License 양방향 설정
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private List<License> licenses = new ArrayList<>();

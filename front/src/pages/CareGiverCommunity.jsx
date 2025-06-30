@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { commuService } from '../api/community';
 import { toast } from 'react-toastify';
 import { ClipLoader } from 'react-spinners';
 import styled from 'styled-components';
 import useUserStore from '../store/userStore';
 import Paging from '../components/Paging';
+import { Page } from '../styles/common/Board';
 
 const CareGiverCommunity = () => {
-  const navigate = useNavigate();
   const userId = useUserStore((state) => state.user?.userId);
 
   // const ROLE = 'C';
@@ -38,9 +38,10 @@ const CareGiverCommunity = () => {
   useEffect(() => {
     const loadCommunity = async () => {
       try {
-        const community = await commuService.getCareGiver();
+        const community = await commuService.getCaregiver();
+
         console.log(community);
-        setCommunityList(community);
+        setCommunityList(community.content);
       } catch (error) {
         console.error(error);
         const errorMessage = '목록을 불러오는데 실패했습니다.';
@@ -65,19 +66,18 @@ const CareGiverCommunity = () => {
   if (error) {
     return null;
   }
+
   if (!communityList || communityList.length === 0) {
     return (
       <Page>
-        <PageInfo>
-          <div style={{ padding: '20px', textAlign: 'center' }}>
-            게시글이 없습니다.
-            {userId && (
-              <div style={{ marginTop: '10px' }}>
-                <Btn onClick={() => navigate('/community/create')}>글쓰기</Btn>
-              </div>
-            )}
-          </div>
-        </PageInfo>
+        <div style={{ width: '400px', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+          <div style={{ marginBottom: '10px' }}>게시글이 없습니다.</div>
+          {userId && (
+            <Btn style={{ margin: 'auto' }} to="/community/create">
+              글쓰기
+            </Btn>
+          )}
+        </div>
       </Page>
     );
   }
@@ -99,7 +99,7 @@ const CareGiverCommunity = () => {
             </Drop>
             <Input type="text" />
             <SearchBtn>검색</SearchBtn>
-            {userId && <Btn onClick={() => navigate('/community/careGiver/create')}>글쓰기</Btn>}
+            {userId && <Btn to="/community/create">글쓰기</Btn>}
           </Right>
         </BoardTop>
         <BoardItemTop>
@@ -124,12 +124,7 @@ const CareGiverCommunity = () => {
     </Page>
   );
 };
-export const Page = styled.div`
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  margin-top: 70px;
-`;
+
 export const PageInfo = styled.div`
   width: 74%;
   > div {
@@ -167,12 +162,13 @@ export const Input = styled.input`
   border-radius: 4px;
   padding: 2px 4px;
 `;
-const Btn = styled.button`
+const Btn = styled(Link)`
   align-content: center;
-  width: 10%;
+  width: 80px;
   background-color: ${({ theme }) => theme.colors.primary};
   color: ${({ theme }) => theme.colors.white};
   border-radius: 4px;
+  padding: 10px;
 `;
 const SearchBtn = styled.button`
   align-content: center;
