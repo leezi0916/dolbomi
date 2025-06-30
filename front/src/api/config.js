@@ -21,7 +21,6 @@ export const API_ENDPOINTS = {
 
   USERS: {
     BASE: '/users/v1',
-
     CHECK_ID: '/users/v1/check', //아이디 중복 검사
     PROFILE: (userNo) => `/users/v1?user_no=${userNo}`,
     LOGIN: '/users/v1/login',
@@ -42,6 +41,7 @@ export const API_ENDPOINTS = {
     BASE: '/hiring/v1',
     SIMPLE_LIST: '/hiring/v1/simple-list',
     LIST: '/hiring/v1/list',
+    MYLIST: (currentPage, userNo) => `/hiring/v1/my-list?page=${currentPage - 1}&userNo=${userNo}`,
     DETAIL: (hiringNo) => `/hiring/v1/${hiringNo}`, //get
     STATUS: (hiringNo) => `/hiring/v1/${hiringNo}/status`,
     DELETE: (hiringNo) => `/hiring/v1/${hiringNo}`, //patch
