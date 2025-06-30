@@ -8,6 +8,13 @@ public interface ProposerService {
 
     Long createProposer(Create createProposerDto);
 
+
+    boolean findProposerNo(Long hiringNo, Long caregiverNo);
+
+
+    void cancel(Long hiringNo, Long caregiverNo);
+
     // 매칭 수락 (지원현황의 이력서 보고 수락!)
     void acceptMatching(Long resumeNo, Long hiringNo);
+
 }

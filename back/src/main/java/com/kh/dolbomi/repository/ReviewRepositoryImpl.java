@@ -66,7 +66,7 @@ public class ReviewRepositoryImpl implements ReviewRepository {
     public Page<Review> getReceivedReviewList(Status status, Pageable pageable, Long userNo) {
 
         String query = """
-                  SELECT r 
+                  SELECT r
                   FROM Review r
                   JOIN r.matchingList m
                   JOIN m.caregiver c
@@ -86,7 +86,7 @@ public class ReviewRepositoryImpl implements ReviewRepository {
                   JOIN m.caregiver c
                   WHERE r.status = :status AND c.userNo = :userNo
                 """;
-        
+
         Long totalCount = em.createQuery(countQuery, Long.class)
                 .setParameter("status", status)
                 .setParameter("userNo", userNo)
