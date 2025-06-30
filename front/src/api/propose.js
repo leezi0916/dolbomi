@@ -41,7 +41,7 @@ export const proposerService = {
 
   // 신청 취소 (삭제)
   //취소는 현재 json-server 사용중이라 백엔드 들어갈시 다시 수정해야할듯
-  cancelProposer: async ({ caregiverNo, hiringNo}) => {
+  cancelProposer: async ({ caregiverNo, hiringNo }) => {
     try {
       // 삭제라면
       await api.delete(API_ENDPOINTS.PROPOSER.CANCEL(hiringNo, caregiverNo));
@@ -58,6 +58,17 @@ export const proposerService = {
       return res.data;
     } catch (error) {
       console.error('매칭 수락 실패:', error.response?.data?.message || error.message);
+      throw error;
+    }
+  },
+
+  //이미 매칭된 이력서인지
+  checkAccepted: async ({ hiringNo, resumeNo }) => {
+    try {
+      const { data } = await api.get(API_ENDPOINTS.PROPOSER.CHECK_ACCEPTED(hiringNo, resumeNo));
+      return snakeToCamel(data);
+    } catch (error) {
+      console.error('매칭 여부 확인 실패:', error.response?.data?.message || error.message);
       throw error;
     }
   },

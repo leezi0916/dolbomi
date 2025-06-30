@@ -75,6 +75,14 @@ public class HiringServiceImpl implements HiringService {
         hiring.hiringDeleted(); //삭제 상태로 변경
     }
 
+    // 내 구인글 조회
+    @Override
+    public Page<HiringDto.Response> getMyHiringLists(Long userNo, Pageable pageable) {
+        Page<Hiring> hirings = hiringRepository.getMyHiringLists(StatusEnum.Status.Y, pageable, userNo);
+        System.out.println(hirings);
+        return hirings.map(HiringDto.Response::myHiringDto);
+    }
+
     // 메인페이지(간병사 페이지) 일반 구인글 조회
     @Override
     public List<HiringDto.Response> getMainHiringList() {

@@ -35,7 +35,7 @@ const Patient = () => {
       <AuthContainer>
         <Head>
           <Title>돌봄 대상자 목록</Title>
-          <MainSubmitBtn onClick={() => navigate('/guardian/patientregisteration')}>등록</MainSubmitBtn>
+          <MainSubmitBtn onClick={() => navigate('/guardian/patientregisteration')}>돌봄대상자 등록</MainSubmitBtn>
         </Head>
 
         <CardWrap>
@@ -130,5 +130,5 @@ const ButtonDiv = styled.div`
 `;
 
 const MainSubmitBtn = styled(MainSubmitButton)`
-  width: 120px;
+  width: 200px;
 `;

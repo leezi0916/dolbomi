@@ -56,12 +56,24 @@ export const usepatientRegistrationForm = () => {
     },
   });
 
+  const formatPhoneNumber = (value) => {
+    // 숫자만 남기기
+    const numbersOnly = value.replace(/\D/g, '');
+  
+    // 010부터 시작하고 길이에 따라 포맷팅
+    if (numbersOnly.length < 4) return numbersOnly;
+    if (numbersOnly.length < 8)
+      return `${numbersOnly.slice(0, 3)}-${numbersOnly.slice(3)}`;
+    return `${numbersOnly.slice(0, 3)}-${numbersOnly.slice(3, 7)}-${numbersOnly.slice(7, 11)}`;
+  };
+
   //컴포넌트에서 사용할 값들 반환
   return {
     register,
     handleSubmit,
    errors, isSubmitting , //유효성 에러및 제출중 상태
     setValue,
+    formatPhoneNumber,
     watch, // watch 함수를 반환합니다.
   };
 };

@@ -3,17 +3,15 @@ import { useState } from 'react';
 
 import { Label } from '../styles/Auth.styles';
 import { Input } from '../styles/Auth.styles';
-import { DiseaseDiv,DiseaseBtn, TagsUl } from '../styles/PatientRegistration';
-const Tags = ({tags, handleTagChange}) => {
-  
-  const [inputValue, setInputValue] = useState("");
+import { DiseaseDiv, DiseaseBtn, TagsUl } from '../styles/PatientRegistration';
+const Tags = ({ tags, handleTagChange }) => {
+  const [inputValue, setInputValue] = useState('');
   const removeTags = (indexToRemove) => {
     const filter = tags.filter((_, index) => index !== indexToRemove);
     handleTagChange(filter);
   };
   const addTags = () => {
     if (inputValue !== '' && !tags.includes(inputValue)) {
-      
       handleTagChange([...tags, inputValue]);
       setInputValue('');
     }
@@ -22,14 +20,22 @@ const Tags = ({tags, handleTagChange}) => {
     setInputValue(e.target.value);
   };
 
-
-
   return (
     <>
       <Label>보유한 질병을 작성해주세요.</Label>
       <DiseaseDiv>
-        <Input type="text" placeholder="질병 입력" value={inputValue} onChange={handleInputChange} />
-        {/* <input type="hidden" {...register('tags')} value={tags}></input> */}
+        <Input
+          type="text"
+          placeholder="질병 입력"
+          value={inputValue}
+          onChange={handleInputChange}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter') {
+              e.preventDefault(); // 엔터 눌렀을 때 폼 제출 막기
+              addTags(); // 대신 태그 추가 동작 실행
+            }
+          }}
+        />
         <DiseaseBtn type="button" onClick={addTags}>
           질병 입력
         </DiseaseBtn>
