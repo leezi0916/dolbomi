@@ -8,6 +8,7 @@ import { useEffect } from 'react';
 import { ProfileImg } from '../styles/common/Profile';
 import { patientService } from '../api/patient';
 
+
 const Patient = () => {
   const { user } = useUserStore();
   const [userPatients, setUserpatients] = useState();
@@ -59,6 +60,9 @@ const Patient = () => {
 
               <ButtonDiv>
                 <MainMoveBtn onClick={() => navigate(`/guardian/patient/${pat.patNo}`)}>관리</MainMoveBtn>
+                { 
+
+                }
                 <MainMoveBtn onClick={() => navigate(`/report/${pat.patNo}`)}>일지</MainMoveBtn>
               </ButtonDiv>
             </Card>

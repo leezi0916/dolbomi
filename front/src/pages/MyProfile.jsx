@@ -256,7 +256,9 @@ const MyProfile = () => {
           </GenderRadioGroup>
           <InputGroup>
             <Label htmlFor="phone">전화번호</Label>
-            <Input type="text" id="phone" value={formData.phone} onChange={handleChange} />
+            <Input type="text" id="phone" value={formData.phone} 
+            onChange={handleChange} 
+            />
           </InputGroup>
           <InputGroup>
             <Label htmlFor="email">이메일</Label>

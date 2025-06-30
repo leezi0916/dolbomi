@@ -206,10 +206,10 @@ const HireDetail = () => {
                   <label htmlFor="F">여성</label>
                 </RadioWrapper>
               </RadioGroup>
-              <InputGroup>
+              {/* <InputGroup>
                 <Label>보호자 전화번호</Label>
                 <Input type="text" value={jobOpening?.phone} readOnly />
-              </InputGroup>
+              </InputGroup> */}
               <InputGroup>
                 <Label>주소</Label>
                 <Input type="text" id="patAddress" value={jobOpening?.patAddress} readOnly />
@@ -311,7 +311,7 @@ const HireDetail = () => {
           ) : recruitmentClosed ? (
             // 모집 마감된 글인데 내가 작성자가 아니면 신청 버튼 대신 비활성 모집 마감 버튼 표시
             <SubmitButton1 type="button" disabled $disabled>
-              모집 마감
+              신청취소(모집마감)
             </SubmitButton1>
           ) : alreadyApplied ? (
             // 모집 중이고 내가 신청한 경우 → 신청취소 버튼

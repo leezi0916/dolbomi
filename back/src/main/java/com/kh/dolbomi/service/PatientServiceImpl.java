@@ -10,7 +10,6 @@ import com.kh.dolbomi.repository.DiseaseRepository;
 import com.kh.dolbomi.repository.PatientRepository;
 import com.kh.dolbomi.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
-import java.math.BigDecimal;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -94,8 +93,8 @@ public class PatientServiceImpl implements PatientService {
         patient.changePatAddress(updatePatDto.getPat_address());
         patient.changePatPhone(updatePatDto.getPat_phone());
         patient.changePatGender(updatePatDto.getPat_gender());
-        patient.changePatWeight(BigDecimal.valueOf(updatePatDto.getPat_weight()));
-        patient.changePatHeight(BigDecimal.valueOf(updatePatDto.getPat_height()));
+        patient.changePatWeight(updatePatDto.getPat_weight());
+        patient.changePatHeight(updatePatDto.getPat_height());
         patient.changePatContent(updatePatDto.getPat_content());
         patient.changeStatus(updatePatDto.getStatus());
 
