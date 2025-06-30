@@ -22,7 +22,7 @@ const JobOpeningManagement = () => {
         console.log(data);
         setJobOpeningList(data);
       } catch (error) {
-        console.error('리뷰 로딩 실패:', error);
+        toast.error('구인 목록을 불러오는데 실패했습니다.');
       }
     };
     fetchReviews();
@@ -50,26 +50,38 @@ const JobOpeningManagement = () => {
           </tr>
         </THead>
         <TBody>
-          {jobOpeningList.content?.map((jobOpening, index) => {
-            const total = jobOpeningList.totalCount; // 전체 구인글 수
-            const currentPage = jobOpeningList.currentPage; // 현재 페이지 번호 (0부터 시작)
-            const size = jobOpeningList.pageSize; // 한 페이지당 몇 개 보여주는지 (혹은 백엔드에서 받은 pageSize 사용)
+          {jobOpeningList.content && jobOpeningList.content.length > 0 ? (
+            jobOpeningList.content?.map((jobOpening, index) => {
+              const total = jobOpeningList.totalCount; // 전체 구인글 수
+              const currentPage = jobOpeningList.currentPage; // 현재 페이지 번호 (0부터 시작)
+              const size = jobOpeningList.pageSize; // 한 페이지당 몇 개 보여주는지 (혹은 백엔드에서 받은 pageSize 사용)
 
-            // 번호 계산 (내림차순)
-            const displayNo = total - (currentPage * size + index);
+              // 번호 계산 (내림차순)
+              const displayNo = total - (currentPage * size + index);
 
-            return (
-              <tr key={jobOpening.hiringNo} onClick={() => navigate(`/hireDetail/${jobOpening.hiringNo}`)}>
-                <td>{displayNo}</td>
-                <td className="title">{jobOpening.hiringTitle}</td>
-                <td>{jobOpening.createDate.slice(0, 10)}</td>
-                <td>{jobOpening.appliedCount === 0 ? '0명' : `${jobOpening.appliedCount}명`}</td>
-                <td style={{ color: jobOpening.hiringStatus === 'Y' ? theme.colors.success : theme.colors.gray[4] }}>
-                  {jobOpening.hiringStatus === 'Y' ? '모집중' : '모집마감'}
-                </td>
-              </tr>
-            );
-          })}
+              return (
+                <tr key={jobOpening.hiringNo} onClick={() => navigate(`/hireDetail/${jobOpening.hiringNo}`)}>
+                  <td>{displayNo}</td>
+                  <td className="title">{jobOpening.hiringTitle}</td>
+                  <td>{jobOpening.createDate.slice(0, 10)}</td>
+                  <td>{jobOpening.appliedCount === 0 ? '0명' : `${jobOpening.appliedCount}명`}</td>
+                  <td
+                    style={{
+                      color: jobOpening.hiringStatus === 'Y' ? theme.colors.success : theme.colors.gray[4],
+                    }}
+                  >
+                    {jobOpening.hiringStatus === 'Y' ? '모집중' : '모집마감'}
+                  </td>
+                </tr>
+              );
+            })
+          ) : (
+            <tr>
+              <td colSpan={5}>
+                <EmptyMessage>등록된 구인글이 없습니다.</EmptyMessage>
+              </td>
+            </tr>
+          )}
         </TBody>
       </Table>
 
@@ -146,4 +158,12 @@ const TBody = styled.tbody`
       max-width: 200px;
     }
   }
+`;
+
+// 빈 메시지 추가
+const EmptyMessage = styled.div`
+  padding: ${({ theme }) => theme.spacing[10]} 0;
+  font-size: ${({ theme }) => theme.fontSizes.base};
+  color: ${({ theme }) => theme.colors.gray[3]};
+  text-align: center;
 `;

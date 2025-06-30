@@ -18,6 +18,7 @@ import { reviewService } from '../api/reviews';
 import Paging from '../components/Paging';
 import { media } from '../styles/MediaQueries';
 import useUserStore from '../store/userStore';
+import { toast } from 'react-toastify';
 
 const ReceivedReviews = () => {
   const [reviews, setReviews] = useState([]);
@@ -32,7 +33,7 @@ const ReceivedReviews = () => {
         console.log(data);
         setReviews(data);
       } catch (error) {
-        console.error('리뷰 로딩 실패:', error);
+        toast.error('리뷰 로딩에 실패했습니다.');
       }
     };
     fetchReviews();
@@ -62,28 +63,32 @@ const ReceivedReviews = () => {
       </TopSection>
 
       <ReceivedReviewsGridContainer>
-        {reviews.receivedReview?.content?.map((review) => (
-          <Card key={review.reviewNo}>
-            <CardTopContent>
-              <CardImage src={review.profileImage} />
-              <CardTextGroup>
-                <CardTitle>{review.userName} 님</CardTitle>
-                <CardText>
-                  나이 {review.age}세({review.gender === 'M' ? '남' : '여'})
-                </CardText>
-              </CardTextGroup>
-            </CardTopContent>
-            <CardMidBottomContent>
-              <ReviewTextBox>{review.reviewContent}</ReviewTextBox>
-              <ReviewFooter>
-                <ReviewScore>
-                  평점 <strong>{review.reviewScore.toFixed(1)}</strong>
-                </ReviewScore>
-                <ReviewDate>작성일 {review.reviewUpdateDate.slice(0, 10)}</ReviewDate>
-              </ReviewFooter>
-            </CardMidBottomContent>
-          </Card>
-        ))}
+        {!reviews.receivedReview?.content || reviews.receivedReview.content.length === 0 ? (
+          <EmptyMessage>받은 리뷰가 없습니다.</EmptyMessage>
+        ) : (
+          reviews.receivedReview?.content?.map((review) => (
+            <Card key={review.reviewNo}>
+              <CardTopContent>
+                <CardImage src={review.profileImage} />
+                <CardTextGroup>
+                  <CardTitle>{review.userName} 님</CardTitle>
+                  <CardText>
+                    나이 {review.age}세({review.gender === 'M' ? '남' : '여'})
+                  </CardText>
+                </CardTextGroup>
+              </CardTopContent>
+              <CardMidBottomContent>
+                <ReviewTextBox>{review.reviewContent}</ReviewTextBox>
+                <ReviewFooter>
+                  <ReviewScore>
+                    평점 <strong>{review.reviewScore.toFixed(1)}</strong>
+                  </ReviewScore>
+                  <ReviewDate>작성일 {review.reviewUpdateDate.slice(0, 10)}</ReviewDate>
+                </ReviewFooter>
+              </CardMidBottomContent>
+            </Card>
+          ))
+        )}
       </ReceivedReviewsGridContainer>
 
       <Paging currentPage={currentPage} totalPage={reviews.totalPage} chagneCurrentPage={chagneCurrentPage} />
@@ -162,4 +167,17 @@ const ScoreText = styled.span`
 const AverageScore = styled.span`
   font-weight: ${({ theme }) => theme.fontWeights.extrabold};
   color: ${({ theme }) => theme.colors.gray[1]};
+`;
+
+// 빈 메세지 추가
+const EmptyMessage = styled.div`
+  grid-column: 1 / -1;
+  height: 300px; // 높이 넉넉하게 설정
+  display: flex;
+  align-items: center; // 수직 가운데
+  justify-content: center; // 수평 가운데
+  padding: ${({ theme }) => theme.spacing[8]};
+  font-size: ${({ theme }) => theme.fontSizes.base};
+  color: ${({ theme }) => theme.colors.gray[3]};
+  text-align: center;
 `;
