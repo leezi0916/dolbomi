@@ -12,15 +12,14 @@ import Paging from '../components/Paging';
 
 const CaregiverList = () => {
   const [caregiverLists, setCaregiverLists] = useState([]);
-  const [loading, setLoading] = useState(false); // 초기 false
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [address, setAddress] = useState('');
-  const [startDate, setStartDate] = useState('');
-  const [endDate, setEndDate] = useState('');
-  const [gender, setGender] = useState('');
   const [account, setAccount] = useState('');
+  const [gender, setGender] = useState('');
+  const [hasLicense, setHasLicense] = useState(false);
   const [careStatus, setCareStatus] = useState(false);
-  const [page, setPage] = useState(1); // MUI Pagination은 1부터 시작
+  const [page, setPage] = useState(1);
   const [size] = useState(10);
   const [totalPages, setTotalPages] = useState(0);
   //검색창
@@ -219,7 +218,7 @@ const CaregiverList = () => {
                   </AccuontText>
                 </LocationWage>
                 <USERINFO1>
-                  {resume.has_license && <AccommodationInfo>자격증 보유</AccommodationInfo>}
+                  {resume.hasLicense && <AccommodationInfo>자격증 보유</AccommodationInfo>}
                   {resume.careStatus ? (
                     <AccommodationInfo>상주 간병 O</AccommodationInfo>
                   ) : (
