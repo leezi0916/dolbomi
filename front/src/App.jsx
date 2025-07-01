@@ -58,17 +58,19 @@ function AppRoutes() {
   const navigate = useNavigate();
   const location = useLocation();
 
-  useEffect(() => {
-    if (location.pathname === '/') {
-      navigate('/guardian');
-    }
-  }, [location, navigate]);
+  // useEffect(() => {
+  //   if (location.pathname === '/') {
+  //     navigate('/guardian');
+  //   }
+  // }, [location, navigate]);
 
   return (
     <>
       <Layout>
         <ScrollToTop />
         <Routes>
+          <Route path="/" element={<GuardianMainPage />} />
+
           {/* 간병인 */}
           <Route path="/caregiver" element={<CareGiverMainPage />} />
           <Route path="/caregiver/hirelist" element={<HireList />} />

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { Section } from '../styles/common/Container';
 import { Button, ButtonText } from '../styles/common/Button';
@@ -6,6 +6,7 @@ import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import TextareaAutosize from 'react-textarea-autosize';
 import { reportService } from '../api/report';
 import { toast } from 'react-toastify';
+import useUserStatusStore from '../store/userStatusStore';
 
 /*
   매칭상태에 따라 버튼변경해야함
@@ -15,6 +16,7 @@ import { toast } from 'react-toastify';
 
 const ReportDetail = () => {
   const { reportNo } = useParams();
+  const { userStatus } = useUserStatusStore();
   const navigate = useNavigate();
   const location = useLocation();
   const [state, setState] = useState(true);
@@ -23,8 +25,9 @@ const ReportDetail = () => {
 
   const handleSubmit = async () => {
     try {
-      await reportService.modifyReports(report);
-      alert('일지가 수정되었습니다.');
+      const result = await reportService.modifyReports(report);
+      result && alert('일지가 수정되었습니다.');
+      navigate(-1);
     } catch (error) {
       console.error(error);
       const errorMessage = '리뷰를 불러오는데 실패했습니다.';
@@ -34,6 +37,10 @@ const ReportDetail = () => {
   };
 
   const handleDelete = async () => {
+    const confirmDelete = window.confirm('정말 삭제하시겠습니까?');
+    if (!confirmDelete) {
+      return;
+    }
     try {
       const result = await reportService.removeReports(reportNo);
       result && alert('일지가 삭제되었습니다.');
@@ -59,15 +66,19 @@ const ReportDetail = () => {
             여기서 해당환자(patNo)의 간병인이 맞는지 체크해야함
             1. store에서 로그인No 가져와서 담당환자목록 가져오기
             2. {report.patNo && ( ... )} 걸어줘서 아래 수정 삭제 버튼 안보이게하기
+            3. 매칭이 끝났으면 자기이름꺼만 가져오고 수정없애기
           */}
-          <>
-            <Btn onClick={handleDelete}>
-              <ButtonText>삭제</ButtonText>
-            </Btn>
-            <Btn onClick={() => setState(!state)}>
-              {state ? <ButtonText>수정</ButtonText> : <ButtonText onClick={handleSubmit}>저장</ButtonText>}
-            </Btn>
-          </>
+
+          {userStatus || (
+            <>
+              <Btn onClick={handleDelete}>
+                <ButtonText>삭제</ButtonText>
+              </Btn>
+              <Btn onClick={() => setState(!state)}>
+                {state ? <ButtonText>수정</ButtonText> : <ButtonText onClick={handleSubmit}>저장</ButtonText>}
+              </Btn>
+            </>
+          )}
 
           <Btn onClick={() => window.history.back()}>
             <ButtonText>이전으로</ButtonText>
