@@ -26,6 +26,7 @@ public class MatchingController {
             @RequestParam("pat_no") Long patNo,
             @RequestParam("status") Status matchingStatus
     ) {
+        System.out.println("patNo" + patNo + "matchingStatus : " + matchingStatus);
         return ResponseEntity.ok(matchingService.getMatchingList(patNo, matchingStatus));
     }
 

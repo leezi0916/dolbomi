@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { Section } from '../styles/common/Container';
 import styled from 'styled-components';
 import SearchBar from '../components/SearchBar';
-import profileImage from '../assets/images/pat.png'; // 프로필 이미지 경로
+import pat_profileImage from '../assets/images/pat.png'; // 프로필 이미지 경로
+import care_profileImage from '../assets/images/cargiver.png'; // 프로필 이미지 경로
 import useUserStore from '../store/userStore';
 import { matchingService } from '../api/matching';
 import { patientService } from '../api/patient';
@@ -15,9 +16,11 @@ const MatchToCaregiver = () => {
   const [activeTab, setActiveTab] = useState('matching');
   const [caregiverList, setCareGiverList] = useState([]);
   const [userPatients, setUserpatients] = useState([]);
+
   const [endedPage, setEndedPage] = useState(1);
   const [endedTotalPages, setEndedTotalPages] = useState(0);
   const [endedCaregiverList, setEndedCaregiverList] = useState([]);
+
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -37,10 +40,10 @@ const MatchToCaregiver = () => {
   }, [user]);
 
   // 현재 매칭정보 : 특정 환자의 간병인 목록 가져오기
-  const getCareGiver = (patno) => {
+  const getCareGiver = (patNo) => {
     const getList = async () => {
       try {
-        const careGiverList = await matchingService.getMatchginCargiver(patno, 'Y');
+        const careGiverList = await matchingService.getMatchginCargiver(patNo, 'Y');
         console.log(careGiverList);
         careGiverList.length === 0 ? setCareGiverList([]) : setCareGiverList(careGiverList);
       } catch (err) {
@@ -97,7 +100,7 @@ const MatchToCaregiver = () => {
               <RightLineDiv>
                 {userPatients?.map((pat) => (
                   <ProfileCard key={pat.patNo} type="patient" onMouseEnter={() => getCareGiver(pat.patNo)}>
-                    <ProfileImage src={profileImage} alt="환자" />
+                    <ProfileImage src={pat_profileImage} alt="환자" />
                     <ProfileInfo>
                       <UserName>{pat.patName} 님</UserName>
                       <UserAge>나이 {pat.patAge}세(여)</UserAge>
@@ -110,7 +113,7 @@ const MatchToCaregiver = () => {
                 {caregiverList?.map((care) => (
                   <>
                     <CargiverWrap key={care.caregiverNo}>
-                      <CaregiverImg src={care.profileImage} alt="" />
+                      <CaregiverImg src={care_profileImage} alt="" />
                       <CaregiverTextDiv>
                         <ProfileTextGray>
                           <ProfileTextStrong>{care.userName}</ProfileTextStrong> 님
@@ -143,7 +146,7 @@ const MatchToCaregiver = () => {
               <RightLineDiv>
                 {endedCaregiverList.map((care) => (
                   <ProfileCard key={care.caregiverNo} type="patient">
-                    <ProfileImage src={care.profileImage || profileImage} alt="간병인" />
+                    <ProfileImage src={care.profileImage || care.caregiver_profileImage} alt="간병인" />
                     <ProfileInfo>
                       <UserName>{care.userName} 님</UserName>
                       <UserAge>
@@ -160,7 +163,7 @@ const MatchToCaregiver = () => {
               <div>
                 {endedCaregiverList.map((care) => (
                   <CargiverWrap key={`${care.caregiverNo}-pat`}>
-                    <CaregiverImg src={profileImage} alt="환자" />
+                    <CaregiverImg src={care.pat_profileImage} alt="환자" />
                     <CaregiverTextDiv>
                       <ProfileTextGray>
                         <ProfileTextStrong>{care.patName}</ProfileTextStrong> 님
