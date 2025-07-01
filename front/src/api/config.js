@@ -83,6 +83,7 @@ export const API_ENDPOINTS = {
   PROPOSER: {
     BASE: '/proposer/v1',
     LIST: (hiringNo) => `/proposer/v1?hiring_no=${hiringNo}`,
+    MYLIST: (currentPage, userNo) => `/proposer/v1/my-list?page=${currentPage - 1}&userNo=${userNo}`,
     STATUS: (hiringNo, caregiverNo) => `/proposer/v1/check?hiring_no=${hiringNo}&caregiver_no=${caregiverNo}`,
     CANCEL: (hiringNo, caregiverNo) => `/proposer/v1/cancel?hiring_no=${hiringNo}&caregiver_no=${caregiverNo}`,
     ACCEPT: '/proposer/v1/accept',
