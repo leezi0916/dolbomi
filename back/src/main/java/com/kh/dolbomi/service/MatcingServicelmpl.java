@@ -72,4 +72,12 @@ public class MatcingServicelmpl implements MatchingService {
                 .collect(Collectors.toList());
     }
 
+    @Override
+    public Page<MatchingDto.ResponsePat> getMatchedPatientsByCaregiver(Long caregiverNo, Status status,
+                                                                       Pageable pageable) {
+        return matchingRepositoryV2.findByCaregiverUserNoAndStatus(caregiverNo, status, pageable)
+                .map(MatchingDto.ResponsePat::from);
+    }
+
+
 }
