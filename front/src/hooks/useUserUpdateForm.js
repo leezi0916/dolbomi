@@ -23,8 +23,8 @@ const updateSchema = yup.object().shape({
 
   phone: yup
     .string()
-    .required('전화번호를 입력하세요.')
-    .matches(/^010\d{8}$/, "010으로 시작하고 '-' 제외한 11자리여야 합니다."),
+    .matches(/^010-\d{4}-\d{4}$/, '전화번호 형식은 010-0000-0000 이어야 합니다')
+    .required('전화번호를 입력해주세요'),
 
   email: yup.string().email('유효한 이메일 주소를 입력하세요.').required('이메일을 입력해주세요.'),
   address: yup
@@ -36,6 +36,8 @@ const updateSchema = yup.object().shape({
 
 const useUserUpdateForm = ({ profile }) => {
   const [updating, setUpdating] = useState(false);
+
+
 
   const validateAndSubmit = async (formData, licenseList, profileImageFile) => {
     try {
@@ -50,13 +52,14 @@ const useUserUpdateForm = ({ profile }) => {
       // 자격증도 변경되었는지 체크
       const licensesChanged = JSON.stringify(profile.licenses || []) !== JSON.stringify(licenseList);
 
-      // ✅ 이미지가 선택되었지만, 지금은 S3 업로드 기능 없음 → null로 대체
+      // 이미지가 선택되었지만, 지금은 S3 업로드 기능 없음 → null로 대체
       const imageChanged = !!profileImageFile;
 
       if (Object.keys(changedFields).length === 0 && !licensesChanged && !imageChanged) {
         toast.info('변경된 정보가 없습니다.');
         return;
       }
+
 
       // 유효성 검사
       await updateSchema.validate(formData, { abortEarly: false });
@@ -65,7 +68,7 @@ const useUserUpdateForm = ({ profile }) => {
       const updatedData = {
         ...changedFields,
         licenses: licenseList || [],
-        // profileImage: 's3url보내야함', //나중에 s3 url
+        profileImage: 's3url보내야함', //나중에 s3 url
       };
 
       console.log('보내는 데이터:', updatedData);

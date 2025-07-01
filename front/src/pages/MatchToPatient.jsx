@@ -1,15 +1,38 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Section } from '../styles/common/Container';
 import styled from 'styled-components';
 import SearchBar from '../components/SearchBar';
 import profileImage from '../assets/images/pat.png'; // 프로필 이미지 경로
 import { useNavigate } from 'react-router-dom';
+import { matchingService } from '../api/matching';
+import useUserStore from '../store/userStore';
+
 const MatchToPatient = () => {
   const [activeTab, setActiveTab] = useState('matching');
+  const { user } = useUserStore();
+  const [patientList, setPatientList] = useState();
+  const navigate = useNavigate();
 
   const handleTabChange = (tab) => {
     setActiveTab(tab);
   };
+
+  useEffect(() => {
+    const fetchAll = async () => {
+      if (!user) {
+        alert('로그인 후 이용해주세요');
+        return;
+      }
+      try {
+        const patientList = await matchingService.getMatchingPatient(user.userNo, 'Y');
+        console.log(patientList);
+        patientList.length === 0 ? setPatientList([]) : setPatientList(patientList);
+      } catch (err) {
+        console.error(err);
+      }
+    };
+    fetchAll();
+  }, [user]);
 
   return (
     <>
@@ -17,11 +40,11 @@ const MatchToPatient = () => {
         <TitleDiv>
           <Title>매칭된 간병보기</Title>
           <Tab>
-            <SubTitle onClick={() => handleTabChange('matching')} active={activeTab === 'matching'}>
+            <SubTitle onClick={() => handleTabChange('matching')} $active={activeTab === 'matching'}>
               진행중
             </SubTitle>
             <SubTitle>/</SubTitle>
-            <SubTitle onClick={() => handleTabChange('matched')} active={activeTab === 'matched'}>
+            <SubTitle onClick={() => handleTabChange('matched')} $active={activeTab === 'matched'}>
               종료된 매칭
             </SubTitle>
           </Tab>
@@ -35,19 +58,27 @@ const MatchToPatient = () => {
       <MatchSection>
         {activeTab === 'matching' && (
           <>
-            <ProfileCardPair>
-              <ProfileCard type="patient">
-                <ProfileImage src={profileImage} alt="환자" />
-                <ProfileInfo>
-                  <UserName>박영희 님</UserName>
-                  <UserAge>나이 50세(여)</UserAge>
-                </ProfileInfo>
-                <ButtonRow>
-                  <InfoButton>간병일지보기</InfoButton>
-                  <ReportButton>간병 종료</ReportButton>
-                </ButtonRow>
-              </ProfileCard>
-            </ProfileCardPair>
+            {patientList && patientList.length > 0 ? (
+              patientList.map((pat) => (
+                <ProfileCardPair>
+                  <ProfileCard type="patient">
+                    <ProfileImage src={profileImage} alt="환자" />
+                    <ProfileInfo>
+                      <UserName>{pat.patName} 님</UserName>
+                      <UserAge>
+                        나이 {pat.patAge}세({pat.patGender==="F"?'여':"남"})
+                      </UserAge>
+                    </ProfileInfo>
+                    <ButtonRow>
+                      <InfoButton onClick={() => navigate(`/report/${pat.patNo}`)}>간병일지보기</InfoButton>
+                      <ReportButton>간병 종료</ReportButton>
+                    </ButtonRow>
+                  </ProfileCard>
+                </ProfileCardPair>
+              ))
+            ) : (
+              <InfoP> 매칭된 환자가 없습니다. </InfoP>
+            )}
           </>
         )}
 
@@ -110,7 +141,7 @@ const SubTitle = styled.h1`
   padding: ${({ theme }) => theme.spacing[3]};
   display: flex;
   justify-content: flex-start;
-  color: ${({ active, theme }) => (active ? theme.colors.black1 : theme.colors.gray[3])};
+  color: ${({ $active, theme }) => ($active ? theme.colors.black1 : theme.colors.gray[3])};
   cursor: pointer;
 `;
 const Tab = styled.div`
@@ -219,4 +250,8 @@ const CareLogButton = styled(InfoButton)`
   align-self: flex-start; /* 왼쪽 정렬 */
   border-radius: ${({ theme }) => theme.borderRadius.md};
 `;
+
+const InfoP = styled.p`
+margin: 50px;
+`
 export default MatchToPatient;

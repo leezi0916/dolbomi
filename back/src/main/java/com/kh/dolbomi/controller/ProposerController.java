@@ -59,7 +59,7 @@ public class ProposerController {
     }
 
     @PostMapping("/accept")
-    public ResponseEntity<String> acceptMatching(@RequestBody MatchingDto matchingDto) {
+    public ResponseEntity<String> acceptMatching(@RequestBody MatchingDto.Create matchingDto) {
         proposerService.acceptMatching(matchingDto.getResume_no(), matchingDto.getHiring_no());
         return ResponseEntity.ok("매칭이 수락되었습니다.");
     }

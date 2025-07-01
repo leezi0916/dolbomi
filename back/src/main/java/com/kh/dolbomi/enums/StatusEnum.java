@@ -35,5 +35,11 @@ public class StatusEnum {
         N  // 안 읽음
     }
 
-    
+    //문의 관련
+    public enum QuestionStatus {
+        Y, // 완료
+        N  // 대기
+    }
+
+
 }

@@ -3,7 +3,7 @@ import { Container, Section } from '../styles/common/Container';
 import profileImage from '../assets/images/pat.png'; // 프로필 이미지 경로
 import styled from 'styled-components';
 
-import { Input, InputGroup, Title } from '../styles/Auth.styles';
+import { Input, InputGroup, Title, ErrorMessage } from '../styles/Auth.styles';
 import { media } from '../styles/MediaQueries';
 import { SubmitButton } from '../styles/common/Button';
 import { FaPlus } from 'react-icons/fa6';
@@ -13,6 +13,7 @@ import { patientService } from '../api/patient';
 import useUserStore from '../store/userStore';
 import { guardianHiringForm } from '../hooks/guardianHiringForm';
 import { hiringService } from '../api/hiring';
+import { BsFillExclamationCircleFill } from 'react-icons/bs';
 
 const HireRegistration = () => {
   const { user } = useUserStore();
@@ -20,6 +21,7 @@ const HireRegistration = () => {
   const [userPatients, setUserpatients] = useState();
   const [patient, setPatient] = useState();
   const [selectPatientNo, setSelectPatientNo] = useState(undefined);
+  const [careStatus, setCareStatus] = useState('');
   const navigate = useNavigate();
 
   //숙소 이미지 넣기
@@ -33,7 +35,7 @@ const HireRegistration = () => {
     register,
     handleSubmit,
     watch,
-    formState: { errors },
+     errors ,
   } = guardianHiringForm();
 
   const currentCareStatus = watch('careStatus');
@@ -63,7 +65,7 @@ const HireRegistration = () => {
   const getPatient = async (patNo) => {
     // patNo가 빈값이면 patient도 초기화
     if (!patNo) {
-      setPatient(null);
+      setPatient({});
       return;
     }
 
@@ -93,6 +95,10 @@ const HireRegistration = () => {
     }
   };
 
+  const handleCareStatusChange = (e) => {
+    setCareStatus(e.target.value);
+  };
+
   const onSubmit = async (data) => {
     console.log(data);
     try {
@@ -110,28 +116,38 @@ const HireRegistration = () => {
     }
   };
 
+
   return (
     <HireRegistSection>
       <HireContainer>
         <HireHead>
           <HireHeadTitle>구인 등록</HireHeadTitle>
+          <SelectDiv>
+            {selectPatientNo === undefined && (
+              <p style={{ textAlign: 'left', color: '#EF7A46' }}>
+                &nbsp;
+                <BsFillExclamationCircleFill color="'#EF7A46'"></BsFillExclamationCircleFill>&nbsp;&nbsp;필수
+                선택사항입니다.
+              </p>
+            )}
 
-          <SelectBox id="userPatients" value={selectPatientNo} onChange={(e) => getPatient(e.target.value)}>
-            <option value="">돌봄대상자를 선택해주세요</option>
-            {userPatients?.map((p) => (
-              <option key={p.patNo} value={p.patNo}>
-                {p.patName}
-              </option>
-            ))}
-          </SelectBox>
+            <SelectBox id="userPatients" value={selectPatientNo} onChange={(e) => getPatient(e.target.value)}>
+              <option value="">돌봄대상자를 선택해주세요</option>
+              {userPatients?.map((p) => (
+                <option key={p.patNo} value={p.patNo}>
+                  {p.patName}
+                </option>
+              ))}
+            </SelectBox>
+          </SelectDiv>
         </HireHead>
         <form onSubmit={handleSubmit(onSubmit)}>
           <ContentWrapper>
-            <div>
+            <selectDiv>
               <ProfilImageWrapper>
                 <img src={profileImage} alt="프로필 이미지" />
               </ProfilImageWrapper>
-            </div>
+            </selectDiv>
             <Divider>
               <InputGroup>
                 <Label>이름</Label>
@@ -168,10 +184,10 @@ const HireRegistration = () => {
                   <label htmlFor="F">여성</label>
                 </RadioWrapper>
               </RadioGroup>
-              <InputGroup>
+              {/* <InputGroup>
                 <Label>보호자 전화번호</Label>
                 <Input type="text" readOnly value={patient?.phone} />
-              </InputGroup>
+              </InputGroup> */}
               <InputGroup>
                 <Label>주소</Label>
                 <Input type="text" readOnly value={patient?.patAddress} />
@@ -210,61 +226,87 @@ const HireRegistration = () => {
           <ContentWrapper1>
             <HireContent>
               <Label>제목</Label>
-              <Input {...register('hiringTitle')} type="text" />
+              <Input {...register('hiringTitle')} type="text" $error={errors.hiringTitle} />
+              {errors.hiringTitle && <ErrorMessage>{errors.hiringTitle.message}</ErrorMessage>}
               <InputGird>
                 <InputGroup>
                   <Label>지급 금액 (시급)</Label>
-                  <Input type="text" {...register('account')} />
+                  <Input type="text" {...register('account')} $error={errors.account} />
+                  {errors.account && <ErrorMessage>{errors.account.message}</ErrorMessage>}
                 </InputGroup>
                 <InputGroup>
                   <Label>시작일</Label>
-                  <Input {...register('startDate')} type="date" />
+                  <Input {...register('startDate')} type="date"  $error={errors.startDate} />
+                  {errors.startDate && <ErrorMessage>{errors.startDate.message}</ErrorMessage>}
                 </InputGroup>
 
                 <InputGroup>
                   <Label>종료일</Label>
-                  <Input {...register('endDate')} type="date" />
+                  <Input {...register('endDate')} type="date" $error={errors.endDate}/>
+                  {errors.endDate && <ErrorMessage>{errors.endDate.message}</ErrorMessage>}
                 </InputGroup>
                 <InputGroup>
                   <Label>모집 인원수 설정</Label>
-                  <Input type="number" {...register('maxApplicants')} />
+                  <Input type="number" {...register('maxApplicants')}  $error={errors.maxApplicants}/>
+                  {errors.maxApplicants && <ErrorMessage>{errors.maxApplicants.message}</ErrorMessage>}
                 </InputGroup>
               </InputGird>
               <Label>내용</Label>
-              <Content type="textarea" {...register('hiringContent')} />
+              <Content type="textarea" {...register('hiringContent')} $error={errors.hiringContent} />
+              {errors.hiringContent && <ErrorMessage>{errors.hiringContent.message}</ErrorMessage>}
               <RadioGroup>
                 <Label>숙식 제공 여부</Label>
                 <RadioWrapper>
-                  <input type="radio" id="Y" name="careStatus" value="Y" {...register('careStatus')} />
+
+                  <input
+                    type="radio"
+                    id="Y"
+                    name="careStatus"
+                    value="Y"
+                    {...register('careStatus')}
+                    onChange={handleCareStatusChange}
+                    $error={errors.careStatus} />
                   <label htmlFor="Y">숙식 가능</label>
                 </RadioWrapper>
+               
                 <RadioWrapper>
-                  <input type="radio" id="N" name="careStatus" value="N" {...register('careStatus')} />
+                  <input
+                    type="radio"
+                    id="N"
+                    name="careStatus"
+                    value="N"
+                    {...register('careStatus')}
+                    onChange={handleCareStatusChange}
+                    $error={errors.careStatus}
+                  />
                   <label htmlFor="N">숙식 불가능</label>
+                  {errors.careStatus && <ErrorMessage>{errors.careStatus.message}</ErrorMessage>}
                 </RadioWrapper>
               </RadioGroup>
-              <InputGroup>
-                <Label>숙소 정보</Label>
-                {/* 클릭 가능한 div */}
-                <RoomImage onClick={handleDivClick}>
-                  {previewUrl ? (
-                    <img
-                      src={previewUrl}
-                      alt="미리보기"
-                      style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '4px' }}
-                    />
-                  ) : (
-                    <Plus />
-                  )}
-                </RoomImage>
-                <input
-                  type="file"
-                  accept="image/*"
-                  ref={inputRef}
-                  onChange={handleFileChange}
-                  style={{ display: 'none' }}
-                />
-              </InputGroup>
+
+              {careStatus === 'Y' && (
+                <InputGroup>
+                  <Label>숙소 정보</Label>
+                  <RoomImage onClick={handleDivClick}>
+                    {previewUrl ? (
+                      <img
+                        src={previewUrl}
+                        alt="미리보기"
+                        style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '4px' }}
+                      />
+                    ) : (
+                      <Plus />
+                    )}
+                  </RoomImage>
+                  <input
+                    type="file"
+                    accept="image/*"
+                    ref={inputRef}
+                    onChange={handleFileChange}
+                    style={{ display: 'none' }}
+                  />
+                </InputGroup>
+              )}
             </HireContent>
           </ContentWrapper1>
 
@@ -302,12 +344,15 @@ const HireHeadTitle = styled(Title)`
   margin: 0;
   font-size: ${({ theme }) => theme.fontSizes['3xl']};
 `;
-
+const SelectDiv = styled.div`
+  width: 200px;
+`;
 const SelectBox = styled.select`
-  width: 20%;
+  width: 100%;
   height: 50px;
   padding: 0 ${({ theme }) => theme.spacing[5]};
-  border: 1px solid ${({ theme }) => theme.colors.gray[5]};
+
+  border: 1px solid ${({ theme }) => theme.colors.primary}; // 오렌지색 테두리
   border-radius: ${({ theme }) => theme.spacing[1]};
   font-size: ${({ theme }) => theme.spacing[4]};
 `;
