@@ -1,6 +1,7 @@
 package com.kh.dolbomi.service;
 
 import com.kh.dolbomi.dto.MatchingDto;
+import com.kh.dolbomi.dto.MatchingDto.ResponsePat;
 import com.kh.dolbomi.enums.StatusEnum;
 import com.kh.dolbomi.enums.StatusEnum.Status;
 import com.kh.dolbomi.repository.MatchingRepository;
@@ -54,6 +55,21 @@ public class MatcingServicelmpl implements MatchingService {
                         .start_date(matching.getStartDate())
                         .status(matching.getStatus())
                         .build());
+    }
+
+
+    public List<ResponsePat> getMatchingListCaregiver(Long caregiverNo, Status matchingStatus) {
+        List<Object[]> resultList = matchingRepository.findbyCaregiverNo(caregiverNo, matchingStatus);
+        return resultList.stream()
+                .map(row -> new MatchingDto.ResponsePat(
+                        (Long) row[0],
+                        (String) row[1],
+                        (Integer) row[2],
+                        (StatusEnum.Gender) row[3],
+                        (LocalDateTime) row[4],
+                        (StatusEnum.Status) row[5]
+                ))
+                .collect(Collectors.toList());
     }
 
 }

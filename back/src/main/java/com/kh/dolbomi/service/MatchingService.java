@@ -9,6 +9,10 @@ import org.springframework.data.domain.Pageable;
 public interface MatchingService {
     List<MatchingDto.Response> getMatchingList(Long patNo, Status matchingStatus);
 
+
     // 종료된 매칭 목록 페이징 조회 추가
     Page<MatchingDto.Response> getMatchedListByStatus(Long patNo, Status status, Pageable pageable);
+
+    List<MatchingDto.ResponsePat> getMatchingListCaregiver(Long caregiverNo, Status matchingStatus);
+
 }

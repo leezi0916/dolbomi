@@ -112,86 +112,34 @@ const MatchToCaregiver = () => {
           <>
             <ProfileCardPair>
               <RightLineDiv>
-                {userPatients?.map((pat) => (
-                  <ProfileCard key={pat.patNo} type="patient" onMouseEnter={() => getCareGiver(pat.patNo)}>
-                    <ProfileImage src={pat_profileImage} alt="환자" />
-                    <ProfileInfo>
-                      <UserName>{pat.patName} 님</UserName>
-                      <UserAge>
-                        나이 {pat.patAge}세({pat.patGender === 'M' ? '남' : '여'})
-                      </UserAge>
-                      <InfoButton onClick={() => navigate(`/report/${pat.patNo}`)}> 간병일지 보기</InfoButton>
-                    </ProfileInfo>
-                  </ProfileCard>
-                ))}
+                {userPatients && userPatients.length > 0 ? (
+                  userPatients?.map((pat) => (
+                    <ProfileCard key={pat.patNo} type="patient" onMouseEnter={() => getCareGiver(pat.patNo)}>
+                      <ProfileImage src={pat_profileImage} alt="환자" />
+                      <ProfileInfo>
+                        <UserName>{pat.patName} 님</UserName>
+                        <UserAge>
+                          나이 {pat.patAge}세({pat.patGender === 'M' ? '남' : '여'})
+                        </UserAge>
+                        <InfoButton onClick={() => navigate(`/report/${pat.patNo}`)}> 간병일지 보기</InfoButton>
+                      </ProfileInfo>
+                    </ProfileCard>
+                  ))
+                ) : (
+                  <InfoP>등록된 환자가 없습니다. </InfoP>
+                )}
               </RightLineDiv>
               <div>
-                {caregiverList?.map((care) => (
-                  <>
-                    <CargiverWrap key={care.caregiverNo}>
-                      <CaregiverImg src={care_profileImage} alt="" />
-                      <CaregiverTextDiv>
-                        <ProfileTextGray>
-                          <ProfileTextStrong>{care.userName}</ProfileTextStrong> 님
-                        </ProfileTextGray>
-
-                        <ProfileTextGray>
-                          나이
-                          <ProfileTextStrong>
-                            {care.age} 세 ({care.gender === 'M' ? '남' : care.gender === 'F' ? '여' : '성별 정보 없음'})
-                          </ProfileTextStrong>
-                        </ProfileTextGray>
-                      </CaregiverTextDiv>
-                      <CargiverButtonDiv>
-                        <CareLogButton onClick={() => navigate(`/caregiverProfile/${Number(care.caregiverNo)}`)}>
-                          간병인 정보
-                        </CareLogButton>
-                        <ReportButton>신고하기</ReportButton>
-                      </CargiverButtonDiv>
-                    </CargiverWrap>
-                  </>
-                ))}
-              </div>
-            </ProfileCardPair>
-          </>
-        )}
-
-        {activeTab === 'matched' && (
-          <>
-            <ProfileCardPair>
-              <RightLineDiv>
-                {/*환자 호버시 patNo을 저장 페이징 처리하느라.. */}
-                {userPatients?.map((pat) => (
-                  <ProfileCard
-                    key={pat.patNo}
-                    onMouseEnter={() => getEndedMatchingList(pat.patNo, 1)}
-                    style={{ cursor: 'pointer' }}
-                  >
-                    <ProfileImage src={pat_profileImage} alt="환자" />
-                    <ProfileInfo>
-                      <UserName>{pat.patName} 님</UserName>
-                      <UserAge>
-                        나이 {pat.patAge}세({pat.patGender === 'M' ? '남' : '여'})
-                      </UserAge>
-                      <InfoButton onClick={() => navigate(`/report/${pat.patNo}`)}> 간병일지 보기</InfoButton>
-                    </ProfileInfo>
-                  </ProfileCard>
-                ))}
-              </RightLineDiv>
-
-              <div>
-                {selectedPatNo ? (
-                  <>
-                    {endedCaregiverList.map((care) => (
-                      <CargiverWrap key={care.matNo}>
-                        <CaregiverImg
-                          src={care.profileImage ? care.profileImage : care_profileImage}
-                          alt="간병인 프로필"
-                        />
+                {caregiverList && caregiverList.length > 0 ? (
+                  caregiverList?.map((care) => (
+                    <>
+                      <CargiverWrap key={care.caregiverNo}>
+                        <CaregiverImg src={care_profileImage} alt="" />
                         <CaregiverTextDiv>
                           <ProfileTextGray>
                             <ProfileTextStrong>{care.userName}</ProfileTextStrong> 님
                           </ProfileTextGray>
+
                           <ProfileTextGray>
                             나이
                             <ProfileTextStrong>
@@ -207,22 +155,80 @@ const MatchToCaregiver = () => {
                           <ReportButton>신고하기</ReportButton>
                         </CargiverButtonDiv>
                       </CargiverWrap>
-                    ))}
-                    {/* 페이징 컴포넌트 */}
-                    <PageWrapper>
-                      <Paging
-                        currentPage={endedCurrentPage}
-                        totalPage={endedTotalPage}
-                        chagneCurrentPage={handleEndedPageChange}
-                      />
-                    </PageWrapper>
-                  </>
+                    </>
+                  ))
                 ) : (
-                  <p>환자에 마우스를 올려 종료된 매칭 목록을 확인하세요.</p>
+                  <InfoP> 매칭된 간병이 없습니다. </InfoP>
                 )}
               </div>
             </ProfileCardPair>
           </>
+        )}
+
+        {activeTab === 'matched' && (
+          <ProfileCardPair>
+            <RightLineDiv>
+              {/*환자 호버시 patNo을 저장 페이징 처리하느라.. */}
+              {userPatients?.map((pat) => (
+                <ProfileCard
+                  key={pat.patNo}
+                  onMouseEnter={() => getEndedMatchingList(pat.patNo, 1)}
+                  style={{ cursor: 'pointer' }}
+                >
+                  <ProfileImage src={pat_profileImage} alt="환자" />
+                  <ProfileInfo>
+                    <UserName>{pat.patName} 님</UserName>
+                    <UserAge>
+                      나이 {pat.patAge}세({pat.patGender === 'M' ? '남' : '여'})
+                    </UserAge>
+                    <InfoButton onClick={() => navigate(`/report/${pat.patNo}`)}> 간병일지 보기</InfoButton>
+                  </ProfileInfo>
+                </ProfileCard>
+              ))}
+            </RightLineDiv>
+
+            <div>
+              {selectedPatNo ? (
+                <>
+                  {endedCaregiverList.map((care) => (
+                    <CargiverWrap key={care.matNo}>
+                      <CaregiverImg
+                        src={care.profileImage ? care.profileImage : care_profileImage}
+                        alt="간병인 프로필"
+                      />
+                      <CaregiverTextDiv>
+                        <ProfileTextGray>
+                          <ProfileTextStrong>{care.userName}</ProfileTextStrong> 님
+                        </ProfileTextGray>
+                        <ProfileTextGray>
+                          나이
+                          <ProfileTextStrong>
+                            {care.age} 세 ({care.gender === 'M' ? '남' : care.gender === 'F' ? '여' : '성별 정보 없음'})
+                          </ProfileTextStrong>
+                        </ProfileTextGray>
+                      </CaregiverTextDiv>
+                      <CargiverButtonDiv>
+                        <CareLogButton onClick={() => navigate(`/caregiverProfile/${Number(care.caregiverNo)}`)}>
+                          간병인 정보
+                        </CareLogButton>
+                        <ReportButton>신고하기</ReportButton>
+                      </CargiverButtonDiv>
+                    </CargiverWrap>
+                  ))}
+                  {/* 페이징 컴포넌트 */}
+                  <PageWrapper>
+                    <Paging
+                      currentPage={endedCurrentPage}
+                      totalPage={endedTotalPage}
+                      chagneCurrentPage={handleEndedPageChange}
+                    />
+                  </PageWrapper>
+                </>
+              ) : (
+                <p>환자에 마우스를 올려 종료된 매칭 목록을 확인하세요.</p>
+              )}
+            </div>
+          </ProfileCardPair>
         )}
       </MatchSection>
     </>
@@ -282,6 +288,10 @@ const MatchSection = styled(Section)`
 
   align-items: center; /* 카드 쌍 전체를 가로 중앙으로 정렬 */
   padding: ${({ theme }) => theme.spacing[8]} 0; /* 상하 패딩 추가 */
+`;
+
+const InfoP = styled.p`
+  margin: 50px;
 `;
 
 //=== 종료된 매칭

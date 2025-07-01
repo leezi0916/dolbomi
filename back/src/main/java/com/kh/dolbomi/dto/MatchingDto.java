@@ -37,17 +37,20 @@ public class MatchingDto {
         private LocalDateTime start_date;
         private StatusEnum.Status status;
 
-//        public static Response toDto(Matching matching) {
-//            return Response.builder()
-//                    .mat_no(matching.getMatNo())
-//                    .user_name(matching.getCaregiver().getUserName())
-//                    .age(matching.getCaregiver().getAge())
-//                    .gender(matching.getCaregiver().getGender())
-//                    .start_date(matching.getStartDate())
-//                    .status(matching.getStatus())
-//                    .build();
-//        }
-//
+
+    }
+
+    @Getter
+    @Setter
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class ResponsePat {
+        private Long mat_no;
+        private String pat_name;
+        private Integer pat_age;
+        private StatusEnum.Gender pat_gender;
+        private LocalDateTime start_date;
+        private StatusEnum.Status status;
 
 
     }
