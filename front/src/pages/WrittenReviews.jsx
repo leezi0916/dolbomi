@@ -18,6 +18,7 @@ import { reviewService } from '../api/reviews';
 import Paging from '../components/Paging';
 import { media } from '../styles/MediaQueries';
 import useUserStore from '../store/userStore';
+import { toast } from 'react-toastify';
 
 const WrittenReviews = () => {
   const [reviews, setReviews] = useState([]);
@@ -32,7 +33,7 @@ const WrittenReviews = () => {
         console.log(data);
         setReviews(data);
       } catch (error) {
-        console.error('리뷰 로딩 실패:', error);
+        toast.error('리뷰 로딩에 실패했습니다.');
       }
     };
     fetchReviews();
@@ -48,30 +49,34 @@ const WrittenReviews = () => {
         <LeftTitle>내가 쓴 리뷰</LeftTitle>
       </TopSection>
 
-      <RecivedReviewsGridContainer>
-        {reviews.myWrittenReview?.content?.map((review) => (
-          <Card key={review.reviewNo}>
-            <CardTopContent>
-              <CardImage src={review.profileImage} />
-              <CardTextGroup>
-                <CardTitle>{review.userName} 간병사</CardTitle>
-                <CardText>
-                  나이 {review.age}세({review.gender === 'M' ? '남' : '여'})
-                </CardText>
-              </CardTextGroup>
-            </CardTopContent>
-            <CardMidBottomContent>
-              <ReviewTextBox>{review.reviewContent}</ReviewTextBox>
-              <ReviewFooter>
-                <ReviewScore>
-                  평점 <strong>{review.reviewScore.toFixed(1)}</strong>
-                </ReviewScore>
-                <ReviewDate>작성일 {review.reviewUpdateDate.slice(0, 10)}</ReviewDate>
-              </ReviewFooter>
-            </CardMidBottomContent>
-          </Card>
-        ))}
-      </RecivedReviewsGridContainer>
+      <WrittenReviewGridContainer>
+        {!reviews.myWrittenReview?.content || reviews.myWrittenReview.content.length === 0 ? (
+          <EmptyMessage>작성한 리뷰가 없습니다.</EmptyMessage>
+        ) : (
+          reviews.myWrittenReview.content.map((review) => (
+            <Card key={review.reviewNo}>
+              <CardTopContent>
+                <CardImage src={review.profileImage} />
+                <CardTextGroup>
+                  <CardTitle>{review.userName} 간병사</CardTitle>
+                  <CardText>
+                    나이 {review.age}세({review.gender === 'M' ? '남' : '여'})
+                  </CardText>
+                </CardTextGroup>
+              </CardTopContent>
+              <CardMidBottomContent>
+                <ReviewTextBox>{review.reviewContent}</ReviewTextBox>
+                <ReviewFooter>
+                  <ReviewScore>
+                    평점 <strong>{review.reviewScore.toFixed(1)}</strong>
+                  </ReviewScore>
+                  <ReviewDate>작성일 {review.reviewUpdateDate.slice(0, 10)}</ReviewDate>
+                </ReviewFooter>
+              </CardMidBottomContent>
+            </Card>
+          ))
+        )}
+      </WrittenReviewGridContainer>
 
       <Paging currentPage={currentPage} totalPage={reviews.totalPage} chagneCurrentPage={chagneCurrentPage} />
     </ReviewWrapper>
@@ -80,7 +85,7 @@ const WrittenReviews = () => {
 
 export default WrittenReviews;
 
-const RecivedReviewsGridContainer = styled(GridContainer)`
+const WrittenReviewGridContainer = styled(GridContainer)`
   display: grid;
   grid-template-columns: repeat(1, 1fr);
   gap: ${({ theme }) => theme.spacing[5]};
@@ -120,4 +125,17 @@ const LeftTitle = styled.h2`
   ${media.lg`
     font-size: ${({ theme }) => theme.fontSizes['2xl']};
   `}
+`;
+
+// 빈 메세지 추가
+const EmptyMessage = styled.div`
+  grid-column: 1 / -1;
+  height: 300px; // 높이 넉넉하게 설정
+  display: flex;
+  align-items: center; // 수직 가운데
+  justify-content: center; // 수평 가운데
+  padding: ${({ theme }) => theme.spacing[8]};
+  font-size: ${({ theme }) => theme.fontSizes.base};
+  color: ${({ theme }) => theme.colors.gray[3]};
+  text-align: center;
 `;

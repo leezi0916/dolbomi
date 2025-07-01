@@ -139,16 +139,18 @@ const PatientRegistration = () => {
             <GridInerContainer>
               <Label htmlFor="height">키</Label>
               <Label htmlFor="weight">몸무게</Label>
+
               <HeightWegithDiv>
                 <Input type="number" id="patHeight" {...register('patHeight')} $error={errors.patHeight} />
                 <span>cm</span>
-                {errors.patHeight && <ErrorMessage>{errors.patHeight.message}</ErrorMessage>}
               </HeightWegithDiv>
 
               <HeightWegithDiv>
                 <Input type="number" id="patWeight" {...register('patWeight')} $error={errors.patWeight} />
                 <span>kg</span>
               </HeightWegithDiv>
+
+              {errors.patHeight && <ErrorMessage>{errors.patHeight.message}</ErrorMessage>}
               {errors.patWeight && <ErrorMessage>{errors.patWeight.message}</ErrorMessage>}
             </GridInerContainer>
 

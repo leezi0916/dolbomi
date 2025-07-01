@@ -37,6 +37,8 @@ const updateSchema = yup.object().shape({
 const useUserUpdateForm = ({ profile }) => {
   const [updating, setUpdating] = useState(false);
 
+
+
   const validateAndSubmit = async (formData, licenseList, profileImageFile) => {
     try {
       // 변경된 값만 필터링
@@ -58,6 +60,7 @@ const useUserUpdateForm = ({ profile }) => {
         return;
       }
 
+
       // 유효성 검사
       await updateSchema.validate(formData, { abortEarly: false });
       setUpdating(true);
@@ -65,7 +68,7 @@ const useUserUpdateForm = ({ profile }) => {
       const updatedData = {
         ...changedFields,
         licenses: licenseList || [],
-        // profileImage: 's3url보내야함', //나중에 s3 url
+        profileImage: 's3url보내야함', //나중에 s3 url
       };
 
       console.log('보내는 데이터:', updatedData);
