@@ -19,12 +19,11 @@ export const matchingService = {
     }
   },
 
-  //종료된 매칭 조회하기
-  getEndedMatchingCaregivers: async (userNo, page = 0, size = 5) => {
+  // 종료된 매칭 조회하기
+  getEndedMatchingCaregivers: async (patNo, page = 0, size = 5, status = 'N') => {
     try {
-      const { data } = await api.get(API_ENDPOINTS.MATCHING.ENDLIST('N'), {
+      const { data } = await api.get(API_ENDPOINTS.MATCHING.ENDLIST(patNo, status), {
         params: {
-          user_no: userNo,
           page,
           size,
         },

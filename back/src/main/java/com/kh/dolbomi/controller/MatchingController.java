@@ -2,10 +2,14 @@ package com.kh.dolbomi.controller;
 
 
 import com.kh.dolbomi.dto.MatchingDto;
+import com.kh.dolbomi.dto.PageResponse;
+import com.kh.dolbomi.enums.StatusEnum;
 import com.kh.dolbomi.enums.StatusEnum.Status;
 import com.kh.dolbomi.service.MatchingService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,15 +34,12 @@ public class MatchingController {
         return ResponseEntity.ok(matchingService.getMatchingList(patNo, matchingStatus));
     }
 
-//    @GetMapping
-//    public ResponseEntity<Page<MatchingDto.Response>> getEndedMatchings(
-//            @RequestParam("status") String status,
-//            @RequestParam("user_no") Long userNo,
-//            @RequestParam(defaultValue = "0") int page,
-//            @RequestParam(defaultValue = "5") int size
-//    ) {
-////        Page<MatchingDto> result = matchingService.findEndedMatchingsByProtector(userNo, status, page, size);
-////        return ResponseEntity.ok(result);
-//        return null;
-//    }
+    @GetMapping("matched")
+    public ResponseEntity<PageResponse<MatchingDto.Response>> getMatchedList(
+            @RequestParam("pat_no") Long patNo,
+            @RequestParam("status") StatusEnum.Status status,
+            @PageableDefault(size = 5) Pageable pageable
+    ) {
+        return ResponseEntity.ok(new PageResponse<>(matchingService.getMatchedListByStatus(patNo, status, pageable)));
+    }
 }

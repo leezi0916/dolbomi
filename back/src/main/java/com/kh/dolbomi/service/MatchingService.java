@@ -3,7 +3,12 @@ package com.kh.dolbomi.service;
 import com.kh.dolbomi.dto.MatchingDto;
 import com.kh.dolbomi.enums.StatusEnum.Status;
 import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 public interface MatchingService {
     List<MatchingDto.Response> getMatchingList(Long patNo, Status matchingStatus);
+
+    // 종료된 매칭 목록 페이징 조회 추가
+    Page<MatchingDto.Response> getMatchedListByStatus(Long patNo, Status status, Pageable pageable);
 }
