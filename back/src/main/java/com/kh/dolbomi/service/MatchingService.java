@@ -8,4 +8,6 @@ public interface MatchingService {
     List<MatchingDto.Response> getMatchingList(Long patNo, Status matchingStatus);
 
     List<MatchingDto.ResponsePat> getMatchingListCaregiver(Long caregiverNo, Status matchingStatus);
+
+    Long changeStatus(Long matNo, Status matchingStatus);
 }

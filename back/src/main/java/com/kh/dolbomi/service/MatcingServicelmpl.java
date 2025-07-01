@@ -1,5 +1,6 @@
 package com.kh.dolbomi.service;
 
+import com.kh.dolbomi.domain.Matching;
 import com.kh.dolbomi.dto.MatchingDto;
 import com.kh.dolbomi.dto.MatchingDto.ResponsePat;
 import com.kh.dolbomi.enums.StatusEnum;
@@ -51,5 +52,13 @@ public class MatcingServicelmpl implements MatchingService {
                         (StatusEnum.Status) row[5]
                 ))
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public Long changeStatus(Long matNo, Status matchingStatus) {
+        Matching matching = matchingRepository.findByMetNo(matNo)
+                .orElseThrow(() -> new IllegalArgumentException("매칭이 존재하지 않습니다."));
+        matching.updateStatus(matchingStatus);
+        return matchingRepository.save(matching).getMatNo();
     }
 }
