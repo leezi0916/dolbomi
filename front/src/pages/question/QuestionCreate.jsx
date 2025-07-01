@@ -75,5 +75,6 @@ const Textarea = styled.textarea`
 
 const Button = styled(Btn)`
   margin-right: 10px;
+  padding: 10px 20px;
 `;
 export default QuestionCreate;

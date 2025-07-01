@@ -1,18 +1,27 @@
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
 import { commuService } from '../api/community';
 import { toast } from 'react-toastify';
 import { ClipLoader } from 'react-spinners';
-import styled from 'styled-components';
 import useUserStore from '../store/userStore';
 import Paging from '../components/Paging';
-import { Page } from '../styles/common/Board';
+import { Btn, LinkBtn, NullBox, Page } from '../styles/common/Board';
+import {
+  BoardItem,
+  BoardItemTop,
+  BoardMenu,
+  BoardTop,
+  BorderDiv,
+  Drop,
+  Input,
+  Left,
+  NowBoard,
+  PageInfo,
+  Right,
+  SearchBtn,
+} from './CareGiverCommunity';
 
 const GuardianCommunity = () => {
-  const userId = useUserStore((state) => state.user?.userId);
-
-  // const ROLE = 'G';
-  // const STATUS = 'Y';
+  const userNo = useUserStore((state) => state.user?.userNo);
 
   const [error, setError] = useState(null);
   const [communityList, setCommunityList] = useState([]);
@@ -22,8 +31,6 @@ const GuardianCommunity = () => {
   const ITEMS_PER_PAGE = 10;
   const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
   const endIndex = startIndex + ITEMS_PER_PAGE;
-  console.log('test ');
-  console.log(communityList);
   const currentList = communityList.slice(startIndex, endIndex);
   const totalPage = Math.ceil(communityList.length / ITEMS_PER_PAGE);
 
@@ -41,6 +48,7 @@ const GuardianCommunity = () => {
     const loadCommunity = async () => {
       try {
         const community = await commuService.getGuardian();
+
         console.log(community);
         setCommunityList(community.content);
       } catch (error) {
@@ -71,18 +79,45 @@ const GuardianCommunity = () => {
   if (!communityList || communityList.length === 0) {
     return (
       <Page>
-        <div style={{ width: '400px', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
-          <div style={{ marginBottom: '10px' }}>게시글이 없습니다.</div>
-          {userId && (
-            <Btn style={{ margin: 'auto' }} to="/community/create">
-              글쓰기
-            </Btn>
-          )}
-        </div>
+        <PageInfo>
+          <BoardMenu>
+            <NowBoard> 보호자 게시판</NowBoard>
+          </BoardMenu>
+          <BoardTop>
+            <Left>총 0건</Left>
+            <Right>
+              <Drop value={sortOption} onChange={(e) => setSortOption(e.target.value)}>
+                <option value="" disabled hidden>
+                  -- 작성일순/조회순 --
+                </option>
+                <option value="date">작성일</option>
+                <option value="views">조회순</option>
+              </Drop>
+              <Input type="text" />
+              <SearchBtn>검색</SearchBtn>
+            </Right>
+          </BoardTop>
+          <BoardItemTop>
+            <div>No</div>
+            <div style={{ flex: '3' }}>제목</div>
+            <div>작성자</div>
+            <div style={{ flex: '2' }}>작성 일자</div>
+            <div>조회수</div>
+          </BoardItemTop>
+          <NullBox>
+            <div style={{ marginBottom: '10px' }}>게시글이 없습니다.</div>
+            {userNo && (
+              <LinkBtn style={{ margin: 'auto' }} to="/community/create/G">
+                글쓰기
+              </LinkBtn>
+            )}
+          </NullBox>
+          <BorderDiv></BorderDiv>
+          <Paging totalPage={totalPage} currentPage={currentPage} chagneCurrentPage={chagneCurrentPage} />
+        </PageInfo>
       </Page>
     );
   }
-
   return (
     <Page>
       <PageInfo>
@@ -101,22 +136,22 @@ const GuardianCommunity = () => {
             </Drop>
             <Input type="text" />
             <SearchBtn>검색</SearchBtn>
-            {userId && <Btn to="/community/create">글쓰기</Btn>}
+            {userNo && <LinkBtn to="/community/create/G">글쓰기</LinkBtn>}
           </Right>
         </BoardTop>
         <BoardItemTop>
           <div>No</div>
-          <div style={{ flex: '2' }}>제목</div>
+          <div style={{ flex: '3' }}>제목</div>
           <div>작성자</div>
-          <div>작성 일자</div>
+          <div style={{ flex: '2' }}>작성 일자</div>
           <div>조회수</div>
         </BoardItemTop>
         {currentList.map((community) => (
-          <BoardItem key={community.no} to={`/community/detail/${community.no}`}>
-            <div>{community.no}</div>
-            <div style={{ flex: '2' }}>{community.title}</div>
-            <div>{community.name}</div>
-            <div>{community.create_date}</div>
+          <BoardItem key={community.boardNo} to={`/community/detail/${community.boardNo}`}>
+            <div>{community.boardNo}</div>
+            <div style={{ flex: '3' }}>{community.boardTitle}</div>
+            <div>{community.userName}</div>
+            <div style={{ flex: '2' }}>{community.createDate}</div>
             <div>{community.count}</div>
           </BoardItem>
         ))}
@@ -126,95 +161,5 @@ const GuardianCommunity = () => {
     </Page>
   );
 };
-export const PageInfo = styled.div`
-  width: 74%;
-  > div {
-    display: flex;
-    justify-content: center;
-  }
-`;
-export const BoardMenu = styled.div`
-  width: 100%;
-  display: flex;
-  gap: 100px;
-  padding: 10px 10px 20px 10px;
-  border-bottom: 1px solid ${({ theme }) => theme.colors.gray[3]};
-`;
-export const NowBoard = styled.div`
-  font-size: ${({ theme }) => theme.fontSizes.lg};
-  color: ${({ theme }) => theme.colors.primary};
-  font-weight: ${({ theme }) => theme.fontWeights.bold};
-`;
-const BoardTop = styled.div`
-  width: 100%;
-  height: 42px;
-  display: flex;
-  padding: 5px 0;
-  border-bottom: 1px solid ${({ theme }) => theme.colors.gray[3]};
-`;
-const Drop = styled.select`
-  min-width: 20%;
-  border: 1px solid ${({ theme }) => theme.colors.gray[5]};
-  border-radius: 4px;
-  padding: 2px 4px;
-`;
-export const Input = styled.input`
-  border: 1px solid ${({ theme }) => theme.colors.gray[5]};
-  border-radius: 4px;
-  padding: 2px 4px;
-`;
-const Btn = styled(Link)`
-  align-content: center;
-  width: 80px;
-  background-color: ${({ theme }) => theme.colors.primary};
-  color: ${({ theme }) => theme.colors.white};
-  border-radius: 4px;
-  padding: 10px;
-`;
-const SearchBtn = styled.button`
-  align-content: center;
-  width: 50px;
-  background-color: ${({ theme }) => theme.colors.gray[3]};
-  color: ${({ theme }) => theme.colors.white};
-  border-radius: 4px;
-  padding: 0;
-`;
-
-const Left = styled.div`
-  align-self: center;
-  flex: 1;
-`;
-const Right = styled.div`
-  display: flex;
-  justify-content: flex-end;
-  flex: 5;
-  padding-right: 10px;
-  gap: 6px;
-`;
-
-export const BoardItemTop = styled.div`
-  width: 100%;
-  display: flex;
-  padding-top: 4px;
-  padding-bottom: 4px;
-  border-bottom: 1px solid ${({ theme }) => theme.colors.gray[3]};
-  > div {
-    flex: 1;
-  }
-`;
-export const BoardItem = styled(Link)`
-  width: 100%;
-  display: flex;
-  padding-top: 2px;
-  padding-bottom: 2px;
-  border-bottom: 1px solid ${({ theme }) => theme.colors.gray[5]};
-  > div {
-    flex: 1;
-  }
-`;
-export const BorderDiv = styled.div`
-  width: 100%;
-  border-top: 1px solid ${({ theme }) => theme.colors.gray[3]};
-`;
 
 export default GuardianCommunity;

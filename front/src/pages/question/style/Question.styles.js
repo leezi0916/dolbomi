@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import { FlexGrow, LinkBtn } from '../../../styles/common/Board';
+import { FlexGrow, LinkBtn, NullBox } from '../../../styles/common/Board';
 
 // export const AlignLeft = styled.div`
 //   flex-grow: 1;
@@ -8,6 +8,9 @@ import { FlexGrow, LinkBtn } from '../../../styles/common/Board';
 //   justify-items: center;
 // `;
 
+export const Null = styled(NullBox)`
+  border-bottom: 1px solid ${({ theme }) => theme.colors.gray[3]};
+`;
 export const alignRight = styled.div`
   display: flex;
   justify-content: flex-end;
@@ -69,13 +72,18 @@ export const BoardTopRight = styled(alignRight)`
   padding-right: 10px;
   gap: 6px;
 `;
-
+export const Drop = styled.select`
+  min-width: 20%;
+  border: 1px solid ${({ theme }) => theme.colors.gray[5]};
+  border-radius: 4px;
+  padding: 2px 4px;
+`;
 export const SearchBtn = styled.button`
   align-content: center;
   width: 50px;
   background-color: ${({ theme }) => theme.colors.gray[3]};
   color: ${({ theme }) => theme.colors.white};
-  border-radius: 4px;
+  border-radius: 6px;
   padding: 0;
 `;
 // export const CreateBtn = styled(LinkBtn)`
