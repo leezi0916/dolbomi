@@ -7,14 +7,17 @@ import useUserStore from '../store/userStore';
 import { matchingService } from '../api/matching';
 import { patientService } from '../api/patient';
 import { useNavigate } from 'react-router-dom';
+import Paging from '../components/Paging';
 
 const MatchToCaregiver = () => {
   const { user } = useUserStore();
 
-const [activeTab, setActiveTab] = useState('matching');
+  const [activeTab, setActiveTab] = useState('matching');
   const [caregiverList, setCareGiverList] = useState([]);
   const [userPatients, setUserpatients] = useState([]);
- 
+  const [endedPage, setEndedPage] = useState(1);
+  const [endedTotalPages, setEndedTotalPages] = useState(0);
+  const [endedCaregiverList, setEndedCaregiverList] = useState([]);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -48,22 +51,21 @@ const [activeTab, setActiveTab] = useState('matching');
   };
 
   // 종료된 매칭정보
-  const getEndmatchingList = () => {
-    const getList = async () => {
-      try {
-        const EndMatchingList = await matchingService.getEndMatching('N');
-        setCareGiverList(EndMatchingList);
-      } catch (err) {
-        console.error(err);
-      }
-    };
-    getList();
+  const getEndedMatchingList = async (page = 1) => {
+    try {
+      const res = await matchingService.getEndedMatchingCaregivers(user.userNo, page - 1, 5);
+      setEndedCaregiverList(res.content);
+      setEndedPage(res.number + 1);
+      setEndedTotalPages(res.totalPages);
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   const handleTabChange = (tab) => {
     setActiveTab(tab);
     if (tab === 'matched') {
-      getEndmatchingList();
+      getEndedMatchingList(1);
     }
   };
 
@@ -92,7 +94,6 @@ const [activeTab, setActiveTab] = useState('matching');
         {activeTab === 'matching' && (
           <>
             <ProfileCardPair>
-
               <RightLineDiv>
                 {userPatients?.map((pat) => (
                   <ProfileCard key={pat.patNo} type="patient" onMouseEnter={() => getCareGiver(pat.patNo)}>
@@ -123,48 +124,69 @@ const [activeTab, setActiveTab] = useState('matching');
                         </ProfileTextGray>
                       </CaregiverTextDiv>
                       <CargiverButtonDiv>
-                        
-                        <CareLogButton onClick={() => navigate(`/caregiverProfile/${Number(care.caregiverNo)}`)}>간병인 정보</CareLogButton>
+                        <CareLogButton onClick={() => navigate(`/caregiverProfile/${Number(care.caregiverNo)}`)}>
+                          간병인 정보
+                        </CareLogButton>
                         <ReportButton>신고하기</ReportButton>
                       </CargiverButtonDiv>
                     </CargiverWrap>
                   </>
                 ))}
               </div>
-</ProfileCardPair>
+            </ProfileCardPair>
           </>
         )}
 
         {activeTab === 'matched' && (
-      
           <>
-            {caregiverList.map((care) => (
-              <EndProfileCard key={care.caregiverNo}>
-                <RowProfileCard>
-                  <ProfileImage src={care.profileImage} alt=" 간병인" />
-                  <div>
-                    <UserName>{care.userName} 님</UserName>
-                    <UserAge>나이 {care.useAge}세({care.gender})</UserAge>
-                    <ButtonRow>
-                      <CareLogButton onClick={() => navigate(`/caregiverProfile/${Number(care.caregiverNo)}`)} >간병인 정보</CareLogButton>
-                      <ReportButton>신고하기</ReportButton>
-                    </ButtonRow>
-                  </div>
-                </RowProfileCard>
+            <ProfileCardPair>
+              <RightLineDiv>
+                {endedCaregiverList.map((care) => (
+                  <ProfileCard key={care.caregiverNo} type="patient">
+                    <ProfileImage src={care.profileImage || profileImage} alt="간병인" />
+                    <ProfileInfo>
+                      <UserName>{care.userName} 님</UserName>
+                      <UserAge>
+                        나이 {care.userAge}세({care.gender})
+                      </UserAge>
+                      <CareLogButton onClick={() => navigate(`/caregiverProfile/${care.caregiverNo}`)}>
+                        간병인 정보
+                      </CareLogButton>
+                    </ProfileInfo>
+                  </ProfileCard>
+                ))}
+              </RightLineDiv>
 
-                <RowProfileCard>
-                {/* 환자이미지 변수명이랑 겹쳐요 ㅜㅜ */}
-                  <ProfileImage src={profileImage} alt="간병인" />
-                  <div>
-                    <UserName>{care.patName} 님</UserName>
-                    <UserAge>나이 {care.patAge}세({care.patGender})</UserAge>
-                    <CareLogButton>간병일지</CareLogButton>
-                  </div>
-                </RowProfileCard>
-              </EndProfileCard>
-            ))}
+              <div>
+                {endedCaregiverList.map((care) => (
+                  <CargiverWrap key={`${care.caregiverNo}-pat`}>
+                    <CaregiverImg src={profileImage} alt="환자" />
+                    <CaregiverTextDiv>
+                      <ProfileTextGray>
+                        <ProfileTextStrong>{care.patName}</ProfileTextStrong> 님
+                      </ProfileTextGray>
+                      <ProfileTextGray>
+                        나이
+                        <ProfileTextStrong>
+                          {care.patAge} 세({care.patGender})
+                        </ProfileTextStrong>
+                      </ProfileTextGray>
+                    </CaregiverTextDiv>
+                    <CargiverButtonDiv>
+                      <CareLogButton onClick={() => navigate(`/report/${care.patNo}`)}>간병일지</CareLogButton>
+                    </CargiverButtonDiv>
+                  </CargiverWrap>
+                ))}
+              </div>
+            </ProfileCardPair>
+
+            {/* 페이징 컴포넌트 */}
+            <Paging
+              totalPage={endedTotalPages}
+              currentPage={endedPage}
+              chagneCurrentPage={(page) => getEndedMatchingList(page)}
+            />
           </>
-
         )}
       </MatchSection>
     </>
@@ -311,7 +333,7 @@ const InfoButton = styled.button`
   border: none;
   padding: ${({ theme }) => `${theme.spacing[2]} ${theme.spacing[8]}`};
   margin: ${({ theme }) => theme.spacing[3]} 0;
-border-radius: ${({ theme }) => theme.borderRadius.md};
+  border-radius: ${({ theme }) => theme.borderRadius.md};
   cursor: pointer;
   font-weight: ${({ theme }) => theme.fontWeights.bold};
   white-space: nowrap; /* 버튼 텍스트가 줄바꿈되지 않도록 */

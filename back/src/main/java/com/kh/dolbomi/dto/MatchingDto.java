@@ -9,8 +9,17 @@ import lombok.Setter;
 
 
 public class MatchingDto {
-//    private Long resume_no;
-//    private Long hiring_no;
+    
+
+    //매칭 insert 하는 dto
+    @Getter
+    @Setter
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class Create {
+        private Long resume_no;
+        private Long hiring_no;
+    }
 
 
     @Getter
@@ -25,15 +34,6 @@ public class MatchingDto {
         private LocalDateTime start_date;
         private StatusEnum.Status status;
 
-//        public static MatchingDto.Response toDto(Matching matching) {
-//            return MatchingDto.Response.builder()
-//
-//                    .mat_no(matching.getMatNo())
-//
-//                    .start_date(matching.getStartDate())
-//
-//                    .build();
-//        }
 
     }
 }

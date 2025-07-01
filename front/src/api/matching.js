@@ -19,17 +19,22 @@ export const matchingService = {
     }
   },
 
-  getEndMatching: async (status) => {
+  //종료된 매칭 조회하기
+  getEndedMatchingCaregivers: async (userNo, page = 0, size = 5) => {
     try {
-      const { data } = await api.get(API_ENDPOINTS.MATCHING.ENDLIST(status));
-
+      const { data } = await api.get(API_ENDPOINTS.MATCHING.ENDLIST('N'), {
+        params: {
+          user_no: userNo,
+          page,
+          size,
+        },
+      });
       return snakeToCamel(data);
     } catch (error) {
       if (error.response) {
-        const message = error.response?.data?.message || '매칭목록을 불러오는데 실패했습니다.';
+        const message = error.response?.data?.message || '종료된 매칭을 불러오는데 실패했습니다.';
         throw new Error(message);
       }
-
       throw new Error('서버 통신 불량');
     }
   },

@@ -28,4 +28,16 @@ public class MatchingController {
     ) {
         return ResponseEntity.ok(matchingService.getMatchingList(patNo, matchingStatus));
     }
+
+//    @GetMapping
+//    public ResponseEntity<Page<MatchingDto.Response>> getEndedMatchings(
+//            @RequestParam("status") String status,
+//            @RequestParam("user_no") Long userNo,
+//            @RequestParam(defaultValue = "0") int page,
+//            @RequestParam(defaultValue = "5") int size
+//    ) {
+////        Page<MatchingDto> result = matchingService.findEndedMatchingsByProtector(userNo, status, page, size);
+////        return ResponseEntity.ok(result);
+//        return null;
+//    }
 }
