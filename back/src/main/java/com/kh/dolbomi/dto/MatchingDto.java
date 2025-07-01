@@ -3,12 +3,16 @@ package com.kh.dolbomi.dto;
 import com.kh.dolbomi.enums.StatusEnum;
 import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 
 public class MatchingDto {
+
+
+    //매칭 insert 하는 dto
     @Getter
     @Setter
     @AllArgsConstructor
@@ -23,6 +27,7 @@ public class MatchingDto {
     @Setter
     @AllArgsConstructor
     @NoArgsConstructor
+    @Builder
     public static class Response {
         private Long mat_no;
         private Long caregiver_no;
@@ -31,6 +36,7 @@ public class MatchingDto {
         private StatusEnum.Gender gender;
         private LocalDateTime start_date;
         private StatusEnum.Status status;
+
 
     }
 
@@ -45,6 +51,7 @@ public class MatchingDto {
         private StatusEnum.Gender pat_gender;
         private LocalDateTime start_date;
         private StatusEnum.Status status;
+
 
     }
 }

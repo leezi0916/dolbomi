@@ -49,7 +49,7 @@ public class UserController {
     public ResponseEntity<?> login(@Valid @RequestBody UserDto.Login loginDto) {
         User user = userService.loginUser(loginDto);
 
-        String jwtToken = jwtTokenProvider.createToken(user.getUserId(), user.getRole());
+        String jwtToken = jwtTokenProvider.createToken(user.getUserId(), user.getRole().toString());
         Map<String, Object> loginInfo = new HashMap<>();
         loginInfo.put("token", jwtToken);
 //        UserDto.Response currentUser = userService.loginUser(loginDto.getUser_id(), loginDto.getUser_pwd());

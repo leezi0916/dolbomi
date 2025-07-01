@@ -4,14 +4,41 @@ import styled from 'styled-components';
 import SearchBar from '../components/SearchBar';
 import profileImage from '../assets/images/pat.png'; // 프로필 이미지 경로
 import { useNavigate } from 'react-router-dom';
-import { matchingService } from '../api/matching';
+import { patientService } from '../api/patient';
 import useUserStore from '../store/userStore';
+import { matchingService } from '../api/matching';
 
 const MatchToPatient = () => {
   const [activeTab, setActiveTab] = useState('matching');
   const { user } = useUserStore();
   const [patientList, setPatientList] = useState();
   const navigate = useNavigate();
+
+  // 진행중 매칭 관련
+  // const [caregiverList, setCareGiverList] = useState([]);
+  // const [userPatients, setUserpatients] = useState([]);
+
+  // // 종료된 매칭 관련 페이징 상태
+  // const [endedCaregiverList, setEndedCaregiverList] = useState([]);
+  // const [endedCurrentPage, setEndedCurrentPage] = useState(1);
+  // const [endedTotalPage, setEndedTotalPage] = useState(1);
+  // const [selectedPatNo, setSelectedPatNo] = useState(null);
+
+  useEffect(() => {
+    const fetchAll = async () => {
+      if (!user) {
+        alert('로그인 후 이용해주세요');
+        return;
+      }
+      try {
+        const patientsList = await patientService.getPatients(user.userNo);
+        setUserpatients(patientsList);
+      } catch (err) {
+        console.error(err);
+      }
+    };
+    fetchAll();
+  }, [user]);
 
   const handleTabChange = (tab) => {
     setActiveTab(tab);
@@ -66,7 +93,7 @@ const MatchToPatient = () => {
                     <ProfileInfo>
                       <UserName>{pat.patName} 님</UserName>
                       <UserAge>
-                        나이 {pat.patAge}세({pat.patGender==="F"?'여':"남"})
+                        나이 {pat.patAge}세({pat.patGender === 'F' ? '여' : '남'})
                       </UserAge>
                     </ProfileInfo>
                     <ButtonRow>
@@ -252,6 +279,6 @@ const CareLogButton = styled(InfoButton)`
 `;
 
 const InfoP = styled.p`
-margin: 50px;
-`
+  margin: 50px;
+`;
 export default MatchToPatient;

@@ -1,6 +1,5 @@
 package com.kh.dolbomi.auth;
 
-import com.kh.dolbomi.enums.Role;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -25,8 +24,8 @@ public class JwtTokenProvider {
         this.SECRET_KEY = Keys.hmacShaKeyFor(secretKey.getBytes(StandardCharsets.UTF_8));
     }
 
-    public String createToken(String email, Role role) {
-        Claims claims = Jwts.claims().setSubject(email);
+    public String createToken(String userId, String role) {
+        Claims claims = Jwts.claims().setSubject(userId);
         claims.put("role", role);
 
         Date now = new Date();
