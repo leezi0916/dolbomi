@@ -94,19 +94,22 @@ const MatchToCaregiver = () => {
           <>
             <ProfileCardPair>
               <RightLineDiv>
-                {userPatients?.map((pat) => (
+                {userPatients && userPatients.length > 0 ?  userPatients?.map((pat) => (
                   <ProfileCard key={pat.patNo} type="patient" onMouseEnter={() => getCareGiver(pat.patNo)}>
                     <ProfileImage src={pat_profileImage} alt="환자" />
                     <ProfileInfo>
                       <UserName>{pat.patName} 님</UserName>
-                      <UserAge>나이 {pat.patAge}세(여)</UserAge>
+                      <UserAge>나이 {pat.patAge}세({pat.patGender})</UserAge>
                       <InfoButton onClick={() => navigate(`/report/${pat.patNo}`)}> 간병일지 보기</InfoButton>
                     </ProfileInfo>
                   </ProfileCard>
-                ))}
+                )) : <InfoP>등록된 환자가 없습니다. </InfoP>
+              }
+                
               </RightLineDiv>
               <div>
-                {caregiverList?.map((care) => (
+              {caregiverList && caregiverList.length > 0 ? 
+                caregiverList?.map((care) => (
                   <>
                     <CargiverWrap key={care.caregiverNo}>
                       <CaregiverImg src={care_profileImage} alt="" />
@@ -118,7 +121,7 @@ const MatchToCaregiver = () => {
                         <ProfileTextGray>
                           나이
                           <ProfileTextStrong>
-                            {care.userAge} 세({care.gender})
+                            {care.userAge} 세({care.gender==="F"?"여":"남"})
                           </ProfileTextStrong>
                         </ProfileTextGray>
                       </CaregiverTextDiv>
@@ -130,7 +133,7 @@ const MatchToCaregiver = () => {
                       </CargiverButtonDiv>
                     </CargiverWrap>
                   </>
-                ))}
+                )) :  <InfoP> 매칭된 간병이 없습니다. </InfoP>}
               </div>
             </ProfileCardPair>
           </>
@@ -138,7 +141,8 @@ const MatchToCaregiver = () => {
 
         {activeTab === 'matched' && (
           <>
-            {caregiverList.map((care) => (
+           {caregiverList && caregiverList.length > 0 ? 
+            caregiverList.map((care) => (
               <EndProfileCard key={care.caregiverNo}>
                 <RowProfileCard>
                   <ProfileImage src={care.profileImage} alt=" 간병인" />
@@ -167,7 +171,7 @@ const MatchToCaregiver = () => {
                   </div>
                 </RowProfileCard>
               </EndProfileCard>
-            ))}
+            )): <InfoP> 종료된 매칭이 없습니다. </InfoP>}
           </>
         )}
       </MatchSection>
@@ -229,6 +233,10 @@ const MatchSection = styled(Section)`
   align-items: center; /* 카드 쌍 전체를 가로 중앙으로 정렬 */
   padding: ${({ theme }) => theme.spacing[8]} 0; /* 상하 패딩 추가 */
 `;
+
+const InfoP = styled.p`
+margin: 50px;
+`
 
 //=== 종료된 매칭
 const EndProfileCard = styled.div`
