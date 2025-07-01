@@ -53,7 +53,7 @@ const ResumeManagement = () => {
 
     try {
       await jobSeekingService.updateResume(resumeNo, { status: newStatus });
-      toast.success('이력서가 간병인 모집에 게시되었습니다.');
+      toast.success('게시등록이 수정되었습니다.');
 
       setResumeLists((prev) =>
         prev.map((resume) => (resume.resumeNo === resumeNo ? { ...resume, status: newStatus } : resume))

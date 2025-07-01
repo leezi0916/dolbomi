@@ -29,6 +29,7 @@ const SearchBar = ({ onSearch }) => {
     <SearchInputContainer>
       <KeywordInput
         type="text"
+        name="keyword"
         placeholder="키워드를 검색해주세요"
         value={keyword}
         onChange={handleKeywordChange}

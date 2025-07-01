@@ -1,31 +1,25 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
+import { FaTimes } from 'react-icons/fa';
 import Paging from '../components/Paging';
 import theme from '../styles/theme';
-import { MainSubmitButton } from '../styles/common/Button';
-import { useNavigate } from 'react-router-dom';
-import useUserStore from '../store/userStore';
-import { hiringService } from '../api/hiring';
 import { toast } from 'react-toastify';
+import { proposerService } from '../api/propose';
 
-const JobOpeningManagement = () => {
+const MyProposer = () => {
   const [currentPage, setCurrentPage] = useState(1);
-  const [jobOpeningList, setJobOpeningList] = useState([]);
-
-  const navigate = useNavigate();
-
-  const { user } = useUserStore();
+  const [proposerList, setProserList] = useState([]);
 
   useEffect(() => {
-    const fetchJobOpeningList = async () => {
+    const fetchPostList = async () => {
       try {
-        const data = await hiringService.getMyJobOpeningList(currentPage, user.userNo);
-        setJobOpeningList(data);
+        const list = await proposerService.getMyProposer(currentPage, user.userNo);
+        setProserList(list);
       } catch (error) {
-        toast.error('구인 목록을 불러오는데 실패했습니다.');
+        toast.error('내 지원현황을 불러오는데 실패했습니다.');
       }
     };
-    fetchJobOpeningList();
+    fetchPostList();
   }, [currentPage]);
 
   // 자식에게 물려주는 currentPage 변경시 값 추적 함수
@@ -36,61 +30,56 @@ const JobOpeningManagement = () => {
   return (
     <Wrapper>
       <Header>
-        <Title>내 구인글 관리</Title>
-        <MainSubmitButton onClick={() => navigate('/guardian/hire-registration')}>구인글 등록하기</MainSubmitButton>
+        <Title>나의 지원현황</Title>
       </Header>
+
       <Table>
         <THead>
           <tr>
             <th>No</th>
             <th>제목</th>
-            <th>작성일자</th>
-            <th>지원현황</th>
-            <th>상태</th>
+            <th>신청 날짜</th>
+            <th>작성자</th>
+            <th>모집 상태</th>
+            <th>내역 삭제</th>
           </tr>
         </THead>
         <TBody>
-          {!jobOpeningList.content || jobOpeningList.content.length === 0 ? (
+          {!proposerList.content || proposerList.content.length === 0 ? (
             <tr>
-              <td colSpan={5}>
+              <td colSpan={6}>
                 <EmptyMessage>등록된 구인글이 없습니다.</EmptyMessage>
               </td>
             </tr>
           ) : (
-            jobOpeningList.content.reverse().map((jobOpening, index) => {
-              const total = jobOpeningList.totalCount; // 전체 구인글 수
-              const currentPage = jobOpeningList.currentPage; // 현재 페이지 번호 (0부터 시작)
-              const size = jobOpeningList.pageSize; // 한 페이지당 몇 개 보여주는지 (혹은 백엔드에서 받은 pageSize 사용)
-
-              // 번호 계산 (내림차순)
-              const displayNo = total - (currentPage * size + index);
-
-              return (
-                <tr key={jobOpening.hiringNo} onClick={() => navigate(`/hireDetail/${jobOpening.hiringNo}`)}>
-                  <td>{displayNo}</td>
-                  <td className="title">{jobOpening.hiringTitle}</td>
-                  <td>{jobOpening.createDate.slice(0, 10)}</td>
-                  <td>{jobOpening.appliedCount === 0 ? '0명' : `${jobOpening.appliedCount}명`}</td>
-                  <td
-                    style={{
-                      color: jobOpening.hiringStatus === 'Y' ? theme.colors.success : theme.colors.gray[4],
-                    }}
-                  >
-                    {jobOpening.hiringStatus === 'Y' ? '모집중' : '모집마감'}
-                  </td>
-                </tr>
-              );
-            })
+            proposerList.content.map((proposer) => (
+              <tr key={p.no}>
+                <td>{p.no}</td>
+                <td>{p.title}</td>
+                <td>{p.date}</td>
+                <td>{p.match}</td>
+                <td style={{ color: p.status === '모집 중' ? theme.colors.success : theme.colors.gray[4] }}>
+                  {p.status}
+                </td>
+                <td>
+                  {p.status === '모집 중' ? (
+                    <span style={{ fontSize: 20, color: 'gray' }}>-</span>
+                  ) : (
+                    <FaTimes size={20} style={{ cursor: 'pointer', verticalAlign: '-8px' }} />
+                  )}
+                </td>
+              </tr>
+            ))
           )}
         </TBody>
       </Table>
 
-      <Paging currentPage={currentPage} totalPage={jobOpeningList.totalPage} chagneCurrentPage={chagneCurrentPage} />
+      <Paging currentPage={currentPage} totalPage={proposerList.totalPage} chagneCurrentPage={chagneCurrentPage} />
     </Wrapper>
   );
 };
 
-export default JobOpeningManagement;
+export default MyProposer;
 
 const Wrapper = styled.div`
   padding: ${({ theme }) => theme.spacing[10]};
@@ -98,15 +87,14 @@ const Wrapper = styled.div`
 
 const Header = styled.div`
   display: flex;
-  justify-content: space-between;
-  align-items: center;
+  flex-direction: column;
   gap: ${({ theme }) => theme.spacing[4]};
+  align-items: flex-start;
 `;
 
 const Title = styled.h2`
   font-size: ${({ theme }) => theme.fontSizes['2xl']};
   font-weight: ${({ theme }) => theme.fontWeights.bold};
-  text-align: left;
 `;
 
 const Table = styled.table`
@@ -132,6 +120,15 @@ const THead = styled.thead`
     color: ${({ theme }) => theme.colors.black1};
     white-space: nowrap;
     letter-spacing: 0.5px;
+    background-color: transparent;
+  }
+
+  th:first-child {
+    padding-left: ${({ theme }) => theme.spacing[5]};
+  }
+
+  th:last-child {
+    padding-right: ${({ theme }) => theme.spacing[5]};
   }
 `;
 
@@ -152,10 +149,15 @@ const TBody = styled.tbody`
       text-align: center;
       font-size: ${({ theme }) => theme.fontSizes.sm};
       color: ${({ theme }) => theme.colors.black3};
+
+      overflow: hidden;
       white-space: nowrap;
       text-overflow: ellipsis;
-      overflow: hidden;
-      max-width: 200px;
+      max-width: 160px;
+    }
+
+    td:last-child {
+      color: ${({ theme }) => theme.colors.danger};
     }
   }
 `;

@@ -2,7 +2,10 @@ package com.kh.dolbomi.repository;
 
 import com.kh.dolbomi.domain.Proposer;
 import com.kh.dolbomi.enums.StatusEnum;
+import com.kh.dolbomi.enums.StatusEnum.Status;
 import java.util.Optional;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 public interface ProposerRepository {
     boolean existsByHiringNoAndCaregiverNoAndStatus(Long hiringNo, Long caregiverNo, StatusEnum.Status status);
@@ -16,4 +19,6 @@ public interface ProposerRepository {
 
     Optional<Proposer> findByHiringNoAndResumeNo(Long hiringNo, Long resumeNo);
 
+    // 나의 지원현황 목록
+    Page<Proposer> getMyProposerLists(Status status, Pageable pageable, Long userNo);
 }

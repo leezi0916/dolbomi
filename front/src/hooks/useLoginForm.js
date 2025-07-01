@@ -6,6 +6,7 @@ import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import useUserStore from '../store/userStore';
+import useUserStatusStore from '../store/userStatusStore';
 
 //회원가입 폼의 유효성 검사 스키마
 const loginSchema = yup.object().shape({
@@ -17,6 +18,7 @@ export const useLoginForm = () => {
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
   const login = useUserStore((state) => state.login);
+  const { userStatus, setUserStatus } = useUserStatusStore();
 
   //react-hook-form으로 폼 상태 초기화및 유효성 검사
   const {
@@ -31,6 +33,7 @@ export const useLoginForm = () => {
   const onSubmit = async (data) => {
     try {
       setIsLoading(true);
+
       //로그인API호출
       const { token } = await userService.login(data.userId, data.userPwd);
       if (!token) throw new Error('로그인 실패: 토큰 없음');
@@ -43,6 +46,9 @@ export const useLoginForm = () => {
         userId: user.userId,
         userName: user.userName,
       });
+
+      // 4. 상태 기본 저장
+      setUserStatus(userStatus);
 
       toast.success('로그인 성공!');
       navigate('/');

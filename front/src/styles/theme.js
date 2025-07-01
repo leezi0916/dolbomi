@@ -1,3 +1,5 @@
+import { red } from '@mui/material/colors';
+
 const theme = {
   colors: {
     primary: '#EF7A46', // 로고색상
@@ -11,6 +13,7 @@ const theme = {
     black1: '#000000',
     black2: '#1D1D1D',
     black3: '#282828',
+    error : '#e53935',
     gray: {
       1: '#333333',
       2: '#4F4F4F',

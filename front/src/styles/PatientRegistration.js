@@ -1,6 +1,5 @@
 import { styled } from 'styled-components';
-import { Button } from './Auth.styles';
-import { Title } from './Auth.styles';
+import { Button, Title } from './Auth.styles';
 import {MainMoveButton, MainSubmitButton} from './common/Button';
 
 export const FromWrap = styled.div`

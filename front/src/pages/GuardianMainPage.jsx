@@ -10,6 +10,7 @@ import { jobSeekingService } from '../api/jobSeeking';
 import { reviewService } from '../api/reviews';
 import { useNavigate } from 'react-router-dom';
 import { MainMoveButton } from '../styles/common/Button';
+import defaultImage from '../assets/images/cargiver.png';
 
 const GuardianMainPage = () => {
   const [resumeLiset, setResumeLiset] = useState([]);
@@ -75,37 +76,41 @@ const GuardianMainPage = () => {
 
         <JobSeekingCardSection>
           <GridContainer>
-            {resumeLiset.map((resume) => (
-              <Card key={resume.resumeNo}>
-                <CardTopContent>
-                  <CardImage src={resume.profileImage} />
-                  <CardTextGroup>
-                    <CardTitle>
-                      {maskName(resume.userName)} <span>간병사</span>
-                    </CardTitle>
-                    <CardText>
-                      <span>나이</span> : {resume.age}세({resume.gender == 'M' ? '남' : '여'})
-                    </CardText>
-                    <CardText>
-                      <span>시급</span> : {resume.resumeAccount.toLocaleString()}원
-                    </CardText>
-                  </CardTextGroup>
-                </CardTopContent>
-                <CardBottomContent>
-                  <CardBottomTextSection>
-                    <CardRegionText>
-                      <span>자격증</span> {resume.hasLicense === true ? 'O' : 'X'}
-                    </CardRegionText>
-                    <CardRegionText>
-                      <span>지역</span> {resume.address}
-                    </CardRegionText>
-                  </CardBottomTextSection>
-                  <MainMoveButton onClick={() => navigate(`/caregiver/resumeDetail/${resume.resumeNo}`)}>
-                    상세보기
-                  </MainMoveButton>
-                </CardBottomContent>
-              </Card>
-            ))}
+            {resumeLiset.length === 0 ? (
+              <EmptyMessage>아직 등록된 구직자가 없습니다.</EmptyMessage>
+            ) : (
+              resumeLiset.map((resume) => (
+                <Card key={resume.resumeNo}>
+                  <CardTopContent>
+                    <CardImage $src={resume.profileImage} />
+                    <CardTextGroup>
+                      <CardTitle>
+                        {maskName(resume.userName)} <span>간병사</span>
+                      </CardTitle>
+                      <CardText>
+                        <span>나이</span> : {resume.age}세({resume.gender == 'M' ? '남' : '여'})
+                      </CardText>
+                      <CardText>
+                        <span>시급</span> : {resume.resumeAccount.toLocaleString()}원
+                      </CardText>
+                    </CardTextGroup>
+                  </CardTopContent>
+                  <CardBottomContent>
+                    <CardBottomTextSection>
+                      <CardRegionText>
+                        <span>자격증</span> {resume.hasLicense === true ? 'O' : 'X'}
+                      </CardRegionText>
+                      <CardRegionText>
+                        <span>지역</span> {resume.address}
+                      </CardRegionText>
+                    </CardBottomTextSection>
+                    <MainMoveButton onClick={() => navigate(`/caregiver/resumeDetail/${resume.resumeNo}`)}>
+                      상세보기
+                    </MainMoveButton>
+                  </CardBottomContent>
+                </Card>
+              ))
+            )}
           </GridContainer>
         </JobSeekingCardSection>
       </JobSeekingSection>
@@ -116,33 +121,37 @@ const GuardianMainPage = () => {
         </ReviewCardTextSection>
 
         <GridContainer>
-          {reviewList.map((review) => (
-            <Card key={review.reviewNo}>
-              <CardTopContent>
-                <CardImage src={review.profileImage} />
-                <CardTextGroup>
-                  <CardTitle>
-                    {maskName(review.userName)} <span>간병사 </span>
-                  </CardTitle>
-                  <CardText>
-                    <span>나이</span> : {review.age}세({review.gender == 'M' ? '남' : '여'})
-                  </CardText>
-                  <CardText>
-                    <span>지역</span> : {review.address}
-                  </CardText>
-                </CardTextGroup>
-              </CardTopContent>
-              <CardMidBottomContent>
-                <ReviewTextBox>{review.reviewContent}</ReviewTextBox>
-                <ReviewFooter>
-                  <ReviewScore>
-                    평점 <strong>{review.reviewScore.toFixed(1)}</strong>
-                  </ReviewScore>
-                  <ReviewDate>작성일 {review.reviewUpdateDate.slice(0, 10)} </ReviewDate>
-                </ReviewFooter>
-              </CardMidBottomContent>
-            </Card>
-          ))}
+          {reviewList.length === 0 ? (
+            <EmptyMessage>아직 등록된 리뷰가 없습니다.</EmptyMessage>
+          ) : (
+            reviewList.map((review) => (
+              <Card key={review.reviewNo}>
+                <CardTopContent>
+                  <CardImage $src={review.profileImage} />
+                  <CardTextGroup>
+                    <CardTitle>
+                      {maskName(review.userName)} <span>간병사 </span>
+                    </CardTitle>
+                    <CardText>
+                      <span>나이</span> : {review.age}세({review.gender == 'M' ? '남' : '여'})
+                    </CardText>
+                    <CardText>
+                      <span>지역</span> : {review.address}
+                    </CardText>
+                  </CardTextGroup>
+                </CardTopContent>
+                <CardMidBottomContent>
+                  <ReviewTextBox>{review.reviewContent}</ReviewTextBox>
+                  <ReviewFooter>
+                    <ReviewScore>
+                      평점 <strong>{review.reviewScore.toFixed(1)}</strong>
+                    </ReviewScore>
+                    <ReviewDate>작성일 {review.reviewUpdateDate.slice(0, 10)} </ReviewDate>
+                  </ReviewFooter>
+                </CardMidBottomContent>
+              </Card>
+            ))
+          )}
         </GridContainer>
       </ReviewSection>
     </>
@@ -319,7 +328,7 @@ export const CardImage = styled.div`
   width: 120px;
   height: 120px;
   border-radius: 50%; // 원형 처리
-  background-image: ${({ src }) => (src ? `url(${src})` : 'none')};
+  background-image: ${({ src }) => `url(${src || defaultImage})`};
   background-size: cover;
   background-position: center;
   flex-shrink: 0; // 축소 방지
@@ -476,4 +485,13 @@ export const ReviewScore = styled.div`
 export const ReviewDate = styled.span`
   font-size: ${({ theme }) => theme.fontSizes.xs};
   color: ${({ theme }) => theme.colors.gray[3]};
+`;
+
+// 비어있음 메세지
+export const EmptyMessage = styled.p`
+  width: 100%;
+  text-align: center;
+  color: ${({ theme }) => theme.colors.gray[3]};
+  font-size: ${({ theme }) => theme.fontSizes.base};
+  padding: ${({ theme }) => theme.spacing[8]} 0;
 `;

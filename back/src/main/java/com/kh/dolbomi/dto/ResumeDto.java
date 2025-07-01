@@ -94,7 +94,7 @@ public class ResumeDto {
         public static Response ResumeDto(Resume resume) {
             return Response.builder()
                     .user_no(resume.getUser().getUserNo())
-                    .user_name(resume.getUser().getUserId())
+                    .user_name(resume.getUser().getUserName())
                     .age(resume.getUser().getAge())
                     .phone(resume.getUser().getPhone())
                     .address(resume.getUser().getAddress())

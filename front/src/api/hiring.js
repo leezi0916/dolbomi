@@ -23,7 +23,7 @@ export const hiringService = {
   getMyJobOpeningList: async (currentPage, userNo) => {
     try {
       const { data } = await api.get(API_ENDPOINTS.HIRING.MYLIST(currentPage, userNo));
-      console.log(currentPage, userNo);
+
       return snakeToCamel(data);
     } catch (error) {
       if (error.response) {

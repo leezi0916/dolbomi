@@ -18,7 +18,17 @@ import { useSignUpForm } from '../hooks/useSignUpForm';
 
 const SignUp = () => {
   // watch 함수를 useSignUpForm 훅에서 가져옵니다.
-  const { register, handleSubmit, errors, isSubmitting, watch, checkUserId, idCheckMessage } = useSignUpForm();
+  const {
+    register,
+    handleSubmit,
+    errors,
+    isSubmitting,
+    watch,
+    checkUserId,
+    idCheckMessage,
+    setValue,
+    formatPhoneNumber,
+  } = useSignUpForm();
 
   // 'gender' 필드의 현재 값을 watch하여 라디오 버튼의 checked 상태를 제어합니다.
   const currentGender = watch('gender');
@@ -181,7 +191,17 @@ const SignUp = () => {
 
               <InputGroup>
                 <Label htmlFor="phone">연락처</Label>
-                <Input id="phone" type="text" placeholder="연락처" {...register('phone')} $error={errors.phone} />
+                <Input
+                  id="phone"
+                  type="text"
+                  placeholder="연락처"
+                  {...register('phone')}
+                  $error={errors.phone}
+                  onChange={(e) => {
+                    const formatted = formatPhoneNumber(e.target.value);
+                    setValue('phone', formatted); // react-hook-form의 값도 갱신
+                  }}
+                />
                 {errors.phone && <ErrorMessage>{errors.phone.message}</ErrorMessage>}
               </InputGroup>
               <InputGroup>
@@ -568,7 +588,7 @@ const StyledCheckbox = styled.div`
   cursor: pointer;
   transition: all 0.2s ease-in-out;
 `;
-export const InputContainer1 = styled.div`
+const InputContainer1 = styled.div`
   display: flex;
   flex-direction: column;
   max-width: 600px;

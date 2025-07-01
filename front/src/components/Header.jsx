@@ -25,7 +25,10 @@ const Header = () => {
     logout(); // Zustand에서 사용자 상태 초기화
     sessionStorage.removeItem('token');
     localStorage.removeItem('user-storage'); // persist 저장소 삭제
+    localStorage.removeItem('status-storage'); // persist 저장소 삭제
+
     alert('로그아웃 되었습니다.');
+    setUserStatus(true);
     navigate('/'); // 홈으로 이동
     setIsMenuOpen(false);
   };
@@ -280,7 +283,7 @@ const Header = () => {
                     <Icon src="/src/assets/icons/icon_내역관리.png" alt="" />내 구인글 관리
                   </NavItem>
                 ) : (
-                  <NavItem to="/caregiver/post-management">
+                  <NavItem to="/caregiver/myproposer">
                     <Icon src="/src/assets/icons/icon_내역관리.png" alt="" />
                     나의 지원현황
                   </NavItem>

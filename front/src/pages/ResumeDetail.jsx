@@ -48,6 +48,7 @@ function ResumeDetail() {
         const data = await jobSeekingService.getResume(Number(resumeNo));
 
         setResumeData(data);
+        console.log(data);
       } catch (error) {
         console.log(error);
       }
@@ -146,10 +147,10 @@ function ResumeDetail() {
                 <label htmlFor="female">여성</label>
               </RadioWrapper>
             </RadioGroup>
-            <InputGroup>
+            {/* <InputGroup>
               <Label>전화번호</Label>
               <Input type="text" value={resumeData?.phone || ''} readOnly />
-            </InputGroup>
+            </InputGroup> */}
             <InputGroup>
               <Label>주소</Label>
               <Input type="text" value={resumeData?.address || ''} readOnly />

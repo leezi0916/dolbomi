@@ -40,8 +40,8 @@ const signUpSchema = yup.object().shape({
 
   phone: yup
     .string()
-    .required('전화번호를 입력하세요.')
-    .matches(/^010\d{8}$/, "010으로 시작하고 '-' 제외한 11자리여야 합니다."),
+    .matches(/^010-\d{4}-\d{4}$/, '전화번호 형식은 010-0000-0000 이어야 합니다')
+    .required('전화번호를 입력해주세요'),
 
   address: yup
     .string()
@@ -65,6 +65,7 @@ export const useSignUpForm = () => {
     handleSubmit,
     setError,
     clearErrors,
+    setValue,
     formState: { errors, isSubmitting }, //유효성 에러및 제출중 상태
     watch, // watch 함수를 추가로 가져옵니다.
   } = useForm({
@@ -108,6 +109,16 @@ export const useSignUpForm = () => {
     }
   };
 
+  const formatPhoneNumber = (value) => {
+    // 숫자만 남기기
+    const numbersOnly = value.replace(/\D/g, '');
+
+    // 010부터 시작하고 길이에 따라 포맷팅
+    if (numbersOnly.length < 4) return numbersOnly;
+    if (numbersOnly.length < 8) return `${numbersOnly.slice(0, 3)}-${numbersOnly.slice(3)}`;
+    return `${numbersOnly.slice(0, 3)}-${numbersOnly.slice(3, 7)}-${numbersOnly.slice(7, 11)}`;
+  };
+
   const onSubmit = async (data) => {
     if (!isIdChecked) {
       toast.error('아이디 중복을 확인을 해주세요.');
@@ -125,6 +136,9 @@ export const useSignUpForm = () => {
     }
   };
 
+
+
+
   //컴포넌트에서 사용할 값들 반환
   return {
     register,
@@ -134,5 +148,7 @@ export const useSignUpForm = () => {
     watch, // watch 함수를 반환합니다.
     checkUserId,
     idCheckMessage,
+    setValue,
+    formatPhoneNumber,
   };
 };
