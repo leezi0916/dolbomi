@@ -19,6 +19,8 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -107,6 +109,13 @@ public class ProposerServiceImpl implements ProposerService {
         return proposerRepositoryV2.existsByResume_ResumeNoAndHiring_HiringNoAndStatus(
                 resumeNo, hiringNo, StatusEnum.Status.Y
         );
+    }
+
+    // 나의 지원현황 목록
+    @Override
+    public Page<ProposerDto.Response> getMyProposerLists(Long userNo, Pageable pageable) {
+        Page<Proposer> proposers = proposerRepository.getMyProposerLists(StatusEnum.Status.Y, pageable, userNo);
+        return proposers.map(ProposerDto.Response::myProposerDto);
     }
 
 }
