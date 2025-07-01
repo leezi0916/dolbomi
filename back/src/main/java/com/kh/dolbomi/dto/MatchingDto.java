@@ -1,5 +1,6 @@
 package com.kh.dolbomi.dto;
 
+import com.kh.dolbomi.domain.Matching;
 import com.kh.dolbomi.enums.StatusEnum;
 import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
@@ -44,6 +45,7 @@ public class MatchingDto {
     @Setter
     @AllArgsConstructor
     @NoArgsConstructor
+    @Builder
     public static class ResponsePat {
         private Long mat_no;
         private String pat_name;
@@ -53,5 +55,15 @@ public class MatchingDto {
         private StatusEnum.Status status;
 
 
+        public static ResponsePat from(Matching matching) {
+            return ResponsePat.builder()
+                    .mat_no(matching.getMatNo())
+                    .pat_name(matching.getPatient().getPatName())
+                    .pat_age(matching.getPatient().getPatAge())
+                    .pat_gender(matching.getPatient().getPatGender())
+                    .start_date(matching.getStartDate())
+                    .status(matching.getStatus())
+                    .build();
+        }
     }
 }

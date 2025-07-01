@@ -7,6 +7,7 @@ import { useNavigate } from 'react-router-dom';
 import { patientService } from '../api/patient';
 import useUserStore from '../store/userStore';
 import { matchingService } from '../api/matching';
+import Paging from '../components/Paging';
 
 const MatchToPatient = () => {
   const [activeTab, setActiveTab] = useState('matching');
@@ -15,15 +16,14 @@ const MatchToPatient = () => {
   const navigate = useNavigate();
 
   // 진행중 매칭 관련
-  // const [caregiverList, setCareGiverList] = useState([]);
-  // const [userPatients, setUserpatients] = useState([]);
+  const [caregiverList, setCareGiverList] = useState([]);
+  const [userPatients, setUserpatients] = useState([]);
 
   // // 종료된 매칭 관련 페이징 상태
-  // const [endedCaregiverList, setEndedCaregiverList] = useState([]);
-  // const [endedCurrentPage, setEndedCurrentPage] = useState(1);
-  // const [endedTotalPage, setEndedTotalPage] = useState(1);
+  const [endedPatientList, setEndedPatientList] = useState([]);
+  const [endedCurrentPage, setEndedCurrentPage] = useState(1);
+  const [endedTotalPage, setEndedTotalPage] = useState(1);
   // const [selectedPatNo, setSelectedPatNo] = useState(null);
-
   useEffect(() => {
     const fetchAll = async () => {
       if (!user) {
@@ -61,6 +61,27 @@ const MatchToPatient = () => {
     fetchAll();
   }, [user]);
 
+  useEffect(() => {
+    const fetchEndedMatching = async () => {
+      if (!user || activeTab !== 'matched') return;
+
+      try {
+        const res = await matchingService.findMatchedPatients(user.userNo, 'N', endedCurrentPage - 1);
+        console.log(res);
+        setEndedPatientList(res.content);
+        setEndedCurrentPage(res.currentPage + 1); // ← 여기가 핵심
+        setEndedTotalPage(res.totalPage); // ← 주의: API에선 totalPage로 오네요
+      } catch (err) {
+        console.error('종료된 매칭 불러오기 실패:', err);
+      }
+    };
+
+    fetchEndedMatching();
+  }, [user, activeTab, endedCurrentPage]);
+
+  const chagneCurrentPage = (value) => {
+    setEndedCurrentPage(value);
+  };
   return (
     <>
       <HeadSection>
@@ -93,7 +114,7 @@ const MatchToPatient = () => {
                     <ProfileInfo>
                       <UserName>{pat.patName} 님</UserName>
                       <UserAge>
-                        나이 {pat.patAge}세({pat.patGender === 'F' ? '여' : '남'})
+                        나이 {pat.patAge}세 ({pat.patGender === 'F' ? '여' : '남'})
                       </UserAge>
                     </ProfileInfo>
                     <ButtonRow>
@@ -111,18 +132,28 @@ const MatchToPatient = () => {
 
         {activeTab === 'matched' && (
           <>
-            <ProfileCardPair>
-              <ProfileCard type="patient">
-                <ProfileImage src={profileImage} alt="환자" />
-                <ProfileInfo>
-                  <UserName>박영희 님</UserName>
-                  <UserAge>나이 80세(여)</UserAge>
-                </ProfileInfo>
-                <ButtonRow>
-                  <InfoButton>간병일지</InfoButton>
-                </ButtonRow>
-              </ProfileCard>
-            </ProfileCardPair>
+            {endedPatientList && endedPatientList.length > 0 ? (
+              endedPatientList.map((pat) => (
+                <ProfileCardPair key={pat.matNo}>
+                  <ProfileCard type="patient">
+                    <ProfileImage src={profileImage} alt="환자" />
+                    <ProfileInfo>
+                      <UserName>{pat.patName} 님</UserName>
+                      <UserAge>
+                        나이 {pat.patAge}세 ({pat.patGender === 'F' ? '여' : '남'})
+                      </UserAge>
+                    </ProfileInfo>
+                    <ButtonRow>
+                      <InfoButton onClick={() => navigate(`/report/${pat.patNo}`)}>간병일지</InfoButton>
+                    </ButtonRow>
+                  </ProfileCard>
+                </ProfileCardPair>
+              ))
+            ) : (
+              <InfoP> 종료된 매칭 환자가 없습니다. </InfoP>
+            )}
+
+            <Paging currentPage={endedCurrentPage} totalPage={endedTotalPage} chagneCurrentPage={chagneCurrentPage} />
           </>
         )}
       </MatchSection>
