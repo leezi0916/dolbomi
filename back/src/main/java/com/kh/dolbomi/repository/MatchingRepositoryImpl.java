@@ -1,6 +1,7 @@
 package com.kh.dolbomi.repository;
 
 import com.kh.dolbomi.enums.StatusEnum;
+import com.kh.dolbomi.enums.StatusEnum.Status;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import java.util.List;
@@ -23,6 +24,22 @@ public class MatchingRepositoryImpl implements MatchingRepository {
         return em.createQuery(query, Object[].class)
                 .setParameter("patNo", patNo)
                 .setParameter("matchingStatus", matchingStatus)
+                .getResultList();
+    }
+
+    @Override
+    public List<Object[]> findbyCaregiverNo(Long caregiverNo, Status matchingStatus) {
+        String query = """
+                    SELECT m.matNo, p.patName, p.patAge, p.patGender, m.startDate, m.status
+                    FROM Matching m
+                    JOIN m.patient p
+                    WHERE m.status = :matchingStatus
+                    AND m.caregiver.userNo = :caregiverNo
+                """;
+
+        return em.createQuery(query, Object[].class)
+                .setParameter("matchingStatus", matchingStatus)
+                .setParameter("caregiverNo", caregiverNo)
                 .getResultList();
     }
 

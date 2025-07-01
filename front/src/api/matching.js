@@ -18,6 +18,20 @@ export const matchingService = {
       throw new Error('서버 통신 불량');
     }
   },
+  getMatchingPatient : async (cargiverNo,status) => {
+    try {
+      const { data } = await api.get(API_ENDPOINTS.MATCHING.PATLIST(cargiverNo, status));
+
+      return snakeToCamel(data);
+    } catch (error) {
+      if (error.response) {
+        const message = error.response?.data?.message || '매칭목록을 불러오는데 실패했습니다.';
+        throw new Error(message);
+      }
+
+      throw new Error('서버 통신 불량');
+    }
+  },
 
   getEndMatching: async (status) => {
     try {
@@ -33,4 +47,5 @@ export const matchingService = {
       throw new Error('서버 통신 불량');
     }
   },
+
 };

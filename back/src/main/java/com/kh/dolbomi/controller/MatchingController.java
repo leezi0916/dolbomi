@@ -29,4 +29,14 @@ public class MatchingController {
         System.out.println("patNo" + patNo + "matchingStatus : " + matchingStatus);
         return ResponseEntity.ok(matchingService.getMatchingList(patNo, matchingStatus));
     }
+
+    @GetMapping("/caregiver")
+    public ResponseEntity<List<MatchingDto.ResponsePat>> getMatchingListCaregiver(
+            @RequestParam("caregiver_no") Long cargiverNo,
+            @RequestParam("status") Status matchingStatus
+    ) {
+        return ResponseEntity.ok(matchingService.getMatchingListCaregiver(cargiverNo, matchingStatus));
+    }
+
+
 }
