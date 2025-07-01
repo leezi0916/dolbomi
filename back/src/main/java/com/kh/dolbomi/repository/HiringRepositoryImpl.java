@@ -34,7 +34,7 @@ public class HiringRepositoryImpl implements HiringRepository {
     // 상태가 Y인 최근 8개 구인글 조회
     @Override
     public List<Hiring> getMainHiringList(Status status) {
-        String query = "SELECT DISTINCT h FROM Hiring h JOIN h.user u WHERE h.status = :status ORDER BY h.updateDate DESC";
+        String query = "SELECT DISTINCT h FROM Hiring h JOIN h.user u WHERE h.status = :status AND h.hiringStatus = 'Y' ORDER BY h.updateDate DESC";
         return em.createQuery(query, Hiring.class)
                 .setParameter("status", status)
                 .setMaxResults(8)

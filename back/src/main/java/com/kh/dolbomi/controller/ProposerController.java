@@ -2,9 +2,13 @@ package com.kh.dolbomi.controller;
 
 
 import com.kh.dolbomi.dto.MatchingDto;
+import com.kh.dolbomi.dto.PageResponse;
 import com.kh.dolbomi.dto.ProposerDto;
 import com.kh.dolbomi.service.ProposerService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -72,5 +76,13 @@ public class ProposerController {
         return ResponseEntity.ok(isAccepted);
     }
 
+    // 나의 지원현황 목록
+    @GetMapping("my-list")
+    public ResponseEntity<PageResponse<ProposerDto.Response>> getMyProposerLists(
+            @PageableDefault(size = 10, sort = "updateDate", direction = Sort.Direction.DESC) Pageable pageable,
+            @RequestParam Long userNo) {
 
+        System.out.println(userNo);
+        return ResponseEntity.ok(new PageResponse<>(proposerService.getMyProposerLists(userNo, pageable)));
+    }
 }

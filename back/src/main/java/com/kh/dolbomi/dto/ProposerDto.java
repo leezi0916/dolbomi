@@ -33,6 +33,14 @@ public class ProposerDto {
         private LocalDateTime proposer_date;
         private StatusEnum.Status status;
 
+        // 구인 테이블
+        private String hiring_title;
+        private StatusEnum.HiringStatus hiring_status;
+
+        // 사용자 테이블
+        private String user_name;
+
+
         public static Response toDto(Proposer proposer) {
             return Response.builder()
                     .proposer_no(proposer.getProposerNo())
@@ -52,6 +60,15 @@ public class ProposerDto {
                     .build();
         }
 
+        public static Response myProposerDto(Proposer proposer) {
+            return Response.builder()
+                    .proposer_no(proposer.getProposerNo())
+                    .hiring_title(proposer.getHiring().getHiringTitle())
+                    .proposer_date(proposer.getProposerDate())
+                    .user_name(proposer.getHiring().getUser().getUserName())
+                    .hiring_status(proposer.getHiring().getHiringStatus())
+                    .build();
+        }
 
     }
 

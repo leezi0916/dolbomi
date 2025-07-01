@@ -46,13 +46,13 @@ import CareGviverProfile from './pages/CareGiverProfile';
 import ContactPage from './pages/ContactPage';
 import CareGiverCommunity from './pages/CareGiverCommunity';
 import GuardianCommunity from './pages/GuardianCommunity';
-import PostManagement from './pages/PostManageMent';
 import JobOpeningManagement from './pages/JobOpeningManagement';
 import QuestionFull from './pages/question/QuestionFull';
 import QuestionCreate from './pages/question/QuestionCreate';
 import QuestionHistory from './pages/question/QuestionHistory';
 import PrivacyPolicy from './pages/legal/PrivacyPolicy';
 import TermsOfService from './pages/legal/TermsOfService';
+import MyProposer from './pages/MyProposer';
 
 function AppRoutes() {
   const navigate = useNavigate();
@@ -80,7 +80,7 @@ function AppRoutes() {
           <Route path="/caregiver/review" element={<ReceivedReviews />} />
           <Route path="/caregiver/matchpage" element={<MatchToPatient />} />
           <Route path="/caregiver/myresume/:resumeNo" element={<MyResume />} />
-          <Route path="/caregiver/post-management" element={<PostManagement />} />
+          <Route path="/caregiver/myproposer" element={<MyProposer />} />
           {/* 같은 컴포넌트로 신청했는지 url로 처리 */}
           <Route path="/caregiver/resumeDetail/:resumeNo" element={<ResumeDetail />} />
           <Route path="/caregiver/resumeDetail/:resumeNo/:hiringNo" element={<ResumeDetail />} />

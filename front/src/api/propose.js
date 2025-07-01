@@ -72,4 +72,19 @@ export const proposerService = {
       throw error;
     }
   },
+
+  // 내 지원현황 목록
+  getMyProposer: async (currentPage, userNo) => {
+    try {
+      const { data } = await api.get(API_ENDPOINTS.PROPOSER.MYLIST(currentPage, userNo));
+      return snakeToCamel(data);
+    } catch (error) {
+      if (error.response) {
+        const message = error.response?.data?.message || '내 지원현황을 불러오는데 실패했습니다.';
+        throw new Error(message);
+      }
+
+      throw new Error('서버 통신 불량');
+    }
+  },
 };
