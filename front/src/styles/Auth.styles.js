@@ -45,7 +45,6 @@ export const Label = styled.label`
 `;
 
 export const Input = styled.input`
-  width: 100%;
   padding: ${({ theme }) => theme.spacing[3]};
   //인혜 : 보더 색상 수정
   border: 1px solid ${({ theme, $error }) => ($error ? theme.colors.error : theme.colors.gray[5])};
