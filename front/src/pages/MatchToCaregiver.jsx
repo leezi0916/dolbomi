@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { Section } from '../styles/common/Container';
 import styled from 'styled-components';
 import SearchBar from '../components/SearchBar';
-import profileImage from '../assets/images/pat.png'; // 프로필 이미지 경로
+import pat_profileImage from '../assets/images/pat.png'; // 프로필 이미지 경로
+import care_profileImage from '../assets/images/cargiver.png'; // 프로필 이미지 경로
 import useUserStore from '../store/userStore';
 import { matchingService } from '../api/matching';
 import { patientService } from '../api/patient';
@@ -11,10 +12,10 @@ import { useNavigate } from 'react-router-dom';
 const MatchToCaregiver = () => {
   const { user } = useUserStore();
 
-const [activeTab, setActiveTab] = useState('matching');
+  const [activeTab, setActiveTab] = useState('matching');
   const [caregiverList, setCareGiverList] = useState([]);
   const [userPatients, setUserpatients] = useState([]);
- 
+
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -34,10 +35,10 @@ const [activeTab, setActiveTab] = useState('matching');
   }, [user]);
 
   // 현재 매칭정보 : 특정 환자의 간병인 목록 가져오기
-  const getCareGiver = (patno) => {
+  const getCareGiver = (patNo) => {
     const getList = async () => {
       try {
-        const careGiverList = await matchingService.getMatchginCargiver(patno, 'Y');
+        const careGiverList = await matchingService.getMatchginCargiver(patNo, 'Y');
         console.log(careGiverList);
         careGiverList.length === 0 ? setCareGiverList([]) : setCareGiverList(careGiverList);
       } catch (err) {
@@ -92,11 +93,10 @@ const [activeTab, setActiveTab] = useState('matching');
         {activeTab === 'matching' && (
           <>
             <ProfileCardPair>
-
               <RightLineDiv>
                 {userPatients?.map((pat) => (
                   <ProfileCard key={pat.patNo} type="patient" onMouseEnter={() => getCareGiver(pat.patNo)}>
-                    <ProfileImage src={profileImage} alt="환자" />
+                    <ProfileImage src={pat_profileImage} alt="환자" />
                     <ProfileInfo>
                       <UserName>{pat.patName} 님</UserName>
                       <UserAge>나이 {pat.patAge}세(여)</UserAge>
@@ -109,7 +109,7 @@ const [activeTab, setActiveTab] = useState('matching');
                 {caregiverList?.map((care) => (
                   <>
                     <CargiverWrap key={care.caregiverNo}>
-                      <CaregiverImg src={care.profileImage} alt="" />
+                      <CaregiverImg src={care_profileImage} alt="" />
                       <CaregiverTextDiv>
                         <ProfileTextGray>
                           <ProfileTextStrong>{care.userName}</ProfileTextStrong> 님
@@ -123,20 +123,20 @@ const [activeTab, setActiveTab] = useState('matching');
                         </ProfileTextGray>
                       </CaregiverTextDiv>
                       <CargiverButtonDiv>
-                        
-                        <CareLogButton onClick={() => navigate(`/caregiverProfile/${Number(care.caregiverNo)}`)}>간병인 정보</CareLogButton>
+                        <CareLogButton onClick={() => navigate(`/caregiverProfile/${Number(care.caregiverNo)}`)}>
+                          간병인 정보
+                        </CareLogButton>
                         <ReportButton>신고하기</ReportButton>
                       </CargiverButtonDiv>
                     </CargiverWrap>
                   </>
                 ))}
               </div>
-</ProfileCardPair>
+            </ProfileCardPair>
           </>
         )}
 
         {activeTab === 'matched' && (
-      
           <>
             {caregiverList.map((care) => (
               <EndProfileCard key={care.caregiverNo}>
@@ -144,27 +144,31 @@ const [activeTab, setActiveTab] = useState('matching');
                   <ProfileImage src={care.profileImage} alt=" 간병인" />
                   <div>
                     <UserName>{care.userName} 님</UserName>
-                    <UserAge>나이 {care.useAge}세({care.gender})</UserAge>
+                    <UserAge>
+                      나이 {care.useAge}세({care.gender})
+                    </UserAge>
                     <ButtonRow>
-                      <CareLogButton onClick={() => navigate(`/caregiverProfile/${Number(care.caregiverNo)}`)} >간병인 정보</CareLogButton>
+                      <CareLogButton onClick={() => navigate(`/caregiverProfile/${Number(care.caregiverNo)}`)}>
+                        간병인 정보
+                      </CareLogButton>
                       <ReportButton>신고하기</ReportButton>
                     </ButtonRow>
                   </div>
                 </RowProfileCard>
 
                 <RowProfileCard>
-                {/* 환자이미지 변수명이랑 겹쳐요 ㅜㅜ */}
-                  <ProfileImage src={profileImage} alt="간병인" />
+                  <ProfileImage src={care_profileImage} alt="간병인" />
                   <div>
                     <UserName>{care.patName} 님</UserName>
-                    <UserAge>나이 {care.patAge}세({care.patGender})</UserAge>
+                    <UserAge>
+                      나이 {care.patAge}세({care.patGender})
+                    </UserAge>
                     <CareLogButton>간병일지</CareLogButton>
                   </div>
                 </RowProfileCard>
               </EndProfileCard>
             ))}
           </>
-
         )}
       </MatchSection>
     </>
@@ -311,7 +315,7 @@ const InfoButton = styled.button`
   border: none;
   padding: ${({ theme }) => `${theme.spacing[2]} ${theme.spacing[8]}`};
   margin: ${({ theme }) => theme.spacing[3]} 0;
-border-radius: ${({ theme }) => theme.borderRadius.md};
+  border-radius: ${({ theme }) => theme.borderRadius.md};
   cursor: pointer;
   font-weight: ${({ theme }) => theme.fontWeights.bold};
   white-space: nowrap; /* 버튼 텍스트가 줄바꿈되지 않도록 */
