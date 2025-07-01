@@ -2,10 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { commuService } from '../../api/community';
 import { toast } from 'react-toastify';
 import { ClipLoader } from 'react-spinners';
-import styled from 'styled-components';
 import useUserStore from '../../store/userStore';
 import Paging from '../../components/Paging';
-import { Input, Page } from '../../styles/common/Board';
+import { Btn, Input, Page } from '../../styles/common/Board';
 import {
   BoardItem,
   BoardItemTop,
@@ -13,8 +12,10 @@ import {
   BoardTop,
   BoardTopLeft,
   BoardTopRight,
+  Drop,
   MenuDiv,
   MenuLink,
+  Null,
   PageInfo,
   PageTitle,
   PageTop,
@@ -22,10 +23,7 @@ import {
 } from './style/Question.styles';
 
 const QuestionHistory = () => {
-  const userId = useUserStore((state) => state.user?.userId);
-
-  const ROLE = 'Q';
-  const STATUS = 'Y';
+  const userNo = useUserStore((state) => state.user?.userNo);
 
   const [error, setError] = useState(null);
   const [questionList, setQuestionList] = useState([]);
@@ -50,7 +48,7 @@ const QuestionHistory = () => {
   useEffect(() => {
     const loadQuestion = async () => {
       try {
-        const myHistory = await commuService.getQuestion();
+        const myHistory = await commuService.getQuestionHistory(userNo);
         console.log(myHistory);
         setQuestionList(myHistory.content);
       } catch (error) {
@@ -64,7 +62,7 @@ const QuestionHistory = () => {
     };
 
     loadQuestion();
-  }, [userId]);
+  }, [userNo]);
 
   if (loading) {
     return (
@@ -77,12 +75,58 @@ const QuestionHistory = () => {
   if (error) {
     return null;
   }
+  if (!questionList || questionList.length === 0) {
+    return (
+      <Page>
+        <PageInfo>
+          <PageTop>
+            <PageTitle> 1:1 문의사항 </PageTitle>
+            {userNo && (
+              <BoardMenu>
+                <MenuDiv>전체</MenuDiv>
+                <MenuLink to="/question/history">문의내역</MenuLink>
+                <MenuLink to="/question/create"> 문의하기</MenuLink>
+              </BoardMenu>
+            )}
+          </PageTop>
+
+          <BoardTop>
+            <BoardTopLeft>총 0건</BoardTopLeft>
+            <BoardTopRight>
+              <Drop value={sortOption} onChange={(e) => setSortOption(e.target.value)}>
+                <option value="date">날짜순</option>
+                <option value="views">조회순</option>
+              </Drop>
+              <Input type="text" />
+              <SearchBtn>검색</SearchBtn>
+            </BoardTopRight>
+          </BoardTop>
+          <BoardItemTop>
+            <div>No</div>
+            <div style={{ flex: '3' }}>제목</div>
+            <div>작성자</div>
+            <div style={{ flex: '2' }}>작성 일자</div>
+          </BoardItemTop>
+          <Null>
+            <div style={{ marginBottom: '10px' }}>게시글이 없습니다.</div>
+            {userNo && (
+              <Btn style={{ margin: 'auto' }} to="/community/create">
+                글쓰기
+              </Btn>
+            )}
+          </Null>
+
+          <Paging totalPage={totalPage} currentPage={currentPage} chagneCurrentPage={chagneCurrentPage} />
+        </PageInfo>
+      </Page>
+    );
+  }
   return (
     <Page>
       <PageInfo>
         <PageTop>
           <PageTitle> 1:1 문의사항 </PageTitle>
-          {userId && (
+          {userNo && (
             <BoardMenu>
               <MenuLink to="/question/full">전체</MenuLink>
               <MenuDiv>문의내역</MenuDiv>
@@ -124,12 +168,5 @@ const QuestionHistory = () => {
     </Page>
   );
 };
-
-const Drop = styled.select`
-  min-width: 20%;
-  border: 1px solid ${({ theme }) => theme.colors.gray[5]};
-  border-radius: 4px;
-  padding: 2px 4px;
-`;
 
 export default QuestionHistory;

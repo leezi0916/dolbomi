@@ -2,10 +2,14 @@ package com.kh.dolbomi.controller;
 
 
 import com.kh.dolbomi.dto.MatchingDto;
+import com.kh.dolbomi.dto.PageResponse;
+import com.kh.dolbomi.enums.StatusEnum;
 import com.kh.dolbomi.enums.StatusEnum.Status;
 import com.kh.dolbomi.service.MatchingService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,6 +34,16 @@ public class MatchingController {
         return ResponseEntity.ok(matchingService.getMatchingList(patNo, matchingStatus));
     }
 
+
+    @GetMapping("matched")
+    public ResponseEntity<PageResponse<MatchingDto.Response>> getMatchedList(
+            @RequestParam("pat_no") Long patNo,
+            @RequestParam("status") StatusEnum.Status status,
+            @PageableDefault(size = 5) Pageable pageable
+    ) {
+        return ResponseEntity.ok(new PageResponse<>(matchingService.getMatchedListByStatus(patNo, status, pageable)));
+    }
+
     @GetMapping("/caregiver")
     public ResponseEntity<List<MatchingDto.ResponsePat>> getMatchingListCaregiver(
             @RequestParam("caregiver_no") Long cargiverNo,
@@ -38,5 +52,14 @@ public class MatchingController {
         return ResponseEntity.ok(matchingService.getMatchingListCaregiver(cargiverNo, matchingStatus));
     }
 
-
+    @GetMapping("/caregiver/matched")
+    public ResponseEntity<PageResponse<MatchingDto.ResponsePat>> getMatchedPatientsByCaregiver(
+            @RequestParam("caregiver_no") Long caregiverNo,
+            @RequestParam("status") StatusEnum.Status status,
+            @PageableDefault(size = 3) Pageable pageable
+    ) {
+        return ResponseEntity.ok(
+                new PageResponse<>(matchingService.getMatchedPatientsByCaregiver(caregiverNo, status, pageable))
+        );
+    }
 }

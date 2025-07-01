@@ -20,8 +20,10 @@ export const API_ENDPOINTS = {
     BASE: '/community/v1',
     CAREGIVER: `/community/v1/caregiver`,
     GUARDIAN: `/community/v1/guardian`,
-    // DETAIL: (no) => `/community/v1?no=${no}`, // 특정 게시글
+    DETAIL: (boardNo) => `/community/v1/detail?board_no=${boardNo}`, // 특정 게시글
     QUESTION: `/community/v1/question`,
+    QUESTION_HISTORY: (userNo) => `/community/v1/question?user_no=${userNo}`,
+
     CREATE: (role) => `/community/v1/${role}/create`,
   },
 
@@ -83,6 +85,7 @@ export const API_ENDPOINTS = {
   PROPOSER: {
     BASE: '/proposer/v1',
     LIST: (hiringNo) => `/proposer/v1?hiring_no=${hiringNo}`,
+    MYLIST: (currentPage, userNo) => `/proposer/v1/my-list?page=${currentPage - 1}&userNo=${userNo}`,
     STATUS: (hiringNo, caregiverNo) => `/proposer/v1/check?hiring_no=${hiringNo}&caregiver_no=${caregiverNo}`,
     CANCEL: (hiringNo, caregiverNo) => `/proposer/v1/cancel?hiring_no=${hiringNo}&caregiver_no=${caregiverNo}`,
     ACCEPT: '/proposer/v1/accept',
@@ -92,7 +95,8 @@ export const API_ENDPOINTS = {
   MATCHING: {
     BASE: '/matching/v1',
     LIST: (patNo, status) => `/matching/v1?pat_no=${patNo}&status=${status}`,
-    PATLIST : (caregiverNo, status) => `/matching/v1/caregiver?caregiver_no=${caregiverNo}&status=${status}`,
-    ENDLIST: (status) => `/matching/v1?status=${status}`,
+    ENDLIST: (patNo, status) => `/matching/v1/matched?pat_no=${patNo}&status=${status}`,
+    PATLIST: (caregiverNo, status) => `/matching/v1/caregiver?caregiver_no=${caregiverNo}&status=${status}`,
+    PAT_ENDLIST: (caregiverNo, status) => `/matching/v1/caregiver/matched?caregiver_no=${caregiverNo}&status=${status}`,
   },
 };
