@@ -25,13 +25,22 @@ export const LinkBtn = styled(Link)`
   align-content: center;
   background-color: ${({ theme }) => theme.colors.primary};
   color: ${({ theme }) => theme.colors.white};
-  border-radius: 6px;
+  border-radius: ${({ theme }) => theme.borderRadius.md};
+  padding: 0 10px;
 `;
 export const Btn = styled.button`
   align-content: center;
   background-color: ${({ theme }) => theme.colors.primary};
   color: ${({ theme }) => theme.colors.white};
   border-radius: ${({ theme }) => theme.borderRadius.md};
+  padding: 0 10px;
+`;
+export const NullBox = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 10px;
 `;
 //
 export const CommuBoard = styled.div`

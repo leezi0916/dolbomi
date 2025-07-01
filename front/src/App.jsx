@@ -5,7 +5,6 @@ import { Route, BrowserRouter as Router, Routes, useLocation, useNavigate } from
 import theme from './styles/theme';
 import Layout from './components/Layout';
 import { ToastContainer } from 'react-toastify';
-import CommunityBoard from './pages/CommunityBoard';
 import SignUp from './pages/SignUp';
 import MyProfile from './pages/MyProfile';
 import Login from './pages/Login';
@@ -16,7 +15,6 @@ import PatientUpdate from './pages/PatientUpdate';
 import ReportDetail from './pages/ReportDetail';
 import ReportForm from './pages/ReportForm';
 import CommunityDetail from './pages/CommunityDetail';
-import NoticeBoard from './pages/NoticeBoard';
 import CaregiverList from './pages/CaregiverList';
 import HireRegistration from './pages/HireRegistration';
 import HireDetail from './pages/HireDetail';
@@ -96,16 +94,14 @@ function AppRoutes() {
           <Route path="/guardian/careGiverSupportBorad/:hiringNo" element={<CareGiverSupportBoard />} />
           <Route path="/guardian/jobopening-management" element={<JobOpeningManagement />} />
           {/* 공용 */}
-          <Route path="/community/create" element={<CreateCommuBoardForm />} />
-          <Route path="/community/free" element={<CommunityBoard />} />
-          <Route path="/community/detail/:no" element={<CommunityDetail />} />
+          <Route path="/community/create/:role" element={<CreateCommuBoardForm />} />
+          <Route path="/community/detail/:boardNo" element={<CommunityDetail />} />
           <Route path="/community/guardian" element={<GuardianCommunity />} />
           <Route path="/community/caregiver" element={<CareGiverCommunity />} />
           <Route path="/community/update/:no" element={<UpdateCommuBoardForm />} />
           <Route path="/question/full" element={<QuestionFull />} />
           <Route path="/question/history" element={<QuestionHistory />} />
           <Route path="/question/create" element={<QuestionCreate />} />
-          <Route path="/community/notice" element={<NoticeBoard />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<SignUp />} />
           <Route path="/myprofile" element={<MyProfile />} />

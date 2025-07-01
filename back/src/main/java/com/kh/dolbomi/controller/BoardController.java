@@ -1,6 +1,7 @@
 package com.kh.dolbomi.controller;
 
 import com.kh.dolbomi.dto.BoardDto;
+import com.kh.dolbomi.dto.BoardDto.Response;
 import com.kh.dolbomi.dto.PageResponse;
 import com.kh.dolbomi.service.BoardService;
 import lombok.RequiredArgsConstructor;
@@ -9,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -23,8 +25,9 @@ public class BoardController {
 //        return boardService.getBoardList(status, role);
 //    }
 
+
     @GetMapping("/caregiver")
-    public ResponseEntity<PageResponse<BoardDto.Response>> getCaregiverList(Pageable pageable) {
+    public ResponseEntity<PageResponse<Response>> getCaregiverList(Pageable pageable) {
         return ResponseEntity.ok(new PageResponse<>(boardService.getCaregiverList(pageable)));
     }
 
@@ -33,8 +36,17 @@ public class BoardController {
         return ResponseEntity.ok(new PageResponse<>(boardService.getGuardianList(pageable)));
     }
 
+    @GetMapping("/detail")
+    public ResponseEntity<BoardDto.Response> getCommunityDetail(@RequestParam("board_no") Long boardNo) {
+        return ResponseEntity.ok(boardService.getCommunityDetail(boardNo));
+    }
+
     @GetMapping("/question")
-    public ResponseEntity<PageResponse<BoardDto.Response>> getQuestionList(Pageable pageable) {
+    public ResponseEntity<PageResponse<BoardDto.Response>> getQuestionList(
+            @RequestParam(value = "user_no", required = false) Long userNo, Pageable pageable) {
+        if (userNo != null) {
+            return ResponseEntity.ok(new PageResponse<>(boardService.getQuestionHistory(userNo, pageable)));
+        }
         return ResponseEntity.ok(new PageResponse<>(boardService.getQuestionList(pageable)));
     }
 }

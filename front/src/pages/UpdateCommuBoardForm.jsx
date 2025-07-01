@@ -3,9 +3,10 @@ import { toast } from 'react-toastify';
 import { commuService } from '../api/community';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
-import { Page, PageInfo } from './CommunityBoard';
 import { ClipLoader } from 'react-spinners';
 import { Icons } from './CommunityDetail';
+import { Page } from '../styles/common/Board';
+import { PageInfo } from './CareGiverCommunity';
 
 const UpdateCommuBoardForm = () => {
   const [error, setError] = useState(null);

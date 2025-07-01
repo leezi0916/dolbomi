@@ -6,13 +6,10 @@ import { ClipLoader } from 'react-spinners';
 import styled from 'styled-components';
 import useUserStore from '../store/userStore';
 import Paging from '../components/Paging';
-import { Page } from '../styles/common/Board';
+import { Btn, LinkBtn, Page } from '../styles/common/Board';
 
 const CareGiverCommunity = () => {
-  const userId = useUserStore((state) => state.user?.userId);
-
-  // const ROLE = 'C';
-  // const STATUS = 'Y';
+  const userNo = useUserStore((state) => state.user?.userNo);
 
   const [error, setError] = useState(null);
   const [communityList, setCommunityList] = useState([]);
@@ -70,14 +67,42 @@ const CareGiverCommunity = () => {
   if (!communityList || communityList.length === 0) {
     return (
       <Page>
-        <div style={{ width: '400px', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
-          <div style={{ marginBottom: '10px' }}>게시글이 없습니다.</div>
-          {userId && (
-            <Btn style={{ margin: 'auto', padding: '10px' }} to="/community/create">
-              글쓰기
-            </Btn>
-          )}
-        </div>
+        <PageInfo>
+          <BoardMenu>
+            <NowBoard> 간병 게시판</NowBoard>
+          </BoardMenu>
+          <BoardTop>
+            <Left>총 0건</Left>
+            <Right>
+              <Drop value={sortOption} onChange={(e) => setSortOption(e.target.value)}>
+                <option value="" disabled hidden>
+                  -- 작성일순/조회순 --
+                </option>
+                <option value="date">작성일</option>
+                <option value="views">조회순</option>
+              </Drop>
+              <Input type="text" />
+              <SearchBtn>검색</SearchBtn>
+            </Right>
+          </BoardTop>
+          <BoardItemTop>
+            <div>No</div>
+            <div style={{ flex: '3' }}>제목</div>
+            <div>작성자</div>
+            <div style={{ flex: '2' }}>작성 일자</div>
+            <div>조회수</div>
+          </BoardItemTop>
+          <NullBox>
+            <div style={{ marginBottom: '10px' }}>게시글이 없습니다.</div>
+            {userNo && (
+              <LinkBtn style={{ margin: 'auto' }} to="/community/create/C">
+                글쓰기
+              </LinkBtn>
+            )}
+          </NullBox>
+          <BorderDiv></BorderDiv>
+          <Paging totalPage={totalPage} currentPage={currentPage} chagneCurrentPage={chagneCurrentPage} />
+        </PageInfo>
       </Page>
     );
   }
@@ -99,7 +124,7 @@ const CareGiverCommunity = () => {
             </Drop>
             <Input type="text" />
             <SearchBtn>검색</SearchBtn>
-            {userId && <Btn to="/community/create">글쓰기</Btn>}
+            {userNo && <LinkBtn to="/community/create/C">글쓰기</LinkBtn>}
           </Right>
         </BoardTop>
         <BoardItemTop>
@@ -144,14 +169,14 @@ export const NowBoard = styled.div`
   color: ${({ theme }) => theme.colors.primary};
   font-weight: ${({ theme }) => theme.fontWeights.bold};
 `;
-const BoardTop = styled.div`
+export const BoardTop = styled.div`
   width: 100%;
   height: 42px;
   display: flex;
   padding: 5px 0;
   border-bottom: 1px solid ${({ theme }) => theme.colors.gray[3]};
 `;
-const Drop = styled.select`
+export const Drop = styled.select`
   min-width: 20%;
   border: 1px solid ${({ theme }) => theme.colors.gray[5]};
   border-radius: 4px;
@@ -162,27 +187,20 @@ export const Input = styled.input`
   border-radius: 4px;
   padding: 2px 4px;
 `;
-const Btn = styled(Link)`
-  align-content: center;
-  width: 80px;
-  background-color: ${({ theme }) => theme.colors.primary};
-  color: ${({ theme }) => theme.colors.white};
-  border-radius: 4px;
-`;
-const SearchBtn = styled.button`
+export const SearchBtn = styled.button`
   align-content: center;
   width: 50px;
   background-color: ${({ theme }) => theme.colors.gray[3]};
   color: ${({ theme }) => theme.colors.white};
-  border-radius: 4px;
+  border-radius: 6px;
   padding: 0;
 `;
 
-const Left = styled.div`
+export const Left = styled.div`
   align-self: center;
   flex: 1;
 `;
-const Right = styled.div`
+export const Right = styled.div`
   display: flex;
   justify-content: flex-end;
   flex: 7;
