@@ -48,6 +48,7 @@ function ResumeDetail() {
         const data = await jobSeekingService.getResume(Number(resumeNo));
 
         setResumeData(data);
+        console.log(data);
       } catch (error) {
         console.log(error);
       }

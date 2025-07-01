@@ -38,7 +38,7 @@ const [activeTab, setActiveTab] = useState('matching');
     const getList = async () => {
       try {
         const careGiverList = await matchingService.getMatchginCargiver(patno, 'Y');
-
+        console.log(careGiverList);
         careGiverList.length === 0 ? setCareGiverList([]) : setCareGiverList(careGiverList);
       } catch (err) {
         console.error(err);
