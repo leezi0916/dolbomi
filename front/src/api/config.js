@@ -93,6 +93,7 @@ export const API_ENDPOINTS = {
   MATCHING: {
     BASE: '/matching/v1',
     LIST: (patNo, status) => `/matching/v1?pat_no=${patNo}&status=${status}`,
-    ENDLIST: (status) => `/matching/v1?status=${status}`,
+    ENDLIST: (patNo, status) => `/matching/v1/matched?pat_no=${patNo}&status=${status}`,
+    PATLIST: (caregiverNo, status) => `/matching/v1/caregiver?caregiver_no=${caregiverNo}&status=${status}`,
   },
 };

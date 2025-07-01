@@ -7,6 +7,7 @@ import { toast } from 'react-toastify';
 import { Link, useParams } from 'react-router-dom';
 import { ButtonText, SubmitButton } from '../styles/common/Button';
 import { patientService } from '../api/patient';
+import useUserStatusStore from '../store/userStatusStore';
 
 const ReportMain = () => {
   const { patNo } = useParams(); // URL의 :patNo 값 가져오기
@@ -15,6 +16,7 @@ const ReportMain = () => {
   const [dateFilter, setDateFilter] = useState(''); // 날짜 필터
   const [authorFilter, setAuthorFilter] = useState(''); // 작성자 필터
   const [reportList, setReportList] = useState([]); // 필터링 후 일지목록
+  const { userStatus } = useUserStatusStore();
   const [error, setError] = useState(null);
 
   // 일지목록에서 가져온, 드롭다운박스에 넣을 날짜들과 작성자들
@@ -117,11 +119,13 @@ const ReportMain = () => {
                   <ButtonText>목록으로</ButtonText>
                 </SubmitButton>
               </Link>
-              <Link to={`/caregiver/reportform/${patNo}`} state={pat.patName}>
-                <SubmitButton>
-                  <ButtonText>글쓰기</ButtonText>
-                </SubmitButton>
-              </Link>
+              {userStatus || (
+                <Link to={`/caregiver/reportform/${patNo}`} state={pat.patName}>
+                  <SubmitButton>
+                    <ButtonText>글쓰기</ButtonText>
+                  </SubmitButton>
+                </Link>
+              )}
             </Buttons>
           </Rights>
         </BoardTop>

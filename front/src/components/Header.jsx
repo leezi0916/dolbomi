@@ -28,6 +28,7 @@ const Header = () => {
     localStorage.removeItem('status-storage'); // persist 저장소 삭제
 
     alert('로그아웃 되었습니다.');
+    setUserStatus(true);
     navigate('/'); // 홈으로 이동
     setIsMenuOpen(false);
   };
