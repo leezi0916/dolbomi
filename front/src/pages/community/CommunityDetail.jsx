@@ -1,14 +1,24 @@
 import { useEffect, useState } from 'react';
+import useUserStore from '../../store/userStore';
 import { Link, useParams } from 'react-router-dom';
+import { commuService } from '../../api/community';
 import { toast } from 'react-toastify';
-import { commuService } from '../api/community';
 import { ClipLoader } from 'react-spinners';
+import { Page } from '../../styles/common/Board';
+import { PageInfo } from './style/CommunityList.styles';
+import theme from '../../styles/theme';
 import styled from 'styled-components';
-import theme from '../styles/theme';
-import useUserStore from '../store/userStore';
-import { FileBox, FileTitle } from './CreateCommuBoardForm';
-import { Page } from '../styles/common/Board';
-import { PageInfo } from './CareGiverCommunity';
+import {
+  BodyTop,
+  FileBox,
+  FileTitle,
+  Icons,
+  InputFile,
+  Left,
+  PageBody,
+  PageTitle,
+  PageTop,
+} from './style/Community.styles';
 
 const CommunityDetail = () => {
   const userNo = useUserStore((state) => state.user?.userNo);
@@ -79,7 +89,7 @@ const CommunityDetail = () => {
               <div style={{ paddingRight: '10px' }}>{communityDetail?.count}</div>
               <Icons src="/src/assets/icons/icon_작성일자.png" alt="" />
               <div style={{ paddingRight: '10px' }}>{communityDetail?.createDate}</div>
-              {communityDetail?.userNo === userNo ? (
+              {communityDetail.userNo === userNo ? (
                 <MenuBox>
                   <img src="/src/assets/icons/icon_설정메뉴.png" alt="" />
                   <ul>
@@ -94,10 +104,9 @@ const CommunityDetail = () => {
                   </ul>
                 </MenuBox>
               ) : null}
-              {/* 수정삭제 메뉴아이콘 로그인 한 사람만 뜨게 하기/원래있던 수정하기 버튼 삭제 */}
             </Right>
           </BodyTop>
-          <BodyText>{communityDetail?.boardContent}</BodyText>
+          <BodyText>{communityDetail.boardContent}</BodyText>
           {communityDetail.files && communityDetail.files.length > 0 && (
             <FileBox>
               <FileTitle>
@@ -171,52 +180,31 @@ const CommunityDetail = () => {
     </Page>
   );
 };
-
-export const PageTop = styled.div`
-  width: 100%;
-  display: flex;
-  padding: 0 10px 10px;
-`;
-export const Left = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  flex-grow: 1;
-`;
-
-export const PageTitle = styled(Left)`
-  font-size: ${({ theme }) => theme.fontSizes.lg};
-  font-weight: ${({ theme }) => theme.fontWeights.bold};
-`;
-
 const RightBtn = styled.button`
   width: 100px;
   border: 1px solid ${({ theme }) => theme.colors.gray[4]};
   border-radius: 6px;
 `;
 
-const PageBody = styled.div`
-  width: 100%;
-  flex-direction: column;
-  border: 1px solid ${({ theme }) => theme.colors.gray[4]};
-  border-radius: 4px;
-  padding: 12px;
-  margin-bottom: 10px;
+const ImgBox = styled.div`
+  width: calc(100% / 4);
+  aspect-ratio: 4 / 3;
+  padding: 0 10px 10px 0px;
+  position: relative;
+  display: inline-block;
+`;
+const Right = styled.div`
+  display: flex;
 `;
 
-export const BodyTop = styled.div`
+const BodyText = styled.div`
   width: 100%;
+  min-height: 200px;
   display: flex;
+  justify-content: flex-start;
+  border-top: 1px solid ${({ theme }) => theme.colors.gray[4]};
   padding: 10px;
 `;
-
-export const Icons = styled.img`
-  width: 20px;
-  height: 20px;
-  align-self: center;
-  margin-right: 4px;
-`;
-
 const MenuBox = styled.div`
   display: flex;
   justify-content: flex-end;
@@ -256,32 +244,6 @@ const LinkLi = styled(Link)`
     color: ${({ theme }) => theme.colors.primary};
   }
 `;
-
-const Right = styled.div`
-  display: flex;
-`;
-const BodyText = styled.div`
-  width: 100%;
-  min-height: 200px;
-  display: flex;
-  justify-content: flex-start;
-  border-top: 1px solid ${({ theme }) => theme.colors.gray[4]};
-  padding: 10px;
-`;
-const InputFile = styled.div`
-  width: 100%;
-  display: flex;
-  flex-wrap: wrap;
-  padding: 0 10px;
-`;
-const ImgBox = styled.div`
-  width: calc(100% / 4);
-  aspect-ratio: 4 / 3;
-  padding: 0 10px 10px 0px;
-  position: relative;
-  display: inline-block;
-`;
-
 const CommentBox = styled.div`
   display: flex;
   width: 100%;
