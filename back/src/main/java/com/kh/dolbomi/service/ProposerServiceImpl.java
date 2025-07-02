@@ -3,6 +3,7 @@ package com.kh.dolbomi.service;
 
 import com.kh.dolbomi.domain.Hiring;
 import com.kh.dolbomi.domain.Matching;
+import com.kh.dolbomi.domain.Notification;
 import com.kh.dolbomi.domain.Patient;
 import com.kh.dolbomi.domain.Proposer;
 import com.kh.dolbomi.domain.Resume;
@@ -11,6 +12,7 @@ import com.kh.dolbomi.dto.ProposerDto;
 import com.kh.dolbomi.enums.StatusEnum;
 import com.kh.dolbomi.repository.HiringRepository;
 import com.kh.dolbomi.repository.MatchingRepositoryV2;
+import com.kh.dolbomi.repository.NotificationRepositoryV2;
 import com.kh.dolbomi.repository.ProposerRepository;
 import com.kh.dolbomi.repository.ProposerRepositoryV2;
 import com.kh.dolbomi.repository.ResumeRepositoryV2;
@@ -37,6 +39,7 @@ public class ProposerServiceImpl implements ProposerService {
     private final ResumeRepositoryV2 resumeRepositoryV2;
     private final UserRepositoryV2 userRepositoryV2;
     private final MatchingRepositoryV2 matchingRepositoryV2;
+    private final NotificationRepositoryV2 notificationRepositoryV2;
 
     @Transactional(readOnly = true)
     @Override
@@ -53,6 +56,7 @@ public class ProposerServiceImpl implements ProposerService {
                 .build();
     }
 
+    //신청 하기
     @Override
     public Long createProposer(ProposerDto.Create createProposerDto) {
 
@@ -65,6 +69,21 @@ public class ProposerServiceImpl implements ProposerService {
 
         Proposer proposer = createProposerDto.toEntity(hiring, resume, caregiver);
         proposerRepositoryV2.save(proposer);
+
+        // 알림 생성
+        User recipient = hiring.getUser();  // 보호자
+        User sender = caregiver;            // 간병인
+        String notificationMessage = caregiver.getUserName() + "님이 \"" + hiring.getHiringTitle() + "\" 구인글에 신청했습니다.";
+        String notificationLinkUrl = "/hireDetail/" + hiring.getHiringNo(); // 프론트 링크
+
+        Notification notification = Notification.builder()
+                .recipient(recipient)
+                .sender(sender)
+                .notificationMessage(notificationMessage)
+                .notificationLinkUrl(notificationLinkUrl)
+                .build();
+
+        notificationRepositoryV2.save(notification);
 
         return proposer.getProposerNo();
     }
@@ -118,6 +137,21 @@ public class ProposerServiceImpl implements ProposerService {
             // 변경된 hiring 저장
             hiringRepository.save(hiring);
         }
+
+        // 5. 매칭 수락 알림 생성
+        User recipient = caregiver;  // 알림 받을 사람은 간병인
+        User sender = hiring.getUser();  // 알림 보내는 사람은 보호자 (채용자)
+        String notificationMessage = sender.getUserName() + "님의 돌봄대상자와 매칭이 시작되었습니다.";
+        String notificationLinkUrl = "/caregiver/matchpage"; // 매칭 페이지 링크
+
+        Notification notification = Notification.builder()
+                .recipient(recipient)
+                .sender(sender)
+                .notificationMessage(notificationMessage)
+                .notificationLinkUrl(notificationLinkUrl)
+                .build();
+
+        notificationRepositoryV2.save(notification);
     }
 
     @Override

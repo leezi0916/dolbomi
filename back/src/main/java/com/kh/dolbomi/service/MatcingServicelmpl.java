@@ -48,15 +48,7 @@ public class MatcingServicelmpl implements MatchingService {
     @Transactional(readOnly = true)
     public Page<MatchingDto.Response> getMatchedListByStatus(Long patNo, Status status, Pageable pageable) {
         return matchingRepositoryV2.findByPatientPatNoAndStatus(patNo, status, pageable)
-                .map(matching -> MatchingDto.Response.builder()
-                        .mat_no(matching.getMatNo())
-                        .caregiver_no(matching.getCaregiver().getUserNo())
-                        .user_name(matching.getCaregiver().getUserName())
-                        .age(matching.getCaregiver().getAge())
-                        .gender(matching.getCaregiver().getGender())
-                        .start_date(matching.getStartDate())
-                        .status(matching.getStatus())
-                        .build());
+                .map(MatchingDto.Response::toDto);
     }
 
 
