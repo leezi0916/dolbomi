@@ -21,7 +21,6 @@ const HireList = () => {
   const [size] = useState(10);
   const [totalPages, setTotalPages] = useState(0);
   const [visible, setVisible] = useState(false);
-  const [region, setRegion] = useState([]);
   const [data, setData] = useState({
     region: '',
     endDate: '',
@@ -31,8 +30,11 @@ const HireList = () => {
     patGender: '',
     keyword: '',
   });
-  const [cd, setCd] = useState(null);
-  const [selected, setSelected] = useState('');
+  const [region, setRegion] = useState([]); // 지역
+  const [sgg, setSgg] = useState([]); // 시,군,구
+  const [selectedCd, setSelectedCd] = useState(null);
+  const [selectedRegion, setSelectedRegion] = useState('');
+  const [selectedSgg, setSelectedSgg] = useState('');
 
   // 1. 컴포넌트가 처음 마운트될 때 전체 리스트를 불러옵니다.
   useEffect(() => {
@@ -151,12 +153,32 @@ const HireList = () => {
   const getRegion = async () => {
     try {
       setError(null);
-      const res = await addressService.getRegionList(cd);
+      const res = await addressService.getRegionList(selectedCd);
       console.log('HireList에 온 값:', res);
       setRegion(res);
       console.log(region);
     } catch (err) {
       setError('행정구역 로드 실패.\n' + err);
+    }
+  };
+
+  const handleRegionChange = async (region) => {
+    setSelectedCd(region.cd);
+    setSelectedRegion(region);
+
+    try {
+      const sgg = await addressService.getRegionList(region.cd);
+      setSgg(sgg);
+    } catch (error) {
+      console.error('시군구 조회 실패:', error);
+    }
+  };
+
+  const handleSggChange = async (sgg) => {
+    try {
+      setSgg(sgg);
+    } catch (error) {
+      console.error('시군구 조회 실패:', error);
     }
   };
 
@@ -175,14 +197,34 @@ const HireList = () => {
                 type="radio"
                 name="region"
                 value={region.cd}
-                checked={selected?.cd === region.cd}
-                onChange={() => setSelected(region)}
+                checked={selectedCd === region.cd}
+                onChange={() => handleRegionChange(region)}
               />
               {region.addrName}
             </RegionLabel>
           ))}
         </RegionDiv>
-        <p>선택된 지역: {selected.fullName}</p>
+        <p>선택된 지역: {selectedRegion.addrName}</p>
+        <br />
+        <RegionDiv>
+          {sgg.map((sgg, index) => (
+            <RegionLabel key={index}>
+              <input
+                type="radio"
+                name="sgg"
+                value={sgg}
+                // checked={}
+                onChange={() => handleSggChange(sgg)}
+              />
+              {sgg.addrName}
+            </RegionLabel>
+          ))}
+        </RegionDiv>
+        <p>선택된 시군구: {selectedRegion.addrName}</p>
+        <br />
+        <p>전체 주소: {sgg.fullAddr}</p>
+        <br />
+        {/* 테스트끝 */}
 
         <SearchContainer2>
           <Search>
