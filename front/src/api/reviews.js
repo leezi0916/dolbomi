@@ -1,7 +1,7 @@
 import { useStore } from 'zustand';
 import api from './axios';
 import { API_ENDPOINTS } from './config';
-import { snakeToCamel } from '../utils/formatData';
+import { camelToSnake, snakeToCamel } from '../utils/formatData';
 
 export const reviewService = {
   //리뷰전체조회
@@ -50,17 +50,18 @@ export const reviewService = {
   },
 
   //리뷰작성
-  saveReview: async (rating, inputValue) => {
+  saveReview: async ({ matNo, userNo, rating, inputValue }) => {
     try {
-      const { user } = useStore.useUserStore();
-      const { data } = await api.post(API_ENDPOINTS.REVIEWS.BASE, {
-        reviewWriterNo: user,
+      const reviewData = {
+        matNo,
+        reviewWriterNo: userNo,
         reviewContent: inputValue,
-        score: rating,
-        createDate: new Date().toISOString(),
-        updateDate: new Date().toISOString(),
-        status: 'Y',
-      });
+        score: Number(rating),
+      };
+      console.log('전송 전 reviewData:', reviewData);
+      const snakeCaseData = camelToSnake(reviewData);
+      console.log('보내는 리뷰 데이터:', snakeCaseData);
+      const { data } = await api.post(API_ENDPOINTS.REVIEWS.BASE, snakeCaseData);
 
       return data;
     } catch (error) {

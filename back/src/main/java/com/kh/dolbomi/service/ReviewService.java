@@ -1,5 +1,6 @@
 package com.kh.dolbomi.service;
 
+import com.kh.dolbomi.dto.ReviewDto;
 import com.kh.dolbomi.dto.ReviewDto.Response;
 import java.util.List;
 import org.springframework.data.domain.Page;
@@ -15,4 +16,7 @@ public interface ReviewService {
 
     // 내가 받은 리뷰 조회
     Page<Response> getReceivedReviewList(Pageable pageable, Long userNo);
+
+    // 리뷰 작성
+    Long createReview(ReviewDto.Create reviewDto);
 }
