@@ -79,7 +79,6 @@ public class HiringServiceImpl implements HiringService {
     @Override
     public Page<HiringDto.Response> getMyHiringLists(Long userNo, Pageable pageable) {
         Page<Hiring> hirings = hiringRepository.getMyHiringLists(StatusEnum.Status.Y, pageable, userNo);
-        System.out.println(hirings);
         return hirings.map(HiringDto.Response::myHiringDto);
     }
 

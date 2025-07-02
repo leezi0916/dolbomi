@@ -13,6 +13,8 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -44,5 +46,12 @@ public class ReviewController {
         return ResponseEntity.ok(result);
     }
 
+    //리뷰 작성하기
+    @PostMapping
+    public ResponseEntity<Long> createReview(@RequestBody ReviewDto.Create reviewDto) {
+        System.out.println("요청 받은 리뷰 내용: " + reviewDto);
+        Long reviewNo = reviewService.createReview(reviewDto);
+        return ResponseEntity.ok(reviewNo);
+    }
 
 }

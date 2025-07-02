@@ -4,38 +4,36 @@ import styled from 'styled-components';
 
 // import { toast } from 'react-toastify';
 import profileImage from '../assets/images/pat.png'; // 프로필 이미지 경로
-
 import { media } from '../styles/MediaQueries';
-
 import SearchBar from '../components/SearchBar';
 import { IoCheckmarkOutline } from 'react-icons/io5';
 import { ClipLoader } from 'react-spinners';
 import { Link } from 'react-router-dom';
 import { hiringService } from '../api/hiring';
 import Paging from '../components/Paging';
-import { jobSeekingService } from '../api/jobSeeking';
-import useUserStore from '../store/userStore';
 
 const HireList = () => {
   const [hireLists, setHireLists] = useState([]);
   const [loading, setLoading] = useState(false); // 초기 false
   const [error, setError] = useState(null);
-  const [patAddress, setPatAddress] = useState('');
-  const [startDate, setStartDate] = useState('');
-  const [endDate, setEndDate] = useState('');
-  const [patGender, setPatGender] = useState('');
-  const [account, setAccount] = useState('');
-  const [keyword, setSearchKeyword] = useState('');
-  const [careStatus, setCareStatus] = useState(false);
   const [page, setPage] = useState(1); // MUI Pagination은 1부터 시작
   const [size] = useState(10);
   const [totalPages, setTotalPages] = useState(0);
-  const [visible, setVisible] = useState(true);
+  const [visible, setVisible] = useState(false);
+  const [data, setData] = useState({
+    region: '',
+    endDate: '',
+    account: '',
+    home: false,
+    startDate: '',
+    patGender: '',
+    keyword: '',
+  });
 
   // 1. 컴포넌트가 처음 마운트될 때 전체 리스트를 불러옵니다.
   useEffect(() => {
-    loadHireLists(page - 1, size); // API에선 0부터 시작일 가능성 있어 -1 처리
-  }, [page]);
+    loadHireLists(page - 1, size, data); // API에선 0부터 시작일 가능성 있어 -1 처리
+  }, [page, size, data]);
 
   // 이름 첫글자 O 처리하기
   const maskName = (name) => {
@@ -48,11 +46,12 @@ const HireList = () => {
     return name;
   };
 
-  const loadHireLists = async (pageNumber, pageSize) => {
+  const loadHireLists = async (pageNumber, pageSize, searchData) => {
     try {
+      console.log('JSON 데이터:', data);
       setLoading(true);
       setError(null);
-      const res = await hiringService.getHiringList({ page: pageNumber, size: pageSize });
+      const res = await hiringService.getHiringList({ page: pageNumber, size: pageSize, searchData });
       console.log('API Response:', res); // 여기서 totalPages, content 등 확인
       if (res.totalElements === 0) {
         setHireLists([]);
@@ -67,20 +66,88 @@ const HireList = () => {
       setLoading(false);
     }
   };
+
   // SearchBar에서 검색 버튼을 눌렀을 때 호출되는 함수
-  const handleSearchSubmit = (keyword) => {
+  const handleSearchSubmit = async (keyword) => {
     // SearchBar로부터 받은 키워드를 searchKeyword 상태에 저장합니다.
-    setSearchKeyword(keyword);
-    // 이 상태 변경은 위에 있는 useEffect를 트리거하여 자동으로 검색을 실행시킬 것입니다.
+    const updatedData = { ...data, keyword }; // 최신 상태 생성
+    setData(updatedData); // 상태 업데이트
+    setPage(1);
+    await loadHireLists(updatedData);
   };
 
-  const handleCheckChange = (e) => {
-    setCareStatus(e.target.checked);
+  const handleCheckChange = (home) => {
+    setData({ ...data, home: !home });
   };
 
+  //상세검색 눌렀는가? 창 오픈
   const handleDetail = () => {
     setVisible((prev) => !prev);
   };
+
+  //상세검색
+  const dataInfo = (e) => {
+    const { name, value, checked } = e.target;
+    const today = new Date(); //오늘날짜
+    today.setHours(0, 0, 0, 0); //시간초기화
+
+    //시작일유효성
+    if (name === 'startDate') {
+      const newStartDate = new Date(value); // 새로 입력된 시작 날짜
+
+      // 새로 입력된 시작일이 오늘 이전인지 확인
+      if (newStartDate.getTime() < today.getTime()) {
+        alert('시작일은 오늘 이후로 설정해야 합니다.');
+        return false;
+      }
+
+      if (data.endDate) {
+        const currentEndDate = new Date(data.endDate);
+        if (newStartDate.getTime() > currentEndDate.getTime()) {
+          alert('시작일은 종료일보다 이후일 수 없습니다.');
+          return false;
+        }
+      }
+    }
+
+    //종료일 유효성
+    if (name === 'endDate') {
+      const newEndDate = new Date(value); // 새로 입력된 종료일
+
+      // 종료일이 오늘 이전인지 확인
+      if (newEndDate.getTime() < today.getTime()) {
+        alert('종료일은 오늘 이후로 설정해야 합니다.');
+        return false;
+      }
+
+      // 종료일이 시작일보다 이전인지 확인
+      if (data.startDate) {
+        const currentStartDate = new Date(data.startDate);
+        if (newEndDate.getTime() < currentStartDate.getTime()) {
+          alert('종료일은 시작일보다 이전일 수 없습니다.');
+          return false;
+        }
+      }
+    }
+
+    if (name === 'home') {
+      setData((data) => ({
+        ...data,
+        [name]: checked,
+      }));
+      return;
+    }
+
+    setData((data) => ({
+      ...data,
+      [name]: value,
+    }));
+  };
+
+  // const handleSubmit = async (data) => {
+  //   console.log('JSON 데이터:', data);
+  // };
+
   return (
     <>
       {/* test */}
@@ -92,9 +159,9 @@ const HireList = () => {
             <DetailBtn onClick={handleDetail}>상세검색</DetailBtn>
           </Search>
           {visible && (
-            <Detail visible={visible}>
+            <Detail $visible={visible}>
               <Item>
-                <SelectBox value={patAddress} onChange={(e) => setPatAddress(e.target.value)}>
+                <SelectBox name="region" value={data.region} onChange={dataInfo}>
                   <option value="">지역</option>
                   <option value="서울">서울</option>
                   <option value="부산">부산</option>
@@ -103,16 +170,19 @@ const HireList = () => {
                 </SelectBox>
               </Item>
               <DateBox>
-                <DateInput type="date" value={startDate} onChange={(e) => setStartDate(e.target.value)} />
+                <DateInput name="startDate" type="date" value={data.startDate} onChange={dataInfo} />
                 <DateSeparator>-</DateSeparator>
-                <DateInput type="date" value={endDate} onChange={(e) => setEndDate(e.target.value)} />
+                <DateInput name="endDate" type="date" value={data.endDate} onChange={dataInfo} />
               </DateBox>
               <Item>
                 <ACCOUNT
+                  name="account"
                   type="number"
-                  placeholder="시급 ~ 이상"
-                  value={account}
-                  onChange={(e) => setAccount(e.target.value)}
+                  min="0"
+                  step="100"
+                  placeholder="시급"
+                  value={data.account}
+                  onChange={dataInfo}
                 />
               </Item>
 
@@ -123,9 +193,9 @@ const HireList = () => {
                     type="radio"
                     id="male"
                     name="patGender"
-                    value="male"
-                    checked={patGender === 'M'}
-                    onChange={() => setPatGender('M')}
+                    value="M"
+                    checked={data.patGender === 'M'}
+                    onChange={dataInfo}
                   />
                   <Label htmlFor="male">남성</Label>
                 </RadioWrapper>
@@ -136,8 +206,8 @@ const HireList = () => {
                     id="female"
                     name="patGender"
                     value="F"
-                    checked={patGender === 'F'}
-                    onChange={() => setPatGender('F')}
+                    checked={data.patGender === 'F'}
+                    onChange={dataInfo}
                   />
                   <Label htmlFor="F">여성</Label>
                 </RadioWrapper>
@@ -145,21 +215,27 @@ const HireList = () => {
                   <input
                     type="radio"
                     id="anyGender"
-                    name="gender"
+                    name="patGender"
                     value="" // 성별 무관을 위해 빈 문자열로 설정
-                    checked={patGender === ''}
-                    onChange={() => setPatGender('')}
+                    checked={data.patGender === ''}
+                    onChange={dataInfo}
                   />
                   <Label2 htmlFor="anyGender">성별 무관</Label2>
                 </RadioWrapper>
               </RadioGroup2>
               <Item>
                 <AccommodationCheckboxLabel>
-                  <HiddenCheckbox type="checkbox" checked={careStatus} onChange={handleCheckChange} />
-                  <StyledCheckbox checked={careStatus}>
+                  <HiddenCheckbox
+                    name="home"
+                    type="checkbox"
+                    value={data.home}
+                    checked={data.home}
+                    onChange={dataInfo}
+                  />
+                  <StyledCheckbox checked={data.home}>
                     {handleCheckChange && <IoCheckmarkOutline size="20px" color="white" />}
                   </StyledCheckbox>
-                  숙식 제공
+                  상주 가능 여부
                 </AccommodationCheckboxLabel>
               </Item>
             </Detail>
@@ -232,12 +308,12 @@ const Title = styled.h1`
 
 const Detail = styled.div`
   margin-top: 30px;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: 160px repeat(2, 1fr);
   grid-auto-rows: min-content;
   row-gap: 20px;
   user-select: none;
 
-  display: ${({ visible }) => (visible ? 'grid' : 'none')};
+  display: ${({ $visible }) => ($visible ? 'grid' : 'none')};
 `;
 
 const SearchContainer2 = styled(Container)`
@@ -492,7 +568,7 @@ const CareContent = styled.span`
 const Item = styled.div`
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: start;
 `;
 
 const Search = styled.div`

@@ -1,9 +1,16 @@
 import React, { useRef, useState } from 'react';
-import { Page, PageInfo } from './CommunityBoard';
+import { useParams } from 'react-router-dom';
+import useUserStore from '../../store/userStore';
+import theme from '../../styles/theme';
 import styled from 'styled-components';
-import { Icons } from './CommunityDetail';
+import { Page } from '../../styles/common/Board';
+import { PageInfo } from './style/CommunityList.styles';
+import { BodyTop, FileBox, FileTitle, Icons, Left, PageBody, PageTitle, PageTop } from './style/Community.styles';
 
 const CreateCommuBoardForm = () => {
+  const userName = useUserStore((state) => state.user?.userName);
+  const { role } = useParams();
+
   //
   //이미지 관련
   const [images, setImages] = useState([]);
@@ -36,12 +43,14 @@ const CreateCommuBoardForm = () => {
     <Page>
       <PageInfo>
         <PageTop>
-          <PageTitle>소통 게시판 등록</PageTitle>
-          <RightBtn>뒤로가기</RightBtn>
+          {role === 'C' ? <PageTitle>간병 게시판 등록</PageTitle> : <PageTitle>보호자 게시판 등록</PageTitle>}
         </PageTop>
         <PageBody>
           <TitleInput type="text" placeholder="제목을 입력해 주세요" />
-          <UserName>유저이름</UserName>
+          <Top>
+            <Icons src="/src/assets/icons/icon_작성자.png" alt="" />
+            <Left style={{ fontSize: theme.fontSizes.sm }}>{userName}</Left>
+          </Top>
           <TextInput type="text" placeholder="내용을 입력해 주세요" />
           <FileBox>
             <FileTitle>
@@ -93,43 +102,14 @@ const CreateCommuBoardForm = () => {
     </Page>
   );
 };
-const PageTop = styled.div`
-  width: 100%;
-  display: flex;
-  padding: 0 10px 6px;
+
+const Top = styled(BodyTop)`
+  border-bottom: 1px solid ${({ theme }) => theme.colors.gray[4]};
 `;
-export const Left = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  flex-grow: 1;
-`;
-const PageTitle = styled(Left)`
-  font-size: ${({ theme }) => theme.fontSizes.xl};
-  font-weight: ${({ theme }) => theme.fontWeights.bold};
-`;
-const RightBtn = styled.button`
-  width: 20%;
-  border: 1px solid ${({ theme }) => theme.colors.gray[4]};
-  border-radius: 4px;
-`;
-const PageBody = styled.div`
-  width: 100%;
-  flex-direction: column;
-  border: 1px solid ${({ theme }) => theme.colors.gray[4]};
-  border-radius: 4px;
-  padding: 12px;
-  margin-bottom: 10px;
-`;
+
 const TitleInput = styled.input`
   width: 100%;
   font-size: ${({ theme }) => theme.fontSizes.lg};
-  padding: 0 10px 10px;
-`;
-const UserName = styled(Left)`
-  width: 100%;
-  font-size: ${({ theme }) => theme.fontSizes.sm};
-  border-bottom: 1px solid ${({ theme }) => theme.colors.gray[4]};
   padding: 0 10px 10px;
 `;
 const TextInput = styled.textarea`
@@ -138,20 +118,7 @@ const TextInput = styled.textarea`
   resize: none;
   margin: 10px;
 `;
-export const FileBox = styled.div`
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  background-color: ${({ theme }) => theme.colors.gray[5]};
-  border-radius: 4px;
-  padding: 0 10px;
-  margin-bottom: 10px;
-`;
-export const FileTitle = styled(Left)`
-  font-size: ${({ theme }) => theme.fontSizes.base};
-  font-weight: ${({ theme }) => theme.fontWeights.bold};
-  padding: 10px;
-`;
+
 const InputFile = styled.div`
   width: 100%;
   display: flex;

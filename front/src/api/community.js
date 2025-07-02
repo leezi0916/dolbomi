@@ -50,6 +50,15 @@ export const commuService = {
       throw new Error('서버 통신 불량');
     }
   },
+  getQuestionHistory: async (userNo) => {
+    try {
+      const { data } = await api.get(API_ENDPOINTS.COMMUNITY.QUESTION_HISTORY(userNo));
+      return snakeToCamel(data);
+    } catch (error) {
+      console.log(`질문 상세(${userNo})를 가져오지 못함: `, error.response?.data?.message || '실패');
+      throw new Error('서버 통신 불량');
+    }
+  },
   getGuardian: async () => {
     try {
       const { data } = await api.get(API_ENDPOINTS.COMMUNITY.GUARDIAN);
@@ -82,14 +91,13 @@ export const commuService = {
     }
   },
 
-  getCommunityDetail: async (no) => {
+  getCommunityDetail: async (boardNo) => {
     try {
-      const { data } = await api.get(API_ENDPOINTS.COMMUNITY.DETAIL(no));
-      console.log('요청 URL:', API_ENDPOINTS.COMMUNITY.LIST(no));
-
-      return data;
+      const { data } = await api.get(API_ENDPOINTS.COMMUNITY.DETAIL(boardNo));
+      console.log('요청 URL:', API_ENDPOINTS.COMMUNITY.DETAIL(boardNo));
+      return snakeToCamel(data);
     } catch (error) {
-      console.error('프로필 조회 실패:', error.response?.data?.message || error.message);
+      console.error('게시글 조회 실패:', error.response?.data?.message || error.message);
       throw new Error('서버 통신 불량');
     }
   },

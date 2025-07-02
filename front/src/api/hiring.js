@@ -36,11 +36,12 @@ export const hiringService = {
   },
 
   //돌봄대상자 모집 리스트
-  getHiringList: async ({ page = 0, size = 10 } = {}) => {
+  getHiringList: async ({ page = 0, size = 10, searchData }) => {
     try {
       // 쿼리 파라미터를 URL에 붙임
       const { data } = await api.get(API_ENDPOINTS.HIRING.LIST, {
         params: { page, size },
+        searchData,
       });
       return snakeToCamel(data);
     } catch (error) {

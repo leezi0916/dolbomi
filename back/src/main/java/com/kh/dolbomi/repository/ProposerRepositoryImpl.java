@@ -6,6 +6,9 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import java.util.List;
 import java.util.Optional;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -76,5 +79,35 @@ public class ProposerRepositoryImpl implements ProposerRepository {
         return Optional.of(resultList.get(0));
     }
 
+    // 나의 지원현황 목록
+    @Override
+    public Page<Proposer> getMyProposerLists(Status status, Pageable pageable, Long userNo) {
+        String query = """
+                    SELECT p
+                    FROM Proposer p
+                    WHERE p.caregiver.userNo = :userNo
+                    AND p.hiring.status = :status
+                """;
+        List<Proposer> proposers = em.createQuery(query, Proposer.class)
+                .setParameter("status", status)
+                .setParameter("userNo", userNo)
+                .setFirstResult((int) pageable.getOffset()) // 어디서부터 가지고 올것인가 - OFFSET
+                .setMaxResults(pageable.getPageSize())  // 몇개를 가지고 올것인가 - LIMIT
+                .getResultList();
 
+        String countQuery = """
+                    SELECT count(p)
+                    FROM Proposer p
+                    WHERE p.caregiver.userNo = :userNo
+                    AND p.hiring.status = :status
+                """;
+        Long totalCount = em.createQuery(countQuery, Long.class)
+                .setParameter("status", status)
+                .setParameter("userNo", userNo)
+                .getSingleResult();
+
+        // Page<T> 인터페이스의 기본구현체를 통해서 paging한 정보를 한번에 전달할 수 있음
+        // new PageImpl<>(content,pageable,total);
+        return new PageImpl<Proposer>(proposers, pageable, totalCount);
+    }
 }
