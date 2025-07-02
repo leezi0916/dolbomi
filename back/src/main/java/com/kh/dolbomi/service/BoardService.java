@@ -2,12 +2,12 @@ package com.kh.dolbomi.service;
 
 import com.kh.dolbomi.dto.BoardDto;
 import com.kh.dolbomi.dto.BoardDto.Response;
+import java.io.IOException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 public interface BoardService {
-
-    //    List<BoardDto> getBoardList(String status, String role);
+    Long createBoard(BoardDto.Create boardDto) throws IOException;
 
     Page<BoardDto.Response> getGuardianList(Pageable pageable);
 

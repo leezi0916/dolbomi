@@ -2,6 +2,7 @@ package com.kh.dolbomi.dto;
 
 import com.kh.dolbomi.domain.Board;
 import com.kh.dolbomi.enums.StatusEnum;
+import jakarta.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
 import java.util.List;
 import lombok.AllArgsConstructor;
@@ -14,6 +15,8 @@ public class BoardDto {
     @Getter
     @AllArgsConstructor
     public static class Create {
+
+        @NotBlank(message = "제목은 필수입니다.")
         private String board_title;
         private String board_content;
         private Long user_no;
