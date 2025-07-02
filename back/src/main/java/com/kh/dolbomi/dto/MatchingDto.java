@@ -31,7 +31,7 @@ public class MatchingDto {
         private StatusEnum.Gender gender;
         private LocalDateTime start_date;
         private StatusEnum.Status status;
-
+        private Long review_no;
     }
 
     @Getter
@@ -45,6 +45,8 @@ public class MatchingDto {
         private StatusEnum.Gender pat_gender;
         private LocalDateTime start_date;
         private StatusEnum.Status status;
+        private Long review_no;
+
 
     }
 }

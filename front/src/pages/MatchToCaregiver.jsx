@@ -121,7 +121,7 @@ const MatchToCaregiver = () => {
                         <ProfileTextGray>
                           나이
                           <ProfileTextStrong>
-                            {care.userAge} 세({care.gender==="F"?"여":"남"})
+                            {care.age} 세({care.gender==="F"?"여":"남"})
                           </ProfileTextStrong>
                         </ProfileTextGray>
                       </CaregiverTextDiv>
@@ -129,7 +129,6 @@ const MatchToCaregiver = () => {
                         <CareLogButton onClick={() => navigate(`/caregiverProfile/${Number(care.caregiverNo)}`)}>
                           간병인 정보
                         </CareLogButton>
-                        <ReportButton>신고하기</ReportButton>
                       </CargiverButtonDiv>
                     </CargiverWrap>
                   </>
@@ -149,7 +148,7 @@ const MatchToCaregiver = () => {
                   <div>
                     <UserName>{care.userName} 님</UserName>
                     <UserAge>
-                      나이 {care.useAge}세({care.gender})
+                      나이 {care.age}세({care.gender})
                     </UserAge>
                     <ButtonRow>
                       <CareLogButton onClick={() => navigate(`/caregiverProfile/${Number(care.caregiverNo)}`)}>

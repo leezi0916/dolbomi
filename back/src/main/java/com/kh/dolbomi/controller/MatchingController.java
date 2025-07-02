@@ -36,6 +36,7 @@ public class MatchingController {
             @RequestParam("caregiver_no") Long caregiverNo,
             @RequestParam("status") Status matchingStatus
     ) {
+
         return ResponseEntity.ok(matchingService.getMatchingListCaregiver(caregiverNo, matchingStatus));
     }
 
@@ -44,6 +45,7 @@ public class MatchingController {
             @RequestParam("mat_no") Long matNo,
             @RequestParam("status") Status matchingStatus
     ) {
+
         return ResponseEntity.ok(matchingService.changeStatus(matNo, matchingStatus));
     }
 
