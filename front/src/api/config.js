@@ -99,4 +99,11 @@ export const API_ENDPOINTS = {
     PATLIST: (caregiverNo, status) => `/matching/v1/caregiver?caregiver_no=${caregiverNo}&status=${status}`,
     PAT_ENDLIST: (caregiverNo, status) => `/matching/v1/caregiver/matched?caregiver_no=${caregiverNo}&status=${status}`,
   },
+
+  API: {
+    BASE: '/api/address',
+    REGION: (cd) => {
+      return cd != null ? `/api/address/region?cd=${cd}` : `/api/address/region`;
+    },
+  },
 };
