@@ -1,12 +1,15 @@
 package com.kh.dolbomi.service;
 
 import com.kh.dolbomi.domain.Board;
+import com.kh.dolbomi.domain.Reply;
 import com.kh.dolbomi.domain.User;
 import com.kh.dolbomi.dto.BoardDto;
 import com.kh.dolbomi.dto.BoardDto.Response;
+import com.kh.dolbomi.dto.ReplyDto.Create;
 import com.kh.dolbomi.enums.StatusEnum;
 import com.kh.dolbomi.repository.BoardRepository;
 import com.kh.dolbomi.repository.BoardRepositoryV2;
+import com.kh.dolbomi.repository.ReplyRepositoryV2;
 import com.kh.dolbomi.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
 import java.io.IOException;
@@ -24,6 +27,7 @@ public class BoardServiceImpl implements BoardService {
     private final BoardRepositoryV2 boardRepositoryV2;
     private final BoardRepository boardRepository;
     private final UserRepository userRepository;
+    private final ReplyRepositoryV2 replyRepositoryV2;
 
 //    public void createBoard(BoardDto.Create dto) {
     // userNo로 유저 조회 (선택)
@@ -102,7 +106,22 @@ public class BoardServiceImpl implements BoardService {
         return boardRepository.findByBoardNo(boardNo)
                 .map(BoardDto.Response::toDto)
                 .orElseThrow(() -> new NoSuchElementException("해당 게시글이 존재하지 않습니다."));
-
-
     }
+
+    @Override
+    public Long createReply(Create replyCreate) {
+        User user = userRepository.findById(replyCreate.getUser_no())
+                .orElseThrow(() -> new EntityNotFoundException("회원을 찾을 수 없습니다."));
+
+        Board board = boardRepository.findByBoardNo(replyCreate.getBoard_no())
+                .orElseThrow(() -> new EntityNotFoundException("회원을 찾을 수 없습니다."));
+
+        Reply reply = replyCreate.toEntity();
+        reply.changeUser(user);
+        reply.changeBoard(board);
+
+        return replyRepositoryV2.save(reply).getReplyNo();
+    }
+
+
 }

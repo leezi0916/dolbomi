@@ -71,7 +71,7 @@ public class BoardDto {
                                     .toList()
                     )
                     .reply(
-                            board.getReply().stream()
+                            board.getReplyList().stream()
                                     .map(reply -> ReplyDto.Response.builder()
                                             .replyNo(reply.getReplyNo())
                                             .user_no(reply.getUser().getUserNo())

@@ -21,6 +21,7 @@ export const API_ENDPOINTS = {
     CAREGIVER: `/community/v1/caregiver`,
     GUARDIAN: `/community/v1/guardian`,
     DETAIL: (boardNo) => `/community/v1/detail?board_no=${boardNo}`, // 특정 게시글
+    REPLY: `/community/v1/reply`,
     QUESTION: `/community/v1/question`,
     QUESTION_HISTORY: (userNo) => `/community/v1/question?user_no=${userNo}`,
 

@@ -54,8 +54,7 @@ const CreateCommuBoardForm = () => {
       //   );
       //   await Promise.all(imagePromises);
       // }
-
-      alert('게시글이 등록되었습니다.');
+      toast.success('등록되었습니다');
       if (role === 'C') navigate('/community/caregiver');
       else navigate('/community/guardian');
     } catch (error) {
@@ -158,7 +157,9 @@ const CreateCommuBoardForm = () => {
               <button type="button" onClick={() => navigate(-1)}>
                 이전으로
               </button>
-              <button onClick={handleSubmit}>등록하기</button>
+              <button type="submit" onClick={handleSubmit}>
+                등록하기
+              </button>
             </BtnBox>
           </PageBody>
         </form>

@@ -3,6 +3,7 @@ package com.kh.dolbomi.controller;
 import com.kh.dolbomi.dto.BoardDto;
 import com.kh.dolbomi.dto.BoardDto.Response;
 import com.kh.dolbomi.dto.PageResponse;
+import com.kh.dolbomi.dto.ReplyDto;
 import com.kh.dolbomi.service.BoardService;
 import java.io.IOException;
 import lombok.RequiredArgsConstructor;
@@ -28,6 +29,12 @@ public class BoardController {
         return ResponseEntity.ok(boardService.createBoard(boardCreate));
     }
 
+    @PostMapping("/reply")
+    public ResponseEntity<Long> createReply(@RequestBody ReplyDto.Create replyCreate) throws IOException {
+        return ResponseEntity.ok(boardService.createReply(replyCreate));
+    }
+
+
     @GetMapping("/caregiver")
     public ResponseEntity<PageResponse<Response>> getCaregiverList(Pageable pageable) {
         return ResponseEntity.ok(new PageResponse<>(boardService.getCaregiverList(pageable)));
@@ -51,4 +58,6 @@ public class BoardController {
         }
         return ResponseEntity.ok(new PageResponse<>(boardService.getQuestionList(pageable)));
     }
+
+
 }
