@@ -36,7 +36,6 @@ function ResumeDetail() {
   const [currentPage, setCurrentPage] = useState(1);
 
   const { resumeNo, hiringNo } = useParams(); //hiringNo가 없을 수도 있음 (어떤 구인글에 이 이력서로 신청했는지)
-  console.log(resumeNo);
   const navigate = useNavigate();
   const [resumeData, setResumeData] = useState(null);
   const [isMatched, setIsMatched] = useState(false);
@@ -56,15 +55,13 @@ function ResumeDetail() {
     fetchResume();
   }, []);
 
-  /*작성자의 리뷰를 갖고오는 코드 */
+  /*작성자의  리뷰를 갖고오는 코드 */
   useEffect(() => {
     if (activeTab === 'review' && resumeData?.userNo) {
       const fetchReviews = async () => {
         try {
           const data = await reviewService.getReceivedReviews(currentPage, Number(user.userNo));
-          console.log(data);
           setReviews(data);
-          setCurrentPage(1); // 탭 전환 시 페이지 초기화
         } catch (error) {
           console.error('리뷰 로딩 실패:', error);
         }
@@ -210,7 +207,7 @@ function ResumeDetail() {
                 </RadioContainer>
                 <AccountGroup>
                   <InputGroup>
-                    <Label>희망 금액</Label>
+                    <Label>희망 시급</Label>
                     <Input value={resumeData?.resumeAccount || ''} readOnly />
                   </InputGroup>
                 </AccountGroup>
@@ -220,10 +217,12 @@ function ResumeDetail() {
         )}
 
         {activeTab === 'review' && (
-          <>
-            <ContentWrapper1>
-              <RecivedReviewsGridContainer>
-                {reviews.receivedReview?.content?.map((review) => (
+          <ContentWrapper1>
+            <RecivedReviewsGridContainer>
+              {!reviews.receivedReview?.content || reviews.receivedReview.content.length === 0 ? (
+                <EmptyMessage>받은 리뷰가 없습니다.</EmptyMessage>
+              ) : (
+                reviews.receivedReview?.content?.map((review) => (
                   <Card key={review.reviewNo}>
                     <CardTopContent>
                       <CardImage src={review.profileImage} />
@@ -238,22 +237,25 @@ function ResumeDetail() {
                       <ReviewTextBox>{review.reviewContent}</ReviewTextBox>
                       <ReviewFooter>
                         {/* <ReviewScore>
-                  평점 <strong>{review.reviewScore.toFixed(1)}</strong>
-                </ReviewScore> */}
+              평점 <strong>{review.reviewScore.toFixed(1)}</strong>
+            </ReviewScore> */}
                         <ReviewDate>작성일 {review.reviewUpdateDate.slice(0, 10)}</ReviewDate>
                       </ReviewFooter>
                     </CardMidBottomContent>
                   </Card>
-                ))}
-              </RecivedReviewsGridContainer>
-            </ContentWrapper1>
-            <Paging currentPage={currentPage} totalPage={reviews.totalPage} chagneCurrentPage={chagneCurrentPage} />
-          </>
+                ))
+              )}
+            </RecivedReviewsGridContainer>
+          </ContentWrapper1>
         )}
+        <Paging
+          currentPage={currentPage}
+          totalPage={reviews.receivedReview?.totalPage}
+          chagneCurrentPage={chagneCurrentPage}
+        />
 
         <ButtonGroup>
           <BackButton onClick={() => navigate(-1)}>이전</BackButton>
-
           {hiringNo && (
             <SubmitButton1 onClick={handleAcceptMatching} disabled={isMatched} $disabled={isMatched}>
               {isMatched ? '매칭 완료' : '매칭 수락'}
@@ -578,6 +580,18 @@ const RecivedReviewsGridContainer = styled(GridContainer)`
   ${media.lg`
     grid-template-columns: repeat(2, 1fr);
   `}
+`;
+
+const EmptyMessage = styled.div`
+  grid-column: 1 / -1;
+  height: 300px; // 높이 넉넉하게 설정
+  display: flex;
+  align-items: center; // 수직 가운데
+  justify-content: center; // 수평 가운데
+  padding: ${({ theme }) => theme.spacing[8]};
+  font-size: ${({ theme }) => theme.fontSizes.base};
+  color: ${({ theme }) => theme.colors.gray[3]};
+  text-align: center;
 `;
 
 export default ResumeDetail;

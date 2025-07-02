@@ -14,7 +14,6 @@ import PatientRegisteration from './pages/PatientRegistration';
 import PatientUpdate from './pages/PatientUpdate';
 import ReportDetail from './pages/ReportDetail';
 import ReportForm from './pages/ReportForm';
-import CommunityDetail from './pages/CommunityDetail';
 import CaregiverList from './pages/CaregiverList';
 import HireRegistration from './pages/HireRegistration';
 import HireDetail from './pages/HireDetail';
@@ -25,10 +24,8 @@ import GuardianMainPage from './pages/GuardianMainPage';
 import CareGiverMainPage from './pages/CareGiverMainPage';
 import { useEffect } from 'react';
 
-// import useUserStore from './store/userStore';
 import ReportMain from './pages/ReportMain';
-import CreateCommuBoardForm from './pages/CreateCommuBoardForm';
-import UpdateCommuBoardForm from './pages/UpdateCommuBoardForm';
+// import UpdateCommuBoardForm from './pages/UpdateCommuBoardForm';
 import ReviewModal from './components/ReviewModal';
 
 import CareGiverSupportBoard from './pages/CareGiverSupportBoard';
@@ -42,15 +39,20 @@ import MatchToPatient from './pages/MatchToPatient';
 import MyResume from './pages/MyResume';
 import CareGviverProfile from './pages/CareGiverProfile';
 import ContactPage from './pages/ContactPage';
-import CareGiverCommunity from './pages/CareGiverCommunity';
-import GuardianCommunity from './pages/GuardianCommunity';
 import JobOpeningManagement from './pages/JobOpeningManagement';
 import QuestionFull from './pages/question/QuestionFull';
 import QuestionCreate from './pages/question/QuestionCreate';
 import QuestionHistory from './pages/question/QuestionHistory';
 import PrivacyPolicy from './pages/legal/PrivacyPolicy';
 import TermsOfService from './pages/legal/TermsOfService';
+import Modal from './components/Modal';
 import MyProposer from './pages/MyProposer';
+import CareGiverCommunity from './pages/community/CareGiverCommunity';
+import GuardianCommunity from './pages/community/GuardianCommunity';
+import CommunityDetail from './pages/community/CommunityDetail';
+import CreateCommuBoardForm from './pages/community/CreateCommuBoardForm';
+import QuestionDetail from './pages/question/QuestionDetail';
+
 
 function AppRoutes() {
   const navigate = useNavigate();
@@ -100,10 +102,12 @@ function AppRoutes() {
           <Route path="/community/detail/:boardNo" element={<CommunityDetail />} />
           <Route path="/community/guardian" element={<GuardianCommunity />} />
           <Route path="/community/caregiver" element={<CareGiverCommunity />} />
-          <Route path="/community/update/:no" element={<UpdateCommuBoardForm />} />
+          {/* <Route path="/community/update/:no" element={<UpdateCommuBoardForm />} /> */}
           <Route path="/question/full" element={<QuestionFull />} />
           <Route path="/question/history" element={<QuestionHistory />} />
           <Route path="/question/create" element={<QuestionCreate />} />
+          <Route path="/question/detail/:boardNo" element={<QuestionDetail />} />
+
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<SignUp />} />
           <Route path="/myprofile" element={<MyProfile />} />
@@ -114,6 +118,7 @@ function AppRoutes() {
           <Route path="/privacy-policy" element={<PrivacyPolicy />} />
           <Route path="/terms-of-service" element={<TermsOfService />} />
           <Route path="/contact" element={<ContactPage />} />
+          <Route path="/modal" element={<Modal />} />
         </Routes>
       </Layout>
     </>

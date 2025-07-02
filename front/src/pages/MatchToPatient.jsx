@@ -45,21 +45,40 @@ const MatchToPatient = () => {
   };
 
   useEffect(() => {
-    const fetchAll = async () => {
-      if (!user) {
-        alert('로그인 후 이용해주세요');
-        return;
-      }
-      try {
-        const patientList = await matchingService.getMatchingPatient(user.userNo, 'Y');
-        console.log(patientList);
-        patientList.length === 0 ? setPatientList([]) : setPatientList(patientList);
-      } catch (err) {
-        console.error(err);
-      }
-    };
     fetchAll();
   }, [user]);
+
+
+  const fetchAll = async () => {
+    if (!user) {
+      alert('로그인 후 이용해주세요');
+      return;
+    }
+    try {
+      const patientList = await matchingService.getMatchingPatient(user.userNo, 'Y');
+      console.log(patientList);
+      patientList.length === 0 ? setPatientList([]) : setPatientList(patientList);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const handleEndMatching = async (matNo) => {
+    try {
+      console.log(matNo);
+      const confirmDelete = window.confirm('종료된 매칭으로 이동됩니다. 정말로 간병을 종료하시겠습니까?');
+
+      if (!confirmDelete) return;
+
+      await matchingService.getMatchingChangeStatus(matNo, 'N');
+      await fetchAll();
+
+      // 상태 변경 후 다시 불러오기
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
 
   useEffect(() => {
     const fetchEndedMatching = async () => {
@@ -82,6 +101,7 @@ const MatchToPatient = () => {
   const chagneCurrentPage = (value) => {
     setEndedCurrentPage(value);
   };
+
   return (
     <>
       <HeadSection>
@@ -108,18 +128,20 @@ const MatchToPatient = () => {
           <>
             {patientList && patientList.length > 0 ? (
               patientList.map((pat) => (
-                <ProfileCardPair>
+                <ProfileCardPair key={pat.matNo}>
                   <ProfileCard type="patient">
                     <ProfileImage src={profileImage} alt="환자" />
                     <ProfileInfo>
                       <UserName>{pat.patName} 님</UserName>
                       <UserAge>
-                        나이 {pat.patAge}세 ({pat.patGender === 'F' ? '여' : '남'})
+                        나이 {pat.patAge}세({pat.patGender === 'F' ? '여' : '남'})
                       </UserAge>
                     </ProfileInfo>
                     <ButtonRow>
                       <InfoButton onClick={() => navigate(`/report/${pat.patNo}`)}>간병일지보기</InfoButton>
-                      <ReportButton>간병 종료</ReportButton>
+                      <ReportButton type="button" onClick={() => handleEndMatching(pat.matNo)}>
+                        간병 종료
+                      </ReportButton>
                     </ButtonRow>
                   </ProfileCard>
                 </ProfileCardPair>

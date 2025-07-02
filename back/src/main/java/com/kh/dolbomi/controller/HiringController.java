@@ -4,6 +4,7 @@ package com.kh.dolbomi.controller;
 import com.kh.dolbomi.dto.HiringDto;
 import com.kh.dolbomi.dto.HiringDto.Response;
 import com.kh.dolbomi.dto.PageResponse;
+import com.kh.dolbomi.dto.SearchDataDto;
 import com.kh.dolbomi.service.HiringService;
 import java.util.HashMap;
 import java.util.List;

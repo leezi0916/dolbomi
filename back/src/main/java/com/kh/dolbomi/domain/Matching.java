@@ -1,6 +1,7 @@
 package com.kh.dolbomi.domain;
 
 import com.kh.dolbomi.enums.StatusEnum;
+import com.kh.dolbomi.enums.StatusEnum.Status;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -64,4 +65,15 @@ public class Matching {
     }
 
 
+    public void updateStatus(Status matchingStatus) {
+        this.status = matchingStatus;
+    }
+
+    //리뷰 작성시 매칭이블에 리뷰번호 연결
+    public void connectReview(Review review) {
+        this.review = review;
+        if (review.getMatchingList() != null && review.getMatchingList().contains(this)) {
+            review.getMatchingList().add(this);
+        }
+    }
 }

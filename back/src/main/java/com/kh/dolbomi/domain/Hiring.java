@@ -122,4 +122,6 @@ public class Hiring {
     public void hiringDeleted() {
         this.status = StatusEnum.Status.N;
     }
+
+
 }

@@ -8,7 +8,7 @@ import { DeleteButton, SubmitButton } from '../styles/common/Button';
 import { FaPlus } from 'react-icons/fa6';
 import { media } from '../styles/MediaQueries';
 import { useNavigate } from 'react-router-dom';
-import { Input, InputGroup, Title } from '../styles/Auth.styles';
+import { Input, InputGroup,  Title } from '../styles/Auth.styles';
 import useUserStore from '../store/userStore';
 import { hiringService } from '../api/hiring';
 import { useParams } from 'react-router-dom';
@@ -226,6 +226,7 @@ const HireDetail = () => {
               </InputRow>
             </Divider>
           </ContentWrapper>
+          
           <ContentWrapper>
             <DiseaseGroup>
               <Label>보유한 질병</Label>
@@ -236,6 +237,7 @@ const HireDetail = () => {
               </DiseaseInputDiv>
             </DiseaseGroup>
           </ContentWrapper>
+
           <HireBottom>
             <HireBottomTitle>채용 정보</HireBottomTitle>
           </HireBottom>
@@ -243,25 +245,31 @@ const HireDetail = () => {
             <HireContent>
               <Label>제목</Label>
               <Input type="text" id="hiring_title" {...register('hiringTitle')} readOnly />
+             
               <InputRow>
-                <InputGroup>
+
+                <InputGrouping>
                   <Label>지급 금액 (시급)</Label>
                   <Input type="text" id="account" {...register('account')} readOnly />
-                </InputGroup>
-                <InputGroup>
+                </InputGrouping>
+
+                <InputGrouping>
                   <Label>시작일</Label>
                   <Input type="date" id="startDate" {...register('startDate')} readOnly />
-                </InputGroup>
+                </InputGrouping>
 
-                <InputGroup>
+                <InputGrouping>
                   <Label>종료일</Label>
                   <Input type="date" id="endDate" {...register('endDate')} readOnly />
-                </InputGroup>
-                <InputGroup>
+                </InputGrouping>
+
+                <InputGrouping>
                   <Label>모집 인원수 설정</Label>
                   <Input type="number" id="maxApplicants" {...register('maxApplicants')} readOnly />
-                </InputGroup>
+                </InputGrouping>
               </InputRow>
+
+
               <Label>내용</Label>
               <Content type="text" id="hiringContent" {...register('hiringContent')} readOnly />
               <RadioGroup>
@@ -423,13 +431,13 @@ const ProfilImageWrapper = styled.div`
 const InputRow = styled.div`
   display: flex;
   flex-direction: column;
-  gap: ${({ theme }) => theme.spacing[5]};
+  gap: ${({ theme }) => theme.spacing[3]};
 
   ${media.md`
-    
     flex-direction: row;
   `}
 `;
+
 
 const Label = styled.label`
   font-size: ${({ theme }) => theme.fontSizes.sm};
@@ -445,6 +453,12 @@ const RadioGroup = styled.div`
   text-align: center;
   margin-bottom: ${({ theme }) => theme.spacing[3]};
 `;
+const InputGrouping = styled(InputGroup)`
+  flex: 1;                    // 모든 input 그룹이 동일한 너비
+  display: flex;
+  flex-direction: column;
+  min-width: 0;   
+`
 
 const RadioWrapper = styled.div`
   display: flex;
@@ -514,17 +528,19 @@ const DiseaseInputDiv = styled.div`
   height: 55px;
   display: flex;
   gap: ${({ theme }) => theme.spacing[8]};
-  padding: 0 ${({ theme }) => theme.spacing[10]};
+  padding: 0 ${({ theme }) => theme.spacing[5]};
   text-align: center;
   align-items: center;
   max-width: 800px;
+  
   div {
     width: 80px;
     height: 32px;
+    border-radius: ${({ theme }) => theme.borderRadius.md};
     align-items: center;
     display: flex;
     justify-content: center;
-    background-color: ${({ theme }) => theme.colors.gray[5]};
+    background-color: ${({ theme }) => theme.colors.primary};
     border-radius: ${({ theme }) => theme.borderRadius.sm};
     color: white;
   }

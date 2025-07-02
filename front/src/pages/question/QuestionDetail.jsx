@@ -1,16 +1,26 @@
 import { useEffect, useState } from 'react';
+import useUserStore from '../../store/userStore';
 import { Link, useParams } from 'react-router-dom';
+import { commuService } from '../../api/community';
 import { toast } from 'react-toastify';
-import { commuService } from '../api/community';
 import { ClipLoader } from 'react-spinners';
+import { LinkBtn, Page } from '../../styles/common/Board';
+import theme from '../../styles/theme';
 import styled from 'styled-components';
-import theme from '../styles/theme';
-import useUserStore from '../store/userStore';
-import { FileBox, FileTitle } from './CreateCommuBoardForm';
-import { Page } from '../styles/common/Board';
-import { PageInfo } from './CareGiverCommunity';
+import {
+  BodyTop,
+  FileBox,
+  FileTitle,
+  Icons,
+  InputFile,
+  Left,
+  PageBody,
+  PageTitle,
+  PageTop,
+} from '../community/style/Community.styles';
+import { PageInfo, Textarea } from './style/Question.styles';
 
-const CommunityDetail = () => {
+const QuestionDetail = () => {
   const userNo = useUserStore((state) => state.user?.userNo);
   // 수정하기 버튼 때문에 추가
   const [error, setError] = useState(null);
@@ -58,11 +68,7 @@ const CommunityDetail = () => {
     <Page>
       <PageInfo>
         <PageTop>
-          {communityDetail.role === 'C' ? (
-            <PageTitle>간병 게시판 상세</PageTitle>
-          ) : (
-            <PageTitle>보호자 게시판 상세</PageTitle>
-          )}
+          <PageTitle>문의 게시판 상세</PageTitle>
           <div>
             <RightBtn>뒤로가기</RightBtn>
           </div>
@@ -79,7 +85,7 @@ const CommunityDetail = () => {
               <div style={{ paddingRight: '10px' }}>{communityDetail?.count}</div>
               <Icons src="/src/assets/icons/icon_작성일자.png" alt="" />
               <div style={{ paddingRight: '10px' }}>{communityDetail?.createDate}</div>
-              {communityDetail?.userNo === userNo ? (
+              {communityDetail.userNo === userNo ? (
                 <MenuBox>
                   <img src="/src/assets/icons/icon_설정메뉴.png" alt="" />
                   <ul>
@@ -94,10 +100,9 @@ const CommunityDetail = () => {
                   </ul>
                 </MenuBox>
               ) : null}
-              {/* 수정삭제 메뉴아이콘 로그인 한 사람만 뜨게 하기/원래있던 수정하기 버튼 삭제 */}
             </Right>
           </BodyTop>
-          <BodyText>{communityDetail?.boardContent}</BodyText>
+          <BodyText>{communityDetail.boardContent}</BodyText>
           {communityDetail.files && communityDetail.files.length > 0 && (
             <FileBox>
               <FileTitle>
@@ -119,50 +124,31 @@ const CommunityDetail = () => {
               </InputFile>
             </FileBox>
           )}
-          <CommentBox>
-            <CommentInput type="text" />
-            <CommentButton>댓글 작성</CommentButton>
-          </CommentBox>
-          <CommentEx>
-            <span>
-              • 개인정보를 공유 및 요청하거나, 명예 훼손, 무단 광고, 불법정보 유포 시 이에 대한 민형사상 책임은
-              작성자에게 있습니다
-            </span>
-            <span>• 개인정보가 포함되거나 부적절한 답변은 비노출 또는 해당 서비스 이용 불가 처리될 수 있습니다</span>
-          </CommentEx>
         </PageBody>
         <CommentSelectBox>
           <div style={{ gap: '6px', paddingLeft: '10px' }}>
-            <div style={{ fontWeight: theme.fontWeights.bold }}>답변</div>
-            <div style={{ color: theme.colors.primary, fontWeight: theme.fontWeights.bold }}>
-              {communityDetail.reply.length}
+            <div>
+              <div style={{ fontWeight: theme.fontWeights.bold }}>답변</div>
+              <div style={{ color: theme.colors.primary, fontWeight: theme.fontWeights.bold }}>
+                {communityDetail.questionStatus === 'Y' ? '완료' : '대기'}
+              </div>
             </div>
+
+            {communityDetail.questionStatus === 'Y' ? (
+              <LinkBtn style={{ marginLeft: 'auto', marginRight: '20PX' }}>수정</LinkBtn>
+            ) : (
+              <LinkBtn style={{ marginLeft: 'auto', marginRight: '20PX' }}>작성</LinkBtn>
+            )}
           </div>
+          <Textarea style={{ marginTop: '10px' }} name="" id="" />
+
           {communityDetail.reply?.map((reply) => (
             <CommentSelect key={reply.replyNo}>
               <div style={{ width: '100%', gap: '8px' }}>
                 <Icons src="/src/assets/icons/icon_작성자.png" alt="" />
                 <div>{reply.userName}</div>
                 <div>{reply.updateDate}</div>
-                {communityDetail.userNo === userNo || reply.userNo === userNo ? (
-                  <MenuBox style={{ marginLeft: 'auto' }}>
-                    <img src="/src/assets/icons/icon_설정메뉴.png" alt="" />
-                    <ul>
-                      {reply.userNo === userNo ? (
-                        <li>
-                          <img src="/src/assets/icons/icon_수정.png" alt="" />
-                          <LinkLi>수정</LinkLi>
-                        </li>
-                      ) : null}
-                      <li>
-                        <img src="/src/assets/icons/icon_삭제.png" alt="" />
-                        <LinkLi> 삭제</LinkLi>
-                      </li>
-                    </ul>
-                  </MenuBox>
-                ) : null}
               </div>
-
               <div style={{ padding: '5px 10px 0' }}>{reply.replyContent}</div>
             </CommentSelect>
           ))}
@@ -171,52 +157,31 @@ const CommunityDetail = () => {
     </Page>
   );
 };
-
-export const PageTop = styled.div`
-  width: 100%;
-  display: flex;
-  padding: 0 10px 10px;
-`;
-export const Left = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  flex-grow: 1;
-`;
-
-export const PageTitle = styled(Left)`
-  font-size: ${({ theme }) => theme.fontSizes.lg};
-  font-weight: ${({ theme }) => theme.fontWeights.bold};
-`;
-
 const RightBtn = styled.button`
   width: 100px;
   border: 1px solid ${({ theme }) => theme.colors.gray[4]};
   border-radius: 6px;
 `;
 
-const PageBody = styled.div`
-  width: 100%;
-  flex-direction: column;
-  border: 1px solid ${({ theme }) => theme.colors.gray[4]};
-  border-radius: 4px;
-  padding: 12px;
-  margin-bottom: 10px;
+const ImgBox = styled.div`
+  width: calc(100% / 4);
+  aspect-ratio: 4 / 3;
+  padding: 0 10px 10px 0px;
+  position: relative;
+  display: inline-block;
+`;
+const Right = styled.div`
+  display: flex;
 `;
 
-export const BodyTop = styled.div`
+const BodyText = styled.div`
   width: 100%;
+  min-height: 200px;
   display: flex;
+  justify-content: flex-start;
+  border-top: 1px solid ${({ theme }) => theme.colors.gray[4]};
   padding: 10px;
 `;
-
-export const Icons = styled.img`
-  width: 20px;
-  height: 20px;
-  align-self: center;
-  margin-right: 4px;
-`;
-
 const MenuBox = styled.div`
   display: flex;
   justify-content: flex-end;
@@ -257,69 +222,6 @@ const LinkLi = styled(Link)`
   }
 `;
 
-const Right = styled.div`
-  display: flex;
-`;
-const BodyText = styled.div`
-  width: 100%;
-  min-height: 200px;
-  display: flex;
-  justify-content: flex-start;
-  border-top: 1px solid ${({ theme }) => theme.colors.gray[4]};
-  padding: 10px;
-`;
-const InputFile = styled.div`
-  width: 100%;
-  display: flex;
-  flex-wrap: wrap;
-  padding: 0 10px;
-`;
-const ImgBox = styled.div`
-  width: calc(100% / 4);
-  aspect-ratio: 4 / 3;
-  padding: 0 10px 10px 0px;
-  position: relative;
-  display: inline-block;
-`;
-
-const CommentBox = styled.div`
-  display: flex;
-  width: 100%;
-  height: 60px;
-  border-top: 1px solid ${({ theme }) => theme.colors.gray[4]};
-  padding: 10px;
-`;
-const CommentInput = styled.input`
-  flex-grow: 1;
-  height: 100%;
-  border: 1px solid ${({ theme }) => theme.colors.gray[4]};
-  border-top-left-radius: 4px;
-  border-bottom-left-radius: 4px;
-  padding: 2px 4px;
-`;
-const CommentButton = styled.button`
-  width: 100px;
-  height: 100%;
-
-  background-color: ${({ theme }) => theme.colors.primary};
-  color: ${({ theme }) => theme.colors.white};
-  border-top-right-radius: 4px;
-  border-bottom-right-radius: 4px;
-  padding: 5px;
-`;
-
-const CommentEx = styled.ul`
-  display: flex;
-  flex-direction: column;
-  background-color: ${({ theme }) => theme.colors.gray[5]};
-  margin: 0 10px;
-  padding: 10px;
-  > span {
-    text-align: left;
-    font-size: ${({ theme }) => theme.fontSizes.xs};
-    font-weight: ${({ theme }) => theme.fontWeights.light};
-  }
-`;
 const CommentSelectBox = styled(PageBody)`
   margin-bottom: 40px;
   > div {
@@ -342,4 +244,4 @@ const CommentSelect = styled.div`
     align-items: center;
   }
 `;
-export default CommunityDetail;
+export default QuestionDetail;

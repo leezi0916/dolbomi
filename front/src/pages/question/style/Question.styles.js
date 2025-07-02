@@ -89,6 +89,14 @@ export const SearchBtn = styled.button`
 // export const CreateBtn = styled(LinkBtn)`
 //   width: 10%;
 // `;
+export const Textarea = styled.textarea`
+  width: 100%;
+  min-height: 200px;
+  resize: none;
+  border: 1px solid ${({ theme }) => theme.colors.gray[5]};
+  border-radius: 4px;
+  padding: 5px;
+`;
 
 export const BoardItemTop = styled.div`
   width: 100%;

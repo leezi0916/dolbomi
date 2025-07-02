@@ -24,8 +24,8 @@ import Tags from '../components/Tags';
 const PatientRegistration = () => {
   const { user } = useUserStore();
   const navigate = useNavigate();
-  const { register, handleSubmit, errors, isSubmitting, watch, setValue, formatPhoneNumber } =
-    usepatientRegistrationForm();
+  const { register, handleSubmit, errors, onSubmit, watch, setValue, formatPhoneNumber } =
+    usepatientRegistrationForm(user);
 
   useEffect(() => {
     // 일단 접근가능하게 로그인 구현 되면 user -> !user 바꿀것
@@ -47,27 +47,7 @@ const PatientRegistration = () => {
     setTags(newVal); // set을 대체하는 커스텀 함수
   };
 
-  const onSubmit = async (data) => {
-    try {
-      await patientService.postNewPatient({
-        guardianNo: user.userNo,
-        patName: data.patName,
-        patAge: data.patAge,
-        patPhone: data.patPhone,
-        patAddress: data.patAddress,
-        patGender: data.patGender,
-        patHeight: data.patHeight,
-        patWeight: data.patWeight,
-        patContent: data.patContent,
-        diseaseTags: data.tags,
-      });
-      toast.success('돌봄대상자 등록 완료!');
-      navigate('/guardian/patient');
-    } catch (error) {
-      toast.error('돌봄대상자 등록 중 문제가 발생하였습니다.');
-      console.error('돌봄대상자 등록 에러 : ', error);
-    }
-  };
+
   return (
     <>
       <AuthContainer>
@@ -79,7 +59,14 @@ const PatientRegistration = () => {
               <Label htmlFor="patName">이름</Label>
               <Label htmlFor="patAge">나이</Label>
               <Input type="text" id="patName" {...register('patName')} $error={errors.patName} />
-              <Input type="number" id="patAge" {...register('patAge')} $error={errors.patAge} />
+              <Input
+                type="number"
+                id="patAge"
+                min="0"
+                onWheel={(e) => e.target.blur()}
+                {...register('patAge')}
+                $error={errors.patAge}
+              />
               {errors.patName && <ErrorMessage>{errors.patName.message}</ErrorMessage>}
               {errors.patAge && <ErrorMessage>{errors.patAge.message}</ErrorMessage>}
             </GridInerContainer>
@@ -155,7 +142,7 @@ const PatientRegistration = () => {
             </GridInerContainer>
 
             <InputGroup>
-              <Tags tags={tags} handleTagChange={handleTagChange} {...register('tags')} $error={errors.tags} />
+              <Tags tags={tags} handleTagChange={handleTagChange} $error={errors.tags} />
               {errors.tags && <ErrorMessage>{errors.tags.message}</ErrorMessage>}
             </InputGroup>
 

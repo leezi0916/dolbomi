@@ -13,6 +13,7 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -46,12 +47,24 @@ public class MatchingController {
 
     @GetMapping("/caregiver")
     public ResponseEntity<List<MatchingDto.ResponsePat>> getMatchingListCaregiver(
-            @RequestParam("caregiver_no") Long cargiverNo,
+            @RequestParam("caregiver_no") Long caregiverNo,
             @RequestParam("status") Status matchingStatus
     ) {
-        return ResponseEntity.ok(matchingService.getMatchingListCaregiver(cargiverNo, matchingStatus));
+
+        return ResponseEntity.ok(matchingService.getMatchingListCaregiver(caregiverNo, matchingStatus));
     }
 
+<<<<<<< HEAD
+    @PatchMapping
+    public ResponseEntity<Long> getMatchingChangeStatus(
+            @RequestParam("mat_no") Long matNo,
+            @RequestParam("status") Status matchingStatus
+    ) {
+
+        return ResponseEntity.ok(matchingService.changeStatus(matNo, matchingStatus));
+    }
+
+=======
     @GetMapping("/caregiver/matched")
     public ResponseEntity<PageResponse<MatchingDto.ResponsePat>> getMatchedPatientsByCaregiver(
             @RequestParam("caregiver_no") Long caregiverNo,
@@ -62,4 +75,5 @@ public class MatchingController {
                 new PageResponse<>(matchingService.getMatchedPatientsByCaregiver(caregiverNo, status, pageable))
         );
     }
+>>>>>>> 96343e48946ede0622d3e92dc1c052384b930acd
 }

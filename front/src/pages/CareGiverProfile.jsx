@@ -4,10 +4,12 @@ import { userService } from '../api/users';
 import { ClipLoader } from 'react-spinners';
 import useUserStore from '../store/userStore';
 import { SubmitBtn } from '../styles/PatientRegistration';
-import { AuthContainer, Input, InputGroup } from '../styles/Auth.styles';
+import { AuthContainer, Button, Input, InputGroup } from '../styles/Auth.styles';
 import styled from 'styled-components';
 import { useParams } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
+import { ModalContainer } from '../styles/common/Modal';
+import { RiAlarmWarningLine } from "react-icons/ri";
 const CareGiverProfile = () => {
   const [error, setError] = useState(null);
   const [profile, setProfile] = useState(null);
@@ -49,7 +51,7 @@ const CareGiverProfile = () => {
             userId: info.userId || '', // 아이디 필드 추가
             userName: info.userName || '',
             age: info.age || '',
-            gender: info.gender || '',
+            gender: (info.gender === "M"? "남": "여") || '',
             phone: info.phone || '',
             email: info.email || '',
             address: info.address || '',
@@ -88,11 +90,10 @@ const CareGiverProfile = () => {
   }
 
   return (
-    <ModalContainer>
-      <ButtonWrap>
+    <ModalContainer2>
+
         <ContentTitle>간병인 정보</ContentTitle>
-        <button onClick={() => navigate(-1)}> x </button>
-      </ButtonWrap>
+
 
       <ProfileCardWrap>
         <ContentTitle>프로필</ContentTitle>
@@ -135,26 +136,23 @@ const CareGiverProfile = () => {
           <p>자격증정보가 없습니다.</p>
         )}
       </LicenseWrap>
-    </ModalContainer>
+      <ButtonWrap>
+      <Button onClick={() => navigate(-1)}> 이전으로 </Button>
+      <Button > 
+        <RiAlarmWarningLine></RiAlarmWarningLine>
+        신고하기 </Button>
+      </ButtonWrap>
+     
+    </ModalContainer2>
   );
 };
 
-export const ModalContainer = styled.div`
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin: 0 auto;
+export const ModalContainer2 = styled(ModalContainer)`
+  margin-top: 50px;
   padding: ${({ theme }) => theme.spacing[8]} ${({ theme }) => theme.spacing[16]};
-  border: 1px solid ${({ theme }) => theme.colors.gray[5]};
-  box-shadow: ${({ theme }) => theme.shadows.xl};
-  width: 650px;
-  min-height: 500px;
-  gap: 10px;
-  transition:
-    transform 0.2s ease,
-    box-shadow 0.2s ease;
+
 `;
+
 
 const ProfileCardWrap = styled.div`
   width: 100%;
@@ -175,6 +173,7 @@ const ProfileImage = styled.img`
 const ButtonWrap = styled.div`
   width: 100%;
   display: flex;
+  gap: 10px;
   justify-content: space-between;
   align-items: center;
 `;

@@ -1,11 +1,11 @@
 import React, { useRef, useState } from 'react';
-import styled from 'styled-components';
-import { Icons, PageTitle, PageTop } from './CommunityDetail';
-import { Page } from '../styles/common/Board';
-import { PageInfo } from './CareGiverCommunity';
 import { useParams } from 'react-router-dom';
-import useUserStore from '../store/userStore';
-import theme from '../styles/theme';
+import useUserStore from '../../store/userStore';
+import theme from '../../styles/theme';
+import styled from 'styled-components';
+import { Page } from '../../styles/common/Board';
+import { PageInfo } from './style/CommunityList.styles';
+import { BodyTop, FileBox, FileTitle, Icons, Left, PageBody, PageTitle, PageTop } from './style/Community.styles';
 
 const CreateCommuBoardForm = () => {
   const userName = useUserStore((state) => state.user?.userName);
@@ -103,23 +103,10 @@ const CreateCommuBoardForm = () => {
   );
 };
 
-const BodyTop = styled.div`
-  width: 100%;
-  display: flex;
-  padding: 10px;
-`;
-
 const Top = styled(BodyTop)`
   border-bottom: 1px solid ${({ theme }) => theme.colors.gray[4]};
 `;
-const PageBody = styled.div`
-  width: 100%;
-  flex-direction: column;
-  border: 1px solid ${({ theme }) => theme.colors.gray[4]};
-  border-radius: 4px;
-  padding: 12px;
-  margin-bottom: 10px;
-`;
+
 const TitleInput = styled.input`
   width: 100%;
   font-size: ${({ theme }) => theme.fontSizes.lg};
@@ -131,27 +118,7 @@ const TextInput = styled.textarea`
   resize: none;
   margin: 10px;
 `;
-export const FileBox = styled.div`
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  background-color: ${({ theme }) => theme.colors.gray[5]};
-  border-radius: 4px;
-  padding: 0 10px;
-  margin-bottom: 10px;
-`;
-export const Left = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  flex-grow: 1;
-`;
 
-export const FileTitle = styled(Left)`
-  font-size: ${({ theme }) => theme.fontSizes.base};
-  font-weight: ${({ theme }) => theme.fontWeights.bold};
-  padding: 10px;
-`;
 const InputFile = styled.div`
   width: 100%;
   display: flex;

@@ -113,7 +113,7 @@ const QuestionFull = () => {
           <Null>
             <div style={{ marginBottom: '10px' }}>게시글이 없습니다.</div>
             {userId && (
-              <Btn style={{ margin: 'auto' }} to="/community/create">
+              <Btn style={{ margin: 'auto' }} to="/question/create">
                 글쓰기
               </Btn>
             )}
@@ -156,7 +156,7 @@ const QuestionFull = () => {
           <div style={{ flex: '2' }}>작성 일자</div>
         </BoardItemTop>
         {currentList.map((community) => (
-          <BoardItem key={community.boardNo} to={`/community/detail/${community.boardNo}`}>
+          <BoardItem key={community.boardNo} to={`/question/detail/${community.boardNo}`}>
             <div>{community.boardNo}</div>
             <div style={{ flex: '3' }}>{community.boardTitle}</div>
             <div>{community.userName}</div>

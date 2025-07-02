@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { commuService } from '../api/community';
+import useUserStore from '../../store/userStore';
+import { commuService } from '../../api/community';
 import { toast } from 'react-toastify';
 import { ClipLoader } from 'react-spinners';
-import useUserStore from '../store/userStore';
-import Paging from '../components/Paging';
-import { Btn, LinkBtn, NullBox, Page } from '../styles/common/Board';
+import { LinkBtn, NullBox, Page } from '../../styles/common/Board';
 import {
   BoardItem,
   BoardItemTop,
@@ -18,7 +17,8 @@ import {
   PageInfo,
   Right,
   SearchBtn,
-} from './CareGiverCommunity';
+} from './style/CommunityList.styles';
+import Paging from '../../components/Paging';
 
 const GuardianCommunity = () => {
   const userNo = useUserStore((state) => state.user?.userNo);
