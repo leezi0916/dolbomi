@@ -31,12 +31,7 @@ const HireRegistration = () => {
     inputRef.current?.click(); // 파일 선택창 열기
   };
 
-  const {
-    register,
-    handleSubmit,
-    watch,
-     errors ,
-  } = guardianHiringForm();
+  const { register, handleSubmit, watch, errors } = guardianHiringForm();
 
   const currentCareStatus = watch('careStatus');
 
@@ -55,6 +50,10 @@ const HireRegistration = () => {
         const patientsList = await patientService.getPatients(user.userNo);
 
         setUserpatients(patientsList);
+        if (patientsList.length === 0) {
+          alert('환자정보를 먼저 입력해주세요');
+          navigate('/guardian/patientregisteration');
+        }
       } catch (err) {
         console.error(err);
       }
@@ -116,7 +115,6 @@ const HireRegistration = () => {
     }
   };
 
-
   return (
     <HireRegistSection>
       <HireContainer>
@@ -124,7 +122,7 @@ const HireRegistration = () => {
           <HireHeadTitle>구인 등록</HireHeadTitle>
           <SelectDiv>
             {selectPatientNo === undefined && (
-              <p style={{ textAlign: 'left', color: '#EF7A46' }}>
+              <p style={{ textAlign: 'left', color: '#EF7A46', display: "flex" , alignItems: "center"}}>
                 &nbsp;
                 <BsFillExclamationCircleFill color="'#EF7A46'"></BsFillExclamationCircleFill>&nbsp;&nbsp;필수
                 선택사항입니다.
@@ -236,18 +234,18 @@ const HireRegistration = () => {
                 </InputGroup>
                 <InputGroup>
                   <Label>시작일</Label>
-                  <Input {...register('startDate')} type="date"  $error={errors.startDate} />
+                  <Input {...register('startDate')} type="date" $error={errors.startDate} />
                   {errors.startDate && <ErrorMessage>{errors.startDate.message}</ErrorMessage>}
                 </InputGroup>
 
                 <InputGroup>
                   <Label>종료일</Label>
-                  <Input {...register('endDate')} type="date" $error={errors.endDate}/>
+                  <Input {...register('endDate')} type="date" $error={errors.endDate} />
                   {errors.endDate && <ErrorMessage>{errors.endDate.message}</ErrorMessage>}
                 </InputGroup>
                 <InputGroup>
                   <Label>모집 인원수 설정</Label>
-                  <Input type="number" {...register('maxApplicants')}  $error={errors.maxApplicants}/>
+                  <Input type="number" {...register('maxApplicants')} $error={errors.maxApplicants} />
                   {errors.maxApplicants && <ErrorMessage>{errors.maxApplicants.message}</ErrorMessage>}
                 </InputGroup>
               </InputGird>
@@ -257,7 +255,6 @@ const HireRegistration = () => {
               <RadioGroup>
                 <Label>숙식 제공 여부</Label>
                 <RadioWrapper>
-
                   <input
                     type="radio"
                     id="Y"
@@ -265,10 +262,11 @@ const HireRegistration = () => {
                     value="Y"
                     {...register('careStatus')}
                     onChange={handleCareStatusChange}
-                    $error={errors.careStatus} />
+                    $error={errors.careStatus}
+                  />
                   <label htmlFor="Y">숙식 가능</label>
                 </RadioWrapper>
-               
+
                 <RadioWrapper>
                   <input
                     type="radio"
@@ -345,13 +343,12 @@ const HireHeadTitle = styled(Title)`
   font-size: ${({ theme }) => theme.fontSizes['3xl']};
 `;
 const SelectDiv = styled.div`
-  width: 200px;
+  width: 250px;
 `;
 const SelectBox = styled.select`
   width: 100%;
   height: 50px;
   padding: 0 ${({ theme }) => theme.spacing[5]};
-
   border: 1px solid ${({ theme }) => theme.colors.primary}; // 오렌지색 테두리
   border-radius: ${({ theme }) => theme.spacing[1]};
   font-size: ${({ theme }) => theme.spacing[4]};

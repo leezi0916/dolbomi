@@ -189,8 +189,8 @@ const MyResume = () => {
               </RadioContainer>
               <AccountGroup>
                 <InputGroup>
-                  <Label>희망 금액</Label>
-                  <Input {...register('resumeAccount')} placeholder="희망 금액" />
+                  <Label>희망 시급</Label>
+                  <Input {...register('resumeAccount')} placeholder="희망 시급" />
                   <p>{errors.resumeAccount?.message}</p>
                 </InputGroup>
               </AccountGroup>
