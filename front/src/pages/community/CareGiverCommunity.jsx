@@ -3,7 +3,7 @@ import useUserStore from '../../store/userStore';
 import { commuService } from '../../api/community';
 import { toast } from 'react-toastify';
 import { ClipLoader } from 'react-spinners';
-import { LinkBtn, Page } from '../../styles/common/Board';
+import { LinkBtn, NullBox, Page } from '../../styles/common/Board';
 import {
   BoardItem,
   BoardItemTop,

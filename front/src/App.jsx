@@ -50,6 +50,7 @@ import CareGiverCommunity from './pages/community/CareGiverCommunity';
 import GuardianCommunity from './pages/community/GuardianCommunity';
 import CommunityDetail from './pages/community/CommunityDetail';
 import CreateCommuBoardForm from './pages/community/CreateCommuBoardForm';
+import QuestionDetail from './pages/question/QuestionDetail';
 
 function AppRoutes() {
   const navigate = useNavigate();
@@ -103,6 +104,8 @@ function AppRoutes() {
           <Route path="/question/full" element={<QuestionFull />} />
           <Route path="/question/history" element={<QuestionHistory />} />
           <Route path="/question/create" element={<QuestionCreate />} />
+          <Route path="/question/detail/:boardNo" element={<QuestionDetail />} />
+
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<SignUp />} />
           <Route path="/myprofile" element={<MyProfile />} />
