@@ -5,7 +5,6 @@ import { Route, BrowserRouter as Router, Routes, useLocation, useNavigate } from
 import theme from './styles/theme';
 import Layout from './components/Layout';
 import { ToastContainer } from 'react-toastify';
-import CommunityBoard from './pages/CommunityBoard';
 import SignUp from './pages/SignUp';
 import MyProfile from './pages/MyProfile';
 import Login from './pages/Login';
@@ -15,8 +14,6 @@ import PatientRegisteration from './pages/PatientRegistration';
 import PatientUpdate from './pages/PatientUpdate';
 import ReportDetail from './pages/ReportDetail';
 import ReportForm from './pages/ReportForm';
-import CommunityDetail from './pages/CommunityDetail';
-import NoticeBoard from './pages/NoticeBoard';
 import CaregiverList from './pages/CaregiverList';
 import HireRegistration from './pages/HireRegistration';
 import HireDetail from './pages/HireDetail';
@@ -27,10 +24,8 @@ import GuardianMainPage from './pages/GuardianMainPage';
 import CareGiverMainPage from './pages/CareGiverMainPage';
 import { useEffect } from 'react';
 
-// import useUserStore from './store/userStore';
 import ReportMain from './pages/ReportMain';
-import CreateCommuBoardForm from './pages/CreateCommuBoardForm';
-import UpdateCommuBoardForm from './pages/UpdateCommuBoardForm';
+// import UpdateCommuBoardForm from './pages/UpdateCommuBoardForm';
 import ReviewModal from './components/ReviewModal';
 
 import CareGiverSupportBoard from './pages/CareGiverSupportBoard';
@@ -44,8 +39,6 @@ import MatchToPatient from './pages/MatchToPatient';
 import MyResume from './pages/MyResume';
 import CareGviverProfile from './pages/CareGiverProfile';
 import ContactPage from './pages/ContactPage';
-import CareGiverCommunity from './pages/CareGiverCommunity';
-import GuardianCommunity from './pages/GuardianCommunity';
 import JobOpeningManagement from './pages/JobOpeningManagement';
 import QuestionFull from './pages/question/QuestionFull';
 import QuestionCreate from './pages/question/QuestionCreate';
@@ -53,6 +46,11 @@ import QuestionHistory from './pages/question/QuestionHistory';
 import PrivacyPolicy from './pages/legal/PrivacyPolicy';
 import TermsOfService from './pages/legal/TermsOfService';
 import MyProposer from './pages/MyProposer';
+import CareGiverCommunity from './pages/community/CareGiverCommunity';
+import GuardianCommunity from './pages/community/GuardianCommunity';
+import CommunityDetail from './pages/community/CommunityDetail';
+import CreateCommuBoardForm from './pages/community/CreateCommuBoardForm';
+import QuestionDetail from './pages/question/QuestionDetail';
 
 function AppRoutes() {
   const navigate = useNavigate();
@@ -98,16 +96,16 @@ function AppRoutes() {
           <Route path="/guardian/careGiverSupportBorad/:hiringNo" element={<CareGiverSupportBoard />} />
           <Route path="/guardian/jobopening-management" element={<JobOpeningManagement />} />
           {/* 공용 */}
-          <Route path="/community/create" element={<CreateCommuBoardForm />} />
-          <Route path="/community/free" element={<CommunityBoard />} />
-          <Route path="/community/detail/:no" element={<CommunityDetail />} />
+          <Route path="/community/create/:role" element={<CreateCommuBoardForm />} />
+          <Route path="/community/detail/:boardNo" element={<CommunityDetail />} />
           <Route path="/community/guardian" element={<GuardianCommunity />} />
           <Route path="/community/caregiver" element={<CareGiverCommunity />} />
-          <Route path="/community/update/:no" element={<UpdateCommuBoardForm />} />
+          {/* <Route path="/community/update/:no" element={<UpdateCommuBoardForm />} /> */}
           <Route path="/question/full" element={<QuestionFull />} />
           <Route path="/question/history" element={<QuestionHistory />} />
           <Route path="/question/create" element={<QuestionCreate />} />
-          <Route path="/community/notice" element={<NoticeBoard />} />
+          <Route path="/question/detail/:boardNo" element={<QuestionDetail />} />
+
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<SignUp />} />
           <Route path="/myprofile" element={<MyProfile />} />

@@ -1,44 +1,43 @@
 import React, { useEffect, useState } from 'react';
+import useUserStore from '../../store/userStore';
 import { commuService } from '../../api/community';
 import { toast } from 'react-toastify';
 import { ClipLoader } from 'react-spinners';
-import useUserStore from '../../store/userStore';
-import Paging from '../../components/Paging';
-import { Btn, Input, Page } from '../../styles/common/Board';
+import { LinkBtn, NullBox, Page } from '../../styles/common/Board';
 import {
   BoardItem,
   BoardItemTop,
   BoardMenu,
   BoardTop,
-  BoardTopLeft,
-  BoardTopRight,
+  BorderDiv,
   Drop,
-  MenuDiv,
-  MenuLink,
-  Null,
+  Input,
+  Left,
+  NowBoard,
   PageInfo,
-  PageTitle,
-  PageTop,
+  Right,
   SearchBtn,
-} from './style/Question.styles';
+} from './style/CommunityList.styles';
+import Paging from '../../components/Paging';
 
-const QuestionHistory = () => {
+const GuardianCommunity = () => {
   const userNo = useUserStore((state) => state.user?.userNo);
 
   const [error, setError] = useState(null);
-  const [questionList, setQuestionList] = useState([]);
+  const [communityList, setCommunityList] = useState([]);
   const [loading, setLoading] = useState(true);
 
   const [currentPage, setCurrentPage] = useState(1);
   const ITEMS_PER_PAGE = 10;
   const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
   const endIndex = startIndex + ITEMS_PER_PAGE;
-  const currentList = questionList.slice(startIndex, endIndex);
-  const totalPage = Math.ceil(questionList.length / ITEMS_PER_PAGE);
+  const currentList = communityList.slice(startIndex, endIndex);
+  const totalPage = Math.ceil(communityList.length / ITEMS_PER_PAGE);
 
   const chagneCurrentPage = (value) => {
     setCurrentPage(value);
   };
+
   const [sortOption, setSortOption] = useState('');
 
   useEffect(() => {
@@ -46,11 +45,12 @@ const QuestionHistory = () => {
   }, [currentPage]);
 
   useEffect(() => {
-    const loadQuestion = async () => {
+    const loadCommunity = async () => {
       try {
-        const myHistory = await commuService.getQuestionHistory(userNo);
-        console.log(myHistory);
-        setQuestionList(myHistory.content);
+        const community = await commuService.getGuardian();
+
+        console.log(community);
+        setCommunityList(community.content);
       } catch (error) {
         console.error(error);
         const errorMessage = '목록을 불러오는데 실패했습니다.';
@@ -61,8 +61,8 @@ const QuestionHistory = () => {
       }
     };
 
-    loadQuestion();
-  }, [userNo]);
+    loadCommunity();
+  }, []);
 
   if (loading) {
     return (
@@ -75,48 +75,44 @@ const QuestionHistory = () => {
   if (error) {
     return null;
   }
-  if (!questionList || questionList.length === 0) {
+
+  if (!communityList || communityList.length === 0) {
     return (
       <Page>
         <PageInfo>
-          <PageTop>
-            <PageTitle> 1:1 문의사항 </PageTitle>
-            {userNo && (
-              <BoardMenu>
-                <MenuLink to="/question/full">전체</MenuLink>
-                <MenuDiv>문의내역</MenuDiv>
-                <MenuLink to="/question/create"> 문의하기</MenuLink>
-              </BoardMenu>
-            )}
-          </PageTop>
-
+          <BoardMenu>
+            <NowBoard> 보호자 게시판</NowBoard>
+          </BoardMenu>
           <BoardTop>
-            <BoardTopLeft>총 0건</BoardTopLeft>
-            <BoardTopRight>
+            <Left>총 0건</Left>
+            <Right>
               <Drop value={sortOption} onChange={(e) => setSortOption(e.target.value)}>
-                <option value="date">날짜순</option>
+                <option value="" disabled hidden>
+                  -- 작성일순/조회순 --
+                </option>
+                <option value="date">작성일</option>
                 <option value="views">조회순</option>
               </Drop>
               <Input type="text" />
               <SearchBtn>검색</SearchBtn>
-            </BoardTopRight>
+            </Right>
           </BoardTop>
           <BoardItemTop>
             <div>No</div>
-            <div style={{ flex: '2' }}>제목</div>
+            <div style={{ flex: '3' }}>제목</div>
             <div>작성자</div>
             <div style={{ flex: '2' }}>작성 일자</div>
-            <div>처리 현황</div>
+            <div>조회수</div>
           </BoardItemTop>
-          <Null>
+          <NullBox>
             <div style={{ marginBottom: '10px' }}>게시글이 없습니다.</div>
             {userNo && (
-              <Btn style={{ margin: 'auto' }} to="/question/create">
+              <LinkBtn style={{ margin: 'auto' }} to="/community/create/G">
                 글쓰기
-              </Btn>
+              </LinkBtn>
             )}
-          </Null>
-
+          </NullBox>
+          <BorderDiv></BorderDiv>
           <Paging totalPage={totalPage} currentPage={currentPage} chagneCurrentPage={chagneCurrentPage} />
         </PageInfo>
       </Page>
@@ -125,49 +121,45 @@ const QuestionHistory = () => {
   return (
     <Page>
       <PageInfo>
-        <PageTop>
-          <PageTitle> 1:1 문의사항 </PageTitle>
-          {userNo && (
-            <BoardMenu>
-              <MenuLink to="/question/full">전체</MenuLink>
-              <MenuDiv>문의내역</MenuDiv>
-              <MenuLink to="/question/create"> 문의하기</MenuLink>
-            </BoardMenu>
-          )}
-        </PageTop>
-
+        <BoardMenu>
+          <NowBoard> 보호자 게시판</NowBoard>
+        </BoardMenu>
         <BoardTop>
-          <BoardTopLeft>총 {questionList.length}건</BoardTopLeft>
-          <BoardTopRight>
+          <Left>총 {communityList.length}건</Left>
+          <Right>
             <Drop value={sortOption} onChange={(e) => setSortOption(e.target.value)}>
-              <option value="date">날짜순</option>
+              <option value="" disabled hidden>
+                -- 작성일순/조회순 --
+              </option>
+              <option value="date">작성일</option>
               <option value="views">조회순</option>
             </Drop>
             <Input type="text" />
             <SearchBtn>검색</SearchBtn>
-          </BoardTopRight>
+            {userNo && <LinkBtn to="/community/create/G">글쓰기</LinkBtn>}
+          </Right>
         </BoardTop>
         <BoardItemTop>
           <div>No</div>
-          <div style={{ flex: '2' }}>제목</div>
+          <div style={{ flex: '3' }}>제목</div>
           <div>작성자</div>
           <div style={{ flex: '2' }}>작성 일자</div>
-          <div>처리 현황</div>
+          <div>조회수</div>
         </BoardItemTop>
-        {currentList.map((info) => (
-          <BoardItem key={info.boardNo} to={`/question/detail/${info.boardNo}`}>
-            <div>{info.boardNo}</div>
-            <div style={{ flex: '2' }}>{info.boardTitle}</div>
-            <div>{info.userName}</div>
-            <div style={{ flex: '2' }}>{info.createDate}</div>
-            {info.questionStatus == 'Y' ? <div>완료</div> : <div>대기</div>}
+        {currentList.map((community) => (
+          <BoardItem key={community.boardNo} to={`/community/detail/${community.boardNo}`}>
+            <div>{community.boardNo}</div>
+            <div style={{ flex: '3' }}>{community.boardTitle}</div>
+            <div>{community.userName}</div>
+            <div style={{ flex: '2' }}>{community.createDate}</div>
+            <div>{community.count}</div>
           </BoardItem>
         ))}
-
+        <BorderDiv></BorderDiv>
         <Paging totalPage={totalPage} currentPage={currentPage} chagneCurrentPage={chagneCurrentPage} />
       </PageInfo>
     </Page>
   );
 };
 
-export default QuestionHistory;
+export default GuardianCommunity;
