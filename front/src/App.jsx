@@ -53,6 +53,7 @@ import QuestionCreate from './pages/question/QuestionCreate';
 import QuestionHistory from './pages/question/QuestionHistory';
 import PrivacyPolicy from './pages/legal/PrivacyPolicy';
 import TermsOfService from './pages/legal/TermsOfService';
+import Modal from './components/Modal';
 
 function AppRoutes() {
   const navigate = useNavigate();
@@ -116,6 +117,7 @@ function AppRoutes() {
           <Route path="/privacy-policy" element={<PrivacyPolicy />} />
           <Route path="/terms-of-service" element={<TermsOfService />} />
           <Route path="/contact" element={<ContactPage />} />
+          <Route path="/modal" element={<Modal />} />
         </Routes>
       </Layout>
     </>

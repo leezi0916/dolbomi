@@ -164,8 +164,8 @@ const ResumeRegistration = () => {
                 </RadioContainer>
                 <AccountGroup>
                   <InputGroup>
-                    <Label>희망 금액</Label>
-                    <Input {...register('account')} placeholder="희망 금액" />
+                    <Label>희망 시급</Label>
+                    <Input {...register('account')} placeholder="희망 시급" />
                     <p>{errors.account?.message}</p>
                   </InputGroup>
                 </AccountGroup>

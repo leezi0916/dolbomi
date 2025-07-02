@@ -210,7 +210,7 @@ function ResumeDetail() {
                 </RadioContainer>
                 <AccountGroup>
                   <InputGroup>
-                    <Label>희망 금액</Label>
+                    <Label>희망 시급</Label>
                     <Input value={resumeData?.resumeAccount || ''} readOnly />
                   </InputGroup>
                 </AccountGroup>

@@ -38,8 +38,14 @@ const MatchToPatient = () => {
   const handleEndMatching = async (matNo) => {
     try {
       console.log(matNo);
+      const confirmDelete = window.confirm('종료된 매칭으로 이동됩니다. 정말로 간병을 종료하시겠습니까?');
+
+      if (!confirmDelete) return;
+
       await matchingService.getMatchingChangeStatus(matNo, 'N');
-      await fetchAll(); // 상태 변경 후 다시 불러오기
+      await fetchAll();
+
+      // 상태 변경 후 다시 불러오기
     } catch (err) {
       console.error(err);
     }
