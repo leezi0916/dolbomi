@@ -68,7 +68,6 @@ public class MatchingDto {
         private StatusEnum.Status status;
         private Long review_no;
 
-
         public static ResponsePat from(Matching matching) {
             return ResponsePat.builder()
                     .mat_no(matching.getMatNo())

@@ -209,7 +209,9 @@ const MatchToCaregiver = () => {
                         <ProfileTextGray>
                           나이
                           <ProfileTextStrong>
+
                             {care.age} 세 ({care.gender === 'M' ? '남' : care.gender === 'F' ? '여' : '성별 정보 없음'})
+
                           </ProfileTextStrong>
                         </ProfileTextGray>
                       </CaregiverTextDiv>

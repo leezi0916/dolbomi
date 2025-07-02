@@ -10,7 +10,7 @@ import useUserStore from '../store/userStore';
 const resumeSchema = yup.object().shape({
   resumeTitle: yup.string().required('제목을 입력해주세요'),
   resumeContent: yup.string().required('내용을 입력해주세요'),
-  account: yup.number().typeError('숫자로 입력해주세요').required('희망 금액을 입력해주세요'),
+  account: yup.number().typeError('숫자로 입력해주세요').required('희망 시급을 입력해주세요'),
   careStatus: yup.string().required('숙식 여부를 선택해주세요'),
 });
 

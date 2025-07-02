@@ -1,6 +1,7 @@
 package com.kh.dolbomi.domain;
 
 import com.kh.dolbomi.enums.StatusEnum;
+import com.kh.dolbomi.enums.StatusEnum.Status;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -61,6 +62,11 @@ public class Matching {
         if (status == null) {
             this.status = StatusEnum.Status.Y;
         }
+    }
+
+
+    public void updateStatus(Status matchingStatus) {
+        this.status = matchingStatus;
     }
 
     //리뷰 작성시 매칭이블에 리뷰번호 연결

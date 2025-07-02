@@ -11,6 +11,7 @@ import { ClipLoader } from 'react-spinners';
 import { Link } from 'react-router-dom';
 import { hiringService } from '../api/hiring';
 import Paging from '../components/Paging';
+import { addressService } from '../api/address';
 
 const HireList = () => {
   const [hireLists, setHireLists] = useState([]);
@@ -20,6 +21,7 @@ const HireList = () => {
   const [size] = useState(10);
   const [totalPages, setTotalPages] = useState(0);
   const [visible, setVisible] = useState(false);
+  const [region, setRegion] = useState([]);
   const [data, setData] = useState({
     region: '',
     endDate: '',
@@ -29,11 +31,13 @@ const HireList = () => {
     patGender: '',
     keyword: '',
   });
+  const [cd, setCd] = useState(null);
+  const [selected, setSelected] = useState('');
 
   // 1. 컴포넌트가 처음 마운트될 때 전체 리스트를 불러옵니다.
   useEffect(() => {
     loadHireLists(page - 1, size, data); // API에선 0부터 시작일 가능성 있어 -1 처리
-  }, [page, size, data]);
+  }, [page, size]);
 
   // 이름 첫글자 O 처리하기
   const maskName = (name) => {
@@ -48,11 +52,11 @@ const HireList = () => {
 
   const loadHireLists = async (pageNumber, pageSize, searchData) => {
     try {
-      console.log('JSON 데이터:', data);
+      console.log('돌봄대상자 리스트 JSON 데이터:', data);
       setLoading(true);
       setError(null);
       const res = await hiringService.getHiringList({ page: pageNumber, size: pageSize, searchData });
-      console.log('API Response:', res); // 여기서 totalPages, content 등 확인
+      console.log('돌봄대상자 Response:', res); // 여기서 totalPages, content 등 확인
       if (res.totalElements === 0) {
         setHireLists([]);
         setError('등록된 돌봄 대상자 모집 글이 없습니다.');
@@ -144,15 +148,42 @@ const HireList = () => {
     }));
   };
 
-  // const handleSubmit = async (data) => {
-  //   console.log('JSON 데이터:', data);
-  // };
+  const getRegion = async () => {
+    try {
+      setError(null);
+      const res = await addressService.getRegionList(cd);
+      console.log('HireList에 온 값:', res);
+      setRegion(res);
+      console.log(region);
+    } catch (err) {
+      setError('행정구역 로드 실패.\n' + err);
+    }
+  };
 
   return (
     <>
       {/* test */}
       <SearchSection>
         <Title>돌봄대상자 모집</Title>
+
+        {/* 테스트공간 */}
+        <button onClick={getRegion}>지역Test</button>
+        <RegionDiv>
+          {region.map((region, index) => (
+            <RegionLabel key={index}>
+              <input
+                type="radio"
+                name="region"
+                value={region.cd}
+                checked={selected?.cd === region.cd}
+                onChange={() => setSelected(region)}
+              />
+              {region.addrName}
+            </RegionLabel>
+          ))}
+        </RegionDiv>
+        <p>선택된 지역: {selected.fullName}</p>
+
         <SearchContainer2>
           <Search>
             <SearchBar onSearch={handleSearchSubmit} />
@@ -685,4 +716,11 @@ const ErrorMessage = styled.p`
   margin-top: ${({ theme }) => theme.spacing[5]};
 `;
 
+const RegionDiv = styled.div`
+  display: flex;
+`;
+const RegionLabel = styled.label`
+  display: flex;
+  margin-bottom: 20px;
+`;
 export default HireList;
