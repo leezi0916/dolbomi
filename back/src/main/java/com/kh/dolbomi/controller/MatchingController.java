@@ -29,10 +29,10 @@ public class MatchingController {
     @GetMapping
     public ResponseEntity<List<MatchingDto.Response>> getMatchingList(
             @RequestParam("pat_no") Long patNo,
-            @RequestParam("status") Status matchingStatus
+            @RequestParam("status") Status status
     ) {
-        System.out.println("patNo" + patNo + "matchingStatus : " + matchingStatus);
-        return ResponseEntity.ok(matchingService.getMatchingList(patNo, matchingStatus));
+
+        return ResponseEntity.ok(matchingService.getMatchingCargiverList(patNo, status));
     }
 
 
@@ -54,7 +54,6 @@ public class MatchingController {
         return ResponseEntity.ok(matchingService.getMatchingListCaregiver(caregiverNo, matchingStatus));
     }
 
-<<<<<<< HEAD
     @PatchMapping
     public ResponseEntity<Long> getMatchingChangeStatus(
             @RequestParam("mat_no") Long matNo,
@@ -64,7 +63,7 @@ public class MatchingController {
         return ResponseEntity.ok(matchingService.changeStatus(matNo, matchingStatus));
     }
 
-=======
+
     @GetMapping("/caregiver/matched")
     public ResponseEntity<PageResponse<MatchingDto.ResponsePat>> getMatchedPatientsByCaregiver(
             @RequestParam("caregiver_no") Long caregiverNo,
@@ -75,5 +74,5 @@ public class MatchingController {
                 new PageResponse<>(matchingService.getMatchedPatientsByCaregiver(caregiverNo, status, pageable))
         );
     }
->>>>>>> 96343e48946ede0622d3e92dc1c052384b930acd
+
 }

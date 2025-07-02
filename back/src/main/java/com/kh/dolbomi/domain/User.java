@@ -77,6 +77,7 @@ public class User {
     //ROLE
     @Enumerated(EnumType.STRING)
     @Builder.Default
+    @Column(name = "ROLE", nullable = false)
     private Role role = Role.USER;
 
 

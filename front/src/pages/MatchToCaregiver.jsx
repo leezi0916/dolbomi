@@ -10,6 +10,7 @@ import { patientService } from '../api/patient';
 import { useNavigate } from 'react-router-dom';
 import Paging from '../components/Paging';
 import ReviewModal from '../components/ReviewModal';
+import { CiCircleInfo } from "react-icons/ci";
 
 const MatchToCaregiver = () => {
   const { user } = useUserStore();
@@ -107,11 +108,15 @@ const MatchToCaregiver = () => {
             </SubTitle>
           </Tab>
         </TitleDiv>
-        <SerachDiv>
-          <CaregiverSearch></CaregiverSearch>
-        </SerachDiv>
       </HeadSection>
-      <p>환자에 마우스를 올려 종료된 매칭 목록을 확인하세요.</p>
+      <SerachDiv>
+        <p><CiCircleInfo></CiCircleInfo>환자에 마우스를 올려 종료된 매칭 목록을 확인하세요.</p>
+        <div>
+          <input placeholder='찾으시는 간병인이름을 검색하세요'></input>
+          <button></button>
+        </div>
+      </SerachDiv>
+
       {/*진행중 매칭 */}
       <MatchSection>
         {activeTab === 'matching' && (
@@ -209,9 +214,7 @@ const MatchToCaregiver = () => {
                         <ProfileTextGray>
                           나이
                           <ProfileTextStrong>
-
                             {care.age} 세 ({care.gender === 'M' ? '남' : care.gender === 'F' ? '여' : '성별 정보 없음'})
-
                           </ProfileTextStrong>
                         </ProfileTextGray>
                       </CaregiverTextDiv>
@@ -268,13 +271,15 @@ const TitleDiv = styled.div`
   flex-direction: column;
   justify-content: space-between;
 `;
-const CaregiverSearch = styled(SearchBar)``;
 
 const SerachDiv = styled.div`
   display: flex;
-  align-items: flex-end;
-  width: 30%;
+  justify-content: space-between;
+  margin: auto;
+  width: 85%;
 `;
+
+
 const Title = styled.h1`
   font-size: ${({ theme }) => theme.fontSizes['2xl']};
   font-weight: ${({ theme }) => theme.fontWeights.bold};

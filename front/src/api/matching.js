@@ -7,7 +7,7 @@ export const matchingService = {
   getMatchginCargiver: async (patNo, status) => {
     try {
       const { data } = await api.get(API_ENDPOINTS.MATCHING.LIST(patNo, status));
-
+      console.log(patNo, status);
       return snakeToCamel(data);
     } catch (error) {
       if (error.response) {
