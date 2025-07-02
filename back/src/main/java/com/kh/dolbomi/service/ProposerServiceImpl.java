@@ -19,11 +19,15 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+@Slf4j
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class ProposerServiceImpl implements ProposerService {
 
@@ -34,7 +38,7 @@ public class ProposerServiceImpl implements ProposerService {
     private final UserRepositoryV2 userRepositoryV2;
     private final MatchingRepositoryV2 matchingRepositoryV2;
 
-
+    @Transactional(readOnly = true)
     @Override
     public ProposerDto.ResponseWithCount findProposersByHiringNo(Long hiringNo) {
         List<Proposer> proposers = proposerRepositoryV2.findByHiring_HiringNo(hiringNo);
@@ -49,7 +53,7 @@ public class ProposerServiceImpl implements ProposerService {
                 .build();
     }
 
-
+    @Override
     public Long createProposer(ProposerDto.Create createProposerDto) {
 
         Hiring hiring = hiringRepository.findById(createProposerDto.getHiring_no())
@@ -65,6 +69,7 @@ public class ProposerServiceImpl implements ProposerService {
         return proposer.getProposerNo();
     }
 
+    @Transactional(readOnly = true)
     @Override
     public boolean findProposerNo(Long hiringNo, Long caregiverNo) {
         return proposerRepository.existsByHiringNoAndCaregiverNo(hiringNo, caregiverNo);
@@ -80,7 +85,7 @@ public class ProposerServiceImpl implements ProposerService {
         proposerRepositoryV2.delete(proposer);
     }
 
-
+    @Override
     public void acceptMatching(Long resumeNo, Long hiringNo) {
 
         // 1. 프로포저 상태 업데이트
@@ -102,6 +107,17 @@ public class ProposerServiceImpl implements ProposerService {
                 .build();
 
         matchingRepositoryV2.save(matching);
+
+        // 3. 수락 상태인 신청 건수 조회
+        int acceptedCount = proposerRepositoryV2.countByHiringAndStatus(hiring, StatusEnum.Status.Y);
+        log.info("수락된 신청 건수: {}", acceptedCount);
+
+        // 4. maxApplication과 같으면 hiring_status를 'N'으로 변경
+        if (acceptedCount >= hiring.getMaxApplicants()) {
+            hiring.closeHiring();  // 'N'이 모집 마감
+            // 변경된 hiring 저장
+            hiringRepository.save(hiring);
+        }
     }
 
     @Override
@@ -112,6 +128,7 @@ public class ProposerServiceImpl implements ProposerService {
     }
 
     // 나의 지원현황 목록
+    @Transactional(readOnly = true)
     @Override
     public Page<ProposerDto.Response> getMyProposerLists(Long userNo, Pageable pageable) {
         Page<Proposer> proposers = proposerRepository.getMyProposerLists(StatusEnum.Status.Y, pageable, userNo);

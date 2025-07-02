@@ -63,5 +63,11 @@ public class Matching {
         }
     }
 
-
+    //리뷰 작성시 매칭이블에 리뷰번호 연결
+    public void connectReview(Review review) {
+        this.review = review;
+        if (review.getMatchingList() != null && review.getMatchingList().contains(this)) {
+            review.getMatchingList().add(this);
+        }
+    }
 }

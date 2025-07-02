@@ -35,7 +35,9 @@ public class MatcingServicelmpl implements MatchingService {
                         (Integer) row[3],
                         (StatusEnum.Gender) row[4],
                         (LocalDateTime) row[5],
-                        (StatusEnum.Status) row[6]
+                        (StatusEnum.Status) row[6],
+                        (Long) row[7]
+
                 ))
                 .collect(Collectors.toList());
 
@@ -67,7 +69,8 @@ public class MatcingServicelmpl implements MatchingService {
                         (Integer) row[2],
                         (StatusEnum.Gender) row[3],
                         (LocalDateTime) row[4],
-                        (StatusEnum.Status) row[5]
+                        (StatusEnum.Status) row[5],
+                        (Long) row[6]
                 ))
                 .collect(Collectors.toList());
     }

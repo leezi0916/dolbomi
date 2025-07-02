@@ -37,7 +37,7 @@ public class MatchingDto {
         private StatusEnum.Gender gender;
         private LocalDateTime start_date;
         private StatusEnum.Status status;
-
+        private Long review_no;
 
     }
 
@@ -53,6 +53,7 @@ public class MatchingDto {
         private StatusEnum.Gender pat_gender;
         private LocalDateTime start_date;
         private StatusEnum.Status status;
+        private Long review_no;
 
 
         public static ResponsePat from(Matching matching) {
@@ -63,6 +64,7 @@ public class MatchingDto {
                     .pat_gender(matching.getPatient().getPatGender())
                     .start_date(matching.getStartDate())
                     .status(matching.getStatus())
+                    .review_no(matching.getReview() != null ? matching.getReview().getReviewNo() : null)
                     .build();
         }
     }

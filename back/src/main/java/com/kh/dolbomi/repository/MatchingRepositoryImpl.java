@@ -15,9 +15,10 @@ public class MatchingRepositoryImpl implements MatchingRepository {
 
     public List<Object[]> findbyPatNo(Long patNo, StatusEnum.Status matchingStatus) {
         String query = """
-                SELECT m.matNo , u.userNo, u.userName , u.age , u.gender, m.startDate, m.status
+                               SELECT m.matNo , u.userNo, u.userName , u.age , u.gender, m.startDate, m.status, r.reviewNo
                 FROM Matching m
                 JOIN m.caregiver u
+                LEFT JOIN m.review r
                 WHERE m.patient.patNo = :patNo
                 AND m.status = :matchingStatus""";
 
@@ -30,9 +31,10 @@ public class MatchingRepositoryImpl implements MatchingRepository {
     @Override
     public List<Object[]> findbyCaregiverNo(Long caregiverNo, Status matchingStatus) {
         String query = """
-                    SELECT m.matNo, p.patName, p.patAge, p.patGender, m.startDate, m.status
+                    SELECT m.matNo, p.patName, p.patAge, p.patGender, m.startDate, m.status, r.reviewNo
                     FROM Matching m
                     JOIN m.patient p
+                     LEFT JOIN m.review r
                     WHERE m.status = :matchingStatus
                     AND m.caregiver.userNo = :caregiverNo
                 """;
