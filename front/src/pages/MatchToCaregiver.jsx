@@ -9,6 +9,7 @@ import { matchingService } from '../api/matching';
 import { patientService } from '../api/patient';
 import { useNavigate } from 'react-router-dom';
 import Paging from '../components/Paging';
+import ReviewModal from '../components/ReviewModal';
 
 const MatchToCaregiver = () => {
   const { user } = useUserStore();
@@ -25,6 +26,10 @@ const MatchToCaregiver = () => {
   const [endedCurrentPage, setEndedCurrentPage] = useState(1);
   const [endedTotalPage, setEndedTotalPage] = useState(1);
   const [selectedPatNo, setSelectedPatNo] = useState(null);
+
+  //리뷰 관련 모달
+  const [showReviewModal, setShowReviewModal] = useState(false);
+  const [selectedCaregiver, setSelectedCaregiver] = useState(null); // 간병인 정보
 
   useEffect(() => {
     const fetchAll = async () => {
@@ -62,6 +67,7 @@ const MatchToCaregiver = () => {
       const res = await matchingService.getEndedMatchingCaregivers(patNo, page - 1, 5, 'N');
       console.log(res);
       setEndedCaregiverList(res.content);
+
       setEndedTotalPage(res.totalPage || res.totalPages || 1);
       setEndedCurrentPage((res.currentPage || res.number || 0) + 1);
       setSelectedPatNo(patNo);
@@ -101,11 +107,11 @@ const MatchToCaregiver = () => {
             </SubTitle>
           </Tab>
         </TitleDiv>
-
         <SerachDiv>
           <CaregiverSearch></CaregiverSearch>
         </SerachDiv>
       </HeadSection>
+      <p>환자에 마우스를 올려 종료된 매칭 목록을 확인하세요.</p>
       {/*진행중 매칭 */}
       <MatchSection>
         {activeTab === 'matching' && (
@@ -203,7 +209,9 @@ const MatchToCaregiver = () => {
                         <ProfileTextGray>
                           나이
                           <ProfileTextStrong>
+
                             {care.age} 세 ({care.gender === 'M' ? '남' : care.gender === 'F' ? '여' : '성별 정보 없음'})
+
                           </ProfileTextStrong>
                         </ProfileTextGray>
                       </CaregiverTextDiv>
@@ -211,7 +219,15 @@ const MatchToCaregiver = () => {
                         <CareLogButton onClick={() => navigate(`/caregiverProfile/${Number(care.caregiverNo)}`)}>
                           간병인 정보
                         </CareLogButton>
-                        <ReportButton>신고하기</ReportButton>
+                        <ReportButton
+                          onClick={() => {
+                            console.log('selected care:', care);
+                            setSelectedCaregiver(care); // 선택한 매칭 정보 저장
+                            setShowReviewModal(true); // 모달 표시
+                          }}
+                        >
+                          리뷰 작성
+                        </ReportButton>
                       </CargiverButtonDiv>
                     </CargiverWrap>
                   ))}
@@ -225,12 +241,18 @@ const MatchToCaregiver = () => {
                   </PageWrapper>
                 </>
               ) : (
-                <p>환자에 마우스를 올려 종료된 매칭 목록을 확인하세요.</p>
+                <p></p>
               )}
             </div>
           </ProfileCardPair>
         )}
       </MatchSection>
+      {showReviewModal && (
+        <>
+          {console.log('ReviewModal에 전달된 matNo:', selectedCaregiver?.matNo)}
+          <ReviewModal matNo={selectedCaregiver?.matNo} onClose={() => setShowReviewModal(false)} />
+        </>
+      )}
     </>
   );
 };

@@ -6,7 +6,6 @@ import com.kh.dolbomi.dto.HiringDto.Response;
 import com.kh.dolbomi.dto.PageResponse;
 import com.kh.dolbomi.dto.SearchDataDto;
 import com.kh.dolbomi.service.HiringService;
-import jakarta.validation.Valid;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -56,8 +55,8 @@ public class HiringController {
     //돌봄대상자 모집 리스트 불러오기
     @GetMapping("/list")
     public ResponseEntity<PageResponse<HiringDto.Response>> getPagedHiringList(
-            Pageable pageable,
-            @Valid SearchDataDto searchDataDto
+            Pageable pageable
+//          ,@Valid SearchDataDto searchDataDto
     ) {
 //        @PageableDefault(size = 10, sort = "createDate", direction = Sort.Direction.DESC)
 

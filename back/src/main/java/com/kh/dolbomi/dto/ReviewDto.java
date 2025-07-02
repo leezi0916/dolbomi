@@ -7,6 +7,7 @@ import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 public class ReviewDto {
@@ -88,5 +89,18 @@ public class ReviewDto {
                     .review_update_date(review.getUpdateDate())
                     .build();
         }
+    }
+
+    @Getter
+    @Setter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    @Builder
+    public static class Create {
+        private Long mat_no;
+        private Long review_writer_no;
+        private String review_content;
+        private BigDecimal score;
+        
     }
 }

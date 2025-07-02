@@ -45,12 +45,14 @@ import QuestionCreate from './pages/question/QuestionCreate';
 import QuestionHistory from './pages/question/QuestionHistory';
 import PrivacyPolicy from './pages/legal/PrivacyPolicy';
 import TermsOfService from './pages/legal/TermsOfService';
+import Modal from './components/Modal';
 import MyProposer from './pages/MyProposer';
 import CareGiverCommunity from './pages/community/CareGiverCommunity';
 import GuardianCommunity from './pages/community/GuardianCommunity';
 import CommunityDetail from './pages/community/CommunityDetail';
 import CreateCommuBoardForm from './pages/community/CreateCommuBoardForm';
 import QuestionDetail from './pages/question/QuestionDetail';
+
 
 function AppRoutes() {
   const navigate = useNavigate();
@@ -116,6 +118,7 @@ function AppRoutes() {
           <Route path="/privacy-policy" element={<PrivacyPolicy />} />
           <Route path="/terms-of-service" element={<TermsOfService />} />
           <Route path="/contact" element={<ContactPage />} />
+          <Route path="/modal" element={<Modal />} />
         </Routes>
       </Layout>
     </>

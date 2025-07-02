@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { Pagination, Stack } from '@mui/material';
 
 const Paging = ({ totalPage, currentPage, chagneCurrentPage }) => {
+  console.log(totalPage , currentPage)
   return (
     <>
       <PaginationWrapper>

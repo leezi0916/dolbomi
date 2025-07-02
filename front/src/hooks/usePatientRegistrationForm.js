@@ -1,8 +1,8 @@
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
+import { patientService } from '../api/patient';
 import { useNavigate } from 'react-router-dom';
-
 
 //환자등록 폼의 유효성 검사 스키마
 const patientsSchema = yup.object().shape({
@@ -37,8 +37,11 @@ const patientsSchema = yup.object().shape({
     .max(100, '주소는 100자 이하로 입력해주세요.'),
 });
 
-export const usepatientRegistrationForm = () => {
 
+
+export const usepatientRegistrationForm = (user) => {
+  
+  const navigate = useNavigate();
 
   //react-hook-form으로 폼 상태 초기화및 유효성 검사
   const {
@@ -68,6 +71,29 @@ export const usepatientRegistrationForm = () => {
     return `${numbersOnly.slice(0, 3)}-${numbersOnly.slice(3, 7)}-${numbersOnly.slice(7, 11)}`;
   };
 
+  const onSubmit = async (data) => {
+    console.log(data)
+    try {
+      await patientService.postNewPatient({
+        guardianNo: user.userNo,
+        patName: data.patName,
+        patAge: data.patAge,
+        patPhone: data.patPhone,
+        patAddress: data.patAddress,
+        patGender: data.patGender,
+        patHeight: data.patHeight,
+        patWeight: data.patWeight,
+        patContent: data.patContent,
+        diseaseTags: data.tags,
+      });
+      navigate("/modal")
+     
+    } catch (error) {
+      // toast.error('돌봄대상자 등록 중 문제가 발생하였습니다.');
+      console.error('돌봄대상자 등록 에러 : ', error);
+    }
+  };
+
   //컴포넌트에서 사용할 값들 반환
   return {
     register,
@@ -75,6 +101,7 @@ export const usepatientRegistrationForm = () => {
    errors, isSubmitting , //유효성 에러및 제출중 상태
     setValue,
     formatPhoneNumber,
+    onSubmit,
     watch, // watch 함수를 반환합니다.
   };
 };
