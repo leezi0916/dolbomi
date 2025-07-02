@@ -39,6 +39,19 @@ public class MatchingDto {
         private StatusEnum.Status status;
         private Long review_no;
 
+        public static Response toDto(Matching matching) {
+            return Response.builder()
+                    .mat_no(matching.getMatNo())
+                    .caregiver_no(matching.getCaregiver().getUserNo())
+                    .user_name(matching.getCaregiver().getUserName())
+                    .age(matching.getCaregiver().getAge())
+                    .gender(matching.getCaregiver().getGender())
+                    .start_date(matching.getStartDate())
+                    .status(matching.getStatus())
+                    .review_no(matching.getReview() != null ? matching.getReview().getReviewNo() : null)
+                    .build();
+        }
+
     }
 
     @Getter
