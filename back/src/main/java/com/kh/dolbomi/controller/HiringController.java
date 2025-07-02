@@ -11,7 +11,6 @@ import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -45,7 +44,7 @@ public class HiringController {
     // 내 구인글 조회
     @GetMapping("/my-list")
     public ResponseEntity<PageResponse<HiringDto.Response>> getMyHiringLists(
-            @PageableDefault(size = 10, sort = "updateDate", direction = Sort.Direction.DESC) Pageable pageable,
+            @PageableDefault(size = 10) Pageable pageable,
             @RequestParam Long userNo) {
 
         return ResponseEntity.ok(new PageResponse<>(hiringService.getMyHiringLists(userNo, pageable)));

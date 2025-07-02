@@ -88,6 +88,7 @@ public class HiringRepositoryImpl implements HiringRepository {
                   SELECT h
                   FROM Hiring h
                   WHERE h.status = :status AND h.user.userNo = :userNo
+                  ORDER BY h.updateDate DESC 
                 """;
 
         List<Hiring> hirings = em.createQuery(query, Hiring.class)

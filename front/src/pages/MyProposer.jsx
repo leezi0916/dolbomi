@@ -5,10 +5,17 @@ import Paging from '../components/Paging';
 import theme from '../styles/theme';
 import { toast } from 'react-toastify';
 import { proposerService } from '../api/propose';
+import useUserStore from '../store/userStore';
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 const MyProposer = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [proposerList, setProserList] = useState([]);
+
+  const navigate = useNavigate();
+
+  const { user } = useUserStore();
 
   useEffect(() => {
     const fetchPostList = async () => {
@@ -26,6 +33,8 @@ const MyProposer = () => {
   const chagneCurrentPage = (value) => {
     setCurrentPage(value);
   };
+
+  console.log(proposerList);
 
   return (
     <Wrapper>
@@ -52,24 +61,40 @@ const MyProposer = () => {
               </td>
             </tr>
           ) : (
-            proposerList.content.map((proposer) => (
-              <tr key={p.no}>
-                <td>{p.no}</td>
-                <td>{p.title}</td>
-                <td>{p.date}</td>
-                <td>{p.match}</td>
-                <td style={{ color: p.status === '모집 중' ? theme.colors.success : theme.colors.gray[4] }}>
-                  {p.status}
-                </td>
-                <td>
-                  {p.status === '모집 중' ? (
-                    <span style={{ fontSize: 20, color: 'gray' }}>-</span>
-                  ) : (
-                    <FaTimes size={20} style={{ cursor: 'pointer', verticalAlign: '-8px' }} />
-                  )}
-                </td>
-              </tr>
-            ))
+            proposerList.content.map((proposer, index) => {
+              const total = proposerList.totalCount;
+              const currentPage = proposerList.currentPage;
+              const size = proposerList.pageSize;
+
+              const displayNo = total - (currentPage * size + index);
+
+              return (
+                <tr key={proposer.proposerNo} onClick={() => navigate(`/hireDetail/${proposer.hiringNo}`)}>
+                  <td>{displayNo}</td>
+                  <td>{proposer.hiringTitle}</td>
+                  <td>{proposer.proposerDate.slice(0, 10)}</td>
+                  <td>{proposer.userName}</td>
+                  <td style={{ color: proposer.hiringStatus === 'Y' ? theme.colors.success : theme.colors.gray[4] }}>
+                    {proposer.hiringStatus === 'Y' ? '모집중' : '모집마감'}
+                  </td>
+                  <td>
+                    {proposer.hiringStatus === 'Y' ? (
+                      <span style={{ fontSize: 20, color: 'gray' }}>-</span>
+                    ) : (
+                      <FaTimes
+                        onClick={(e) => {
+                          e.stopPropagation(); // 상위 tr 클릭 이벤트 막기
+                          if (confirm('정말 내역을 삭제하시겠습니까?')) {
+                          }
+                        }}
+                        size={20}
+                        style={{ cursor: 'pointer', verticalAlign: '-8px' }}
+                      />
+                    )}
+                  </td>
+                </tr>
+              );
+            })
           )}
         </TBody>
       </Table>
@@ -134,6 +159,7 @@ const THead = styled.thead`
 
 const TBody = styled.tbody`
   tr {
+    cursor: pointer;
     background-color: ${({ theme }) => theme.colors.white};
     /* box-shadow: ${({ theme }) => theme.shadows.sm}; */
     border-radius: ${({ theme }) => theme.borderRadius.lg};

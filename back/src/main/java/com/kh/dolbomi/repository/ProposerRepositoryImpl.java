@@ -87,6 +87,7 @@ public class ProposerRepositoryImpl implements ProposerRepository {
                     FROM Proposer p
                     WHERE p.caregiver.userNo = :userNo
                     AND p.hiring.status = :status
+                    ORDER BY p.proposerDate DESC
                 """;
         List<Proposer> proposers = em.createQuery(query, Proposer.class)
                 .setParameter("status", status)
