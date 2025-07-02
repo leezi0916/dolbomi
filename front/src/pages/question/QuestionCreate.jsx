@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { Btn, Input, Page } from '../../styles/common/Board';
-import { BoardMenu, MenuDiv, MenuLink, PageInfo, PageTitle, PageTop } from './style/Question.styles';
+import { BoardMenu, MenuDiv, MenuLink, PageInfo, PageTitle, PageTop, Textarea } from './style/Question.styles';
 import styled from 'styled-components';
 
 const QuestionCreate = () => {
@@ -64,13 +64,6 @@ const PageBody = styled.div`
       padding-right: 10px;
     }
   }
-`;
-const Textarea = styled.textarea`
-  width: 100%;
-  min-height: 200px;
-  resize: none;
-  border: 1px solid ${({ theme }) => theme.colors.gray[5]};
-  border-radius: 4px;
 `;
 
 const Button = styled(Btn)`

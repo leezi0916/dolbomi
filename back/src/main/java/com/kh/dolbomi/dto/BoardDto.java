@@ -53,6 +53,7 @@ public class BoardDto {
                     .board_content(board.getBoardContent())
                     .create_date(board.getCreateDate())
                     .count(board.getCount())
+                    .user_no(board.getUser().getUserNo())
                     .user_name(board.getUser().getUserName())
                     .role(board.getRole())
                     .questionStatus(board.getQuestionStatus())
