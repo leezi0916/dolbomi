@@ -47,6 +47,16 @@ sgis:
   consumer:
     key: c99f4eacee1f4cb78217
     secret: 145bbe8179aa42a891c5
+
+#돌보미 AWS 계정 및 S3버킷
+aws:
+  region: ap-northeast-2
+  credentials:
+    access-key: AKIAVALFMJLDMBNKXKJG
+    secret-key: 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
+
+  s3:
+    bucket: project2025-dolbomi
 ---
 spring:
   config:

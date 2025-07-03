@@ -4,7 +4,7 @@ import { Link, useNavigate, useParams } from 'react-router-dom';
 import { commuService } from '../../api/community';
 import { toast } from 'react-toastify';
 import { ClipLoader } from 'react-spinners';
-import { Btn, LinkBtn, Page } from '../../styles/common/Board';
+import { Btn, Page } from '../../styles/common/Board';
 import theme from '../../styles/theme';
 import styled from 'styled-components';
 import {
@@ -84,7 +84,23 @@ const QuestionDetail = () => {
   if (!communityDetail) {
     return <Page>게시글을 찾을 수 없습니다.</Page>;
   }
+  const handleSaveReply = async () => {
+    try {
+      const replyData = {
+        board_no: boardNo,
+        user_no: userNo,
+        reply_content: editedContent,
+      };
 
+      await commuService.createReplyQusetion(replyData); // API 호출
+      navigate(0);
+    } catch (error) {
+      toast.error(error.message);
+      const errorMessage = '등록에 실패했습니다. 다시 시도해주세요.';
+      setError(errorMessage);
+      toast.error(errorMessage);
+    }
+  };
   return (
     <Page>
       <PageInfo>
@@ -169,7 +185,7 @@ const QuestionDetail = () => {
             )}
           </div>
           {replyMode !== 'none' && (
-            <CommentSelect>
+            <CommentSelect style={{ padding: '10px' }}>
               {replyMode === 'update' &&
                 communityDetail.reply.map((reply) => (
                   <div key={reply.replyNo} style={{ width: '100%', gap: '8px' }}>
@@ -189,7 +205,7 @@ const QuestionDetail = () => {
                   <Icons src="/src/assets/icons/icon_작성자.png" alt="" />
                   <div>{userName}</div>
                   <div style={{ marginLeft: 'auto' }}>
-                    <Btn>작성</Btn>
+                    <Btn onClick={handleSaveReply}>작성</Btn>
                     <Btn style={{ margin: '0 10PX' }} onClick={handleCreateClick}>
                       취소
                     </Btn>

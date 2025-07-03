@@ -52,7 +52,7 @@ const CommunityDetail = () => {
     };
 
     loadCommunity();
-  }, [boardNo]);
+  }, [boardNo, reset]);
 
   if (loading) {
     return (
@@ -186,7 +186,7 @@ const CommunityDetail = () => {
         </PageBody>
         <CommentSelectBox>
           <div style={{ gap: '6px', paddingLeft: '10px' }}>
-            <div style={{ fontWeight: theme.fontWeights.bold }}>답변</div>
+            <div style={{ fontWeight: theme.fontWeights.bold }}>댓글</div>
             <div style={{ color: theme.colors.primary, fontWeight: theme.fontWeights.bold }}>
               {communityDetail.reply.length}
             </div>

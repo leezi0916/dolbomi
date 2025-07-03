@@ -15,6 +15,7 @@ public interface MatchingService {
 
     List<MatchingDto.ResponsePat> getMatchingListCaregiver(Long caregiverNo, Status matchingStatus);
 
+
     Long changeStatus(Long matNo, Status matchingStatus);
 
     // 종료된 매칭 목록 페이징 조회 - 간병인 version
