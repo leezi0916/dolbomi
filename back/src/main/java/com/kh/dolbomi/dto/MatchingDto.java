@@ -52,6 +52,7 @@ public class MatchingDto {
                     .build();
         }
 
+
     }
 
     @Getter
@@ -61,6 +62,7 @@ public class MatchingDto {
     @Builder
     public static class ResponsePat {
         private Long mat_no;
+        private Long pat_no;
         private String pat_name;
         private Integer pat_age;
         private StatusEnum.Gender pat_gender;
@@ -71,6 +73,7 @@ public class MatchingDto {
         public static ResponsePat from(Matching matching) {
             return ResponsePat.builder()
                     .mat_no(matching.getMatNo())
+                    .pat_no(matching.getPatient().getPatNo())
                     .pat_name(matching.getPatient().getPatName())
                     .pat_age(matching.getPatient().getPatAge())
                     .pat_gender(matching.getPatient().getPatGender())

@@ -29,10 +29,10 @@ public class MatchingController {
     @GetMapping
     public ResponseEntity<List<MatchingDto.Response>> getMatchingList(
             @RequestParam("pat_no") Long patNo,
-            @RequestParam("status") Status matchingStatus
+            @RequestParam("status") Status status
     ) {
-        System.out.println("patNo" + patNo + "matchingStatus : " + matchingStatus);
-        return ResponseEntity.ok(matchingService.getMatchingList(patNo, matchingStatus));
+
+        return ResponseEntity.ok(matchingService.getMatchingCargiverList(patNo, status));
     }
 
 
