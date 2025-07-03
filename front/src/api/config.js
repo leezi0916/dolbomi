@@ -43,7 +43,7 @@ export const API_ENDPOINTS = {
     BASE: '/review/v1',
     SIMPLE_LIST: '/review/v1/simple-list',
     LIST: (currentPage, userNo) => `/review/v1/list?page=${currentPage - 1}&userNo=${userNo}`,
-    DETAIL: (userNo) => `/reviews/v1?user_no=${userNo}`,
+    DETAIL: (currentPage, resumeNo) => `/review/v1/detail?page=${currentPage - 1}&resumeNo=${resumeNo}`,
   },
 
   HIRING: {

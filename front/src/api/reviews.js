@@ -74,9 +74,18 @@ export const reviewService = {
     }
   },
 
-  getReviewsByUser: async (userNo) => {
-    const response = await api.get(API_ENDPOINTS.REVIEWS.DETAIL(userNo));
-
-    return snakeToCamel(response).data;
+  //특정 이력서안에 간병인에 대한 리뷰
+  getResumeDetailReviews: async (currentPage, resumeNo) => {
+    try {
+      const { data } = await api.get(API_ENDPOINTS.REVIEWS.DETAIL(currentPage, resumeNo));
+      console.log(data);
+      return snakeToCamel(data);
+    } catch (error) {
+      if (error.response) {
+        const message = error.response?.data?.message || '리뷰를 불러오는데 실패했습니다.';
+        throw new Error(message);
+      }
+    }
+    throw new Error('서버 통신 불량');
   },
 };
