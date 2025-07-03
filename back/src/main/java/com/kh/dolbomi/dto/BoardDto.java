@@ -57,16 +57,7 @@ public class BoardDto {
                     .user_name(board.getUser().getUserName())
                     .role(board.getRole())
                     .questionStatus(board.getQuestionStatus())
-                    .files(
-                            board.getFiles().stream()
-                                    .map(file -> FileDto.Response.builder()
-                                            .fileNo(file.getFileNo())
-                                            .originName(file.getOriginName())
-                                            .changeName(file.getChangeName())
-                                            .filePath(file.getFilePath())
-                                            .build())
-                                    .toList()
-                    )
+
                     .reply(
                             board.getReply().stream()
                                     .map(reply -> ReplyDto.Response.builder()

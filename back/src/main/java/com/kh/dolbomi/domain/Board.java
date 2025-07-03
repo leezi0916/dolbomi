@@ -63,19 +63,11 @@ public class Board {
     @Column(name = "QUESTION_STATUS", length = 1)
     @Enumerated(EnumType.STRING)
     private StatusEnum.QuestionStatus questionStatus;
-
-    @OneToMany(mappedBy = "board", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<File> files = new ArrayList<>();
-
+    
     @OneToMany(mappedBy = "board", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Reply> reply = new ArrayList<>();
 
     private int count;
-
-    public void addFile(File file) {
-        files.add(file);
-        file.setBoard(this); // 양방향 연관관계 설정
-    }
 
     public void changeUser(User user) {
         this.user = user;

@@ -12,6 +12,7 @@ import { Link } from 'react-router-dom';
 import { hiringService } from '../api/hiring';
 import Paging from '../components/Paging';
 import { addressService } from '../api/address';
+import { Button } from '@mui/material';
 
 const HireList = () => {
   const [hireLists, setHireLists] = useState([]);
@@ -35,11 +36,12 @@ const HireList = () => {
   const [selectedCd, setSelectedCd] = useState(null);
   const [selectedRegion, setSelectedRegion] = useState('');
   const [selectedSgg, setSelectedSgg] = useState('');
+  const [updateData, setUpdateData] = useState({});
 
   // 1. 컴포넌트가 처음 마운트될 때 전체 리스트를 불러옵니다.
   useEffect(() => {
-    loadHireLists(page - 1, size, data); // API에선 0부터 시작일 가능성 있어 -1 처리
-  }, [page, size]);
+    loadHireLists(page - 1, size, updateData); // API에선 0부터 시작일 가능성 있어 -1 처리
+  }, [page, size, updateData]);
 
   // 이름 첫글자 O 처리하기
   const maskName = (name) => {
@@ -54,7 +56,7 @@ const HireList = () => {
 
   const loadHireLists = async (pageNumber, pageSize, searchData) => {
     try {
-      console.log('돌봄대상자 리스트 JSON 데이터:', data);
+      console.log('검색조건 JSON 데이터:', updateData);
       setLoading(true);
       setError(null);
       const res = await hiringService.getHiringList({ page: pageNumber, size: pageSize, searchData });
@@ -76,14 +78,24 @@ const HireList = () => {
   // SearchBar에서 검색 버튼을 눌렀을 때 호출되는 함수
   const handleSearchSubmit = async (keyword) => {
     // SearchBar로부터 받은 키워드를 searchKeyword 상태에 저장합니다.
-    const updatedData = { ...data, keyword }; // 최신 상태 생성
-    setData(updatedData); // 상태 업데이트
-    setPage(1);
-    await loadHireLists(updatedData);
-  };
 
-  const handleCheckChange = (home) => {
-    setData({ ...data, home: !home });
+    let finalRegionValue = ``;
+    if (selectedSgg) {
+      finalRegionValue = selectedSgg;
+    } else {
+      finalRegionValue = selectedRegion;
+    }
+
+    const finalForm = {
+      ...data,
+      keyword: keyword,
+      region: finalRegionValue.fullAddr,
+    }; // 최신 상태 생성
+
+    setUpdateData(finalForm); // 상태 업데이트
+    setPage(1);
+
+    await loadHireLists(updateData);
   };
 
   //상세검색 눌렀는가? 창 오픈
@@ -152,11 +164,11 @@ const HireList = () => {
 
   const getRegion = async () => {
     try {
+      setSelectedCd(null);
       setError(null);
       const res = await addressService.getRegionList(selectedCd);
       console.log('HireList에 온 값:', res);
       setRegion(res);
-      console.log(region);
     } catch (err) {
       setError('행정구역 로드 실패.\n' + err);
     }
@@ -165,6 +177,10 @@ const HireList = () => {
   const handleRegionChange = async (region) => {
     setSelectedCd(region.cd);
     setSelectedRegion(region);
+
+    //지역을 바꾸면 시군구도 초기화되게
+    setSelectedSgg(null);
+    setSgg([]);
 
     try {
       const sgg = await addressService.getRegionList(region.cd);
@@ -176,7 +192,7 @@ const HireList = () => {
 
   const handleSggChange = async (sgg) => {
     try {
-      setSgg(sgg);
+      setSelectedSgg(sgg);
     } catch (error) {
       console.error('시군구 조회 실패:', error);
     }
@@ -184,47 +200,8 @@ const HireList = () => {
 
   return (
     <>
-      {/* test */}
       <SearchSection>
         <Title>돌봄대상자 모집</Title>
-
-        {/* 테스트공간 */}
-        <button onClick={getRegion}>지역Test</button>
-        <RegionDiv>
-          {region.map((region, index) => (
-            <RegionLabel key={index}>
-              <input
-                type="radio"
-                name="region"
-                value={region.cd}
-                checked={selectedCd === region.cd}
-                onChange={() => handleRegionChange(region)}
-              />
-              {region.addrName}
-            </RegionLabel>
-          ))}
-        </RegionDiv>
-        <p>선택된 지역: {selectedRegion.addrName}</p>
-        <br />
-        <RegionDiv>
-          {sgg.map((sgg, index) => (
-            <RegionLabel key={index}>
-              <input
-                type="radio"
-                name="sgg"
-                value={sgg}
-                // checked={}
-                onChange={() => handleSggChange(sgg)}
-              />
-              {sgg.addrName}
-            </RegionLabel>
-          ))}
-        </RegionDiv>
-        <p>선택된 시군구: {selectedRegion.addrName}</p>
-        <br />
-        <p>전체 주소: {sgg.fullAddr}</p>
-        <br />
-        {/* 테스트끝 */}
 
         <SearchContainer2>
           <Search>
@@ -234,70 +211,118 @@ const HireList = () => {
           {visible && (
             <Detail $visible={visible}>
               <Item>
-                <SelectBox name="region" value={data.region} onChange={dataInfo}>
-                  <option value="">지역</option>
-                  <option value="서울">서울</option>
-                  <option value="부산">부산</option>
-                  <option value="제주">제주</option>
-                  {/* 더 많은 지역 옵션 */}
-                </SelectBox>
+                <RegionBtn onClick={getRegion}>지역선택</RegionBtn>
               </Item>
-              <DateBox>
-                <DateInput name="startDate" type="date" value={data.startDate} onChange={dataInfo} />
-                <DateSeparator>-</DateSeparator>
-                <DateInput name="endDate" type="date" value={data.endDate} onChange={dataInfo} />
-              </DateBox>
+              {/* 테스트공간 */}
               <Item>
-                <ACCOUNT
-                  name="account"
-                  type="number"
-                  min="0"
-                  step="100"
-                  placeholder="시급"
-                  value={data.account}
-                  onChange={dataInfo}
-                />
+                <RegionDiv>
+                  {region.map((region, index) => (
+                    <RegionLabel key={index}>
+                      <input
+                        type="radio"
+                        name="region"
+                        value={region.cd}
+                        checked={selectedCd === region.cd}
+                        onChange={() => handleRegionChange(region)}
+                      />
+                      {region.addrName}
+                    </RegionLabel>
+                  ))}
+                </RegionDiv>
               </Item>
+              <Item>
+                <RegionDiv>
+                  {sgg.map((sgg, index) => (
+                    <RegionLabel key={index}>
+                      <input
+                        type="radio"
+                        name="sgg"
+                        value={sgg}
+                        // checked={}
+                        onChange={() => handleSggChange(sgg)}
+                      />
+                      {sgg.addrName}
+                    </RegionLabel>
+                  ))}
+                </RegionDiv>
+              </Item>
+              <Item>
+                {selectedRegion && <p>지역 :{selectedSgg ? selectedSgg.fullAddr : selectedRegion.fullAddr}</p>}
+              </Item>
+              {/* 테스트끝 */}
+              <SearchSelect>
+                <DateBox>
+                  <DateContentBox>
+                    <SearchTitle> 시작일: </SearchTitle>
+                    <DateInput name="startDate" type="date" value={data.startDate} onChange={dataInfo} />
+                  </DateContentBox>
+                  <DateContentBox>
+                    <SearchTitle> 종료일: </SearchTitle>
+                    <DateInput name="endDate" type="date" value={data.endDate} onChange={dataInfo} />
+                  </DateContentBox>
+                </DateBox>
+                <Items>
+                  <Item>
+                    <SearchTitle>근무유형: </SearchTitle>
+                    <SelectBox>
+                      <option value="">전체</option>
+                      <option value="">입주</option>
+                      <option value="">출퇴근</option>
+                    </SelectBox>
+                  </Item>
+                  <Item>
+                    <SearchTitle>시급: </SearchTitle>
+                    <ACCOUNT
+                      name="account"
+                      type="number"
+                      min="0"
+                      step="1000"
+                      placeholder="시급"
+                      value={data.account}
+                      onChange={dataInfo}
+                    />
+                  </Item>
+                </Items>
+                <RadioGroup2>
+                  <SearchTitle>성별:</SearchTitle>
+                  <RadioWrapper>
+                    {/* checked prop 전달 */}
+                    <input
+                      type="radio"
+                      id="male"
+                      name="patGender"
+                      value="M"
+                      checked={data.patGender === 'M'}
+                      onChange={dataInfo}
+                    />
+                    <Label htmlFor="male">남성</Label>
+                  </RadioWrapper>
+                  <RadioWrapper>
+                    {/* checked prop 전달 */}
+                    <input
+                      type="radio"
+                      id="female"
+                      name="patGender"
+                      value="F"
+                      checked={data.patGender === 'F'}
+                      onChange={dataInfo}
+                    />
+                    <Label htmlFor="female">여성</Label>
+                  </RadioWrapper>
+                  <RadioWrapper>
+                    <input
+                      type="radio"
+                      id="anyGender"
+                      name="patGender"
+                      value="" // 성별 무관을 위해 빈 문자열로 설정
+                      checked={data.patGender === ''}
+                      onChange={dataInfo}
+                    />
+                    <Label2 htmlFor="anyGender">성별 무관</Label2>
+                  </RadioWrapper>
+                </RadioGroup2>
 
-              <RadioGroup2>
-                <RadioWrapper>
-                  {/* checked prop 전달 */}
-                  <input
-                    type="radio"
-                    id="male"
-                    name="patGender"
-                    value="M"
-                    checked={data.patGender === 'M'}
-                    onChange={dataInfo}
-                  />
-                  <Label htmlFor="male">남성</Label>
-                </RadioWrapper>
-                <RadioWrapper>
-                  {/* checked prop 전달 */}
-                  <input
-                    type="radio"
-                    id="female"
-                    name="patGender"
-                    value="F"
-                    checked={data.patGender === 'F'}
-                    onChange={dataInfo}
-                  />
-                  <Label htmlFor="F">여성</Label>
-                </RadioWrapper>
-                <RadioWrapper>
-                  <input
-                    type="radio"
-                    id="anyGender"
-                    name="patGender"
-                    value="" // 성별 무관을 위해 빈 문자열로 설정
-                    checked={data.patGender === ''}
-                    onChange={dataInfo}
-                  />
-                  <Label2 htmlFor="anyGender">성별 무관</Label2>
-                </RadioWrapper>
-              </RadioGroup2>
-              <Item>
-                <AccommodationCheckboxLabel>
+                {/* <AccommodationCheckboxLabel>
                   <HiddenCheckbox
                     name="home"
                     type="checkbox"
@@ -309,15 +334,13 @@ const HireList = () => {
                     {handleCheckChange && <IoCheckmarkOutline size="20px" color="white" />}
                   </StyledCheckbox>
                   상주 가능 여부
-                </AccommodationCheckboxLabel>
-              </Item>
+                </AccommodationCheckboxLabel> */}
+              </SearchSelect>
             </Detail>
           )}
         </SearchContainer2>
       </SearchSection>
-
       {/* 여기부턴 돌봄 대상자 리스트 */}
-
       {loading ? (
         <LoaderWrapper>
           <ClipLoader size={50} color={({ theme }) => theme.colors.primary} />
@@ -381,12 +404,20 @@ const Title = styled.h1`
 
 const Detail = styled.div`
   margin-top: 30px;
-  grid-template-columns: 160px repeat(2, 1fr);
-  grid-auto-rows: min-content;
-  row-gap: 20px;
   user-select: none;
+  display: ${({ $visible }) => ($visible ? 'flex' : 'none')};
+  flex-direction: column;
+`;
 
-  display: ${({ $visible }) => ($visible ? 'grid' : 'none')};
+const RegionBtn = styled.button`
+  border: 1px solid ${({ theme }) => theme.colors.gray[3]};
+  border-radius: ${({ theme }) => theme.borderRadius.full};
+  background-color: ${({ theme }) => theme.colors.secondary};
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* 기본 그림자 */
+  margin-bottom: 10px;
+  &:hover {
+    transform: scale(0.95); /* 5% 확대 */
+  }
 `;
 
 const SearchContainer2 = styled(Container)`
@@ -412,7 +443,7 @@ const SearchSection = styled(Section)`
 `;
 
 const SelectBox = styled.select`
-  width: 80%;
+  width: 120px;
   height: 50px;
   padding: 0 ${({ theme }) => theme.spacing[5]};
   border: none;
@@ -429,21 +460,24 @@ const DateInput = styled.input`
   background-color: white;
 `;
 
-const DateSeparator = styled.span`
-  margin: 0 5px;
-  align-items: center;
+const SearchTitle = styled.span`
+  text-align: end;
+  margin: 0 20px 0 5px;
+  width: 80px;
   font-weight: ${({ theme }) => theme.fontWeights.bold};
   color: ${({ theme }) => theme.colors.gray[1]};
 `;
 
 const RadioGroup2 = styled.div`
   display: flex;
+  grid-column: span 1;
   align-items: center;
   gap: ${({ theme }) => theme.spacing[4]};
 `;
 
 const Label = styled.label`
-  width: 30px;
+  padding-left: 10px;
+  width: 40px;
   text-align: center;
 `;
 
@@ -453,8 +487,9 @@ const Label2 = styled.label`
 `;
 const RadioWrapper = styled.div`
   display: flex;
+  gap: 0;
   align-items: center;
-  gap: ${({ theme }) => theme.spacing[3]};
+  /* gap: ${({ theme }) => theme.spacing[3]}; */
 
   // 'checked' prop을 받아서 스타일을 동적으로 적용합니다.
   input[type='radio'] {
@@ -498,7 +533,7 @@ const RadioWrapper = styled.div`
 `;
 
 const ACCOUNT = styled.input`
-  width: 80%;
+  width: 150px;
   height: 50px;
   padding: 0 ${({ theme }) => theme.spacing[5]};
   border: none;
@@ -641,20 +676,36 @@ const CareContent = styled.span`
 const Item = styled.div`
   display: flex;
   align-items: center;
-  justify-content: start;
 `;
-
+const Items = styled.div`
+  display: flex;
+  align-items: center;
+  grid-column: span 1;
+`;
 const Search = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  grid-column: span 3;
+`;
+
+const SearchSelect = styled.div`
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-auto-rows: min-content;
+  row-gap: 20px;
 `;
 
 const DateBox = styled.div`
+  margin-top: 20px;
+  display: flex;
+  grid-column: span 4;
+  width: 100%;
+  gap: 20px;
+`;
+
+const DateContentBox = styled.div`
   display: flex;
   align-items: center;
-  grid-column: span 2;
   width: 100%;
 `;
 
