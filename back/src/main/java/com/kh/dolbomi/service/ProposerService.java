@@ -25,4 +25,7 @@ public interface ProposerService {
 
     // 나의 지원현황 목록
     Page<Response> getMyProposerLists(Long userNo, Pageable pageable);
+
+    // 나의 지원현황 내역삭제
+    Long deleteProposerHistory(Long proposerNo);
 }

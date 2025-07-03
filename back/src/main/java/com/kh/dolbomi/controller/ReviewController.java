@@ -36,7 +36,7 @@ public class ReviewController {
     // 내가쓴 리뷰, 내가 받은 리뷰 조회
     @GetMapping("/list")
     public ResponseEntity<Map<String, PageResponse<ReviewDto.Response>>> getReviewsByPage(
-            @PageableDefault(size = 6, sort = "updateDate", direction = Sort.Direction.DESC) Pageable pageable,
+            @PageableDefault(size = 6) Pageable pageable,
             @RequestParam Long userNo) {
 
         Map<String, PageResponse<ReviewDto.Response>> result = new HashMap<>();
@@ -44,6 +44,15 @@ public class ReviewController {
         result.put("receivedReview", new PageResponse<>(reviewService.getReceivedReviewList(pageable, userNo)));
 
         return ResponseEntity.ok(result);
+    }
+
+    // 특정 간병인의 이력서 -> 리뷰정보
+    @GetMapping("/detail")
+    public ResponseEntity<PageResponse<ReviewDto.Detail>> getReviewsByResumeDetailPage(
+            @PageableDefault(size = 4, sort = "review.updateDate", direction = Sort.Direction.DESC) Pageable pageable,
+            @RequestParam Long resumeNo) {
+
+        return ResponseEntity.ok(new PageResponse<>(reviewService.getReviewsByResumeDetailPage(pageable, resumeNo)));
     }
 
     //리뷰 작성하기

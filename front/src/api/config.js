@@ -43,7 +43,7 @@ export const API_ENDPOINTS = {
     BASE: '/review/v1',
     SIMPLE_LIST: '/review/v1/simple-list',
     LIST: (currentPage, userNo) => `/review/v1/list?page=${currentPage - 1}&userNo=${userNo}`,
-    DETAIL: (userNo) => `/reviews/v1?user_no=${userNo}`,
+    DETAIL: (currentPage, resumeNo) => `/review/v1/detail?page=${currentPage - 1}&resumeNo=${resumeNo}`,
   },
 
   HIRING: {
@@ -91,12 +91,13 @@ export const API_ENDPOINTS = {
     CANCEL: (hiringNo, caregiverNo) => `/proposer/v1/cancel?hiring_no=${hiringNo}&caregiver_no=${caregiverNo}`,
     ACCEPT: '/proposer/v1/accept',
     CHECK_ACCEPTED: (hiringNo, resumeNo) => `/proposer/v1/accept/check?hiring_no=${hiringNo}&resume_no=${resumeNo}`,
+    DELETE_HISTORY: (proposerNo) => `/proposer/v1/${proposerNo}`,
   },
 
   MATCHING: {
     BASE: '/matching/v1',
     LIST: (patNo, status) => `/matching/v1?pat_no=${patNo}&status=${status}`,
-
+    PATCH : (matNo, status) => `/matching/v1?mat_no=${matNo}&status=${status}`,
     ENDLIST: (patNo, status) => `/matching/v1/matched?pat_no=${patNo}&status=${status}`,
     PATLIST: (caregiverNo, status) => `/matching/v1/caregiver?caregiver_no=${caregiverNo}&status=${status}`,
     PAT_ENDLIST: (caregiverNo, status) => `/matching/v1/caregiver/matched?caregiver_no=${caregiverNo}&status=${status}`,

@@ -21,4 +21,7 @@ public interface ProposerRepository {
 
     // 나의 지원현황 목록
     Page<Proposer> getMyProposerLists(Status status, Pageable pageable, Long userNo);
+
+    // 내가 신청한 구인글 찾기
+    Optional<Proposer> findHiringByNo(Long proposerNo);
 }

@@ -57,7 +57,7 @@ const JobOpeningManagement = () => {
               </td>
             </tr>
           ) : (
-            jobOpeningList.content.reverse().map((jobOpening, index) => {
+            jobOpeningList.content.map((jobOpening, index) => {
               const total = jobOpeningList.totalCount; // 전체 구인글 수
               const currentPage = jobOpeningList.currentPage; // 현재 페이지 번호 (0부터 시작)
               const size = jobOpeningList.pageSize; // 한 페이지당 몇 개 보여주는지 (혹은 백엔드에서 받은 pageSize 사용)
@@ -141,6 +141,7 @@ const TBody = styled.tbody`
     /* box-shadow: ${({ theme }) => theme.shadows.sm}; */
     border-radius: ${({ theme }) => theme.borderRadius.lg};
     transition: all 0.2s ease-in-out;
+    cursor: pointer;
 
     &:hover {
       transform: translateY(-2px);

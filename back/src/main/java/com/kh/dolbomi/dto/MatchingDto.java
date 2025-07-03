@@ -36,6 +36,7 @@ public class MatchingDto {
         private Integer age;
         private StatusEnum.Gender gender;
         private LocalDateTime start_date;
+        private LocalDateTime end_date;
         private StatusEnum.Status status;
         private Long review_no;
 
@@ -47,10 +48,12 @@ public class MatchingDto {
                     .age(matching.getCaregiver().getAge())
                     .gender(matching.getCaregiver().getGender())
                     .start_date(matching.getStartDate())
+                    .end_date(matching.getEndDate())
                     .status(matching.getStatus())
                     .review_no(matching.getReview() != null ? matching.getReview().getReviewNo() : null)
                     .build();
         }
+
 
     }
 
@@ -61,20 +64,24 @@ public class MatchingDto {
     @Builder
     public static class ResponsePat {
         private Long mat_no;
+        private Long pat_no;
         private String pat_name;
         private Integer pat_age;
         private StatusEnum.Gender pat_gender;
         private LocalDateTime start_date;
+        private LocalDateTime end_date;
         private StatusEnum.Status status;
         private Long review_no;
 
         public static ResponsePat from(Matching matching) {
             return ResponsePat.builder()
                     .mat_no(matching.getMatNo())
+                    .pat_no(matching.getPatient().getPatNo())
                     .pat_name(matching.getPatient().getPatName())
                     .pat_age(matching.getPatient().getPatAge())
                     .pat_gender(matching.getPatient().getPatGender())
                     .start_date(matching.getStartDate())
+                    .end_date(matching.getEndDate())
                     .status(matching.getStatus())
                     .review_no(matching.getReview() != null ? matching.getReview().getReviewNo() : null)
                     .build();
