@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react';
 import useUserStore from '../../store/userStore';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import { commuService } from '../../api/community';
 import { toast } from 'react-toastify';
 import { ClipLoader } from 'react-spinners';
-import { LinkBtn, Page } from '../../styles/common/Board';
+import { Btn, Page } from '../../styles/common/Board';
 import theme from '../../styles/theme';
 import styled from 'styled-components';
 import {
@@ -22,11 +22,32 @@ import { PageInfo, Textarea } from './style/Question.styles';
 
 const QuestionDetail = () => {
   const userNo = useUserStore((state) => state.user?.userNo);
-  // 수정하기 버튼 때문에 추가
-  const [error, setError] = useState(null);
-  const [communityDetail, setCommunityDetail] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const userName = useUserStore((state) => state.user?.userName);
   const { boardNo } = useParams();
+
+  const navigate = useNavigate();
+  const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  const [communityDetail, setCommunityDetail] = useState(null);
+
+  const [replyMode, setReplyMode] = useState('none');
+  const handleCreateClick = () => {
+    setReplyMode(replyMode === 'create' ? 'none' : 'create');
+  };
+  const handleUpdateClick = () => {
+    if (communityDetail.reply?.length > 0) {
+      setEditedContent(communityDetail.reply[0].replyContent);
+    }
+    setReplyMode(replyMode === 'update' ? 'none' : 'update');
+  };
+
+  const [editedContent, setEditedContent] = useState('');
+  useEffect(() => {
+    if (communityDetail?.reply?.length > 0) {
+      setEditedContent(communityDetail.reply[0].replyContent);
+    }
+  }, [communityDetail]);
 
   useEffect(() => {
     const loadCommunity = async () => {
@@ -63,14 +84,32 @@ const QuestionDetail = () => {
   if (!communityDetail) {
     return <Page>게시글을 찾을 수 없습니다.</Page>;
   }
+  const handleSaveReply = async () => {
+    try {
+      const replyData = {
+        board_no: boardNo,
+        user_no: userNo,
+        reply_content: editedContent,
+      };
 
+      await commuService.createReplyQusetion(replyData); // API 호출
+      navigate(0);
+    } catch (error) {
+      toast.error(error.message);
+      const errorMessage = '등록에 실패했습니다. 다시 시도해주세요.';
+      setError(errorMessage);
+      toast.error(errorMessage);
+    }
+  };
   return (
     <Page>
       <PageInfo>
         <PageTop>
           <PageTitle>문의 게시판 상세</PageTitle>
           <div>
-            <RightBtn>뒤로가기</RightBtn>
+            <RightBtn type="button" onClick={() => navigate(-1)}>
+              뒤로가기
+            </RightBtn>
           </div>
         </PageTop>
         <PageBody>
@@ -102,6 +141,7 @@ const QuestionDetail = () => {
               ) : null}
             </Right>
           </BodyTop>
+
           <BodyText>{communityDetail.boardContent}</BodyText>
           {communityDetail.files && communityDetail.files.length > 0 && (
             <FileBox>
@@ -133,25 +173,65 @@ const QuestionDetail = () => {
                 {communityDetail.questionStatus === 'Y' ? '완료' : '대기'}
               </div>
             </div>
-
-            {communityDetail.questionStatus === 'Y' ? (
-              <LinkBtn style={{ marginLeft: 'auto', marginRight: '20PX' }}>수정</LinkBtn>
-            ) : (
-              <LinkBtn style={{ marginLeft: 'auto', marginRight: '20PX' }}>작성</LinkBtn>
+            {userNo == '1' && replyMode === 'none' && (
+              <div style={{ marginLeft: 'auto' }}>
+                {communityDetail.questionStatus === 'Y' ? (
+                  <Btn onClick={handleUpdateClick}>수정</Btn>
+                ) : (
+                  <Btn onClick={handleCreateClick}>작성</Btn>
+                )}
+                <Btn style={{ margin: '0 10PX' }}>삭제</Btn>
+              </div>
             )}
           </div>
-          <Textarea style={{ marginTop: '10px' }} name="" id="" />
+          {replyMode !== 'none' && (
+            <CommentSelect style={{ padding: '10px' }}>
+              {replyMode === 'update' &&
+                communityDetail.reply.map((reply) => (
+                  <div key={reply.replyNo} style={{ width: '100%', gap: '8px' }}>
+                    <Icons src="/src/assets/icons/icon_작성자.png" alt="" />
+                    <div>{reply.userName}</div>
+                    <div>{reply.updateDate}</div>
+                    <div style={{ marginLeft: 'auto' }}>
+                      <Btn>수정</Btn>
+                      <Btn style={{ margin: '0 10PX' }} onClick={handleUpdateClick}>
+                        취소
+                      </Btn>
+                    </div>
+                  </div>
+                ))}
+              {replyMode === 'create' && (
+                <div style={{ width: '100%', gap: '8px' }}>
+                  <Icons src="/src/assets/icons/icon_작성자.png" alt="" />
+                  <div>{userName}</div>
+                  <div style={{ marginLeft: 'auto' }}>
+                    <Btn onClick={handleSaveReply}>작성</Btn>
+                    <Btn style={{ margin: '0 10PX' }} onClick={handleCreateClick}>
+                      취소
+                    </Btn>
+                  </div>
+                </div>
+              )}
 
-          {communityDetail.reply?.map((reply) => (
-            <CommentSelect key={reply.replyNo}>
-              <div style={{ width: '100%', gap: '8px' }}>
-                <Icons src="/src/assets/icons/icon_작성자.png" alt="" />
-                <div>{reply.userName}</div>
-                <div>{reply.updateDate}</div>
-              </div>
-              <div style={{ padding: '5px 10px 0' }}>{reply.replyContent}</div>
+              <Textarea
+                style={{ marginTop: '10px' }}
+                as="textarea"
+                value={editedContent}
+                onChange={(e) => setEditedContent(e.target.value)}
+              />
             </CommentSelect>
-          ))}
+          )}
+          {replyMode === 'none' &&
+            communityDetail.reply?.map((reply) => (
+              <CommentSelect key={reply.replyNo}>
+                <div style={{ width: '100%', gap: '8px' }}>
+                  <Icons src="/src/assets/icons/icon_작성자.png" alt="" />
+                  <div>{reply.userName}</div>
+                  <div>{reply.updateDate}</div>
+                </div>
+                <div style={{ padding: '5px 10px 0' }}>{reply.replyContent}</div>
+              </CommentSelect>
+            ))}
         </CommentSelectBox>
       </PageInfo>
     </Page>

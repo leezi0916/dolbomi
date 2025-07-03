@@ -4,6 +4,7 @@ import com.kh.dolbomi.domain.Board;
 import com.kh.dolbomi.domain.Reply;
 import com.kh.dolbomi.domain.User;
 import com.kh.dolbomi.dto.BoardDto;
+import com.kh.dolbomi.dto.BoardDto.CreateQuestion;
 import com.kh.dolbomi.dto.BoardDto.Response;
 import com.kh.dolbomi.dto.ReplyDto.Create;
 import com.kh.dolbomi.enums.StatusEnum;
@@ -119,6 +120,35 @@ public class BoardServiceImpl implements BoardService {
         Reply reply = replyCreate.toEntity();
         reply.changeUser(user);
         reply.changeBoard(board);
+
+        return replyRepositoryV2.save(reply).getReplyNo();
+    }
+
+    @Override
+    public Long createQuestion(CreateQuestion questionCreate) {
+        User user = userRepository.findById(questionCreate.getUser_no())
+                .orElseThrow(() -> new EntityNotFoundException("회원을 찾을 수 없습니다."));
+
+        Board board = questionCreate.toEntity();
+        board.changeUser(user);
+
+        return boardRepositoryV2.save(board).getBoardNo();
+    }
+
+    @Override
+    public Long createReplyQuestion(Create replyCreate) {
+        User user = userRepository.findById(replyCreate.getUser_no())
+                .orElseThrow(() -> new EntityNotFoundException("회원을 찾을 수 없습니다."));
+
+        Board board = boardRepository.findByBoardNo(replyCreate.getBoard_no())
+                .orElseThrow(() -> new EntityNotFoundException("회원을 찾을 수 없습니다."));
+
+        Reply reply = replyCreate.toEntity();
+        reply.changeUser(user);
+        reply.changeBoard(board);
+
+        board.setQuestionStatus();
+        boardRepositoryV2.save(board);
 
         return replyRepositoryV2.save(reply).getReplyNo();
     }

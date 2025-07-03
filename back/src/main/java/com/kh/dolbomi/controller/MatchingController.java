@@ -76,5 +76,4 @@ public class MatchingController {
                 new PageResponse<>(matchingService.getMatchedPatientsByCaregiver(caregiverNo, status, pageable))
         );
     }
-
 }

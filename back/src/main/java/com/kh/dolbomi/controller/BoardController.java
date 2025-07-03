@@ -29,9 +29,20 @@ public class BoardController {
         return ResponseEntity.ok(boardService.createBoard(boardCreate));
     }
 
+    @PostMapping("/question/create")
+    public ResponseEntity<Long> createQuestion(@RequestBody BoardDto.CreateQuestion questionCreate) throws IOException {
+        return ResponseEntity.ok(boardService.createQuestion(questionCreate));
+    }
+
     @PostMapping("/reply")
     public ResponseEntity<Long> createReply(@RequestBody ReplyDto.Create replyCreate) throws IOException {
         return ResponseEntity.ok(boardService.createReply(replyCreate));
+    }
+
+    @PostMapping("/reply/question")
+    public ResponseEntity<Long> createReplyQuestion(@RequestBody ReplyDto.Create replyCreate
+    ) throws IOException {
+        return ResponseEntity.ok(boardService.createReplyQuestion(replyCreate));
     }
 
 

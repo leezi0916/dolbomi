@@ -89,7 +89,7 @@ export const SearchBtn = styled.button`
 // export const CreateBtn = styled(LinkBtn)`
 //   width: 10%;
 // `;
-export const Textarea = styled.textarea`
+export const Textarea = styled.input`
   width: 100%;
   min-height: 200px;
   resize: none;

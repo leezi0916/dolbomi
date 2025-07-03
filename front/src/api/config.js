@@ -22,10 +22,10 @@ export const API_ENDPOINTS = {
     GUARDIAN: `/community/v1/guardian`,
     DETAIL: (boardNo) => `/community/v1/detail?board_no=${boardNo}`, // 특정 게시글
     REPLY: `/community/v1/reply`,
+    REPLY_QUESTION: `/community/v1/reply/question`,
     QUESTION: `/community/v1/question`,
     QUESTION_HISTORY: (userNo) => `/community/v1/question?user_no=${userNo}`,
-
-    CREATE: (role) => `/community/v1/${role}/create`,
+    CREATE_QUESTION: '/community/v1/question/create',
   },
 
   USERS: {
