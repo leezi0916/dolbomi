@@ -34,7 +34,7 @@ const QuestionCreate = () => {
           </div>
           <div>
             <div>내용</div>
-            <Textarea name="" id="" />
+            <Textarea as="textarea" />
           </div>
           <div>
             <div>파일 첨부</div>
