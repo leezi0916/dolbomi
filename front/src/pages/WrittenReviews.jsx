@@ -77,7 +77,11 @@ const WrittenReviews = () => {
         )}
       </WrittenReviewGridContainer>
 
-      <Paging currentPage={currentPage} totalPage={reviews.totalPage} chagneCurrentPage={chagneCurrentPage} />
+      <Paging
+        currentPage={currentPage}
+        totalPage={reviews?.myWrittenReview?.totalPage}
+        chagneCurrentPage={chagneCurrentPage}
+      />
     </ReviewWrapper>
   );
 };

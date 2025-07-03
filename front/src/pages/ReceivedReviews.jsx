@@ -90,7 +90,11 @@ const ReceivedReviews = () => {
         )}
       </ReceivedReviewsGridContainer>
 
-      <Paging currentPage={currentPage} totalPage={reviews.totalPage} chagneCurrentPage={chagneCurrentPage} />
+      <Paging
+        currentPage={currentPage}
+        totalPage={reviews?.receivedReview?.totalPage}
+        chagneCurrentPage={chagneCurrentPage}
+      />
     </ReviewWrapper>
   );
 };
