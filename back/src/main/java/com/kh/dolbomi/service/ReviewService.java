@@ -19,4 +19,7 @@ public interface ReviewService {
 
     // 리뷰 작성
     Long createReview(ReviewDto.Create reviewDto);
+
+    // 특정 간병인의 이력서 상세 -> 리뷰
+    Page<ReviewDto.Detail> getReviewsByResumeDetailPage(Pageable pageable, Long resumeNo);
 }
