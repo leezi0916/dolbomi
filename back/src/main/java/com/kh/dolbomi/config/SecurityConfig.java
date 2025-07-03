@@ -41,6 +41,7 @@ public class SecurityConfig {
                                 "/users/v1/login",
                                 "/hiring/v1/simple-list",
                                 "/resume/v1/simple-list",
+                                "/resume/v1/detail/*",
                                 "/review/v1/simple-list",
                                 "/community/v1/caregiver",
                                 "/community/v1/guardian",

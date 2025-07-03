@@ -42,6 +42,7 @@ public class MatchingDto {
         public static Response toDto(Matching matching) {
             return Response.builder()
                     .mat_no(matching.getMatNo())
+                    .caregiver_no(matching.getCaregiver().getUserNo())
                     .user_name(matching.getCaregiver().getUserName())
                     .age(matching.getCaregiver().getAge())
                     .gender(matching.getCaregiver().getGender())

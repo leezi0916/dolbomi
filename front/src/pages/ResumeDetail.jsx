@@ -217,42 +217,44 @@ function ResumeDetail() {
         )}
 
         {activeTab === 'review' && (
-          <ContentWrapper1>
-            <RecivedReviewsGridContainer>
-              {!reviews.receivedReview?.content || reviews.receivedReview.content.length === 0 ? (
-                <EmptyMessage>받은 리뷰가 없습니다.</EmptyMessage>
-              ) : (
-                reviews.receivedReview?.content?.map((review) => (
-                  <Card key={review.reviewNo}>
-                    <CardTopContent>
-                      <CardImage src={review.profileImage} />
-                      <CardTextGroup>
-                        <CardTitle>{review.userName} 님</CardTitle>
-                        <CardText>
-                          나이 {review.age}세({review.gender === 'M' ? '남' : '여'})
-                        </CardText>
-                      </CardTextGroup>
-                    </CardTopContent>
-                    <CardMidBottomContent>
-                      <ReviewTextBox>{review.reviewContent}</ReviewTextBox>
-                      <ReviewFooter>
-                        {/* <ReviewScore>
+          <>
+            <ContentWrapper1>
+              <RecivedReviewsGridContainer>
+                {!reviews.receivedReview?.content || reviews.receivedReview.content.length === 0 ? (
+                  <EmptyMessage>받은 리뷰가 없습니다.</EmptyMessage>
+                ) : (
+                  reviews.receivedReview?.content?.map((review) => (
+                    <Card key={review.reviewNo}>
+                      <CardTopContent>
+                        <CardImage src={review.profileImage} />
+                        <CardTextGroup>
+                          <CardTitle>{review.userName} 님</CardTitle>
+                          <CardText>
+                            나이 {review.age}세({review.gender === 'M' ? '남' : '여'})
+                          </CardText>
+                        </CardTextGroup>
+                      </CardTopContent>
+                      <CardMidBottomContent>
+                        <ReviewTextBox>{review.reviewContent}</ReviewTextBox>
+                        <ReviewFooter>
+                          {/* <ReviewScore>
               평점 <strong>{review.reviewScore.toFixed(1)}</strong>
             </ReviewScore> */}
-                        <ReviewDate>작성일 {review.reviewUpdateDate.slice(0, 10)}</ReviewDate>
-                      </ReviewFooter>
-                    </CardMidBottomContent>
-                  </Card>
-                ))
-              )}
-            </RecivedReviewsGridContainer>
-          </ContentWrapper1>
+                          <ReviewDate>작성일 {review.reviewUpdateDate.slice(0, 10)}</ReviewDate>
+                        </ReviewFooter>
+                      </CardMidBottomContent>
+                    </Card>
+                  ))
+                )}
+              </RecivedReviewsGridContainer>
+            </ContentWrapper1>
+            <Paging
+              currentPage={currentPage}
+              totalPage={reviews.receivedReview?.totalPage}
+              chagneCurrentPage={chagneCurrentPage}
+            />
+          </>
         )}
-        <Paging
-          currentPage={currentPage}
-          totalPage={reviews.receivedReview?.totalPage}
-          chagneCurrentPage={chagneCurrentPage}
-        />
 
         <ButtonGroup>
           <BackButton onClick={() => navigate(-1)}>이전</BackButton>
@@ -262,12 +264,12 @@ function ResumeDetail() {
             </SubmitButton1>
           )}
 
-          {resumeData?.userNo === user?.userNo ? (
+          {resumeData?.userNo !== user?.userNo ? (
+            ''
+          ) : (
             <SubmitButton1 type="button" onClick={() => navigate(`/caregiver/myresume/${resumeData?.resumeNo}`)}>
               수정하기
             </SubmitButton1>
-          ) : (
-            ''
           )}
         </ButtonGroup>
       </HireContainer>
