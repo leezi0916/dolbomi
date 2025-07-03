@@ -10,4 +10,10 @@ public interface NotificationService {
 
     //알림 조회
     List<NotificationDto.Response> getNotificationsByUserNo(Long userNo);
+
+    //알림 안읽음 여부 판단
+    int getUnreadCount(Long userNo);
+
+    //알림 읽음 상태 변경
+    void markAllNotificationsAsRead(Long userNo);
 }
