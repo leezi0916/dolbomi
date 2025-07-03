@@ -19,6 +19,7 @@ const MyResume = () => {
   const navigate = useNavigate();
   const { resumeNo } = useParams();
   const { register, handleSubmit, errors, handleLicenseChange, setValue } = useResumeForm();
+
   const [careGiverResum, setCareGiverResum] = useState();
 
   useEffect(() => {
@@ -31,6 +32,7 @@ const MyResume = () => {
       try {
         const careGiverResum = await jobSeekingService.getResume(Number(resumeNo));
         setCareGiverResum(careGiverResum);
+        console.log('확인', careGiverResum);
       } catch (error) {
         toast.error('상세 이력서 불러오기 중 문제가 발생하였습니다.');
         console.error('이력서 불러오기 오류 : ', error);
@@ -66,9 +68,11 @@ const MyResume = () => {
   };
 
   const onSubmit = async (data) => {
+    console.log('변경할 데이터', data);
     try {
       await jobSeekingService.updateResume(resumeNo, { ...careGiverResum, ...data });
       toast.success('이력서가 수정되었습니다!');
+      navigate('/caregiver/resumemanagement');
     } catch (error) {
       toast.error('이력서 수정중 문제가 발생했습니다,');
       console.error('이력서 수정 에러 :', error);
@@ -134,9 +138,9 @@ const MyResume = () => {
             </InputGroup>
           </Divider>
         </ContentWrapper>
-        <input type="hidden" {...register('licenseList')}></input>
+        {/* <input type="hidden" {...register('licenseList')}></input> */}
         {careGiverResum?.licenseList?.map((license, index) => (
-          <ContentWrapper2>
+          <ContentWrapper2 key={index}>
             <LicenseGroup>
               <Label>자격증 명</Label>
               <LicenseInput

@@ -8,6 +8,8 @@ import { patientService } from '../api/patient';
 import useUserStore from '../store/userStore';
 import { matchingService } from '../api/matching';
 import Paging from '../components/Paging';
+import { CiCircleInfo } from 'react-icons/ci';
+import { IoSearchOutline } from 'react-icons/io5';
 
 const MatchToPatient = () => {
   const [activeTab, setActiveTab] = useState('matching');
@@ -115,13 +117,27 @@ const MatchToPatient = () => {
             <SubTitle onClick={() => handleTabChange('matched')} $active={activeTab === 'matched'}>
               종료된 매칭
             </SubTitle>
+            <TipP>
+              <CiCircleInfo color="#EF7A46" size={'20px'}></CiCircleInfo> 환자에 마우스를 올려 종료된 매칭 목록을
+              확인하세요.
+            </TipP>
           </Tab>
         </TitleDiv>
-
-        <SerachDiv>
-          <CaregiverSearch></CaregiverSearch>
-        </SerachDiv>
       </HeadSection>
+
+        {activeTab === 'matched' ? (
+          <SearchDivWrap>
+            <SearchInput placeholder="찾으시는 돌봄대상자를 검색하세요"></SearchInput>
+            <SearchBtn>
+              <SearchIcon>
+                <IoSearchOutline />
+              </SearchIcon>
+            </SearchBtn>
+          </SearchDivWrap>
+        ) : (
+          <></>
+        )}
+   
       {/*진행중 매칭 */}
       <MatchSection>
         {activeTab === 'matching' && (
@@ -234,6 +250,56 @@ const MatchSection = styled(Section)`
   flex-direction: column;
   align-items: center; /* 카드 쌍 전체를 가로 중앙으로 정렬 */
   padding: ${({ theme }) => theme.spacing[8]} 0; /* 상하 패딩 추가 */
+`;
+
+const TipP = styled.p`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+`
+
+
+const SearchDivWrap = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  margin-right: 50px;
+`;
+
+const SearchInput = styled.input`
+  border: 1px solid ${({ theme }) => theme.colors.gray[5]};
+  border-radius: ${({ theme }) => theme.borderRadius.md} 0 0 ${({ theme }) => theme.borderRadius.md};
+  width: 250px;
+  padding: ${({ theme }) => theme.spacing[2]};
+  outline: none; /* 포커스 시 아웃라인 제거 */
+  font-size: 16px; /* 폰트 크기 */
+  color: #333; /* 텍스트 색상 */
+
+  &::placeholder {
+    color: #999; /* 플레이스홀더 텍스트 색상 */
+  }
+`;
+
+const SearchBtn = styled.button`
+  background: ${({ theme }) => theme.colors.primary};
+  border-radius: 0 ${({ theme }) => theme.borderRadius.md} ${({ theme }) => theme.borderRadius.md} 0;
+
+  background-color: ${({ theme }) => theme.colors.primary};
+  color: white;
+
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.2s ease; /* 호버 효과 */
+
+  &:hover {
+    background-color: #e07243; /* 호버 시 약간 어두운 오렌지 */
+  }
+`;
+
+const SearchIcon = styled.span`
+  font-size: 18px; /* 아이콘 크기 */
 `;
 
 // 카드를 두 개씩 묶어 가로로 배치하는 컨테이너

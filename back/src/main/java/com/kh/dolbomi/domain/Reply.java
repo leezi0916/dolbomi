@@ -54,6 +54,20 @@ public class Reply {
     @Enumerated(EnumType.STRING)
     private StatusEnum.Status status;
 
+    public void changeUser(User user) {
+        this.user = user;
+        if (!user.getReplyList().contains(this)) {
+            user.getReplyList().add(this);
+        }
+    }
+
+    public void changeBoard(Board board) {
+        this.board = board;
+        if (!board.getReplyList().contains(this)) {
+            board.getReplyList().add(this);
+        }
+    }
+
     @PrePersist
     public void prePersist() {
         this.createDate = LocalDateTime.now();

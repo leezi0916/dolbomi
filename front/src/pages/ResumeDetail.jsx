@@ -266,12 +266,12 @@ function ResumeDetail() {
             </SubmitButton1>
           )}
 
-          {resumeData?.userNo === user?.userNo ? (
+          {resumeData?.userNo !== user?.userNo ? (
+            ''
+          ) : (
             <SubmitButton1 type="button" onClick={() => navigate(`/caregiver/myresume/${resumeData?.resumeNo}`)}>
               수정하기
             </SubmitButton1>
-          ) : (
-            ''
           )}
         </ButtonGroup>
       </HireContainer>

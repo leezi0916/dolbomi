@@ -21,6 +21,7 @@ export const API_ENDPOINTS = {
     CAREGIVER: `/community/v1/caregiver`,
     GUARDIAN: `/community/v1/guardian`,
     DETAIL: (boardNo) => `/community/v1/detail?board_no=${boardNo}`, // 특정 게시글
+    REPLY: `/community/v1/reply`,
     QUESTION: `/community/v1/question`,
     QUESTION_HISTORY: (userNo) => `/community/v1/question?user_no=${userNo}`,
 
@@ -95,7 +96,7 @@ export const API_ENDPOINTS = {
   MATCHING: {
     BASE: '/matching/v1',
     LIST: (patNo, status) => `/matching/v1?pat_no=${patNo}&status=${status}`,
-
+    PATCH : (matNo, status) => `/matching/v1?mat_no=${matNo}&status=${status}`,
     ENDLIST: (patNo, status) => `/matching/v1/matched?pat_no=${patNo}&status=${status}`,
     PATLIST: (caregiverNo, status) => `/matching/v1/caregiver?caregiver_no=${caregiverNo}&status=${status}`,
     PAT_ENDLIST: (caregiverNo, status) => `/matching/v1/caregiver/matched?caregiver_no=${caregiverNo}&status=${status}`,
