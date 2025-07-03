@@ -54,7 +54,7 @@ public class MatchingController {
         return ResponseEntity.ok(matchingService.getMatchingListCaregiver(caregiverNo, matchingStatus));
     }
 
-
+    //간병 종료 버튼 클릭시 매칭 상태 변경해서 종료하기
     @PatchMapping
     public ResponseEntity<Long> getMatchingChangeStatus(
             @RequestParam("mat_no") Long matNo,
@@ -65,6 +65,7 @@ public class MatchingController {
     }
 
 
+    //종료된 매칭 리스트(페이징) - 간병인 버전
     @GetMapping("/caregiver/matched")
     public ResponseEntity<PageResponse<MatchingDto.ResponsePat>> getMatchedPatientsByCaregiver(
             @RequestParam("caregiver_no") Long caregiverNo,
