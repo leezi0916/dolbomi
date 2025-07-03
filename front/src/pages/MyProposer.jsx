@@ -5,20 +5,27 @@ import Paging from '../components/Paging';
 import theme from '../styles/theme';
 import { toast } from 'react-toastify';
 import { proposerService } from '../api/propose';
+import useUserStore from '../store/userStore';
+import { useNavigate } from 'react-router-dom';
 
 const MyProposer = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [proposerList, setProserList] = useState([]);
 
+  const navigate = useNavigate();
+
+  const { user } = useUserStore();
+
+  const fetchPostList = async () => {
+    try {
+      const list = await proposerService.getMyProposer(currentPage, user.userNo);
+      setProserList(list);
+    } catch (error) {
+      toast.error(error.message);
+    }
+  };
+
   useEffect(() => {
-    const fetchPostList = async () => {
-      try {
-        const list = await proposerService.getMyProposer(currentPage, user.userNo);
-        setProserList(list);
-      } catch (error) {
-        toast.error('내 지원현황을 불러오는데 실패했습니다.');
-      }
-    };
     fetchPostList();
   }, [currentPage]);
 
@@ -48,28 +55,54 @@ const MyProposer = () => {
           {!proposerList.content || proposerList.content.length === 0 ? (
             <tr>
               <td colSpan={6}>
-                <EmptyMessage>등록된 구인글이 없습니다.</EmptyMessage>
+                <EmptyMessage>현재 지원한 현황이 없습니다.</EmptyMessage>
               </td>
             </tr>
           ) : (
-            proposerList.content.map((proposer) => (
-              <tr key={p.no}>
-                <td>{p.no}</td>
-                <td>{p.title}</td>
-                <td>{p.date}</td>
-                <td>{p.match}</td>
-                <td style={{ color: p.status === '모집 중' ? theme.colors.success : theme.colors.gray[4] }}>
-                  {p.status}
-                </td>
-                <td>
-                  {p.status === '모집 중' ? (
-                    <span style={{ fontSize: 20, color: 'gray' }}>-</span>
-                  ) : (
-                    <FaTimes size={20} style={{ cursor: 'pointer', verticalAlign: '-8px' }} />
-                  )}
-                </td>
-              </tr>
-            ))
+            proposerList.content.map((proposer, index) => {
+              const total = proposerList.totalCount;
+              const currentPage = proposerList.currentPage;
+              const size = proposerList.pageSize;
+
+              const displayNo = total - (currentPage * size + index);
+
+              return (
+                <tr key={proposer.proposerNo} onClick={() => navigate(`/hireDetail/${proposer.hiringNo}`)}>
+                  <td>{displayNo}</td>
+                  <td>{proposer.hiringTitle}</td>
+                  <td>{proposer.proposerDate.slice(0, 10)}</td>
+                  <td>{proposer.userName}</td>
+                  <td style={{ color: proposer.hiringStatus === 'Y' ? theme.colors.success : theme.colors.gray[4] }}>
+                    {proposer.hiringStatus === 'Y' ? '모집중' : '모집마감'}
+                    {proposer.status === 'Y' ? '(매칭완료)' : ''}
+                  </td>
+                  <td>
+                    {proposer.hiringStatus === 'Y' ? (
+                      <span style={{ fontSize: 20, color: 'gray' }}>-</span>
+                    ) : (
+                      <FaTimes
+                        onClick={async (e) => {
+                          e.stopPropagation();
+                          if (confirm('정말 내역을 삭제하시겠습니까?')) {
+                            try {
+                              const deleteHistory = await proposerService.deleteProposerHisotry(proposer.proposerNo);
+                              if (deleteHistory) {
+                                toast.success('내역이 삭제되었습니다.');
+                                fetchPostList();
+                              }
+                            } catch (error) {
+                              toast.error(error.message);
+                            }
+                          }
+                        }}
+                        size={20}
+                        style={{ cursor: 'pointer', verticalAlign: '-8px' }}
+                      />
+                    )}
+                  </td>
+                </tr>
+              );
+            })
           )}
         </TBody>
       </Table>
@@ -134,6 +167,7 @@ const THead = styled.thead`
 
 const TBody = styled.tbody`
   tr {
+    cursor: pointer;
     background-color: ${({ theme }) => theme.colors.white};
     /* box-shadow: ${({ theme }) => theme.shadows.sm}; */
     border-radius: ${({ theme }) => theme.borderRadius.lg};

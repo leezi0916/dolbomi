@@ -91,6 +91,7 @@ export const API_ENDPOINTS = {
     CANCEL: (hiringNo, caregiverNo) => `/proposer/v1/cancel?hiring_no=${hiringNo}&caregiver_no=${caregiverNo}`,
     ACCEPT: '/proposer/v1/accept',
     CHECK_ACCEPTED: (hiringNo, resumeNo) => `/proposer/v1/accept/check?hiring_no=${hiringNo}&resume_no=${resumeNo}`,
+    DELETE_HISTORY: (proposerNo) => `/proposer/v1/${proposerNo}`,
   },
 
   MATCHING: {

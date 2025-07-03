@@ -30,7 +30,6 @@ const ReceivedReviews = () => {
     const fetchReviews = async () => {
       try {
         const data = await reviewService.getReceivedReviews(currentPage, user.userNo);
-        console.log(data);
         setReviews(data);
       } catch (error) {
         toast.error('리뷰 로딩에 실패했습니다.');

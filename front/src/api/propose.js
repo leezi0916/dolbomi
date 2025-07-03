@@ -87,4 +87,19 @@ export const proposerService = {
       throw new Error('서버 통신 불량');
     }
   },
+
+  // 내 지원현황 내역 삭제
+  deleteProposerHisotry: async (proposerNo) => {
+    try {
+      const { data } = await api.patch(API_ENDPOINTS.PROPOSER.DELETE_HISTORY(proposerNo));
+      return snakeToCamel(data);
+    } catch (error) {
+      if (error.response) {
+        const message = error.response?.data?.message || '내역 삭제에 실패했습니다.';
+        throw new Error(message);
+      }
+
+      throw new Error('서버 통신 불량');
+    }
+  },
 };

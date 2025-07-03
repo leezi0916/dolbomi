@@ -36,7 +36,7 @@ public class ReviewController {
     // 내가쓴 리뷰, 내가 받은 리뷰 조회
     @GetMapping("/list")
     public ResponseEntity<Map<String, PageResponse<ReviewDto.Response>>> getReviewsByPage(
-            @PageableDefault(size = 6, sort = "updateDate", direction = Sort.Direction.DESC) Pageable pageable,
+            @PageableDefault(size = 6) Pageable pageable,
             @RequestParam Long userNo) {
 
         Map<String, PageResponse<ReviewDto.Response>> result = new HashMap<>();
