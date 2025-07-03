@@ -235,7 +235,7 @@ const Header = () => {
               }}
               style={{ cursor: 'pointer' }}
             />
-            {isNotiOpen && <NotificationDropdown onClose={() => handleNotificationClose()} />}
+            {isNotiOpen && <NotificationDropdown userNo={user?.userNo} onClose={() => handleNotificationClose()} />}
           </div>
           <img src="/src/assets/icons/icon_채팅알림.png" alt="" />
 

@@ -235,6 +235,7 @@ const MatchToCaregiver = () => {
                           간병인 정보
                         </CareLogButton>
                         <ReportButton
+                          style={{ visibility: care.reviewNo ? 'hidden' : 'visible' }}
                           onClick={() => {
                             console.log('selected care:', care);
                             setSelectedCaregiver(care); // 선택한 매칭 정보 저장
@@ -265,7 +266,11 @@ const MatchToCaregiver = () => {
       {showReviewModal && (
         <>
           {console.log('ReviewModal에 전달된 matNo:', selectedCaregiver?.matNo)}
-          <ReviewModal matNo={selectedCaregiver?.matNo} onClose={() => setShowReviewModal(false)} />
+          <ReviewModal
+            matNo={selectedCaregiver?.matNo}
+            onClose={() => setShowReviewModal(false)}
+            onSubmitSuccess={() => getEndedMatchingList(selectedPatNo, endedCurrentPage)}
+          />
         </>
       )}
     </>

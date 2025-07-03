@@ -1,31 +1,53 @@
 // NotificationDropdown.jsx
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import defaultProfile from '../assets/profileImg/img_간병인.png';
+import { notificationService } from '../api/notification';
+import { useNavigate } from 'react-router-dom';
 
 // 임시 배열 생성해서 값 넣어둠
-const notifications = [...Array(15).keys()].map((_, i) => ({
-  id: i + 1,
-  sender: `user${i + 1}`,
-  message: `알림 메시지 예시입니다1232121321321. ${i + 1}`,
-  time: `${i + 1}시간 전`,
-  image: defaultProfile,
-}));
+// const notifications = [...Array(15).keys()].map((_, i) => ({
+//   id: i + 1,
+//   sender: `user${i + 1}`,
+//   message: `알림 메시지 예시입니다1232121321321. ${i + 1}`,
+//   time: `${i + 1}시간 전`,
+//   image: defaultProfile,
+// }));
 
-const NotificationDropdown = ({ onClose }) => {
+// 상대시간 표시 함수
+const formatRelativeTime = (dateString) => {
+  const now = new Date();
+  const past = new Date(dateString);
+  const diffMs = now - past;
+  const diffSec = Math.floor(diffMs / 1000);
+  const diffMin = Math.floor(diffSec / 60);
+  const diffHour = Math.floor(diffMin / 60);
+  const diffDay = Math.floor(diffHour / 24);
+
+  if (diffSec < 60) return `${diffSec}초 전`;
+  if (diffMin < 60) return `${diffMin}분 전`;
+  if (diffHour < 24) return `${diffHour}시간 전`;
+  return `${diffDay}일 전`;
+};
+
+const NotificationDropdown = ({ userNo, onClose }) => {
   const dropdownRef = useRef();
+  const [notifications, setNotifications] = useState([]);
+  const navigate = useNavigate();
+  useEffect(() => {
+    console.log('userNo:', userNo);
+    if (!userNo) return;
+    notificationService.getNotifications(userNo).then(setNotifications).catch(console.error);
+  }, [userNo]);
 
   useEffect(() => {
     const handleClickOutside = (e) => {
-      // dropdownRef.current.contains(e.target)은 클릭한 요소가 드롭다운 내부인지 여부를 판별
-      //내부가 아니면, 즉 밖을 클릭한 경우 → onClose() 실행 → 드롭다운 닫힘.
       if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
         onClose();
       }
     };
 
     document.addEventListener('click', handleClickOutside);
-    // 언마운트시 이벤트 제거
     return () => document.removeEventListener('click', handleClickOutside);
   }, [onClose]);
 
@@ -35,24 +57,36 @@ const NotificationDropdown = ({ onClose }) => {
         <Title>알림</Title>
       </TitleWrap>
       <List>
+        {notifications.length === 0 && <EmptyMessage>알림이 없습니다.</EmptyMessage>}
         {notifications.map((noti) => (
-          <Item key={noti.id}>
+          <Item
+            key={noti.notificationNo}
+            onClick={() => {
+              navigate(noti.notificationLinkUrl);
+              onClose(); // 드롭다운 닫기
+            }}
+            style={{ cursor: 'pointer' }}
+          >
             <Left>
-              <img src={noti.image} alt="profile" />
+              <img src={noti.senderProfileImage || defaultProfile} alt="profile" />
             </Left>
             <Center>
-              <Sender>{noti.sender}</Sender>님이 댓글을 남겼습니다.
-              <Message>{noti.message}</Message>
+              <Message>{noti.notificationMessage}</Message>
             </Center>
-            <Right>{noti.time}</Right>
+            <Right>{formatRelativeTime(noti.notificationCreateDate)}</Right>
           </Item>
         ))}
       </List>
     </Container>
   );
 };
-
 export default NotificationDropdown;
+
+const EmptyMessage = styled.div`
+  padding: ${({ theme }) => theme.spacing[4]};
+  text-align: center;
+  color: ${({ theme }) => theme.colors.gray[3]};
+`;
 
 const Container = styled.div`
   position: absolute;
@@ -90,8 +124,9 @@ const List = styled.div`
 
 const Item = styled.div`
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   padding: ${({ theme }) => theme.spacing[3]};
+  gap: ${({ theme }) => theme.spacing[3]};
   border-bottom: 1px solid ${({ theme }) => theme.colors.gray[5]};
 `;
 
@@ -110,10 +145,10 @@ const Center = styled.div`
   color: ${({ theme }) => theme.colors.black3};
 `;
 
-const Sender = styled.strong`
-  font-weight: ${({ theme }) => theme.fontWeights.medium};
-  color: ${({ theme }) => theme.colors.black2};
-`;
+// const Sender = styled.strong`
+//   font-weight: ${({ theme }) => theme.fontWeights.medium};
+//   color: ${({ theme }) => theme.colors.black2};
+// `;
 
 const Message = styled.p`
   margin: ${({ theme }) => theme.spacing[1]} 0 0;

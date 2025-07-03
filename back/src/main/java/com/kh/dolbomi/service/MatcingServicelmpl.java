@@ -37,16 +37,7 @@ public class MatcingServicelmpl implements MatchingService {
     public Page<MatchingDto.Response> getMatchedListByStatus(Long patNo, Status status, Pageable pageable) {
 
         return matchingRepositoryV2.findByPatientPatNoAndStatus(patNo, status, pageable)
-                .map(matching -> MatchingDto.Response.builder()
-                        .mat_no(matching.getMatNo())
-                        .caregiver_no(matching.getCaregiver().getUserNo())
-                        .user_name(matching.getCaregiver().getUserName())
-                        .age(matching.getCaregiver().getAge())
-                        .gender(matching.getCaregiver().getGender())
-                        .start_date(matching.getStartDate())
-                        .status(matching.getStatus())
-                        .review_no(matching.getReview().getReviewNo())
-                        .build());
+                .map(MatchingDto.Response::toDto);
     }
 
 
@@ -71,8 +62,8 @@ public class MatcingServicelmpl implements MatchingService {
     public Page<MatchingDto.ResponsePat> getMatchedPatientsByCaregiver(Long caregiverNo, Status status,
                                                                        Pageable pageable) {
         return matchingRepositoryV2.findByCaregiverUserNoAndStatus(caregiverNo, status, pageable)
-                .map(MatchingDto.ResponsePat::from)
-                .collect(Collectors.toList());
+                .map(MatchingDto.ResponsePat::from);
+
     }
 
 

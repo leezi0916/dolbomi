@@ -7,7 +7,7 @@ import { reviewService } from '../api/reviews';
 import { toast } from 'react-toastify';
 import useUserStore from '../store/userStore';
 
-const ReviewModal = ({ matNo, maxHearts = 5, onClose }) => {
+const ReviewModal = ({ matNo, maxHearts = 5, onClose, onSubmitSuccess }) => {
   const [inputValue, setInputValue] = useState('');
   const [rating, setRating] = useState('');
   const [hovered, setHovered] = useState(0); //마우스 호버된 별점
@@ -32,6 +32,7 @@ const ReviewModal = ({ matNo, maxHearts = 5, onClose }) => {
       await reviewService.saveReview(reviewPayload);
 
       toast.success('리뷰가 성공적으로 등록되었습니다!');
+      onSubmitSuccess?.(); //새로고침
       onClose(); // 모달 닫기
     } catch (error) {
       console.error(error);
