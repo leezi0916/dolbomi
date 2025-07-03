@@ -65,7 +65,7 @@ public class Board {
     private StatusEnum.QuestionStatus questionStatus;
     
     @OneToMany(mappedBy = "board", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Reply> reply = new ArrayList<>();
+    private List<Reply> replyList = new ArrayList<>();
 
     private int count;
 

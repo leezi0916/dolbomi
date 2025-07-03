@@ -10,6 +10,8 @@ import { patientService } from '../api/patient';
 import { useNavigate } from 'react-router-dom';
 import Paging from '../components/Paging';
 import ReviewModal from '../components/ReviewModal';
+import { CiCircleInfo } from 'react-icons/ci';
+import { IoSearchOutline } from 'react-icons/io5';
 
 const MatchToCaregiver = () => {
   const { user } = useUserStore();
@@ -52,7 +54,7 @@ const MatchToCaregiver = () => {
     const getList = async () => {
       try {
         const careGiverList = await matchingService.getMatchginCargiver(patNo, 'Y');
-        console.log(careGiverList);
+        console.log('확인 :', careGiverList);
         careGiverList.length === 0 ? setCareGiverList([]) : setCareGiverList(careGiverList);
       } catch (err) {
         console.error(err);
@@ -105,13 +107,14 @@ const MatchToCaregiver = () => {
             <SubTitle onClick={() => handleTabChange('matched')} $active={activeTab === 'matched'}>
               종료된 매칭
             </SubTitle>
+            <TipP>
+              <CiCircleInfo color="#EF7A46" size={'20px'}></CiCircleInfo> 환자에 마우스를 올려 종료된 매칭 목록을
+              확인하세요.
+            </TipP>
           </Tab>
         </TitleDiv>
-        <SerachDiv>
-          <CaregiverSearch></CaregiverSearch>
-        </SerachDiv>
       </HeadSection>
-      <p>환자에 마우스를 올려 종료된 매칭 목록을 확인하세요.</p>
+
       {/*진행중 매칭 */}
       <MatchSection>
         {activeTab === 'matching' && (
@@ -155,10 +158,15 @@ const MatchToCaregiver = () => {
                           </ProfileTextGray>
                         </CaregiverTextDiv>
                         <CargiverButtonDiv>
-                          <CareLogButton onClick={() => navigate(`/caregiverProfile/${Number(care.caregiverNo)}`)}>
+                          <CareLogButton
+                            onClick={() =>
+                              navigate(`/caregiverProfile/${Number(care.caregiverNo)}`, {
+                                state: { matNo: care.matNo },
+                              })
+                            }
+                          >
                             간병인 정보
                           </CareLogButton>
-                          <ReportButton>신고하기</ReportButton>
                         </CargiverButtonDiv>
                       </CargiverWrap>
                     </>
@@ -193,7 +201,16 @@ const MatchToCaregiver = () => {
               ))}
             </RightLineDiv>
 
-            <div>
+            <Div>
+              <SearchDivWrap>
+                <SearchInput placeholder="찾으시는 간병인이름을 검색하세요"></SearchInput>
+                <SearchBtn>
+                  <SearchIcon>
+                    <IoSearchOutline />
+                  </SearchIcon>
+                </SearchBtn>
+              </SearchDivWrap>
+
               {selectedPatNo ? (
                 <>
                   {endedCaregiverList.map((care) => (
@@ -209,9 +226,7 @@ const MatchToCaregiver = () => {
                         <ProfileTextGray>
                           나이
                           <ProfileTextStrong>
-
                             {care.age} 세 ({care.gender === 'M' ? '남' : care.gender === 'F' ? '여' : '성별 정보 없음'})
-
                           </ProfileTextStrong>
                         </ProfileTextGray>
                       </CaregiverTextDiv>
@@ -220,6 +235,7 @@ const MatchToCaregiver = () => {
                           간병인 정보
                         </CareLogButton>
                         <ReportButton
+                          style={{ visibility: care.reviewNo ? 'hidden' : 'visible' }}
                           onClick={() => {
                             console.log('selected care:', care);
                             setSelectedCaregiver(care); // 선택한 매칭 정보 저장
@@ -243,14 +259,18 @@ const MatchToCaregiver = () => {
               ) : (
                 <p></p>
               )}
-            </div>
+            </Div>
           </ProfileCardPair>
         )}
       </MatchSection>
       {showReviewModal && (
         <>
           {console.log('ReviewModal에 전달된 matNo:', selectedCaregiver?.matNo)}
-          <ReviewModal matNo={selectedCaregiver?.matNo} onClose={() => setShowReviewModal(false)} />
+          <ReviewModal
+            matNo={selectedCaregiver?.matNo}
+            onClose={() => setShowReviewModal(false)}
+            onSubmitSuccess={() => getEndedMatchingList(selectedPatNo, endedCurrentPage)}
+          />
         </>
       )}
     </>
@@ -261,6 +281,7 @@ const HeadSection = styled(Section)`
   height: 200px;
   display: flex;
   justify-content: space-between;
+  padding: 40px 16px 10px 16px;
 `;
 
 const TitleDiv = styled.div`
@@ -268,13 +289,58 @@ const TitleDiv = styled.div`
   flex-direction: column;
   justify-content: space-between;
 `;
-const CaregiverSearch = styled(SearchBar)``;
 
-const SerachDiv = styled.div`
+const TipP = styled.p`
   display: flex;
-  align-items: flex-end;
-  width: 30%;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
 `;
+
+const SearchDivWrap = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  padding: 10px;
+  width: 100%;
+  border-bottom: 1px solid ${({ theme }) => theme.colors.gray[5]};
+`;
+
+const SearchInput = styled.input`
+  border: 1px solid ${({ theme }) => theme.colors.gray[5]};
+  border-radius: ${({ theme }) => theme.borderRadius.md} 0 0 ${({ theme }) => theme.borderRadius.md};
+  width: 80%;
+  padding: ${({ theme }) => theme.spacing[2]};
+  outline: none; /* 포커스 시 아웃라인 제거 */
+  font-size: 16px; /* 폰트 크기 */
+  color: #333; /* 텍스트 색상 */
+
+  &::placeholder {
+    color: #999; /* 플레이스홀더 텍스트 색상 */
+  }
+`;
+
+const SearchBtn = styled.button`
+  background: ${({ theme }) => theme.colors.primary};
+  border-radius: 0 ${({ theme }) => theme.borderRadius.md} ${({ theme }) => theme.borderRadius.md} 0;
+  width: 20%;
+  background-color: ${({ theme }) => theme.colors.primary};
+  color: white;
+
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.2s ease; /* 호버 효과 */
+
+  &:hover {
+    background-color: #e07243; /* 호버 시 약간 어두운 오렌지 */
+  }
+`;
+
+const SearchIcon = styled.span`
+  font-size: 18px; /* 아이콘 크기 */
+`;
+
 const Title = styled.h1`
   font-size: ${({ theme }) => theme.fontSizes['2xl']};
   font-weight: ${({ theme }) => theme.fontWeights.bold};
@@ -314,6 +380,10 @@ const MatchSection = styled(Section)`
 
 const InfoP = styled.p`
   margin: 50px;
+`;
+
+const Div = styled.div`
+  position: relative;
 `;
 
 //=== 종료된 매칭
@@ -412,12 +482,6 @@ const RightLineDiv = styled.div`
   border-right: 1px solid ${({ theme }) => theme.colors.gray[5]};
 `;
 
-const ButtonRow = styled.div`
-  display: flex;
-  gap: ${({ theme }) => theme.spacing[2]};
-  flex-grow: 1;
-`;
-
 /*====== 간병인 스타일 =====*/
 const CargiverWrap = styled.div`
   display: flex;
@@ -478,8 +542,10 @@ const CareLogButton = styled.button`
 `;
 
 const PageWrapper = styled.div`
+  position: absolute;
+  width: inherit;
   bottom: 0;
   width: 100%;
-  padding: ${({ theme }) => theme.spacing[3]} 0;
+  padding: ${({ theme }) => theme.spacing[5]};
 `;
 export default MatchToCaregiver;

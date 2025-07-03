@@ -1,7 +1,6 @@
 package com.kh.dolbomi.domain;
 
 import com.kh.dolbomi.enums.StatusEnum;
-import com.kh.dolbomi.enums.StatusEnum.Status;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -15,66 +14,58 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
 import java.time.LocalDateTime;
-import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "MATCHING")
+@Table(name = "NOTIFICATION")
 @Getter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Matching {
+public class Notification {
     @Id
+    @Column(name = "NOTIFICATION_NO")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "MAT_NO")
-    private Long matNo;
+    private Long notificationNo;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "CAREGIVER_NO", nullable = false)
-    private User caregiver;
+    @JoinColumn(name = "RECIPIENT_NO", nullable = false)  // 알림 받는 사람
+    private User recipient;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "PAT_NO", nullable = false)
-    private Patient patient;
+    @JoinColumn(name = "SENDER_NO", nullable = false)      // 알림 보낸 사람
+    private User sender;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "REVIEW_NO")
-    private Review review;
+    @Column(name = "NOTIFICATION_MESSAGE", nullable = false, length = 200)
+    private String notificationMessage;
+
+    @Column(name = "NOTIFICATION_LINK_URL", nullable = false, length = 200)
+    private String notificationLinkUrl;
+
+    @Column(name = "NOTIFICATION_CREATE_DATE", nullable = false)
+    private LocalDateTime notificationCreateDate = LocalDateTime.now();
+
+    @Column(name = "IS_READ", nullable = false)
+    @Enumerated(EnumType.STRING)
+    private StatusEnum.IS_READ isRead;
 
     @Column(name = "STATUS", nullable = false, length = 1)
     @Enumerated(EnumType.STRING)
     private StatusEnum.Status status;
 
-    @Column(name = "START_DATE", nullable = false)
-    private LocalDateTime startDate;
-
-    @Column(name = "END_DATE")
-    private LocalDateTime endDate;
-
     @PrePersist
     public void prePersist() {
-        this.startDate = LocalDateTime.now();
+        this.notificationCreateDate = LocalDateTime.now();
 
         if (status == null) {
             this.status = StatusEnum.Status.Y;
         }
-    }
 
-
-    public void updateStatus(Status matchingStatus) {
-        this.status = matchingStatus;
-        this.endDate = LocalDateTime.now();
-    }
-
-    //리뷰 작성시 매칭이블에 리뷰번호 연결
-    public void connectReview(Review review) {
-        this.review = review;
-        if (review.getMatchingList() != null && review.getMatchingList().contains(this)) {
-            review.getMatchingList().add(this);
+        if (isRead == null) {
+            this.isRead = StatusEnum.IS_READ.Y;
         }
     }
 }

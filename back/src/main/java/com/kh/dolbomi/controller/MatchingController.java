@@ -1,6 +1,5 @@
 package com.kh.dolbomi.controller;
 
-
 import com.kh.dolbomi.dto.MatchingDto;
 import com.kh.dolbomi.dto.PageResponse;
 import com.kh.dolbomi.enums.StatusEnum;
@@ -13,6 +12,7 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -28,12 +28,11 @@ public class MatchingController {
     @GetMapping
     public ResponseEntity<List<MatchingDto.Response>> getMatchingList(
             @RequestParam("pat_no") Long patNo,
-            @RequestParam("status") Status matchingStatus
+            @RequestParam("status") Status status
     ) {
-        System.out.println("patNo" + patNo + "matchingStatus : " + matchingStatus);
-        return ResponseEntity.ok(matchingService.getMatchingList(patNo, matchingStatus));
-    }
 
+        return ResponseEntity.ok(matchingService.getMatchingCargiverList(patNo, status));
+    }
 
     @GetMapping("matched")
     public ResponseEntity<PageResponse<MatchingDto.Response>> getMatchedList(
@@ -52,6 +51,16 @@ public class MatchingController {
 
         return ResponseEntity.ok(matchingService.getMatchingListCaregiver(caregiverNo, matchingStatus));
     }
+
+    @PatchMapping
+    public ResponseEntity<Long> getMatchingChangeStatus(
+            @RequestParam("mat_no") Long matNo,
+            @RequestParam("status") Status matchingStatus
+    ) {
+
+        return ResponseEntity.ok(matchingService.changeStatus(matNo, matchingStatus));
+    }
+
 
     @GetMapping("/caregiver/matched")
     public ResponseEntity<PageResponse<MatchingDto.ResponsePat>> getMatchedPatientsByCaregiver(

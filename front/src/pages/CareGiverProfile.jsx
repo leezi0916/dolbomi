@@ -10,6 +10,10 @@ import { useParams } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import { ModalContainer } from '../styles/common/Modal';
 import { RiAlarmWarningLine } from "react-icons/ri";
+import { matchingService } from '../api/matching';
+import { useLocation } from 'react-router-dom';
+
+
 const CareGiverProfile = () => {
   const [error, setError] = useState(null);
   const [profile, setProfile] = useState(null);
@@ -17,7 +21,12 @@ const CareGiverProfile = () => {
   const userId = useUserStore((state) => state.user?.userId);
   const [licenseList, setLicenseList] = useState([]);
   const navigate = useNavigate();
+  const location = useLocation();
+  
+  
+  const matNo = location.state?.matNo;
 
+  console.log(matNo);
   const [formData, setFormData] = useState({
     userId: '', // 아이디 필드도 포함
     userName: '',
@@ -89,6 +98,26 @@ const CareGiverProfile = () => {
     );
   }
 
+  const handleInfo = async () =>  {
+    const info = "신고가 접수되었습니다. 확인을 누르시면 매칭이 종료되며, 매칭내역에서 사라집니다. 매칭을 종료하시겠습니까?"
+    
+    const confirmed = window.confirm(info);
+
+   
+    if (!confirmed) return;
+  
+    try {
+      console.log(matNo);
+      await matchingService.getMatchingChangeStatus(Number(matNo), 'N');
+      navigate("/guardian/matchpage");
+    } catch (error) {
+      console.error("신고 처리 중 오류 발생:", error);
+    }
+
+
+  }
+
+
   return (
     <ModalContainer2>
 
@@ -138,9 +167,10 @@ const CareGiverProfile = () => {
       </LicenseWrap>
       <ButtonWrap>
       <Button onClick={() => navigate(-1)}> 이전으로 </Button>
-      <Button > 
-        <RiAlarmWarningLine></RiAlarmWarningLine>
-        신고하기 </Button>
+      <Button  onClick={handleInfo} > 
+        {/* <RiAlarmWarningLine></RiAlarmWarningLine> */}
+        신고하기 
+        </Button>
       </ButtonWrap>
      
     </ModalContainer2>
@@ -171,6 +201,7 @@ const ProfileImage = styled.img`
 `;
 
 const ButtonWrap = styled.div`
+margin: 20px;
   width: 100%;
   display: flex;
   gap: 10px;

@@ -3,12 +3,16 @@ package com.kh.dolbomi.controller;
 import com.kh.dolbomi.dto.BoardDto;
 import com.kh.dolbomi.dto.BoardDto.Response;
 import com.kh.dolbomi.dto.PageResponse;
+import com.kh.dolbomi.dto.ReplyDto;
 import com.kh.dolbomi.service.BoardService;
+import java.io.IOException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -20,10 +24,15 @@ import org.springframework.web.bind.annotation.RestController;
 public class BoardController {
     private final BoardService boardService;
 
-    //    @GetMapping
-//    public List<BoardDto> getCommunityList(@RequestParam String status, @RequestParam String role) {
-//        return boardService.getBoardList(status, role);
-//    }
+    @PostMapping
+    public ResponseEntity<Long> createBoard(@RequestBody BoardDto.Create boardCreate) throws IOException {
+        return ResponseEntity.ok(boardService.createBoard(boardCreate));
+    }
+
+    @PostMapping("/reply")
+    public ResponseEntity<Long> createReply(@RequestBody ReplyDto.Create replyCreate) throws IOException {
+        return ResponseEntity.ok(boardService.createReply(replyCreate));
+    }
 
 
     @GetMapping("/caregiver")
@@ -49,4 +58,6 @@ public class BoardController {
         }
         return ResponseEntity.ok(new PageResponse<>(boardService.getQuestionList(pageable)));
     }
+
+
 }

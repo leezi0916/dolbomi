@@ -36,6 +36,7 @@ public class ReviewRepositoryImpl implements ReviewRepository {
                   JOIN r.matchingList m
                   JOIN m.caregiver c
                   WHERE r.status = :status AND r.writer.userNo = :userNo
+                  ORDER BY r.updateDate DESC
                 """;
         List<Review> reviews = em.createQuery(query, Review.class)
                 .setParameter("status", status)
@@ -71,6 +72,7 @@ public class ReviewRepositoryImpl implements ReviewRepository {
                   JOIN r.matchingList m
                   JOIN m.caregiver c
                   WHERE r.status = :status AND c.userNo = :userNo
+                  ORDER BY r.updateDate DESC
                 """;
         List<Review> reviews = em.createQuery(query, Review.class)
                 .setParameter("status", status)

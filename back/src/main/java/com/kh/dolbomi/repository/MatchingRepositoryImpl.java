@@ -1,11 +1,8 @@
 package com.kh.dolbomi.repository;
 
 import com.kh.dolbomi.domain.Matching;
-import com.kh.dolbomi.enums.StatusEnum;
-import com.kh.dolbomi.enums.StatusEnum.Status;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
-import java.util.List;
 import java.util.Optional;
 import org.springframework.stereotype.Repository;
 
@@ -14,39 +11,6 @@ public class MatchingRepositoryImpl implements MatchingRepository {
 
     @PersistenceContext
     private EntityManager em;
-
-    public List<Object[]> findbyPatNo(Long patNo, StatusEnum.Status matchingStatus) {
-        String query = """
-
-                SELECT m.matNo , u.userNo, u.userName , u.age , u.gender, m.startDate, m.status, r.reviewNo
-                FROM Matching m
-                JOIN m.caregiver u
-                LEFT JOIN m.review r
-                WHERE m.patient.patNo = :patNo
-                AND m.status = :matchingStatus""";
-
-        return em.createQuery(query, Object[].class)
-                .setParameter("patNo", patNo)
-                .setParameter("matchingStatus", matchingStatus)
-                .getResultList();
-    }
-
-    @Override
-    public List<Object[]> findbyCaregiverNo(Long caregiverNo, Status matchingStatus) {
-        String query = """
-                    SELECT m.matNo, p.patName, p.patAge, p.patGender, m.startDate, m.status, r.reviewNo
-                    FROM Matching m
-                    JOIN m.patient p
-                    LEFT JOIN m.review r
-                    WHERE m.status = :matchingStatus
-                    AND m.caregiver.userNo = :caregiverNo
-                """;
-
-        return em.createQuery(query, Object[].class)
-                .setParameter("matchingStatus", matchingStatus)
-                .setParameter("caregiverNo", caregiverNo)
-                .getResultList();
-    }
 
     @Override
     public Optional<Matching> findByMetNo(Long matNo) {

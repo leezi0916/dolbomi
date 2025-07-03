@@ -68,4 +68,9 @@ public class Proposer {
         this.status = newStatus;
     }
 
+    // 신청테이블 상태 변경 함수 - 업데이만 하기때문에 반환값 void
+    public void updateStatus() {
+        this.status = null;
+    }
+
 }
