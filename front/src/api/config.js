@@ -102,6 +102,10 @@ export const API_ENDPOINTS = {
     PAT_ENDLIST: (caregiverNo, status) => `/matching/v1/caregiver/matched?caregiver_no=${caregiverNo}&status=${status}`,
   },
 
+  NOTIFICATIONS: {
+    LIST: (userNo) => `/notifications/v1/list?user_no=${userNo}`,
+  },
+
   API: {
     BASE: '/api/address',
     REGION: (cd) => {
