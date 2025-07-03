@@ -91,15 +91,15 @@ const SignUp = () => {
       <AuthContainer>
         {/* <MainTitle>회원가입</MainTitle> */}
         <Form onSubmit={handleSubmit}>
-          <Head>
+          {/* <Head>
             <Title>SNS 회원가입</Title>
             <GoogleLogin>
               <Text>SNS 계정으로 간편하게 로그인하세요</Text>
               <GoogleLogo />
             </GoogleLogin>
-          </Head>
+          </Head> */}
           <Center>
-            <Title>회원가입</Title>
+            <SignUpTitle>회원가입</SignUpTitle>
             <InputContainer1>
               <InputGroup>
                 <Label htmlFor="userId">아이디</Label>
@@ -132,6 +132,18 @@ const SignUp = () => {
                   $error={errors.userPwd}
                 />
                 {errors.userPwd && <ErrorMessage>{errors.userPwd.message}</ErrorMessage>}
+              </InputGroup>
+
+              <InputGroup>
+                <Label htmlFor="userPwdCheck">비밀번호 확인</Label>
+                <Input
+                  id="userPwdCheck"
+                  type="password"
+                  placeholder="비밀번호를 다시 입력해주세요"
+                  {...register('userPwdCheck')}
+                  $error={errors.userPwdCheck}
+                />
+                {errors.userPwdCheck && <ErrorMessage>{errors.userPwdCheck.message}</ErrorMessage>}
               </InputGroup>
               <InputGroup>
                 <Label htmlFor="userName">이름</Label>
@@ -226,128 +238,11 @@ const SignUp = () => {
                 />
                 {errors.email && <ErrorMessage>{errors.email.message}</ErrorMessage>}
               </InputGroup>
+              <SignUpButton type="submit" disabled={isSubmitting}>
+                {isSubmitting ? '처리중...' : '가입하기'}
+              </SignUpButton>
             </InputContainer1>
           </Center>
-
-          <Bottom>
-            <AllAgreementContainer>
-              <AllAgreementText>
-                필수동의 항목 및 개인정보 수집 및 이용동의(선택), 광고성 정보 수신(선택)에 모두 동의합니다.
-              </AllAgreementText>
-              <CustomCheckbox checked={allAgreed} onClick={handleAllAgreedChange}>
-                {allAgreed && <IoCheckmarkOutline size="20px" color="white" />}
-                {/* 실제 체크박스는 숨겨두고 클릭 이벤트를 CustomCheckbox div에서 처리 */}
-                <input
-                  type="checkbox"
-                  style={{ display: 'none' }}
-                  checked={allAgreed}
-                  onChange={() => {}} // 부모 요소에서 클릭 이벤트 처리
-                />
-              </CustomCheckbox>
-            </AllAgreementContainer>
-
-            <AgreementList>
-              <AgreementItem>
-                <AgreementLabel>
-                  <HiddenCheckbox
-                    type="checkbox"
-                    name="ageOver19"
-                    checked={agreements.ageOver19}
-                    onChange={handleCheckboxChange}
-                  />
-                  <StyledCheckbox checked={agreements.ageOver19}>
-                    {agreements.ageOver19 && <IoCheckmarkOutline size="20px" color="white" />}
-                  </StyledCheckbox>
-                  <RequiredText>[필수]</RequiredText> 만 19 세 이상입니다.
-                </AgreementLabel>
-              </AgreementItem>
-
-              <AgreementItem>
-                <AgreementLabel>
-                  <HiddenCheckbox
-                    type="checkbox"
-                    name="termsOfService"
-                    checked={agreements.termsOfService}
-                    onChange={handleCheckboxChange}
-                  />
-                  <StyledCheckbox checked={agreements.termsOfService}>
-                    {agreements.termsOfService && <IoCheckmarkOutline size="20px" color="white" />}
-                  </StyledCheckbox>
-                  <RequiredText>[필수]</RequiredText> 서비스약관 동의
-                </AgreementLabel>
-                <ViewContentButton onClick={handleClick}>내용보기</ViewContentButton>
-              </AgreementItem>
-
-              <AgreementItem>
-                <AgreementLabel>
-                  <HiddenCheckbox
-                    type="checkbox"
-                    name="requiredPersonalInfo"
-                    checked={agreements.requiredPersonalInfo}
-                    onChange={handleCheckboxChange}
-                  />
-                  <StyledCheckbox checked={agreements.requiredPersonalInfo}>
-                    {agreements.requiredPersonalInfo && <IoCheckmarkOutline size="20px" color="white" />}
-                  </StyledCheckbox>
-                  <RequiredText>[필수]</RequiredText> 개인정보 수집 및 동의
-                </AgreementLabel>
-                <ViewContentButton onClick={handleClick}>내용보기</ViewContentButton>
-              </AgreementItem>
-
-              <Divider />
-
-              <AgreementItem>
-                <AgreementLabel>
-                  <HiddenCheckbox
-                    type="checkbox"
-                    name="optionalPersonalInfo"
-                    checked={agreements.optionalPersonalInfo}
-                    onChange={handleCheckboxChange}
-                  />
-                  <StyledCheckbox checked={agreements.optionalPersonalInfo}>
-                    {agreements.optionalPersonalInfo && <IoCheckmarkOutline size="20px" color="white" />}
-                  </StyledCheckbox>
-                  <OptionalText>[선택]</OptionalText> 개인정보 수집 및 이용동의
-                </AgreementLabel>
-                <ViewContentButton onClick={handleClick}>내용보기</ViewContentButton>
-              </AgreementItem>
-
-              <AgreementItem>
-                <AgreementLabel>
-                  <HiddenCheckbox
-                    type="checkbox"
-                    name="optionalMarketingEmail"
-                    checked={agreements.optionalMarketingEmail}
-                    onChange={handleCheckboxChange}
-                  />
-                  <StyledCheckbox checked={agreements.optionalMarketingEmail}>
-                    {agreements.optionalMarketingEmail && <IoCheckmarkOutline size="20px" color="white" />}
-                  </StyledCheckbox>
-                  <OptionalText>[선택]</OptionalText> 광고 정보 이메일 수신 동의
-                </AgreementLabel>
-                <ViewContentButton onClick={handleClick}>내용보기</ViewContentButton>
-              </AgreementItem>
-
-              <AgreementItem>
-                <AgreementLabel>
-                  <HiddenCheckbox
-                    type="checkbox"
-                    name="optionalMarketingSMS"
-                    checked={agreements.optionalMarketingSMS}
-                    onChange={handleCheckboxChange}
-                  />
-                  <StyledCheckbox checked={agreements.optionalMarketingSMS}>
-                    {agreements.optionalMarketingSMS && <IoCheckmarkOutline size="20px" color="white" />}
-                  </StyledCheckbox>
-                  <OptionalText>[선택]</OptionalText> 광고 정보 SMS 수신 동의
-                </AgreementLabel>
-                <ViewContentButton onClick={handleClick}>내용보기</ViewContentButton>
-              </AgreementItem>
-            </AgreementList>
-          </Bottom>
-          <Button type="submit" disabled={isSubmitting}>
-            {isSubmitting ? '처리중...' : '가입하기'}
-          </Button>
         </Form>
       </AuthContainer>
     </>
@@ -355,6 +250,14 @@ const SignUp = () => {
 };
 
 // ... (아래 styled-components 정의는 동일)
+
+const SignUpTitle = styled(Title)`
+  margin: 0;
+`;
+
+const SignUpButton = styled(Button)`
+  margin-top: ${({ theme }) => theme.spacing[6]};
+`;
 
 const Head = styled.div`
   width: 100%;
