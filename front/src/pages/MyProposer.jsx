@@ -7,7 +7,6 @@ import { toast } from 'react-toastify';
 import { proposerService } from '../api/propose';
 import useUserStore from '../store/userStore';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
 
 const MyProposer = () => {
   const [currentPage, setCurrentPage] = useState(1);
@@ -23,7 +22,7 @@ const MyProposer = () => {
         const list = await proposerService.getMyProposer(currentPage, user.userNo);
         setProserList(list);
       } catch (error) {
-        toast.error('내 지원현황을 불러오는데 실패했습니다.');
+        toast.error(error.message);
       }
     };
     fetchPostList();
@@ -57,7 +56,7 @@ const MyProposer = () => {
           {!proposerList.content || proposerList.content.length === 0 ? (
             <tr>
               <td colSpan={6}>
-                <EmptyMessage>등록된 구인글이 없습니다.</EmptyMessage>
+                <EmptyMessage>현재 지원한 현황이 없습니다.</EmptyMessage>
               </td>
             </tr>
           ) : (
@@ -76,15 +75,21 @@ const MyProposer = () => {
                   <td>{proposer.userName}</td>
                   <td style={{ color: proposer.hiringStatus === 'Y' ? theme.colors.success : theme.colors.gray[4] }}>
                     {proposer.hiringStatus === 'Y' ? '모집중' : '모집마감'}
+                    {proposer.status === 'Y' ? '(매칭완료)' : ''}
                   </td>
                   <td>
                     {proposer.hiringStatus === 'Y' ? (
                       <span style={{ fontSize: 20, color: 'gray' }}>-</span>
                     ) : (
                       <FaTimes
-                        onClick={(e) => {
+                        onClick={async (e) => {
                           e.stopPropagation(); // 상위 tr 클릭 이벤트 막기
                           if (confirm('정말 내역을 삭제하시겠습니까?')) {
+                            try {
+                              await proposerService.deleteProposerHisotry(proposer.proposerNo);
+                            } catch (error) {
+                              toast.error(error.message);
+                            }
                           }
                         }}
                         size={20}
