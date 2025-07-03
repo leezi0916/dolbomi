@@ -11,30 +11,33 @@ import { ClipLoader } from 'react-spinners';
 import { Link } from 'react-router-dom';
 import { hiringService } from '../api/hiring';
 import Paging from '../components/Paging';
+import { addressService } from '../api/address';
 
 const HireList = () => {
   const [hireLists, setHireLists] = useState([]);
   const [loading, setLoading] = useState(false); // 초기 false
   const [error, setError] = useState(null);
-  const [careStatus, setCareStatus] = useState(false);
   const [page, setPage] = useState(1); // MUI Pagination은 1부터 시작
   const [size] = useState(10);
   const [totalPages, setTotalPages] = useState(0);
   const [visible, setVisible] = useState(false);
+  const [region, setRegion] = useState([]);
   const [data, setData] = useState({
     region: '',
     endDate: '',
     account: '',
-    home: true,
+    home: false,
     startDate: '',
     patGender: '',
     keyword: '',
   });
+  const [cd, setCd] = useState(null);
+  const [selected, setSelected] = useState('');
 
   // 1. 컴포넌트가 처음 마운트될 때 전체 리스트를 불러옵니다.
   useEffect(() => {
-    loadHireLists(page - 1, size); // API에선 0부터 시작일 가능성 있어 -1 처리
-  }, [page]);
+    loadHireLists(page - 1, size, data); // API에선 0부터 시작일 가능성 있어 -1 처리
+  }, [page, size]);
 
   // 이름 첫글자 O 처리하기
   const maskName = (name) => {
@@ -47,12 +50,13 @@ const HireList = () => {
     return name;
   };
 
-  const loadHireLists = async (pageNumber, pageSize) => {
+  const loadHireLists = async (pageNumber, pageSize, searchData) => {
     try {
+      console.log('돌봄대상자 리스트 JSON 데이터:', data);
       setLoading(true);
       setError(null);
-      const res = await hiringService.getHiringList({ page: pageNumber, size: pageSize });
-      console.log('API Response:', res); // 여기서 totalPages, content 등 확인
+      const res = await hiringService.getHiringList({ page: pageNumber, size: pageSize, searchData });
+      console.log('돌봄대상자 Response:', res); // 여기서 totalPages, content 등 확인
       if (res.totalElements === 0) {
         setHireLists([]);
         setError('등록된 돌봄 대상자 모집 글이 없습니다.');
@@ -66,14 +70,14 @@ const HireList = () => {
       setLoading(false);
     }
   };
+
   // SearchBar에서 검색 버튼을 눌렀을 때 호출되는 함수
   const handleSearchSubmit = async (keyword) => {
     // SearchBar로부터 받은 키워드를 searchKeyword 상태에 저장합니다.
-
-    handleSubmit({
-      ...data,
-      keyword,
-    });
+    const updatedData = { ...data, keyword }; // 최신 상태 생성
+    setData(updatedData); // 상태 업데이트
+    setPage(1);
+    await loadHireLists(updatedData);
   };
 
   const handleCheckChange = (home) => {
@@ -87,7 +91,7 @@ const HireList = () => {
 
   //상세검색
   const dataInfo = (e) => {
-    const { name, value } = e.target;
+    const { name, value, checked } = e.target;
     const today = new Date(); //오늘날짜
     today.setHours(0, 0, 0, 0); //시간초기화
 
@@ -130,16 +134,30 @@ const HireList = () => {
       }
     }
 
+    if (name === 'home') {
+      setData((data) => ({
+        ...data,
+        [name]: checked,
+      }));
+      return;
+    }
+
     setData((data) => ({
       ...data,
       [name]: value,
     }));
   };
 
-  const handleSubmit = (data) => {
-    console.log('JSON 데이터:', data);
-    // data를 JSON으로 서버에 전송하거나 처리
-    alert(JSON.stringify(data, null, 2));
+  const getRegion = async () => {
+    try {
+      setError(null);
+      const res = await addressService.getRegionList(cd);
+      console.log('HireList에 온 값:', res);
+      setRegion(res);
+      console.log(region);
+    } catch (err) {
+      setError('행정구역 로드 실패.\n' + err);
+    }
   };
 
   return (
@@ -147,6 +165,25 @@ const HireList = () => {
       {/* test */}
       <SearchSection>
         <Title>돌봄대상자 모집</Title>
+
+        {/* 테스트공간 */}
+        <button onClick={getRegion}>지역Test</button>
+        <RegionDiv>
+          {region.map((region, index) => (
+            <RegionLabel key={index}>
+              <input
+                type="radio"
+                name="region"
+                value={region.cd}
+                checked={selected?.cd === region.cd}
+                onChange={() => setSelected(region)}
+              />
+              {region.addrName}
+            </RegionLabel>
+          ))}
+        </RegionDiv>
+        <p>선택된 지역: {selected.fullName}</p>
+
         <SearchContainer2>
           <Search>
             <SearchBar onSearch={handleSearchSubmit} />
@@ -169,7 +206,15 @@ const HireList = () => {
                 <DateInput name="endDate" type="date" value={data.endDate} onChange={dataInfo} />
               </DateBox>
               <Item>
-                <ACCOUNT name="account" type="number" placeholder="시급" value={data.account} onChange={dataInfo} />
+                <ACCOUNT
+                  name="account"
+                  type="number"
+                  min="0"
+                  step="100"
+                  placeholder="시급"
+                  value={data.account}
+                  onChange={dataInfo}
+                />
               </Item>
 
               <RadioGroup2>
@@ -211,11 +256,17 @@ const HireList = () => {
               </RadioGroup2>
               <Item>
                 <AccommodationCheckboxLabel>
-                  <HiddenCheckbox name="home" type="checkbox" checked={data.home} onChange={handleCheckChange} />
+                  <HiddenCheckbox
+                    name="home"
+                    type="checkbox"
+                    value={data.home}
+                    checked={data.home}
+                    onChange={dataInfo}
+                  />
                   <StyledCheckbox checked={data.home}>
                     {handleCheckChange && <IoCheckmarkOutline size="20px" color="white" />}
                   </StyledCheckbox>
-                  숙식 제공
+                  상주 가능 여부
                 </AccommodationCheckboxLabel>
               </Item>
             </Detail>
@@ -288,7 +339,7 @@ const Title = styled.h1`
 
 const Detail = styled.div`
   margin-top: 30px;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: 160px repeat(2, 1fr);
   grid-auto-rows: min-content;
   row-gap: 20px;
   user-select: none;
@@ -548,7 +599,7 @@ const CareContent = styled.span`
 const Item = styled.div`
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: start;
 `;
 
 const Search = styled.div`
@@ -665,4 +716,11 @@ const ErrorMessage = styled.p`
   margin-top: ${({ theme }) => theme.spacing[5]};
 `;
 
+const RegionDiv = styled.div`
+  display: flex;
+`;
+const RegionLabel = styled.label`
+  display: flex;
+  margin-bottom: 20px;
+`;
 export default HireList;

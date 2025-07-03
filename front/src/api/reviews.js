@@ -1,7 +1,7 @@
 import { useStore } from 'zustand';
 import api from './axios';
 import { API_ENDPOINTS } from './config';
-import { snakeToCamel } from '../utils/formatData';
+import { camelToSnake, snakeToCamel } from '../utils/formatData';
 
 export const reviewService = {
   //리뷰전체조회
@@ -50,17 +50,18 @@ export const reviewService = {
   },
 
   //리뷰작성
-  saveReview: async (rating, inputValue) => {
+  saveReview: async ({ matNo, userNo, rating, inputValue }) => {
     try {
-      const { user } = useStore.useUserStore();
-      const { data } = await api.post(API_ENDPOINTS.REVIEWS.BASE, {
-        reviewWriterNo: user,
+      const reviewData = {
+        matNo,
+        reviewWriterNo: userNo,
         reviewContent: inputValue,
-        score: rating,
-        createDate: new Date().toISOString(),
-        updateDate: new Date().toISOString(),
-        status: 'Y',
-      });
+        score: Number(rating),
+      };
+      console.log('전송 전 reviewData:', reviewData);
+      const snakeCaseData = camelToSnake(reviewData);
+      console.log('보내는 리뷰 데이터:', snakeCaseData);
+      const { data } = await api.post(API_ENDPOINTS.REVIEWS.BASE, snakeCaseData);
 
       return data;
     } catch (error) {
@@ -73,9 +74,18 @@ export const reviewService = {
     }
   },
 
-  getReviewsByUser: async (userNo) => {
-    const response = await api.get(API_ENDPOINTS.REVIEWS.DETAIL(userNo));
-
-    return snakeToCamel(response).data;
+  //특정 이력서안에 간병인에 대한 리뷰
+  getResumeDetailReviews: async (currentPage, resumeNo) => {
+    try {
+      const { data } = await api.get(API_ENDPOINTS.REVIEWS.DETAIL(currentPage, resumeNo));
+      console.log(data);
+      return snakeToCamel(data);
+    } catch (error) {
+      if (error.response) {
+        const message = error.response?.data?.message || '리뷰를 불러오는데 실패했습니다.';
+        throw new Error(message);
+      }
+    }
+    throw new Error('서버 통신 불량');
   },
 };

@@ -1,12 +1,10 @@
 package com.kh.dolbomi.service;
 
+import com.kh.dolbomi.domain.Matching;
 import com.kh.dolbomi.dto.MatchingDto;
-import com.kh.dolbomi.dto.MatchingDto.ResponsePat;
-import com.kh.dolbomi.enums.StatusEnum;
 import com.kh.dolbomi.enums.StatusEnum.Status;
 import com.kh.dolbomi.repository.MatchingRepository;
 import com.kh.dolbomi.repository.MatchingRepositoryV2;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -23,53 +21,50 @@ public class MatcingServicelmpl implements MatchingService {
     private final MatchingRepository matchingRepository;
     private final MatchingRepositoryV2 matchingRepositoryV2;
 
+
     @Override
-    public List<MatchingDto.Response> getMatchingList(Long patNo, Status matchingStatus) {
+    @Transactional(readOnly = true)
+    public List<MatchingDto.Response> getMatchingCargiverList(Long patNo, Status status) {
 
-        List<Object[]> resultList = matchingRepository.findbyPatNo(patNo, matchingStatus);
-        return resultList.stream()
-                .map(row -> new MatchingDto.Response(
-                        (Long) row[0],
-                        (Long) row[1],
-                        (String) row[2],
-                        (Integer) row[3],
-                        (StatusEnum.Gender) row[4],
-                        (LocalDateTime) row[5],
-                        (StatusEnum.Status) row[6]
-                ))
+        return matchingRepositoryV2.findByPatientPatNoAndStatus(patNo, status).stream()
+                .map(MatchingDto.Response::toDto)
                 .collect(Collectors.toList());
-
 
     }
 
     @Override
     @Transactional(readOnly = true)
     public Page<MatchingDto.Response> getMatchedListByStatus(Long patNo, Status status, Pageable pageable) {
+
         return matchingRepositoryV2.findByPatientPatNoAndStatus(patNo, status, pageable)
-                .map(matching -> MatchingDto.Response.builder()
-                        .mat_no(matching.getMatNo())
-                        .caregiver_no(matching.getCaregiver().getUserNo())
-                        .user_name(matching.getCaregiver().getUserName())
-                        .age(matching.getCaregiver().getAge())
-                        .gender(matching.getCaregiver().getGender())
-                        .start_date(matching.getStartDate())
-                        .status(matching.getStatus())
-                        .build());
+                .map(MatchingDto.Response::toDto);
     }
 
 
-    public List<ResponsePat> getMatchingListCaregiver(Long caregiverNo, Status matchingStatus) {
-        List<Object[]> resultList = matchingRepository.findbyCaregiverNo(caregiverNo, matchingStatus);
-        return resultList.stream()
-                .map(row -> new MatchingDto.ResponsePat(
-                        (Long) row[0],
-                        (String) row[1],
-                        (Integer) row[2],
-                        (StatusEnum.Gender) row[3],
-                        (LocalDateTime) row[4],
-                        (StatusEnum.Status) row[5]
-                ))
+    public List<MatchingDto.ResponsePat> getMatchingListCaregiver(Long caregiverNo, Status status) {
+
+        return matchingRepositoryV2.findByCaregiverUserNoAndStatus(caregiverNo, status).stream()
+                .map(MatchingDto.ResponsePat::from)
                 .collect(Collectors.toList());
+
+
     }
+
+    @Override
+    public Long changeStatus(Long matNo, Status matchingStatus) {
+        Matching matching = matchingRepository.findByMetNo(matNo)
+                .orElseThrow(() -> new IllegalArgumentException("매칭이 존재하지 않습니다."));
+        matching.updateStatus(matchingStatus);
+        return matchingRepository.save(matching).getMatNo();
+    }
+
+    @Override
+    public Page<MatchingDto.ResponsePat> getMatchedPatientsByCaregiver(Long caregiverNo, Status status,
+                                                                       Pageable pageable) {
+        return matchingRepositoryV2.findByCaregiverUserNoAndStatus(caregiverNo, status, pageable)
+                .map(MatchingDto.ResponsePat::from);
+
+    }
+
 
 }

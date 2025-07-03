@@ -1,0 +1,349 @@
+import { useEffect, useState } from 'react';
+import useUserStore from '../../store/userStore';
+import { Link, useNavigate, useParams } from 'react-router-dom';
+import { commuService } from '../../api/community';
+import { toast } from 'react-toastify';
+import { ClipLoader } from 'react-spinners';
+import { Page } from '../../styles/common/Board';
+import { PageInfo } from './style/CommunityList.styles';
+import theme from '../../styles/theme';
+import styled from 'styled-components';
+import {
+  BodyTop,
+  FileBox,
+  FileTitle,
+  Icons,
+  InputFile,
+  Left,
+  PageBody,
+  PageTitle,
+  PageTop,
+} from './style/Community.styles';
+import { useForm } from 'react-hook-form';
+
+const CommunityDetail = () => {
+  const userNo = useUserStore((state) => state.user?.userNo);
+  // 수정하기 버튼 때문에 추가
+  const [error, setError] = useState(null);
+  const [communityDetail, setCommunityDetail] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const { boardNo } = useParams();
+
+  const navigate = useNavigate();
+  const { register, handleSubmit, reset } = useForm();
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  useEffect(() => {
+    const loadCommunity = async () => {
+      try {
+        const community = await commuService.getCommunityDetail(boardNo);
+        console.log(community);
+
+        setCommunityDetail(community);
+      } catch (error) {
+        console.error(error);
+        const errorMessage = '목록을 불러오는데 실패했습니다.';
+        setError(errorMessage);
+        toast.error(errorMessage);
+      } finally {
+        setLoading(false);
+        reset();
+      }
+    };
+
+    loadCommunity();
+  }, [boardNo]);
+
+  if (loading) {
+    return (
+      <div>
+        <ClipLoader size={50} aria-label="Loading Spinner" />
+      </div>
+    );
+  }
+
+  if (error) {
+    return null;
+  }
+
+  if (!communityDetail) {
+    return <Page>게시글을 찾을 수 없습니다.</Page>;
+  }
+
+  const onSubmit = async (data) => {
+    if (!data.replyContent.trim()) {
+      alert('댓글을 입력해주세요.');
+      return;
+    }
+    console.log(userNo);
+    try {
+      setIsSubmitting(true);
+      const replyData = {
+        board_no: boardNo,
+        user_no: userNo,
+        reply_content: data.replyContent,
+      };
+
+      const response = await commuService.createReply(replyData);
+      console.log(response);
+      navigate(0);
+    } catch (error) {
+      console.error(error);
+      const errorMessage = '등록에 실패했습니다. 다시 시도해주세요.';
+      setError(errorMessage);
+      toast.error(errorMessage);
+    } finally {
+      setIsSubmitting(false);
+      reset();
+    }
+  };
+  return (
+    <Page>
+      <PageInfo>
+        <PageTop>
+          {communityDetail.role === 'C' ? (
+            <PageTitle>간병 게시판 상세</PageTitle>
+          ) : (
+            <PageTitle>보호자 게시판 상세</PageTitle>
+          )}
+          <div>
+            <RightBtn>뒤로가기</RightBtn>
+          </div>
+        </PageTop>
+        <PageBody>
+          <Left style={{ fontSize: theme.fontSizes.lg, fontWeight: theme.fontWeights.medium, padding: '0 10px' }}>
+            {communityDetail.boardTitle}
+          </Left>
+          <BodyTop>
+            <Icons src="/src/assets/icons/icon_작성자.png" alt="" />
+            <Left style={{ fontSize: theme.fontSizes.sm }}>{communityDetail?.userName}</Left>
+            <Right>
+              <Icons src="/src/assets/icons/icon_조회수.png" alt="" />
+              <div style={{ paddingRight: '10px' }}>{communityDetail?.count}</div>
+              <Icons src="/src/assets/icons/icon_작성일자.png" alt="" />
+              <div style={{ paddingRight: '10px' }}>{communityDetail?.createDate}</div>
+              {communityDetail.userNo === userNo ? (
+                <MenuBox>
+                  <img src="/src/assets/icons/icon_설정메뉴.png" alt="" />
+                  <ul>
+                    <li>
+                      <img src="/src/assets/icons/icon_수정.png" alt="" />
+                      <LinkLi to={`/community/update/${communityDetail?.no}`}>수정</LinkLi>
+                    </li>
+                    <li>
+                      <img src="/src/assets/icons/icon_삭제.png" alt="" />
+                      <LinkLi> 삭제</LinkLi>
+                    </li>
+                  </ul>
+                </MenuBox>
+              ) : null}
+            </Right>
+          </BodyTop>
+          <BodyText>{communityDetail.boardContent}</BodyText>
+          {communityDetail.files && communityDetail.files.length > 0 && (
+            <FileBox>
+              <FileTitle>
+                <Icons src="/src/assets/icons/icon_사진.png" alt="" />
+                <div>사진</div>
+              </FileTitle>
+              <InputFile>
+                {communityDetail.files?.map((file, index) => (
+                  <ImgBox key={index}>
+                    <a href={file.filePath} target="_blank" rel="noopener noreferrer">
+                      <img
+                        src={file.filePath}
+                        alt={file.originName || '첨부 이미지'}
+                        style={{ width: '100%', aspectRatio: '4 / 3', borderRadius: '4px' }}
+                      />
+                    </a>
+                  </ImgBox>
+                ))}
+              </InputFile>
+            </FileBox>
+          )}
+          <form onSubmit={handleSubmit(onSubmit)}>
+            <CommentBox>
+              <CommentInput
+                type="text"
+                placeholder="댓글을 입력하세요"
+                {...register('replyContent')}
+                disabled={isSubmitting}
+              />
+              <CommentButton type="submit" onClick={handleSubmit}>
+                댓글 작성
+              </CommentButton>
+            </CommentBox>
+          </form>
+          <CommentEx>
+            <span>
+              • 개인정보를 공유 및 요청하거나, 명예 훼손, 무단 광고, 불법정보 유포 시 이에 대한 민형사상 책임은
+              작성자에게 있습니다
+            </span>
+            <span>• 개인정보가 포함되거나 부적절한 답변은 비노출 또는 해당 서비스 이용 불가 처리될 수 있습니다</span>
+          </CommentEx>
+        </PageBody>
+        <CommentSelectBox>
+          <div style={{ gap: '6px', paddingLeft: '10px' }}>
+            <div style={{ fontWeight: theme.fontWeights.bold }}>답변</div>
+            <div style={{ color: theme.colors.primary, fontWeight: theme.fontWeights.bold }}>
+              {communityDetail.reply.length}
+            </div>
+          </div>
+          {communityDetail.reply?.map((reply) => (
+            <CommentSelect key={reply.replyNo}>
+              <div style={{ width: '100%', gap: '8px' }}>
+                <Icons src="/src/assets/icons/icon_작성자.png" alt="" />
+                <div>{reply.userName}</div>
+                <div>{reply.updateDate}</div>
+                {communityDetail.userNo === userNo || reply.userNo === userNo ? (
+                  <MenuBox style={{ marginLeft: 'auto' }}>
+                    <img src="/src/assets/icons/icon_설정메뉴.png" alt="" />
+                    <ul>
+                      {reply.userNo === userNo ? (
+                        <li>
+                          <img src="/src/assets/icons/icon_수정.png" alt="" />
+                          <LinkLi>수정</LinkLi>
+                        </li>
+                      ) : null}
+                      <li>
+                        <img src="/src/assets/icons/icon_삭제.png" alt="" />
+                        <LinkLi> 삭제</LinkLi>
+                      </li>
+                    </ul>
+                  </MenuBox>
+                ) : null}
+              </div>
+
+              <div style={{ padding: '5px 10px 0' }}>{reply.replyContent}</div>
+            </CommentSelect>
+          ))}
+        </CommentSelectBox>
+      </PageInfo>
+    </Page>
+  );
+};
+const RightBtn = styled.button`
+  width: 100px;
+  border: 1px solid ${({ theme }) => theme.colors.gray[4]};
+  border-radius: 6px;
+`;
+
+const ImgBox = styled.div`
+  width: calc(100% / 4);
+  aspect-ratio: 4 / 3;
+  padding: 0 10px 10px 0px;
+  position: relative;
+  display: inline-block;
+`;
+const Right = styled.div`
+  display: flex;
+`;
+
+const BodyText = styled.div`
+  width: 100%;
+  min-height: 200px;
+  display: flex;
+  justify-content: flex-start;
+  border-top: 1px solid ${({ theme }) => theme.colors.gray[4]};
+  padding: 10px;
+`;
+const MenuBox = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  flex-direction: column;
+  position: relative;
+  > ul {
+    display: none;
+    position: absolute;
+    top: 104%;
+    right: 0;
+    padding: 10px 10px 0px 10px;
+    background-color: white;
+    border: 1px solid ${({ theme }) => theme.colors.primary};
+    border-radius: ${({ theme }) => theme.borderRadius.base};
+    z-index: 1;
+    > li {
+      min-width: 70px;
+      cursor: pointer;
+      margin-bottom: 10px;
+      > img {
+        margin-right: 5px;
+      }
+    }
+  }
+  &:hover ul {
+    display: block;
+  }
+  > img {
+    width: min-content;
+  }
+`;
+
+const LinkLi = styled(Link)`
+  font-weight: ${({ theme }) => theme.fontWeights.medium};
+  text-align: center;
+  &:hover {
+    color: ${({ theme }) => theme.colors.primary};
+  }
+`;
+const CommentBox = styled.div`
+  display: flex;
+  width: 100%;
+  height: 60px;
+  border-top: 1px solid ${({ theme }) => theme.colors.gray[4]};
+  padding: 10px;
+`;
+const CommentInput = styled.input`
+  flex-grow: 1;
+  height: 100%;
+  border: 1px solid ${({ theme }) => theme.colors.gray[4]};
+  border-top-left-radius: 4px;
+  border-bottom-left-radius: 4px;
+  padding: 2px 4px;
+`;
+const CommentButton = styled.button`
+  width: 100px;
+  height: 100%;
+
+  background-color: ${({ theme }) => theme.colors.primary};
+  color: ${({ theme }) => theme.colors.white};
+  border-top-right-radius: 4px;
+  border-bottom-right-radius: 4px;
+  padding: 5px;
+`;
+
+const CommentEx = styled.ul`
+  display: flex;
+  flex-direction: column;
+  background-color: ${({ theme }) => theme.colors.gray[5]};
+  margin: 0 10px;
+  padding: 10px;
+  > span {
+    text-align: left;
+    font-size: ${({ theme }) => theme.fontSizes.xs};
+    font-weight: ${({ theme }) => theme.fontWeights.light};
+  }
+`;
+const CommentSelectBox = styled(PageBody)`
+  margin-bottom: 40px;
+  > div {
+    display: flex;
+    justify-content: flex-start;
+    > div {
+      display: flex;
+      justify-content: flex-start;
+    }
+  }
+`;
+const CommentSelect = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  border-top: 1px solid ${({ theme }) => theme.colors.gray[4]};
+  margin-top: 10px;
+  padding: 10px 10px 0px 10px;
+  > div {
+    align-items: center;
+  }
+`;
+export default CommunityDetail;

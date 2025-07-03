@@ -7,6 +7,9 @@ import { useNavigate } from 'react-router-dom';
 import { patientService } from '../api/patient';
 import useUserStore from '../store/userStore';
 import { matchingService } from '../api/matching';
+import Paging from '../components/Paging';
+import { CiCircleInfo } from 'react-icons/ci';
+import { IoSearchOutline } from 'react-icons/io5';
 
 const MatchToPatient = () => {
   const [activeTab, setActiveTab] = useState('matching');
@@ -15,15 +18,14 @@ const MatchToPatient = () => {
   const navigate = useNavigate();
 
   // 진행중 매칭 관련
-  // const [caregiverList, setCareGiverList] = useState([]);
-  // const [userPatients, setUserpatients] = useState([]);
+  const [caregiverList, setCareGiverList] = useState([]);
+  const [userPatients, setUserpatients] = useState([]);
 
   // // 종료된 매칭 관련 페이징 상태
-  // const [endedCaregiverList, setEndedCaregiverList] = useState([]);
-  // const [endedCurrentPage, setEndedCurrentPage] = useState(1);
-  // const [endedTotalPage, setEndedTotalPage] = useState(1);
+  const [endedPatientList, setEndedPatientList] = useState([]);
+  const [endedCurrentPage, setEndedCurrentPage] = useState(1);
+  const [endedTotalPage, setEndedTotalPage] = useState(1);
   // const [selectedPatNo, setSelectedPatNo] = useState(null);
-
   useEffect(() => {
     const fetchAll = async () => {
       if (!user) {
@@ -45,21 +47,62 @@ const MatchToPatient = () => {
   };
 
   useEffect(() => {
-    const fetchAll = async () => {
-      if (!user) {
-        alert('로그인 후 이용해주세요');
-        return;
-      }
-      try {
-        const patientList = await matchingService.getMatchingPatient(user.userNo, 'Y');
-        console.log(patientList);
-        patientList.length === 0 ? setPatientList([]) : setPatientList(patientList);
-      } catch (err) {
-        console.error(err);
-      }
-    };
     fetchAll();
   }, [user]);
+
+
+  const fetchAll = async () => {
+    if (!user) {
+      alert('로그인 후 이용해주세요');
+      return;
+    }
+    try {
+      const patientList = await matchingService.getMatchingPatient(user.userNo, 'Y');
+      console.log(patientList);
+      patientList.length === 0 ? setPatientList([]) : setPatientList(patientList);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const handleEndMatching = async (matNo) => {
+    try {
+      console.log(matNo);
+      const confirmDelete = window.confirm('종료된 매칭으로 이동됩니다. 정말로 간병을 종료하시겠습니까?');
+
+      if (!confirmDelete) return;
+
+      await matchingService.getMatchingChangeStatus(matNo, 'N');
+      await fetchAll();
+
+      // 상태 변경 후 다시 불러오기
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+
+  useEffect(() => {
+    const fetchEndedMatching = async () => {
+      if (!user || activeTab !== 'matched') return;
+
+      try {
+        const res = await matchingService.findMatchedPatients(user.userNo, 'N', endedCurrentPage - 1);
+        console.log(res);
+        setEndedPatientList(res.content);
+        setEndedCurrentPage(res.currentPage + 1); // ← 여기가 핵심
+        setEndedTotalPage(res.totalPage); // ← 주의: API에선 totalPage로 오네요
+      } catch (err) {
+        console.error('종료된 매칭 불러오기 실패:', err);
+      }
+    };
+
+    fetchEndedMatching();
+  }, [user, activeTab, endedCurrentPage]);
+
+  const chagneCurrentPage = (value) => {
+    setEndedCurrentPage(value);
+  };
 
   return (
     <>
@@ -74,20 +117,34 @@ const MatchToPatient = () => {
             <SubTitle onClick={() => handleTabChange('matched')} $active={activeTab === 'matched'}>
               종료된 매칭
             </SubTitle>
+            <TipP>
+              <CiCircleInfo color="#EF7A46" size={'20px'}></CiCircleInfo> 환자에 마우스를 올려 종료된 매칭 목록을
+              확인하세요.
+            </TipP>
           </Tab>
         </TitleDiv>
-
-        <SerachDiv>
-          <CaregiverSearch></CaregiverSearch>
-        </SerachDiv>
       </HeadSection>
+
+        {activeTab === 'matched' ? (
+          <SearchDivWrap>
+            <SearchInput placeholder="찾으시는 돌봄대상자를 검색하세요"></SearchInput>
+            <SearchBtn>
+              <SearchIcon>
+                <IoSearchOutline />
+              </SearchIcon>
+            </SearchBtn>
+          </SearchDivWrap>
+        ) : (
+          <></>
+        )}
+   
       {/*진행중 매칭 */}
       <MatchSection>
         {activeTab === 'matching' && (
           <>
             {patientList && patientList.length > 0 ? (
               patientList.map((pat) => (
-                <ProfileCardPair>
+                <ProfileCardPair key={pat.matNo}>
                   <ProfileCard type="patient">
                     <ProfileImage src={profileImage} alt="환자" />
                     <ProfileInfo>
@@ -98,7 +155,9 @@ const MatchToPatient = () => {
                     </ProfileInfo>
                     <ButtonRow>
                       <InfoButton onClick={() => navigate(`/report/${pat.patNo}`)}>간병일지보기</InfoButton>
-                      <ReportButton>간병 종료</ReportButton>
+                      <ReportButton type="button" onClick={() => handleEndMatching(pat.matNo)}>
+                        간병 종료
+                      </ReportButton>
                     </ButtonRow>
                   </ProfileCard>
                 </ProfileCardPair>
@@ -111,18 +170,28 @@ const MatchToPatient = () => {
 
         {activeTab === 'matched' && (
           <>
-            <ProfileCardPair>
-              <ProfileCard type="patient">
-                <ProfileImage src={profileImage} alt="환자" />
-                <ProfileInfo>
-                  <UserName>박영희 님</UserName>
-                  <UserAge>나이 80세(여)</UserAge>
-                </ProfileInfo>
-                <ButtonRow>
-                  <InfoButton>간병일지</InfoButton>
-                </ButtonRow>
-              </ProfileCard>
-            </ProfileCardPair>
+            {endedPatientList && endedPatientList.length > 0 ? (
+              endedPatientList.map((pat) => (
+                <ProfileCardPair key={pat.matNo}>
+                  <ProfileCard type="patient">
+                    <ProfileImage src={profileImage} alt="환자" />
+                    <ProfileInfo>
+                      <UserName>{pat.patName} 님</UserName>
+                      <UserAge>
+                        나이 {pat.patAge}세 ({pat.patGender === 'F' ? '여' : '남'})
+                      </UserAge>
+                    </ProfileInfo>
+                    <ButtonRow>
+                      <InfoButton onClick={() => navigate(`/report/${pat.patNo}`)}>간병일지</InfoButton>
+                    </ButtonRow>
+                  </ProfileCard>
+                </ProfileCardPair>
+              ))
+            ) : (
+              <InfoP> 종료된 매칭 환자가 없습니다. </InfoP>
+            )}
+
+            <Paging currentPage={endedCurrentPage} totalPage={endedTotalPage} chagneCurrentPage={chagneCurrentPage} />
           </>
         )}
       </MatchSection>
@@ -181,6 +250,56 @@ const MatchSection = styled(Section)`
   flex-direction: column;
   align-items: center; /* 카드 쌍 전체를 가로 중앙으로 정렬 */
   padding: ${({ theme }) => theme.spacing[8]} 0; /* 상하 패딩 추가 */
+`;
+
+const TipP = styled.p`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+`
+
+
+const SearchDivWrap = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  margin-right: 50px;
+`;
+
+const SearchInput = styled.input`
+  border: 1px solid ${({ theme }) => theme.colors.gray[5]};
+  border-radius: ${({ theme }) => theme.borderRadius.md} 0 0 ${({ theme }) => theme.borderRadius.md};
+  width: 250px;
+  padding: ${({ theme }) => theme.spacing[2]};
+  outline: none; /* 포커스 시 아웃라인 제거 */
+  font-size: 16px; /* 폰트 크기 */
+  color: #333; /* 텍스트 색상 */
+
+  &::placeholder {
+    color: #999; /* 플레이스홀더 텍스트 색상 */
+  }
+`;
+
+const SearchBtn = styled.button`
+  background: ${({ theme }) => theme.colors.primary};
+  border-radius: 0 ${({ theme }) => theme.borderRadius.md} ${({ theme }) => theme.borderRadius.md} 0;
+
+  background-color: ${({ theme }) => theme.colors.primary};
+  color: white;
+
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.2s ease; /* 호버 효과 */
+
+  &:hover {
+    background-color: #e07243; /* 호버 시 약간 어두운 오렌지 */
+  }
+`;
+
+const SearchIcon = styled.span`
+  font-size: 18px; /* 아이콘 크기 */
 `;
 
 // 카드를 두 개씩 묶어 가로로 배치하는 컨테이너

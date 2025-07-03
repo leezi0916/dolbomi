@@ -15,6 +15,7 @@ const Tags = ({ tags, handleTagChange }) => {
       handleTagChange([...tags, inputValue]);
       setInputValue('');
     }
+
   };
   const handleInputChange = (e) => {
     setInputValue(e.target.value);

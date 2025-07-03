@@ -4,10 +4,16 @@ import { userService } from '../api/users';
 import { ClipLoader } from 'react-spinners';
 import useUserStore from '../store/userStore';
 import { SubmitBtn } from '../styles/PatientRegistration';
-import { AuthContainer, Input, InputGroup } from '../styles/Auth.styles';
+import { AuthContainer, Button, Input, InputGroup } from '../styles/Auth.styles';
 import styled from 'styled-components';
 import { useParams } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
+import { ModalContainer } from '../styles/common/Modal';
+import { RiAlarmWarningLine } from "react-icons/ri";
+import { matchingService } from '../api/matching';
+import { useLocation } from 'react-router-dom';
+
+
 const CareGiverProfile = () => {
   const [error, setError] = useState(null);
   const [profile, setProfile] = useState(null);
@@ -15,7 +21,12 @@ const CareGiverProfile = () => {
   const userId = useUserStore((state) => state.user?.userId);
   const [licenseList, setLicenseList] = useState([]);
   const navigate = useNavigate();
+  const location = useLocation();
+  
+  
+  const matNo = location.state?.matNo;
 
+  console.log(matNo);
   const [formData, setFormData] = useState({
     userId: '', // 아이디 필드도 포함
     userName: '',
@@ -49,7 +60,7 @@ const CareGiverProfile = () => {
             userId: info.userId || '', // 아이디 필드 추가
             userName: info.userName || '',
             age: info.age || '',
-            gender: info.gender || '',
+            gender: (info.gender === "M"? "남": "여") || '',
             phone: info.phone || '',
             email: info.email || '',
             address: info.address || '',
@@ -87,12 +98,31 @@ const CareGiverProfile = () => {
     );
   }
 
+  const handleInfo = async () =>  {
+    const info = "신고가 접수되었습니다. 확인을 누르시면 매칭이 종료되며, 매칭내역에서 사라집니다. 매칭을 종료하시겠습니까?"
+    
+    const confirmed = window.confirm(info);
+
+   
+    if (!confirmed) return;
+  
+    try {
+      console.log(matNo);
+      await matchingService.getMatchingChangeStatus(Number(matNo), 'N');
+      navigate("/guardian/matchpage");
+    } catch (error) {
+      console.error("신고 처리 중 오류 발생:", error);
+    }
+
+
+  }
+
+
   return (
-    <ModalContainer>
-      <ButtonWrap>
+    <ModalContainer2>
+
         <ContentTitle>간병인 정보</ContentTitle>
-        <button onClick={() => navigate(-1)}> x </button>
-      </ButtonWrap>
+
 
       <ProfileCardWrap>
         <ContentTitle>프로필</ContentTitle>
@@ -135,26 +165,24 @@ const CareGiverProfile = () => {
           <p>자격증정보가 없습니다.</p>
         )}
       </LicenseWrap>
-    </ModalContainer>
+      <ButtonWrap>
+      <Button onClick={() => navigate(-1)}> 이전으로 </Button>
+      <Button  onClick={handleInfo} > 
+        {/* <RiAlarmWarningLine></RiAlarmWarningLine> */}
+        신고하기 
+        </Button>
+      </ButtonWrap>
+     
+    </ModalContainer2>
   );
 };
 
-export const ModalContainer = styled.div`
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin: 0 auto;
+export const ModalContainer2 = styled(ModalContainer)`
+  margin-top: 50px;
   padding: ${({ theme }) => theme.spacing[8]} ${({ theme }) => theme.spacing[16]};
-  border: 1px solid ${({ theme }) => theme.colors.gray[5]};
-  box-shadow: ${({ theme }) => theme.shadows.xl};
-  width: 650px;
-  min-height: 500px;
-  gap: 10px;
-  transition:
-    transform 0.2s ease,
-    box-shadow 0.2s ease;
+
 `;
+
 
 const ProfileCardWrap = styled.div`
   width: 100%;
@@ -173,8 +201,10 @@ const ProfileImage = styled.img`
 `;
 
 const ButtonWrap = styled.div`
+margin: 20px;
   width: 100%;
   display: flex;
+  gap: 10px;
   justify-content: space-between;
   align-items: center;
 `;

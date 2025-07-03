@@ -13,6 +13,8 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -34,7 +36,7 @@ public class ReviewController {
     // 내가쓴 리뷰, 내가 받은 리뷰 조회
     @GetMapping("/list")
     public ResponseEntity<Map<String, PageResponse<ReviewDto.Response>>> getReviewsByPage(
-            @PageableDefault(size = 6, sort = "updateDate", direction = Sort.Direction.DESC) Pageable pageable,
+            @PageableDefault(size = 6) Pageable pageable,
             @RequestParam Long userNo) {
 
         Map<String, PageResponse<ReviewDto.Response>> result = new HashMap<>();
@@ -44,5 +46,21 @@ public class ReviewController {
         return ResponseEntity.ok(result);
     }
 
+    // 특정 간병인의 이력서 -> 리뷰정보
+    @GetMapping("/detail")
+    public ResponseEntity<PageResponse<ReviewDto.Detail>> getReviewsByResumeDetailPage(
+            @PageableDefault(size = 4, sort = "review.updateDate", direction = Sort.Direction.DESC) Pageable pageable,
+            @RequestParam Long resumeNo) {
+
+        return ResponseEntity.ok(new PageResponse<>(reviewService.getReviewsByResumeDetailPage(pageable, resumeNo)));
+    }
+
+    //리뷰 작성하기
+    @PostMapping
+    public ResponseEntity<Long> createReview(@RequestBody ReviewDto.Create reviewDto) {
+        System.out.println("요청 받은 리뷰 내용: " + reviewDto);
+        Long reviewNo = reviewService.createReview(reviewDto);
+        return ResponseEntity.ok(reviewNo);
+    }
 
 }

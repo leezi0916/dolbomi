@@ -50,6 +50,15 @@ export const commuService = {
       throw new Error('서버 통신 불량');
     }
   },
+  getQuestionHistory: async (userNo) => {
+    try {
+      const { data } = await api.get(API_ENDPOINTS.COMMUNITY.QUESTION_HISTORY(userNo));
+      return snakeToCamel(data);
+    } catch (error) {
+      console.log(`질문 상세(${userNo})를 가져오지 못함: `, error.response?.data?.message || '실패');
+      throw new Error('서버 통신 불량');
+    }
+  },
   getGuardian: async () => {
     try {
       const { data } = await api.get(API_ENDPOINTS.COMMUNITY.GUARDIAN);
@@ -59,37 +68,37 @@ export const commuService = {
       throw new Error('서버 통신 불량');
     }
   },
-  createPage: async (role) => {
+  createCommunity: async (boardData) => {
     try {
-      const { data } = await api.get(API_ENDPOINTS.COMMUNITY.CREATE(role));
+      const { data } = await api.post(API_ENDPOINTS.COMMUNITY.BASE, boardData);
       return snakeToCamel(data);
     } catch (error) {
-      console.log('? : ', error.response?.data?.message || '?');
-      throw new Error('서버 통신 불량');
+      if (error.response) {
+        const errorMessage = error.response.data.message || '게시글 작성에 실패했습니다.';
+        throw new Error(errorMessage);
+      }
+      throw new Error('서버와의 통신에 실패했습니다.');
     }
   },
-  createPost: async (role, formData) => {
+  createReply: async (replyData) => {
     try {
-      const { data } = await api.post(`/community/v1/${role}`, formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      });
-      return data;
+      const { data } = await api.post(API_ENDPOINTS.COMMUNITY.REPLY, replyData);
+      return snakeToCamel(data);
     } catch (error) {
-      console.error('게시글 등록 실패:', error.response?.data?.message || error.message);
-      throw new Error('게시글 등록 실패');
+      if (error.response) {
+        const errorMessage = error.response.data.message || '댓글 작성에 실패했습니다.';
+        throw new Error(errorMessage);
+      }
+      throw new Error('서버와의 통신에 실패했습니다.');
     }
   },
-
-  getCommunityDetail: async (no) => {
+  getCommunityDetail: async (boardNo) => {
     try {
-      const { data } = await api.get(API_ENDPOINTS.COMMUNITY.DETAIL(no));
-      console.log('요청 URL:', API_ENDPOINTS.COMMUNITY.LIST(no));
-
-      return data;
+      const { data } = await api.get(API_ENDPOINTS.COMMUNITY.DETAIL(boardNo));
+      console.log('요청 URL:', API_ENDPOINTS.COMMUNITY.DETAIL(boardNo));
+      return snakeToCamel(data);
     } catch (error) {
-      console.error('프로필 조회 실패:', error.response?.data?.message || error.message);
+      console.error('게시글 조회 실패:', error.response?.data?.message || error.message);
       throw new Error('서버 통신 불량');
     }
   },

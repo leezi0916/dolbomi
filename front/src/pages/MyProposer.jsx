@@ -34,8 +34,6 @@ const MyProposer = () => {
     setCurrentPage(value);
   };
 
-  console.log(proposerList);
-
   return (
     <Wrapper>
       <Header>

@@ -17,6 +17,7 @@ import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -57,7 +58,7 @@ public class Review {
     private StatusEnum.Status status;
 
     @OneToMany(mappedBy = "review")
-    private List<Matching> matchingList;
+    private List<Matching> matchingList = new ArrayList<>();
 
     @PrePersist
     public void prePersist() {

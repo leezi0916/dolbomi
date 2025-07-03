@@ -41,5 +41,10 @@ public class StatusEnum {
         N  // 대기
     }
 
+    public enum IS_READ {
+        Y, // 안읽음
+        N, // 읽음
+    }
+
 
 }
