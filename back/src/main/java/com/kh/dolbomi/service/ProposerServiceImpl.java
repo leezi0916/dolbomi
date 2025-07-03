@@ -10,6 +10,7 @@ import com.kh.dolbomi.domain.Resume;
 import com.kh.dolbomi.domain.User;
 import com.kh.dolbomi.dto.ProposerDto;
 import com.kh.dolbomi.enums.StatusEnum;
+import com.kh.dolbomi.exception.ProposerNotFoundException;
 import com.kh.dolbomi.repository.HiringRepository;
 import com.kh.dolbomi.repository.MatchingRepositoryV2;
 import com.kh.dolbomi.repository.NotificationRepositoryV2;
@@ -167,6 +168,20 @@ public class ProposerServiceImpl implements ProposerService {
     public Page<ProposerDto.Response> getMyProposerLists(Long userNo, Pageable pageable) {
         Page<Proposer> proposers = proposerRepository.getMyProposerLists(StatusEnum.Status.Y, pageable, userNo);
         return proposers.map(ProposerDto.Response::myProposerDto);
+    }
+
+    // 나의 지원현황 내역삭제
+    @Override
+    public Long deleteProposerHistory(Long proposerNo) {
+        // 신청 내역 가져오기 (없으면 예외 발생)
+        Proposer proposer = proposerRepository.findHiringByNo(proposerNo)
+                .orElseThrow(() -> new ProposerNotFoundException("이미 삭제된 신청내역입니다."));
+
+        // 상태 업데이트
+        proposer.updateStatus();
+
+        // 그대로 proposerNo 반환
+        return proposer.getProposerNo();
     }
 
 }
