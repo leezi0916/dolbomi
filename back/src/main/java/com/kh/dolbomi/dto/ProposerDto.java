@@ -68,6 +68,7 @@ public class ProposerDto {
                     .hiring_title(proposer.getHiring().getHiringTitle())
                     .proposer_date(proposer.getProposerDate())
                     .user_name(proposer.getHiring().getUser().getUserName())
+                    .status(proposer.getStatus())
                     .hiring_status(proposer.getHiring().getHiringStatus())
                     .build();
         }

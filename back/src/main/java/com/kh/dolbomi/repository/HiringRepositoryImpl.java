@@ -44,7 +44,7 @@ public class HiringRepositoryImpl implements HiringRepository {
     // 상태 Y + care_status가 Y인 최근 4개 구인글 조회
     @Override
     public List<Hiring> getMainCareHiringList(Status status, CareStatus careStatus) {
-        String query = "SELECT DISTINCT h FROM Hiring h JOIN h.user u WHERE h.status = :status AND h.careStatus = :careStatus ORDER BY h.updateDate DESC";
+        String query = "SELECT DISTINCT h FROM Hiring h JOIN h.user u WHERE h.status = :status AND h.careStatus = :careStatus  AND h.hiringStatus = 'Y' ORDER BY h.updateDate DESC";
         return em.createQuery(query, Hiring.class)
                 .setParameter("status", status)
                 .setParameter("careStatus", careStatus)
@@ -88,7 +88,7 @@ public class HiringRepositoryImpl implements HiringRepository {
                   SELECT h
                   FROM Hiring h
                   WHERE h.status = :status AND h.user.userNo = :userNo
-                  ORDER BY h.updateDate DESC 
+                  ORDER BY h.hiringStatus DESC, h.updateDate DESC 
                 """;
 
         List<Hiring> hirings = em.createQuery(query, Hiring.class)

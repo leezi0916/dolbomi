@@ -87,6 +87,7 @@ public class ProposerRepositoryImpl implements ProposerRepository {
                     FROM Proposer p
                     WHERE p.caregiver.userNo = :userNo
                     AND p.hiring.status = :status
+                    AND p.status is not NULL
                     ORDER BY p.proposerDate DESC
                 """;
         List<Proposer> proposers = em.createQuery(query, Proposer.class)
@@ -110,5 +111,11 @@ public class ProposerRepositoryImpl implements ProposerRepository {
         // Page<T> 인터페이스의 기본구현체를 통해서 paging한 정보를 한번에 전달할 수 있음
         // new PageImpl<>(content,pageable,total);
         return new PageImpl<Proposer>(proposers, pageable, totalCount);
+    }
+
+    // 내가 신청한 구인글 찾기
+    @Override
+    public Optional<Proposer> findHiringByNo(Long proposerNo) {
+        return Optional.ofNullable(em.find(Proposer.class, proposerNo));
     }
 }

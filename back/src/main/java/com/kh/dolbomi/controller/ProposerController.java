@@ -12,6 +12,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -83,5 +85,12 @@ public class ProposerController {
 
         System.out.println(userNo);
         return ResponseEntity.ok(new PageResponse<>(proposerService.getMyProposerLists(userNo, pageable)));
+    }
+
+    // 나의 지원현황 내역삭제
+    @PatchMapping("/{proposerNo}")
+    public ResponseEntity<Long> deleteProposerHistory(@PathVariable Long proposerNo) {
+
+        return ResponseEntity.ok(proposerService.deleteProposerHistory(proposerNo));
     }
 }

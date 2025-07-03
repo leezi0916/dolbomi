@@ -16,15 +16,16 @@ const MyProposer = () => {
 
   const { user } = useUserStore();
 
+  const fetchPostList = async () => {
+    try {
+      const list = await proposerService.getMyProposer(currentPage, user.userNo);
+      setProserList(list);
+    } catch (error) {
+      toast.error(error.message);
+    }
+  };
+
   useEffect(() => {
-    const fetchPostList = async () => {
-      try {
-        const list = await proposerService.getMyProposer(currentPage, user.userNo);
-        setProserList(list);
-      } catch (error) {
-        toast.error(error.message);
-      }
-    };
     fetchPostList();
   }, [currentPage]);
 
@@ -83,10 +84,14 @@ const MyProposer = () => {
                     ) : (
                       <FaTimes
                         onClick={async (e) => {
-                          e.stopPropagation(); // 상위 tr 클릭 이벤트 막기
+                          e.stopPropagation();
                           if (confirm('정말 내역을 삭제하시겠습니까?')) {
                             try {
-                              await proposerService.deleteProposerHisotry(proposer.proposerNo);
+                              const deleteHistory = await proposerService.deleteProposerHisotry(proposer.proposerNo);
+                              if (deleteHistory) {
+                                toast.success('내역이 삭제되었습니다.');
+                                fetchPostList();
+                              }
                             } catch (error) {
                               toast.error(error.message);
                             }
