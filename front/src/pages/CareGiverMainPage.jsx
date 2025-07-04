@@ -38,8 +38,6 @@ const CareGiverMainPage = () => {
     return name;
   };
 
-  console.log(jobOpeningList);
-
   const navigate = useNavigate();
 
   return (

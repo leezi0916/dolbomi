@@ -28,6 +28,15 @@ const signUpSchema = yup.object().shape({
     .required('비밀번호를 입력하세요.')
     .matches(/^(?=.*[a-zA-Z]).{5,}$/, '비밀번호는 영문자를 포함해 5자 이상이어야 합니다.'),
 
+  userPwdCheck: yup
+    .string()
+    // yup.ref('userPw')는 다른 필드(userPw) 값을 참조
+    // 즉, userPwCheck가 userPw와 같은지 검사
+    // null은 비어있을 수도 있음을 대비한 처리
+    // oneOf([허용할 값 ~~~ ], '에러 메세지')
+    .oneOf([yup.ref('userPwd'), null], '비밀번호가 일치하지 않습니다.')
+    .required('비밀번호 확인을 입력하세요.'),
+
   age: yup
     .number()
     .typeError('나이는 숫자여야 합니다.')
@@ -135,9 +144,6 @@ export const useSignUpForm = () => {
       console.error('회원가입 에러 : ', error);
     }
   };
-
-
-
 
   //컴포넌트에서 사용할 값들 반환
   return {

@@ -46,5 +46,11 @@ public class StatusEnum {
         N, // 읽음
     }
 
+    public enum QuestionCategory {
+        S,//서비스 문제
+        T,//기술적문제
+        E//기타
+    }
+
 
 }

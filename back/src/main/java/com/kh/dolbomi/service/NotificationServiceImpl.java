@@ -3,6 +3,7 @@ package com.kh.dolbomi.service;
 import com.kh.dolbomi.domain.Notification;
 import com.kh.dolbomi.domain.User;
 import com.kh.dolbomi.dto.NotificationDto;
+import com.kh.dolbomi.enums.StatusEnum;
 import com.kh.dolbomi.repository.NotificationRepositoryV2;
 import com.kh.dolbomi.repository.UserRepositoryV2;
 import java.util.List;
@@ -49,6 +50,19 @@ public class NotificationServiceImpl implements NotificationService {
         return notifications.stream()
                 .map(NotificationDto.Response::fromEntity)
                 .toList();
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public int getUnreadCount(Long userNo) {
+        return notificationRepositoryV2.countByRecipient_UserNoAndIsRead(userNo, StatusEnum.IS_READ.N);
+    }
+
+    @Override
+    public void markAllNotificationsAsRead(Long userNo) {
+        List<Notification> unreadNotifications = notificationRepositoryV2.findByRecipientUserNoAndIsRead(userNo,
+                StatusEnum.IS_READ.N);
+        unreadNotifications.forEach(Notification::markAsRead);
     }
 
     //알림 온지 한달 된

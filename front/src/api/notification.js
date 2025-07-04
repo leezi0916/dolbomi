@@ -17,4 +17,26 @@ export const notificationService = {
       throw error;
     }
   },
+
+  //안읽은 알림수 조회
+  getUnreadCount: async (userNo) => {
+    try {
+      const { data } = await api.get(API_ENDPOINTS.NOTIFICATIONS.IS_READ(userNo));
+      return data; // int
+    } catch (error) {
+      console.error('알림 수 조회 실패:', error);
+      return 0;
+    }
+  },
+
+  //알림 창 열었을시 읽음 처리
+  markAllAsRead: async (userNo) => {
+    try {
+      const { data } = await api.patch(API_ENDPOINTS.NOTIFICATIONS.READ(userNo));
+      return data;
+    } catch (error) {
+      console.error('알림 읽음 처리 실패:', error.response?.data?.message || error.message);
+      throw error;
+    }
+  },
 };

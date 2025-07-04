@@ -1,13 +1,16 @@
 package com.kh.dolbomi.service;
 
 import com.kh.dolbomi.domain.Matching;
+import com.kh.dolbomi.domain.Resume;
 import com.kh.dolbomi.domain.Review;
 import com.kh.dolbomi.domain.User;
 import com.kh.dolbomi.dto.ReviewDto;
 import com.kh.dolbomi.dto.ReviewDto.Create;
+import com.kh.dolbomi.dto.ReviewDto.Detail;
 import com.kh.dolbomi.dto.ReviewDto.Response;
 import com.kh.dolbomi.enums.StatusEnum;
 import com.kh.dolbomi.repository.MatchingRepositoryV2;
+import com.kh.dolbomi.repository.ResumeRepositoryV2;
 import com.kh.dolbomi.repository.ReviewRepository;
 import com.kh.dolbomi.repository.ReviewRepositoryV2;
 import com.kh.dolbomi.repository.UserRepositoryV2;
@@ -28,6 +31,7 @@ public class ReviewServiceImpl implements ReviewService {
     private final ReviewRepositoryV2 reviewRepositoryV2;
     private final MatchingRepositoryV2 matchingRepositoryV2;
     private final UserRepositoryV2 userRepositoryV2;
+    private final ResumeRepositoryV2 resumeRepositoryV2;
 
     // 메인(보호자 메인) 리뷰 조회
     @Override
@@ -80,6 +84,23 @@ public class ReviewServiceImpl implements ReviewService {
         matchingRepositoryV2.save(matching);
 
         return saved.getReviewNo();
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public Page<ReviewDto.Detail> getReviewsByResumeDetailPage(Pageable pageable, Long resumeNo) {
+        //이력서 조회
+        Resume resume = resumeRepositoryV2.findById(resumeNo)
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 이력서 입니다."));
+
+        //이력서 작성자 (간병사 조회)
+        Long caregiverNo = resume.getUser().getUserNo();
+
+        Page<Review> reviews = matchingRepositoryV2.findReviewsByCaregiverAndStatus(caregiverNo, StatusEnum.Status.Y,
+                pageable);
+
+        Page<ReviewDto.Detail> result = reviews.map(review -> Detail.ResumeReviewDetailDto(review, caregiverNo));
+        return result;
     }
 
 

@@ -86,6 +86,7 @@ export const jobSeekingService = {
 
   updateResume: async (resumeNo, resumeData) => {
     try {
+      console.log(resumeNo, resumeData);
       await api.patch(API_ENDPOINTS.RESUME.UPDATE(resumeNo), camelToSnake(resumeData));
     } catch (error) {
       console.error(error);

@@ -92,7 +92,7 @@ const QuestionHistory = () => {
 
           <BoardTop>
             <BoardTopLeft>총 0건</BoardTopLeft>
-            <BoardTopRight>
+            <BoardTopRight style={{ flex: '7' }}>
               <Drop value={sortOption} onChange={(e) => setSortOption(e.target.value)}>
                 <option value="date">날짜순</option>
                 <option value="views">조회순</option>
@@ -103,6 +103,7 @@ const QuestionHistory = () => {
           </BoardTop>
           <BoardItemTop>
             <div>No</div>
+            <div>유형</div>
             <div style={{ flex: '2' }}>제목</div>
             <div>작성자</div>
             <div style={{ flex: '2' }}>작성 일자</div>
@@ -138,7 +139,7 @@ const QuestionHistory = () => {
 
         <BoardTop>
           <BoardTopLeft>총 {questionList.length}건</BoardTopLeft>
-          <BoardTopRight>
+          <BoardTopRight style={{ flex: '7' }}>
             <Drop value={sortOption} onChange={(e) => setSortOption(e.target.value)}>
               <option value="date">날짜순</option>
               <option value="views">조회순</option>
@@ -149,6 +150,7 @@ const QuestionHistory = () => {
         </BoardTop>
         <BoardItemTop>
           <div>No</div>
+          <div>유형</div>
           <div style={{ flex: '2' }}>제목</div>
           <div>작성자</div>
           <div style={{ flex: '2' }}>작성 일자</div>
@@ -157,6 +159,15 @@ const QuestionHistory = () => {
         {currentList.map((info) => (
           <BoardItem key={info.boardNo} to={`/question/detail/${info.boardNo}`}>
             <div>{info.boardNo}</div>
+            <div>
+              {info.questionCategory === 'T'
+                ? '기술적 문제'
+                : info.questionCategory === 'S'
+                  ? '서비스 관련'
+                  : info.questionCategory === 'E'
+                    ? '기타'
+                    : '알 수 없음'}
+            </div>
             <div style={{ flex: '2' }}>{info.boardTitle}</div>
             <div>{info.userName}</div>
             <div style={{ flex: '2' }}>{info.createDate}</div>
