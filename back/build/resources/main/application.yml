@@ -47,6 +47,7 @@ sgis:
   consumer:
     key: c99f4eacee1f4cb78217
     secret: 145bbe8179aa42a891c5
+
 ---
 spring:
   config:

@@ -38,6 +38,7 @@ public class MatchingDto {
         private LocalDateTime start_date;
         private StatusEnum.Status status;
         private Long review_no;
+        private StatusEnum.Status user_status;
 
         public static Response toDto(Matching matching) {
             return Response.builder()
@@ -49,6 +50,7 @@ public class MatchingDto {
                     .start_date(matching.getStartDate())
                     .status(matching.getStatus())
                     .review_no(matching.getReview() != null ? matching.getReview().getReviewNo() : null)
+                    .user_status(matching.getCaregiver().getStatus())
                     .build();
         }
 

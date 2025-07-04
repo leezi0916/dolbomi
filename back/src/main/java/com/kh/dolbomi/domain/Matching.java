@@ -66,7 +66,9 @@ public class Matching {
 
 
     public void updateStatus(Status matchingStatus) {
+
         this.status = matchingStatus;
+        this.endDate = LocalDateTime.now();
     }
 
     //리뷰 작성시 매칭이블에 리뷰번호 연결

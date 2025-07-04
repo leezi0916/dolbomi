@@ -23,4 +23,6 @@ public interface MatchingService {
     // 종료된 매칭 목록 페이징 조회 - 간병인 version
     Page<MatchingDto.ResponsePat> getMatchedPatientsByCaregiver(Long caregiverNo, Status status, Pageable pageable);
 
+    Page<MatchingDto.Response> getMatchedListByCheckStatus(Long patNo, Status status, Status userStatus,
+                                                           Pageable pageable);
 }

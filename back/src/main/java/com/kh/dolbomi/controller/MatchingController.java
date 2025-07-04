@@ -76,4 +76,17 @@ public class MatchingController {
         );
     }
 
+    @GetMapping("/matched/check")
+    public ResponseEntity<PageResponse<MatchingDto.Response>> getMatchedList(
+            @RequestParam("pat_no") Long patNo,
+            @RequestParam("status") StatusEnum.Status status,
+            @RequestParam("user_status") StatusEnum.Status userStatus,
+            @PageableDefault(size = 5) Pageable pageable
+    ) {
+   
+        return ResponseEntity.ok(
+                new PageResponse<>(matchingService.getMatchedListByCheckStatus(patNo, status, userStatus, pageable)));
+    }
+
+
 }
