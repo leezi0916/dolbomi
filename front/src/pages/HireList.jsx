@@ -1,18 +1,22 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Container, Section } from '../styles/common/Container';
 import styled from 'styled-components';
+
+//달력 라이브러리 및 한글화
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
+import { ko } from 'date-fns/locale';
 
 // import { toast } from 'react-toastify';
 import profileImage from '../assets/images/pat.png'; // 프로필 이미지 경로
 import { media } from '../styles/MediaQueries';
 import SearchBar from '../components/SearchBar';
-import { IoCheckmarkOutline } from 'react-icons/io5';
+
 import { ClipLoader } from 'react-spinners';
 import { Link } from 'react-router-dom';
 import { hiringService } from '../api/hiring';
 import Paging from '../components/Paging';
 import { addressService } from '../api/address';
-import { Button } from '@mui/material';
 
 const HireList = () => {
   const [hireLists, setHireLists] = useState([]);
@@ -21,6 +25,8 @@ const HireList = () => {
   const [page, setPage] = useState(1); // MUI Pagination은 1부터 시작
   const [size] = useState(10);
   const [totalPages, setTotalPages] = useState(0);
+
+  //상세검색창
   const [visible, setVisible] = useState(false);
   const [data, setData] = useState({
     region: '',
@@ -37,9 +43,14 @@ const HireList = () => {
   const [selectedRegion, setSelectedRegion] = useState('');
   const [selectedSgg, setSelectedSgg] = useState('');
   const [updateData, setUpdateData] = useState({});
-  // 'region': 지역 목록 보여줌
-  // 'sgg': 시군구 목록 보여줌
+
+  // 'region': 지역 목록 보여줌, 'sgg': 시군구 목록 보여줌
   const [displayMode, setDisplayMode] = useState('region');
+
+  // react-datepicker는 Date 객체를 사용하므로, 별도의 Date 객체 상태를 관리합니다.
+  // data.startDate/endDate가 이미 초기값이 있다면, Date 객체로 변환하여 초기화합니다.
+  const [internalStartDate, setInternalStartDate] = useState(data.startDate ? new Date(data.startDate) : null);
+  const [internalEndDate, setInternalEndDate] = useState(data.endDate ? new Date(data.endDate) : null);
 
   //마운트시 페이징처리 및 지역불러오기
   useEffect(() => {
@@ -93,6 +104,7 @@ const HireList = () => {
     await loadHireLists(page - 1, size, finalForm);
   };
 
+  //돌봄리스트 불러오기
   const loadHireLists = async (pageNumber, pageSize, searchData) => {
     try {
       console.log('검색조건 JSON 데이터:', searchData);
@@ -119,55 +131,68 @@ const HireList = () => {
     setVisible((prev) => !prev);
   };
 
-  //상세검색
+  //범용적인 input값 처리용
   const dataInfo = (e) => {
     const { name, value } = e.target;
-    const today = new Date(); //오늘날짜
-    today.setHours(0, 0, 0, 0); //시간초기화
-
-    //시작일유효성
-    if (name === 'startDate') {
-      const newStartDate = new Date(value); // 새로 입력된 시작 날짜
-
-      // 새로 입력된 시작일이 오늘 이전인지 확인
-      if (newStartDate.getTime() < today.getTime()) {
-        alert('시작일은 오늘 이후로 설정해야 합니다.');
-        return false;
-      }
-
-      if (data.endDate) {
-        const currentEndDate = new Date(data.endDate);
-        if (newStartDate.getTime() > currentEndDate.getTime()) {
-          alert('시작일은 종료일보다 이후일 수 없습니다.');
-          return false;
-        }
-      }
-    }
-
-    //종료일 유효성
-    if (name === 'endDate') {
-      const newEndDate = new Date(value); // 새로 입력된 종료일
-
-      // 종료일이 오늘 이전인지 확인
-      if (newEndDate.getTime() < today.getTime()) {
-        alert('종료일은 오늘 이후로 설정해야 합니다.');
-        return false;
-      }
-
-      // 종료일이 시작일보다 이전인지 확인
-      if (data.startDate) {
-        const currentStartDate = new Date(data.startDate);
-        if (newEndDate.getTime() < currentStartDate.getTime()) {
-          alert('종료일은 시작일보다 이전일 수 없습니다.');
-          return false;
-        }
-      }
-    }
-
     setData((data) => ({
       ...data,
       [name]: value,
     }));
+  };
+
+  //날짜 전용 유효성 검사 및 상태 업데이트
+  const handledateChange = (date, name) => {
+    const today = new Date(); //오늘날짜
+    today.setHours(0, 0, 0, 0); //시간초기화
+
+    let isValid = true;
+    let errMsg = '';
+
+    //시작일유효성
+    if (name === 'startDate') {
+      const newStartDate = date; // 새로 입력된 시작일
+
+      if (newStartDate && newStartDate.getTime() < today.getTime()) {
+        errMsg = '시작일은 오늘 이후로 설정해야 합니다.';
+        isValid = false;
+      } else if (newStartDate && internalEndDate) {
+        if (newStartDate.getTime() > internalEndDate.getTime()) {
+          errMsg = '시작일은 종료일보다 이후일 수 없습니다.';
+          isValid = false;
+        }
+      }
+
+      // 유효하지 않으면 함수 종료
+      if (!isValid) {
+        alert(errMsg);
+        return;
+      }
+      setInternalStartDate(newStartDate);
+      // data 객체에도 문자열 형태로 반영
+      setData((data) => ({ ...data, startDate: newStartDate ? newStartDate.toISOString().split('T')[0] : '' }));
+    }
+    //종료일 유효성
+    else if (name === 'endDate') {
+      const newEndDate = date; // 새로 입력된 종료일
+
+      if (newEndDate && newEndDate.getTime() < today.getTime()) {
+        errMsg = '종료일은 오늘 이후로 설정해야 합니다.';
+        isValid = false;
+      } else if (newEndDate && internalStartDate) {
+        if (newEndDate.getTime() < internalStartDate.getTime()) {
+          errMsg = '종료일은 시작일보다 이전일 수 없습니다.';
+          isValid = false;
+        }
+      }
+
+      if (!isValid) {
+        alert(errMsg);
+        return; // 유효하지 않으면 함수 종료
+      }
+      setInternalEndDate(newEndDate);
+      // data 객체에도 문자열 형태로 반영 (필요하다면)
+      setData((data) => ({ ...data, endDate: newEndDate ? newEndDate.toISOString().split('T')[0] : '' }));
+    }
   };
 
   //지역선택 버튼 클릭시 지역들 출력
@@ -208,15 +233,6 @@ const HireList = () => {
       setSelectedSgg(sgg);
     } catch (error) {
       console.error('시군구 조회 실패:', error);
-    }
-  };
-
-  const dateInputRef = useRef(null);
-  const handleInputClick = () => {
-    console.log(dateInputRef);
-    // ref를 통해 input DOM 요소에 접근
-    if (dateInputRef.current && typeof dateInputRef.current.showPicker === 'function') {
-      dateInputRef.current.showPicker();
     }
   };
 
@@ -279,18 +295,29 @@ const HireList = () => {
                   <DateContentBox>
                     <SearchTitle> 시작일: </SearchTitle>
                     <DateInput
+                      locale={ko}
+                      selected={internalStartDate}
+                      onChange={(date) => handledateChange(date, 'startDate')}
+                      dateFormat="yyyy-MM-dd"
                       name="startDate"
-                      type="date"
-                      value={data.startDate}
-                      onChange={dataInfo}
-                      onClick={handleInputClick}
+                      placeholderText="시작일 선택"
+                      isClearable
                     />
                   </DateContentBox>
                   <DateContentBox>
                     <SearchTitle> 종료일: </SearchTitle>
-                    <DateInput name="endDate" type="date" value={data.endDate} onChange={dataInfo} />
+                    <DateInput
+                      locale={ko}
+                      selected={internalEndDate} // Date 객체를 받음
+                      onChange={(date) => handledateChange(date, 'endDate')} // 날짜와 필드명 전달
+                      dateFormat="yyyy-MM-dd"
+                      name="endDate" // input의 name 속성으로 사용
+                      placeholderText="종료일 선택"
+                      isClearable // x 버튼으로 날짜 지우기 허용
+                    />
                   </DateContentBox>
                 </DateBox>
+
                 <Items>
                   <Item>
                     <SearchTitle>근무유형: </SearchTitle>
@@ -351,20 +378,6 @@ const HireList = () => {
                     <Label2 htmlFor="anyGender">성별 무관</Label2>
                   </RadioWrapper>
                 </RadioGroup2>
-
-                {/* <AccommodationCheckboxLabel>
-                  <HiddenCheckbox
-                    name="home"
-                    type="checkbox"
-                    value={data.home}
-                    checked={data.home}
-                    onChange={dataInfo}
-                  />
-                  <StyledCheckbox checked={data.home}>
-                    {handleCheckChange && <IoCheckmarkOutline size="20px" color="white" />}
-                  </StyledCheckbox>
-                  상주 가능 여부
-                </AccommodationCheckboxLabel> */}
               </SearchSelect>
             </Detail>
           )}
@@ -587,37 +600,42 @@ const DateBox = styled.div`
   width: 100%;
   gap: 20px;
 `;
-
-const DateInput = styled.input.attrs({ type: 'date' })`
-  height: 50px;
-  width: 100%;
-  border-radius: ${({ theme }) => theme.spacing[1]};
-  padding: 0 ${({ theme }) => theme.spacing[4]};
-  font-size: ${({ theme }) => theme.spacing[4]};
-  background-color: white;
-
-  cursor: pointer;
-`;
-const SelectBox = styled.select`
-  width: 120px;
-  height: 50px;
-  padding: 0 ${({ theme }) => theme.spacing[5]};
-  border: none;
-  border-radius: ${({ theme }) => theme.spacing[1]};
-  font-size: ${({ theme }) => theme.spacing[4]};
-`;
-
 const DateContentBox = styled.div`
   display: flex;
   align-items: center;
   width: 100%;
 `;
-const ACCOUNT = styled.input`
-  width: 150px;
-  height: 50px;
+const DateInput = styled(DatePicker)`
+  width: 100%;
+  height: 30px;
+  text-align: center;
+  border-radius: ${({ theme }) => theme.borderRadius.base};
+  font-size: ${({ theme }) => theme.spacing[4]};
+  caret-color: transparent;
+  cursor: pointer;
+`;
+
+const SelectBox = styled.select`
+  width: 120px;
+  height: 30px;
+  text-align: center;
   padding: 0 ${({ theme }) => theme.spacing[5]};
   border: none;
-  border-radius: ${({ theme }) => theme.spacing[1]};
+  border-radius: ${({ theme }) => theme.borderRadius.base};
+  font-size: ${({ theme }) => theme.spacing[4]};
+
+  &:option {
+    text-align: center;
+  }
+`;
+
+const ACCOUNT = styled.input`
+  width: 150px;
+  height: 30px;
+  text-align: center;
+  padding: 0 ${({ theme }) => theme.spacing[5]};
+  border: none;
+  border-radius: ${({ theme }) => theme.borderRadius.base};
   font-size: ${({ theme }) => theme.spacing[4]};
 `;
 const DateInfo = styled.span`
