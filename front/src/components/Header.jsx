@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { SITE_CONFIG } from '../config/site';
@@ -8,6 +8,7 @@ import useUserStore from '../store/userStore';
 import { useNavigate } from 'react-router-dom';
 import useUserStatusStore from '../store/userStatusStore';
 import NotificationDropdown from './NotificationDropdown';
+import { notificationService } from '../api/notification';
 const Header = () => {
   const { user, isAuthenticated } = useUserStore();
   const { userStatus, setUserStatus } = useUserStatusStore();
@@ -37,6 +38,30 @@ const Header = () => {
   const handleNotificationClose = () => {
     setIsNotiOpen(false);
   };
+
+  //알림 안읽음 여부
+  const [unreadCount, setUnreadCount] = useState(0);
+
+  useEffect(() => {
+    if (!user?.userNo) return;
+
+    const fetchUnread = async () => {
+      try {
+        const count = await notificationService.getUnreadCount(user.userNo);
+        console.log('알림 들어옴 !', count);
+        setUnreadCount(count);
+      } catch (error) {
+        console.error('알림 갱신 실패:', error);
+      }
+    };
+
+    //다른 페이지 이동시 새로운 알림이 와도 헤더에 있는 컴포넌트라 체크를 못함
+    fetchUnread(); // 첫 로딩 시 한 번
+
+    const intervalId = setInterval(fetchUnread, 600000); // 1분마다
+
+    return () => clearInterval(intervalId); // 컴포넌트 언마운트 시 정리
+  }, [user?.userNo]);
 
   return (
     <HeaderContainer>
@@ -228,14 +253,37 @@ const Header = () => {
             <img
               src="/src/assets/icons/icon_알림.png"
               alt="알림"
-              onClick={(e) => {
-                // DOM까지 전달안함, 즉 아이콘 누를땐 handleNotificationClose() 실행 안됨
+              onClick={async (e) => {
                 e.stopPropagation();
+                if (!isNotiOpen && user?.userNo) {
+                  try {
+                    // 읽지 않은 알림 모두 읽음 처리
+                    await notificationService.markAllAsRead(user.userNo);
+                    setUnreadCount(0);
+                  } catch (error) {
+                    console.error('읽음 처리 실패:', error);
+                  }
+                }
+
                 setIsNotiOpen((prev) => !prev);
               }}
               style={{ cursor: 'pointer' }}
             />
-            {isNotiOpen && <NotificationDropdown userNo={user?.userNo} onClose={() => handleNotificationClose()} />}
+
+            {unreadCount > 0 && (
+              <span
+                style={{
+                  position: 'absolute',
+                  top: 0,
+                  right: 0,
+                  width: '10px',
+                  height: '10px',
+                  backgroundColor: 'red',
+                  borderRadius: '50%',
+                }}
+              ></span>
+            )}
+            {isNotiOpen && <NotificationDropdown userNo={user?.userNo} onClose={handleNotificationClose} />}
           </div>
           <img src="/src/assets/icons/icon_채팅알림.png" alt="" />
 

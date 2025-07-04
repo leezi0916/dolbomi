@@ -63,7 +63,11 @@ public class Board {
     @Column(name = "QUESTION_STATUS", length = 1)
     @Enumerated(EnumType.STRING)
     private StatusEnum.QuestionStatus questionStatus;
-    
+
+    @Column(name = "QUESTION_CATEGORY", length = 1)
+    @Enumerated(EnumType.STRING)
+    private StatusEnum.QuestionCategory questionCategory;
+
     @OneToMany(mappedBy = "board", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Reply> replyList = new ArrayList<>();
 
@@ -90,5 +94,10 @@ public class Board {
     @PreUpdate
     public void preUpdate() {
         this.updateDate = LocalDateTime.now();
+    }
+
+    public void setQuestionStatus() {
+        this.questionStatus = StatusEnum.QuestionStatus.Y;
+        System.out.println("questionStatus 업데이트 호출됨");
     }
 }

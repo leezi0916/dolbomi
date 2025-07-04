@@ -34,10 +34,22 @@ const NotificationDropdown = ({ userNo, onClose }) => {
   const dropdownRef = useRef();
   const [notifications, setNotifications] = useState([]);
   const navigate = useNavigate();
+
   useEffect(() => {
-    console.log('userNo:', userNo);
     if (!userNo) return;
-    notificationService.getNotifications(userNo).then(setNotifications).catch(console.error);
+
+    const fetchNotificationsAndMarkRead = async () => {
+      try {
+        // 알림 리스트 받아오기
+        const notifications = await notificationService.getNotifications(userNo);
+        setNotifications(notifications);
+
+      } catch (error) {
+        console.error('알림 불러오기 또는 읽음 처리 실패:', error);
+      }
+    };
+
+    fetchNotificationsAndMarkRead();
   }, [userNo]);
 
   useEffect(() => {

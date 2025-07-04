@@ -25,9 +25,6 @@ import {
 const QuestionFull = () => {
   const userId = useUserStore((state) => state.user?.userId);
 
-  // const ROLE = 'Q';
-  // const STATUS = 'Y';
-
   const [error, setError] = useState(null);
   const [communityList, setCommunityList] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -95,7 +92,7 @@ const QuestionFull = () => {
 
           <BoardTop>
             <BoardTopLeft>총 0건</BoardTopLeft>
-            <BoardTopRight>
+            <BoardTopRight style={{ flex: '7' }}>
               <Drop value={sortOption} onChange={(e) => setSortOption(e.target.value)}>
                 <option value="date">날짜순</option>
                 <option value="views">조회순</option>
@@ -106,6 +103,7 @@ const QuestionFull = () => {
           </BoardTop>
           <BoardItemTop>
             <div>No</div>
+            <div>유형</div>
             <div style={{ flex: '3' }}>제목</div>
             <div>작성자</div>
             <div style={{ flex: '2' }}>작성 일자</div>
@@ -140,7 +138,7 @@ const QuestionFull = () => {
 
         <BoardTop>
           <BoardTopLeft>총 {communityList.length}건</BoardTopLeft>
-          <BoardTopRight>
+          <BoardTopRight style={{ flex: '7' }}>
             <Drop value={sortOption} onChange={(e) => setSortOption(e.target.value)}>
               <option value="date">날짜순</option>
               <option value="views">조회순</option>
@@ -151,16 +149,27 @@ const QuestionFull = () => {
         </BoardTop>
         <BoardItemTop>
           <div>No</div>
+          <div>유형</div>
           <div style={{ flex: '3' }}>제목</div>
           <div>작성자</div>
           <div style={{ flex: '2' }}>작성 일자</div>
         </BoardItemTop>
-        {currentList.map((community) => (
-          <BoardItem key={community.boardNo} to={`/question/detail/${community.boardNo}`}>
-            <div>{community.boardNo}</div>
-            <div style={{ flex: '3' }}>{community.boardTitle}</div>
-            <div>{community.userName}</div>
-            <div style={{ flex: '2' }}>{community.createDate}</div>
+        {currentList.map((info) => (
+          <BoardItem key={info.boardNo} to={`/question/detail/${info.boardNo}`}>
+            <div>{info.boardNo}</div>
+            <div>
+              {' '}
+              {info.questionCategory === 'T'
+                ? '기술적 문제'
+                : info.questionCategory === 'S'
+                  ? '서비스 관련'
+                  : info.questionCategory === 'E'
+                    ? '기타'
+                    : '알 수 없음'}
+            </div>
+            <div style={{ flex: '3' }}>{info.boardTitle}</div>
+            <div>{info.userName}</div>
+            <div style={{ flex: '2' }}>{info.createDate}</div>
           </BoardItem>
         ))}
 

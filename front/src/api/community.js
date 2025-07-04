@@ -92,6 +92,30 @@ export const commuService = {
       throw new Error('서버와의 통신에 실패했습니다.');
     }
   },
+  createQuestion: async (questionData) => {
+    try {
+      const { data } = await api.post(API_ENDPOINTS.COMMUNITY.CREATE_QUESTION, questionData);
+      return snakeToCamel(data);
+    } catch (error) {
+      if (error.response) {
+        const errorMessage = error.response.data.message || '문의글 작성에 실패했습니다.';
+        throw new Error(errorMessage);
+      }
+      throw new Error('서버와의 통신에 실패했습니다.');
+    }
+  },
+  createReplyQusetion: async (questionData) => {
+    try {
+      const { data } = await api.post(API_ENDPOINTS.COMMUNITY.REPLY_QUESTION, questionData);
+      return snakeToCamel(data);
+    } catch (error) {
+      if (error.response) {
+        const errorMessage = error.response.data.message || '문의글 작성에 실패했습니다.';
+        throw new Error(errorMessage);
+      }
+      throw new Error('서버와의 통신에 실패했습니다.');
+    }
+  },
   getCommunityDetail: async (boardNo) => {
     try {
       const { data } = await api.get(API_ENDPOINTS.COMMUNITY.DETAIL(boardNo));

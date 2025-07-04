@@ -43,6 +43,9 @@ const Footer = () => {
               <Link to="/privacy-policy">
                 <p>개인정보처리방침</p>
               </Link>
+              <div></div>
+              <div></div>
+              <div></div>
             </FooterContent>
           </FooterSection>
         </FooterWrapper>
@@ -80,6 +83,7 @@ const FooterWrapper = styled.div`
 const FooterSection = styled.div`
   display: flex;
   justify-content: center;
+
   gap: ${({ theme }) => theme.spacing[4]};
   ${media.md`
     flex-direction: column;

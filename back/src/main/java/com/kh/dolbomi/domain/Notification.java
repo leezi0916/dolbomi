@@ -65,7 +65,12 @@ public class Notification {
         }
 
         if (isRead == null) {
-            this.isRead = StatusEnum.IS_READ.Y;
+            this.isRead = StatusEnum.IS_READ.N;
         }
+    }
+
+    //읽음 상태로 변경
+    public void markAsRead() {
+        this.isRead = StatusEnum.IS_READ.Y;
     }
 }
