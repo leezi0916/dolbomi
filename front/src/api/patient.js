@@ -45,7 +45,6 @@ export const patientService = {
   },
 
   updatePatient: async (patNo, data) => {
-    console.log(data);
     try {
       await api.patch(API_ENDPOINTS.PATIENT.PATCH(Number(patNo)), camelToSnake(data));
     } catch (error) {
@@ -54,12 +53,4 @@ export const patientService = {
     }
   },
 
-  // deletPatient: async (id) => {
-  //   try {
-  //     await api.delete(API_ENDPOINTS.PATIENT.DELETE(id));
-  //   } catch (error) {
-  //     console.error('돌봄대상자 수정 실패:', error);
-  //     throw new Error('돌봄대상자 수정하는데 실패했습니다.');
-  //   }
-  // },
 };

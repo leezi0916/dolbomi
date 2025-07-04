@@ -66,6 +66,7 @@ public class Matching {
 
 
     public void updateStatus(Status matchingStatus) {
+
         this.status = matchingStatus;
         this.endDate = LocalDateTime.now();
     }

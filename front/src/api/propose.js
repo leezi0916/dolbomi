@@ -6,7 +6,6 @@ export const proposerService = {
   getcareGiverLists: async (hiringNo) => {
     try {
       const { data } = await api.get(API_ENDPOINTS.PROPOSER.LIST(hiringNo));
-      console.log(data);
       return snakeToCamel(data);
     } catch (error) {
       console.error(
@@ -21,7 +20,7 @@ export const proposerService = {
   proposerToHiring: async ({ hiringNo, resumeNo, caregiverNo }) => {
     try {
       const res = await api.post(API_ENDPOINTS.PROPOSER.BASE, camelToSnake({ hiringNo, resumeNo, caregiverNo }));
-      console.log(res);
+
     } catch (error) {
       console.error('지원 신청 실패:', error.response?.data?.message || error.message);
       throw error;

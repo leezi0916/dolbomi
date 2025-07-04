@@ -4,6 +4,7 @@ import com.kh.dolbomi.domain.Matching;
 import com.kh.dolbomi.domain.Notification;
 import com.kh.dolbomi.domain.User;
 import com.kh.dolbomi.dto.MatchingDto;
+import com.kh.dolbomi.dto.MatchingDto.Response;
 import com.kh.dolbomi.enums.StatusEnum.Status;
 import com.kh.dolbomi.repository.MatchingRepository;
 import com.kh.dolbomi.repository.MatchingRepositoryV2;
@@ -90,6 +91,16 @@ public class MatcingServicelmpl implements MatchingService {
         return matchingRepositoryV2.findByCaregiver_UserNoAndStatusOrderByEndDateDesc(caregiverNo, status, pageable)
                 .map(MatchingDto.ResponsePat::from);
 
+    }
+
+
+    // 종료된 매칭에 회원탈퇴한 유저list
+    @Override
+    public Page<Response> getMatchedListByCheckStatus(Long patNo, Status status, Status userStatus, Pageable pageable) {
+
+        System.out.println("test :" + patNo + ":" + status + ":" + userStatus + ":" + pageable.getPageSize());
+        return matchingRepository.findByCheckList(patNo, status, userStatus, pageable)
+                .map(MatchingDto.Response::toDto);
     }
 
 
