@@ -165,7 +165,7 @@ const ResumeRegistration = () => {
                 <AccountGroup>
                   <InputGroup>
                     <Label>희망 시급</Label>
-                    <Input {...register('account')} placeholder="희망 시급" />
+                    <Input {...register('resumeAccount')} placeholder="희망 시급" />
                     <p>{errors.account?.message}</p>
                   </InputGroup>
                 </AccountGroup>
