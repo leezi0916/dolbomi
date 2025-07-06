@@ -47,7 +47,6 @@ const PatientRegistration = () => {
     setTags(newVal); // set을 대체하는 커스텀 함수
   };
 
-
   return (
     <>
       <AuthContainer>
@@ -128,12 +127,12 @@ const PatientRegistration = () => {
               <Label htmlFor="weight">몸무게</Label>
 
               <HeightWegithDiv>
-                <Input type="number" id="patHeight" {...register('patHeight')} $error={errors.patHeight} />
+                <Input type="number" step="0.01" id="patHeight" {...register('patHeight')} $error={errors.patHeight} />
                 <span>cm</span>
               </HeightWegithDiv>
 
               <HeightWegithDiv>
-                <Input type="number" id="patWeight" {...register('patWeight')} $error={errors.patWeight} />
+                <Input type="number" step="0.01" id="patWeight" {...register('patWeight')} $error={errors.patWeight} />
                 <span>kg</span>
               </HeightWegithDiv>
 

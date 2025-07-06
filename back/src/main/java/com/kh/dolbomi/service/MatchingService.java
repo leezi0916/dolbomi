@@ -2,6 +2,7 @@ package com.kh.dolbomi.service;
 
 import com.kh.dolbomi.dto.MatchingDto;
 import com.kh.dolbomi.enums.StatusEnum.Status;
+import java.time.LocalDateTime;
 import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -26,4 +27,7 @@ public interface MatchingService {
 
     Page<MatchingDto.Response> getMatchedListByCheckStatus(Long patNo, Status status, Status userStatus,
                                                            Pageable pageable);
+
+    Page<MatchingDto.Response> getMatchedListBySearch(Long patNo, LocalDateTime startDate,
+                                                      LocalDateTime endDate, Status status, Pageable pageable);
 }
