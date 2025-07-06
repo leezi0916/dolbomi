@@ -77,6 +77,7 @@ public class User {
     //ROLE
     @Enumerated(EnumType.STRING)
     @Builder.Default
+    @Column(name = "ROLE", nullable = false)
     private Role role = Role.USER;
 
 
@@ -87,6 +88,10 @@ public class User {
     // User <-> board 양방향 설정
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private List<Board> boards = new ArrayList<>();
+
+    // User <-> reply 양방향 설정
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    private List<Reply> replyList = new ArrayList<>();
 
     public void updateUserInfo(String userName, Integer age, StatusEnum.Gender gender, String phone, String email,
                                String address,

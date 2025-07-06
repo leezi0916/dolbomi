@@ -75,4 +75,6 @@ public class BoardRepositoryImpl implements BoardRepository {
         }
         return Optional.ofNullable(em.find(Board.class, boardNo));
     }
+
+
 }

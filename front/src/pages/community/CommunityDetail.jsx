@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import useUserStore from '../../store/userStore';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import { commuService } from '../../api/community';
 import { toast } from 'react-toastify';
 import { ClipLoader } from 'react-spinners';
@@ -19,14 +19,19 @@ import {
   PageTitle,
   PageTop,
 } from './style/Community.styles';
+import { useForm } from 'react-hook-form';
 
 const CommunityDetail = () => {
   const userNo = useUserStore((state) => state.user?.userNo);
-  // 수정하기 버튼 때문에 추가
+
   const [error, setError] = useState(null);
   const [communityDetail, setCommunityDetail] = useState(null);
   const [loading, setLoading] = useState(true);
   const { boardNo } = useParams();
+
+  const navigate = useNavigate();
+  const { register, handleSubmit, reset } = useForm();
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
     const loadCommunity = async () => {
@@ -42,11 +47,12 @@ const CommunityDetail = () => {
         toast.error(errorMessage);
       } finally {
         setLoading(false);
+        reset();
       }
     };
 
     loadCommunity();
-  }, [boardNo]);
+  }, [boardNo, reset]);
 
   if (loading) {
     return (
@@ -64,6 +70,33 @@ const CommunityDetail = () => {
     return <Page>게시글을 찾을 수 없습니다.</Page>;
   }
 
+  const onSubmit = async (data) => {
+    if (!data.replyContent.trim()) {
+      alert('댓글을 입력해주세요.');
+      return;
+    }
+    console.log(userNo);
+    try {
+      setIsSubmitting(true);
+      const replyData = {
+        board_no: boardNo,
+        user_no: userNo,
+        reply_content: data.replyContent,
+      };
+
+      const response = await commuService.createReply(replyData);
+      console.log(response);
+      navigate(0);
+    } catch (error) {
+      console.error(error);
+      const errorMessage = '등록에 실패했습니다. 다시 시도해주세요.';
+      setError(errorMessage);
+      toast.error(errorMessage);
+    } finally {
+      setIsSubmitting(false);
+      reset();
+    }
+  };
   return (
     <Page>
       <PageInfo>
@@ -74,7 +107,9 @@ const CommunityDetail = () => {
             <PageTitle>보호자 게시판 상세</PageTitle>
           )}
           <div>
-            <RightBtn>뒤로가기</RightBtn>
+            <RightBtn type="button" onClick={() => navigate(-1)}>
+              뒤로가기
+            </RightBtn>
           </div>
         </PageTop>
         <PageBody>
@@ -128,10 +163,19 @@ const CommunityDetail = () => {
               </InputFile>
             </FileBox>
           )}
-          <CommentBox>
-            <CommentInput type="text" />
-            <CommentButton>댓글 작성</CommentButton>
-          </CommentBox>
+          <form onSubmit={handleSubmit(onSubmit)}>
+            <CommentBox>
+              <CommentInput
+                type="text"
+                placeholder="댓글을 입력하세요"
+                {...register('replyContent')}
+                disabled={isSubmitting}
+              />
+              <CommentButton type="submit" onClick={handleSubmit}>
+                댓글 작성
+              </CommentButton>
+            </CommentBox>
+          </form>
           <CommentEx>
             <span>
               • 개인정보를 공유 및 요청하거나, 명예 훼손, 무단 광고, 불법정보 유포 시 이에 대한 민형사상 책임은
@@ -142,7 +186,7 @@ const CommunityDetail = () => {
         </PageBody>
         <CommentSelectBox>
           <div style={{ gap: '6px', paddingLeft: '10px' }}>
-            <div style={{ fontWeight: theme.fontWeights.bold }}>답변</div>
+            <div style={{ fontWeight: theme.fontWeights.bold }}>댓글</div>
             <div style={{ color: theme.colors.primary, fontWeight: theme.fontWeights.bold }}>
               {communityDetail.reply.length}
             </div>

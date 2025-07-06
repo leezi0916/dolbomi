@@ -1,16 +1,72 @@
 import React, { useRef, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import useUserStore from '../../store/userStore';
 import theme from '../../styles/theme';
 import styled from 'styled-components';
 import { Page } from '../../styles/common/Board';
 import { PageInfo } from './style/CommunityList.styles';
 import { BodyTop, FileBox, FileTitle, Icons, Left, PageBody, PageTitle, PageTop } from './style/Community.styles';
+import { commuService } from '../../api/community';
+import { useForm } from 'react-hook-form';
+import { toast } from 'react-toastify';
 
 const CreateCommuBoardForm = () => {
+  const userNo = useUserStore((state) => state.user?.userNo);
   const userName = useUserStore((state) => state.user?.userName);
   const { role } = useParams();
 
+  const [error, setError] = useState(null);
+  const navigate = useNavigate();
+  const { register, handleSubmit, reset } = useForm();
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const onSubmit = async (data) => {
+    if (!data.boardTitle.trim() || !data.boardContent.trim()) {
+      alert('제목과 내용을 모두 입력해주세요.');
+      return;
+    }
+    console.log(userNo);
+    try {
+      setIsSubmitting(true);
+      const boardData = {
+        board_title: data.boardTitle,
+        board_content: data.boardContent,
+        user_no: userNo,
+        role: role,
+      };
+
+      const response = await commuService.createCommunity(boardData);
+      console.log(response);
+
+      // 이미지 업로드 별도 처리 (샘플용)
+      // if (images.length > 0) {
+      //   const imagePromises = images.map((img) =>
+      //     fetch('http://localhost:3001/images', {
+      //       method: 'POST',
+      //       headers: {
+      //         'Content-Type': 'application/json',
+      //       },
+      //       body: JSON.stringify({
+      //         questionId: response.id,
+      //         fileName: img.file.name,
+      //       }),
+      //     })
+      //   );
+      //   await Promise.all(imagePromises);
+      // }
+      toast.success('등록되었습니다');
+      if (role === 'C') navigate('/community/caregiver');
+      else navigate('/community/guardian');
+    } catch (error) {
+      console.error(error);
+      const errorMessage = '등록에 실패했습니다. 다시 시도해주세요.';
+      setError(errorMessage);
+      toast.error(errorMessage);
+    } finally {
+      setIsSubmitting(false);
+      reset();
+    }
+  };
   //
   //이미지 관련
   const [images, setImages] = useState([]);
@@ -39,53 +95,74 @@ const CreateCommuBoardForm = () => {
   };
   //여기까지 이미지 관련
 
+  if (error) {
+    return null;
+  }
+
   return (
     <Page>
       <PageInfo>
         <PageTop>
           {role === 'C' ? <PageTitle>간병 게시판 등록</PageTitle> : <PageTitle>보호자 게시판 등록</PageTitle>}
         </PageTop>
-        <PageBody>
-          <TitleInput type="text" placeholder="제목을 입력해 주세요" />
-          <Top>
-            <Icons src="/src/assets/icons/icon_작성자.png" alt="" />
-            <Left style={{ fontSize: theme.fontSizes.sm }}>{userName}</Left>
-          </Top>
-          <TextInput type="text" placeholder="내용을 입력해 주세요" />
-          <FileBox>
-            <FileTitle>
-              <Icons src="/src/assets/icons/icon_사진.png" alt="" />
-              <FileTitle>사진</FileTitle>
-            </FileTitle>
-            <InputFile>
-              {images.map((img) => (
-                <ImgBox key={img.id}>
-                  <button onClick={() => handleDelete(img.id)}>x</button>
-                  <img
-                    src={img.preview}
-                    alt="preview"
-                    style={{ width: '100%', aspectRatio: '4 / 3', borderRadius: '4px' }}
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <PageBody>
+            <TitleInput
+              type="text"
+              placeholder="제목을 입력하세요"
+              {...register('boardTitle')}
+              disabled={isSubmitting}
+            />
+            <Top>
+              <Icons src="/src/assets/icons/icon_작성자.png" alt="" />
+              <Left style={{ fontSize: theme.fontSizes.sm }}>{userName}</Left>
+            </Top>
+            <TextInput
+              as="textarea"
+              placeholder="내용을 입력하세요"
+              rows={10}
+              {...register('boardContent')}
+              disabled={isSubmitting}
+            />
+            <FileBox>
+              <FileTitle>
+                <Icons src="/src/assets/icons/icon_사진.png" alt="" />
+                <FileTitle>사진</FileTitle>
+              </FileTitle>
+              <InputFile>
+                {images.map((img) => (
+                  <ImgBox key={img.id}>
+                    <button onClick={() => handleDelete(img.id)}>x</button>
+                    <img
+                      src={img.preview}
+                      alt="preview"
+                      style={{ width: '100%', aspectRatio: '4 / 3', borderRadius: '4px' }}
+                    />
+                  </ImgBox>
+                ))}
+                <div style={{ width: 'calc(100% / 4)', aspectRatio: '4 / 3', padding: '0 10px 10px 0px' }}>
+                  <input
+                    type="file"
+                    accept="image/*"
+                    multiple
+                    ref={fileInputRef}
+                    style={{ display: 'none' }}
+                    onChange={handleFilesChange}
                   />
-                </ImgBox>
-              ))}
-              <div style={{ width: 'calc(100% / 4)', aspectRatio: '4 / 3', padding: '0 10px 10px 0px' }}>
-                <input
-                  type="file"
-                  accept="image/*"
-                  multiple
-                  ref={fileInputRef}
-                  style={{ display: 'none' }}
-                  onChange={handleFilesChange}
-                />
-                <FileButton onClick={handleClick}>+</FileButton>
-              </div>
-            </InputFile>
-          </FileBox>
-          <BtnBox>
-            <button>이전으로</button>
-            <button>등록하기</button>
-          </BtnBox>
-        </PageBody>
+                  <FileButton onClick={handleClick}>+</FileButton>
+                </div>
+              </InputFile>
+            </FileBox>
+            <BtnBox>
+              <button type="button" onClick={() => navigate(-1)}>
+                이전으로
+              </button>
+              <button type="submit" onClick={handleSubmit}>
+                등록하기
+              </button>
+            </BtnBox>
+          </PageBody>
+        </form>
         <PageEndBox>
           <span>
             • 개인정보를 공유 및 요청하거나, 명예 훼손, 무단 광고, 불법정보 유포 시 이에 대한 민형사상 책임은 작성자에게
@@ -112,10 +189,9 @@ const TitleInput = styled.input`
   font-size: ${({ theme }) => theme.fontSizes.lg};
   padding: 0 10px 10px;
 `;
-const TextInput = styled.textarea`
+const TextInput = styled.input`
   width: 100%;
   min-height: 200px;
-  resize: none;
   margin: 10px;
 `;
 

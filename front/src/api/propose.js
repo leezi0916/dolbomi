@@ -6,7 +6,6 @@ export const proposerService = {
   getcareGiverLists: async (hiringNo) => {
     try {
       const { data } = await api.get(API_ENDPOINTS.PROPOSER.LIST(hiringNo));
-      console.log(data);
       return snakeToCamel(data);
     } catch (error) {
       console.error(
@@ -21,7 +20,7 @@ export const proposerService = {
   proposerToHiring: async ({ hiringNo, resumeNo, caregiverNo }) => {
     try {
       const res = await api.post(API_ENDPOINTS.PROPOSER.BASE, camelToSnake({ hiringNo, resumeNo, caregiverNo }));
-      console.log(res);
+
     } catch (error) {
       console.error('지원 신청 실패:', error.response?.data?.message || error.message);
       throw error;
@@ -81,6 +80,21 @@ export const proposerService = {
     } catch (error) {
       if (error.response) {
         const message = error.response?.data?.message || '내 지원현황을 불러오는데 실패했습니다.';
+        throw new Error(message);
+      }
+
+      throw new Error('서버 통신 불량');
+    }
+  },
+
+  // 내 지원현황 내역 삭제
+  deleteProposerHisotry: async (proposerNo) => {
+    try {
+      const { data } = await api.patch(API_ENDPOINTS.PROPOSER.DELETE_HISTORY(proposerNo));
+      return snakeToCamel(data);
+    } catch (error) {
+      if (error.response) {
+        const message = error.response?.data?.message || '내역 삭제에 실패했습니다.';
         throw new Error(message);
       }
 

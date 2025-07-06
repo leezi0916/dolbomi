@@ -2,12 +2,13 @@ package com.kh.dolbomi.service;
 
 import com.kh.dolbomi.dto.BoardDto;
 import com.kh.dolbomi.dto.BoardDto.Response;
+import com.kh.dolbomi.dto.ReplyDto;
+import java.io.IOException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 public interface BoardService {
-
-    //    List<BoardDto> getBoardList(String status, String role);
+    Long createBoard(BoardDto.Create boardDto) throws IOException;
 
     Page<BoardDto.Response> getGuardianList(Pageable pageable);
 
@@ -18,4 +19,10 @@ public interface BoardService {
     Page<BoardDto.Response> getQuestionHistory(Long userNo, Pageable pageable);
 
     BoardDto.Response getCommunityDetail(Long boardNo);
+
+    Long createReply(ReplyDto.Create replyCreate);
+
+    Long createQuestion(BoardDto.CreateQuestion questionCreate);
+
+    Long createReplyQuestion(ReplyDto.Create replyCreate);
 }

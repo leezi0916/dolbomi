@@ -1,17 +1,17 @@
 package com.kh.dolbomi.repository;
 
 import com.kh.dolbomi.domain.Matching;
-import com.kh.dolbomi.enums.StatusEnum;
 import com.kh.dolbomi.enums.StatusEnum.Status;
-import java.util.List;
 import java.util.Optional;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 public interface MatchingRepository {
-    List<Object[]> findbyPatNo(Long patNo, StatusEnum.Status matchingStatus);
-
-    List<Object[]> findbyCaregiverNo(Long cargiverNo, Status matchingStatus);
 
     Optional<Matching> findByMetNo(Long matNo);
 
     Matching save(Matching matching);
+
+    Page<Matching> findByCheckList(Long patNo, Status status, Status userStatus, Pageable pageable);
+
 }

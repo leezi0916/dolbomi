@@ -31,9 +31,10 @@ public class ProposerDto {
         private Long resume_no;
         private String resume_title;
         private LocalDateTime proposer_date;
-        private StatusEnum.Status status;
+        private StatusEnum.Status status; // 신청 상태
 
         // 구인 테이블
+        private Long hiring_no;
         private String hiring_title;
         private StatusEnum.HiringStatus hiring_status;
 
@@ -63,9 +64,11 @@ public class ProposerDto {
         public static Response myProposerDto(Proposer proposer) {
             return Response.builder()
                     .proposer_no(proposer.getProposerNo())
+                    .hiring_no(proposer.getHiring().getHiringNo())
                     .hiring_title(proposer.getHiring().getHiringTitle())
                     .proposer_date(proposer.getProposerDate())
                     .user_name(proposer.getHiring().getUser().getUserName())
+                    .status(proposer.getStatus())
                     .hiring_status(proposer.getHiring().getHiringStatus())
                     .build();
         }

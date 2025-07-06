@@ -2,6 +2,7 @@ package com.kh.dolbomi.dto;
 
 import com.kh.dolbomi.domain.Board;
 import com.kh.dolbomi.enums.StatusEnum;
+import jakarta.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
 import java.util.List;
 import lombok.AllArgsConstructor;
@@ -14,6 +15,8 @@ public class BoardDto {
     @Getter
     @AllArgsConstructor
     public static class Create {
+
+        @NotBlank(message = "제목은 필수입니다.")
         private String board_title;
         private String board_content;
         private Long user_no;
@@ -24,6 +27,32 @@ public class BoardDto {
                     .boardTitle(this.board_title)
                     .boardContent(this.board_content)
                     .role(this.role)
+                    .build();
+
+        }
+    }
+
+    @Getter
+    @AllArgsConstructor
+    public static class CreateQuestion {
+
+        @NotBlank(message = "제목을 적어주세요.")
+        private String board_title;
+        @NotBlank(message = "내용을 적어주세요.")
+        private String board_content;
+
+        private Long user_no;
+        private StatusEnum.Role role;
+        private StatusEnum.QuestionStatus question_status;
+        private StatusEnum.QuestionCategory question_category;
+
+        public Board toEntity() {
+            return Board.builder()
+                    .boardTitle(this.board_title)
+                    .boardContent(this.board_content)
+                    .role(this.role)
+                    .questionStatus(this.question_status)
+                    .questionCategory(this.question_category)
                     .build();
 
         }
@@ -42,7 +71,8 @@ public class BoardDto {
         private Long user_no;
         private String user_name;
         private StatusEnum.Role role;
-        private StatusEnum.QuestionStatus questionStatus;
+        private StatusEnum.QuestionStatus question_status;
+        private StatusEnum.QuestionCategory question_category;
         private List<FileDto.Response> files;
         private List<ReplyDto.Response> reply;
 
@@ -56,19 +86,10 @@ public class BoardDto {
                     .user_no(board.getUser().getUserNo())
                     .user_name(board.getUser().getUserName())
                     .role(board.getRole())
-                    .questionStatus(board.getQuestionStatus())
-                    .files(
-                            board.getFiles().stream()
-                                    .map(file -> FileDto.Response.builder()
-                                            .fileNo(file.getFileNo())
-                                            .originName(file.getOriginName())
-                                            .changeName(file.getChangeName())
-                                            .filePath(file.getFilePath())
-                                            .build())
-                                    .toList()
-                    )
+                    .question_status(board.getQuestionStatus())
+                    .question_category(board.getQuestionCategory())
                     .reply(
-                            board.getReply().stream()
+                            board.getReplyList().stream()
                                     .map(reply -> ReplyDto.Response.builder()
                                             .replyNo(reply.getReplyNo())
                                             .user_no(reply.getUser().getUserNo())
@@ -90,7 +111,8 @@ public class BoardDto {
                     .count(board.getCount())
                     .user_name(board.getUser().getUserName())
                     .role(board.getRole())
-                    .questionStatus(board.getQuestionStatus())
+                    .question_status(board.getQuestionStatus())
+                    .question_category(board.getQuestionCategory())
                     .build();
         }
     }

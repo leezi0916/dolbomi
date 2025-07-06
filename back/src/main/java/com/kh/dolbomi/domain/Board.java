@@ -64,18 +64,14 @@ public class Board {
     @Enumerated(EnumType.STRING)
     private StatusEnum.QuestionStatus questionStatus;
 
-    @OneToMany(mappedBy = "board", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<File> files = new ArrayList<>();
+    @Column(name = "QUESTION_CATEGORY", length = 1)
+    @Enumerated(EnumType.STRING)
+    private StatusEnum.QuestionCategory questionCategory;
 
     @OneToMany(mappedBy = "board", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Reply> reply = new ArrayList<>();
+    private List<Reply> replyList = new ArrayList<>();
 
     private int count;
-
-    public void addFile(File file) {
-        files.add(file);
-        file.setBoard(this); // 양방향 연관관계 설정
-    }
 
     public void changeUser(User user) {
         this.user = user;
@@ -98,5 +94,10 @@ public class Board {
     @PreUpdate
     public void preUpdate() {
         this.updateDate = LocalDateTime.now();
+    }
+
+    public void setQuestionStatus() {
+        this.questionStatus = StatusEnum.QuestionStatus.Y;
+        System.out.println("questionStatus 업데이트 호출됨");
     }
 }
