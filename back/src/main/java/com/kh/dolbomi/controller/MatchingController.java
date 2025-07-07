@@ -1,11 +1,11 @@
 package com.kh.dolbomi.controller;
 
-
 import com.kh.dolbomi.dto.MatchingDto;
 import com.kh.dolbomi.dto.PageResponse;
 import com.kh.dolbomi.enums.StatusEnum;
 import com.kh.dolbomi.enums.StatusEnum.Status;
 import com.kh.dolbomi.service.MatchingService;
+import java.time.LocalDateTime;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
@@ -35,7 +35,6 @@ public class MatchingController {
         return ResponseEntity.ok(matchingService.getMatchingCargiverList(patNo, status));
     }
 
-
     @GetMapping("matched")
     public ResponseEntity<PageResponse<MatchingDto.Response>> getMatchedList(
             @RequestParam("pat_no") Long patNo,
@@ -54,7 +53,6 @@ public class MatchingController {
         return ResponseEntity.ok(matchingService.getMatchingListCaregiver(caregiverNo, matchingStatus));
     }
 
-    //간병 종료 버튼 클릭시 매칭 상태 변경해서 종료하기
     @PatchMapping
     public ResponseEntity<Long> getMatchingChangeStatus(
             @RequestParam("mat_no") Long matNo,
@@ -65,7 +63,6 @@ public class MatchingController {
     }
 
 
-    //종료된 매칭 리스트(페이징) - 간병인 버전
     @GetMapping("/caregiver/matched")
     public ResponseEntity<PageResponse<MatchingDto.ResponsePat>> getMatchedPatientsByCaregiver(
             @RequestParam("caregiver_no") Long caregiverNo,
@@ -76,4 +73,33 @@ public class MatchingController {
                 new PageResponse<>(matchingService.getMatchedPatientsByCaregiver(caregiverNo, status, pageable))
         );
     }
+
+    @GetMapping("/matched/check")
+    public ResponseEntity<PageResponse<MatchingDto.Response>> getMatchedList(
+            @RequestParam("pat_no") Long patNo,
+            @RequestParam("status") StatusEnum.Status status,
+            @RequestParam("user_status") StatusEnum.Status userStatus,
+            @PageableDefault(size = 5) Pageable pageable
+    ) {
+
+        return ResponseEntity.ok(
+                new PageResponse<>(matchingService.getMatchedListByCheckStatus(patNo, status, userStatus, pageable)));
+    }
+
+    @GetMapping("/matched/date")
+    public ResponseEntity<PageResponse<MatchingDto.Response>> getMatchedDateList(
+            @RequestParam("pat_no") Long patNo,
+            @RequestParam("start_date") LocalDateTime startDate,
+            @RequestParam("end_date") LocalDateTime endDate,
+            @PageableDefault(size = 5) Pageable pageable
+
+    ) {
+        Status status = Status.valueOf("N");
+
+        return ResponseEntity.ok(
+                new PageResponse<>(
+                        matchingService.getMatchedListBySearch(patNo, startDate, endDate, status, pageable)));
+    }
+
+
 }

@@ -54,7 +54,7 @@ export const jobSeekingService = {
 
   //이력서등록
   postNewResume: async (newData) => {
-    console.log(camelToSnake(newData));
+
     try {
       await api.post(API_ENDPOINTS.RESUME.BASE, camelToSnake(newData));
     } catch (error) {
@@ -76,7 +76,6 @@ export const jobSeekingService = {
   // 특정 이력서 가져오기
   getResume: async (resumeNo) => {
     try {
-      console.log('요청할 resumeNo: ', resumeNo);
       const { data } = await api.get(API_ENDPOINTS.RESUME.DETAIL(resumeNo));
       return snakeToCamel(data);
     } catch (error) {

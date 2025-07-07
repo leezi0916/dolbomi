@@ -42,6 +42,7 @@ const ResumeRegistration = () => {
   const onSubmit = async (formData) => {
     const newData = {
       ...formData,
+
       userNo: Number(user.userNo),
     };
     try {
@@ -165,8 +166,8 @@ const ResumeRegistration = () => {
                 <AccountGroup>
                   <InputGroup>
                     <Label>희망 시급</Label>
-                    <Input {...register('account')} placeholder="희망 시급" />
-                    <p>{errors.account?.message}</p>
+                    <Input {...register('resumeAccount')} placeholder="희망 시급" />
+                    <p>{errors.resumeAccount?.message}</p>
                   </InputGroup>
                 </AccountGroup>
               </RadioGroup>

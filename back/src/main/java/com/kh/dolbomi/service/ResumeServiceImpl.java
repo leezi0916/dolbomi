@@ -82,7 +82,7 @@ public class ResumeServiceImpl implements ResumeService {
                 .orElseThrow(() -> new ResumeNotFoundException("해당 이력서를 찾을 수 없습니다."));
 
         resume.changeResume(updatePatDto.getResume_title(), updatePatDto.getResume_content(),
-                updatePatDto.getAccount());
+                updatePatDto.getResume_account());
 
         resume.changeStatus(updatePatDto.getStatus());
 

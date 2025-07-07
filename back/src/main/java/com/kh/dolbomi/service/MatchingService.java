@@ -2,13 +2,14 @@ package com.kh.dolbomi.service;
 
 import com.kh.dolbomi.dto.MatchingDto;
 import com.kh.dolbomi.enums.StatusEnum.Status;
+import java.time.LocalDateTime;
 import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 public interface MatchingService {
 
-
+    //
     // 진행 중 매칭 특정환자에 대한 간병인 목록가져오기
     List<MatchingDto.Response> getMatchingCargiverList(Long patNo, Status matchingStatus);
 
@@ -24,4 +25,9 @@ public interface MatchingService {
     // 종료된 매칭 목록 페이징 조회 - 간병인 version
     Page<MatchingDto.ResponsePat> getMatchedPatientsByCaregiver(Long caregiverNo, Status status, Pageable pageable);
 
+    Page<MatchingDto.Response> getMatchedListByCheckStatus(Long patNo, Status status, Status userStatus,
+                                                           Pageable pageable);
+
+    Page<MatchingDto.Response> getMatchedListBySearch(Long patNo, LocalDateTime startDate,
+                                                      LocalDateTime endDate, Status status, Pageable pageable);
 }

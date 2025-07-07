@@ -11,9 +11,20 @@ import { useNavigate } from 'react-router-dom';
 import Paging from '../components/Paging';
 import ReviewModal from '../components/ReviewModal';
 import { CiCircleInfo } from 'react-icons/ci';
-import { IoSearchOutline } from 'react-icons/io5';
+import { IoCheckmarkOutline } from 'react-icons/io5';
+
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
+import '../styles/DatePiker.css';
+import { searchForm } from '../hooks/searchForm';
 
 const MatchToCaregiver = () => {
+  const CustomDateButton = React.forwardRef(({ value, onClick }, ref) => (
+    <button className="custom-datepicker-button" onClick={onClick} ref={ref}>
+      <span>{value || '날짜 선택'}</span>
+    </button>
+  ));
+
   const { user } = useUserStore();
   const navigate = useNavigate();
 
@@ -32,6 +43,30 @@ const MatchToCaregiver = () => {
   //리뷰 관련 모달
   const [showReviewModal, setShowReviewModal] = useState(false);
   const [selectedCaregiver, setSelectedCaregiver] = useState(null); // 간병인 정보
+
+  // 날짜검색
+  const [startDate, setStartDate] = useState(new Date());
+  const [endDate, setEndDate] = useState(new Date());
+
+  // 날짜 검색 함수
+  const { getSearchDateList } = searchForm();
+
+  const handleSearchClick = async (page = 1) => {
+    if (!selectedPatNo) {
+      alert('돌봄대상자를 선택해주세요');
+    }
+    try {
+      const res = await getSearchDateList(selectedPatNo, page, 5, startDate, endDate);
+
+      if (res) {
+        setEndedCaregiverList(res.content || []);
+        setEndedTotalPage(res.totalPage || res.totalPages || 1);
+        setEndedCurrentPage((res.currentPage || res.number || 0) + 1);
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  };
 
   useEffect(() => {
     const fetchAll = async () => {
@@ -54,7 +89,6 @@ const MatchToCaregiver = () => {
     const getList = async () => {
       try {
         const careGiverList = await matchingService.getMatchginCargiver(patNo, 'Y');
-        console.log('확인 :', careGiverList);
         careGiverList.length === 0 ? setCareGiverList([]) : setCareGiverList(careGiverList);
       } catch (err) {
         console.error(err);
@@ -68,11 +102,13 @@ const MatchToCaregiver = () => {
     try {
       const res = await matchingService.getEndedMatchingCaregivers(patNo, page - 1, 5, 'N');
       console.log(res);
-      setEndedCaregiverList(res.content);
 
+      setEndedCaregiverList(res.content);
       setEndedTotalPage(res.totalPage || res.totalPages || 1);
       setEndedCurrentPage((res.currentPage || res.number || 0) + 1);
       setSelectedPatNo(patNo);
+      setStartDate('');
+      setEndDate('');
     } catch (err) {
       console.error(err);
     }
@@ -80,6 +116,7 @@ const MatchToCaregiver = () => {
 
   const handleTabChange = (tab) => {
     setActiveTab(tab);
+
     // if (tab === 'matched' && userPatients.length > 0) {
     //   // 기본 첫 환자 종료된 매칭 호출
     //   getEndedMatchingList(userPatients[0].patNo, 1);
@@ -89,7 +126,12 @@ const MatchToCaregiver = () => {
   // 종료된 매칭 페이지 변경 핸들러
   const handleEndedPageChange = (page) => {
     setEndedCurrentPage(page);
+
     if (selectedPatNo) {
+      if (startDate && endDate) {
+        handleSearchClick(page);
+        return;
+      }
       getEndedMatchingList(selectedPatNo, page);
     }
   };
@@ -203,17 +245,28 @@ const MatchToCaregiver = () => {
 
             <Div>
               <SearchDivWrap>
-                <SearchInput placeholder="찾으시는 간병인이름을 검색하세요"></SearchInput>
-                <SearchBtn>
-                  <SearchIcon>
-                    <IoSearchOutline />
-                  </SearchIcon>
-                </SearchBtn>
+                <SearchDateWrap>
+                  <DatePicker
+                    dateFormat={'yyyy/MM/dd'}
+                    selected={startDate}
+                    onChange={(date) => setStartDate(date)}
+                    customInput={<CustomDateButton />}
+                  ></DatePicker>
+                  <p> ~ </p>
+                  <DatePicker
+                    dateFormat={'yyyy/MM/dd'}
+                    selected={endDate}
+                    onChange={(date) => setEndDate(date)}
+                    customInput={<CustomDateButton />}
+                  ></DatePicker>
+
+                  <SearchBtn onClick={handleSearchClick}>검색</SearchBtn>
+                </SearchDateWrap>
               </SearchDivWrap>
 
               {selectedPatNo ? (
                 <>
-                  {endedCaregiverList.map((care) => (
+                  {endedCaregiverList?.map((care) => (
                     <CargiverWrap key={care.matNo}>
                       <CaregiverImg
                         src={care.profileImage ? care.profileImage : care_profileImage}
@@ -277,6 +330,11 @@ const MatchToCaregiver = () => {
   );
 };
 
+const DatePickerWrap = styled.div`
+  display: flex;
+  gap: 10px;
+`;
+
 const HeadSection = styled(Section)`
   height: 200px;
   display: flex;
@@ -305,9 +363,16 @@ const SearchDivWrap = styled.div`
   border-bottom: 1px solid ${({ theme }) => theme.colors.gray[5]};
 `;
 
+const SearchDateWrap = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: ${({ theme }) => theme.spacing[5]};
+`;
+
 const SearchInput = styled.input`
   border: 1px solid ${({ theme }) => theme.colors.gray[5]};
-  border-radius: ${({ theme }) => theme.borderRadius.md} 0 0 ${({ theme }) => theme.borderRadius.md};
+  border-radius: ${({ theme }) => theme.borderRadius.md};
   width: 80%;
   padding: ${({ theme }) => theme.spacing[2]};
   outline: none; /* 포커스 시 아웃라인 제거 */
@@ -321,8 +386,8 @@ const SearchInput = styled.input`
 
 const SearchBtn = styled.button`
   background: ${({ theme }) => theme.colors.primary};
-  border-radius: 0 ${({ theme }) => theme.borderRadius.md} ${({ theme }) => theme.borderRadius.md} 0;
-  width: 20%;
+  border-radius: ${({ theme }) => theme.borderRadius.md} ${({ theme }) => theme.borderRadius.md};
+  width: 150px;
   background-color: ${({ theme }) => theme.colors.primary};
   color: white;
 
@@ -547,5 +612,39 @@ const PageWrapper = styled.div`
   bottom: 0;
   width: 100%;
   padding: ${({ theme }) => theme.spacing[5]};
+`;
+const AccommodationCheckboxLabel = styled.label`
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  white-space: nowrap; /* 텍스트가 줄바꿈되지 않도록 */
+  color: ${({ theme }) => theme.colors.gray[800]}; /* 텍스트 색상 */
+  font-size: ${({ theme }) => theme.fontSizes.base};
+  gap: ${({ theme }) => theme.spacing[2]};
+`;
+const HiddenCheckbox = styled.input.attrs({ type: 'checkbox' })`
+  border: 0;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  white-space: nowrap;
+  width: 1px;
+`;
+
+const StyledCheckbox = styled.div`
+  width: 25px;
+  height: 25px;
+  border: 1px solid ${({ theme, checked }) => (checked ? theme.colors.primary : theme.colors.gray[4])}; /* 회색 400으로 통일 */
+  border-radius: 4px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: ${({ theme, checked }) => (checked ? theme.colors.primary : 'white')};
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
 `;
 export default MatchToCaregiver;

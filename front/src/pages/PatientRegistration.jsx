@@ -162,24 +162,14 @@ const PatientRegistration = () => {
               <Label htmlFor="weight">몸무게</Label>
 
               <HeightWegithDiv>
-                <Input
-                  type="number"
-                  id="patHeight"
-                  placeholder="키를 입력해주세요"
-                  {...register('patHeight')}
-                  $error={errors.patHeight}
-                />
+                <Input type="number" step="0.01" id="patHeight" {...register('patHeight')} $error={errors.patHeight} />
+
                 <span>cm</span>
               </HeightWegithDiv>
 
               <HeightWegithDiv>
-                <Input
-                  type="number"
-                  id="patWeight"
-                  placeholder="몸무게를 입력해주세요"
-                  {...register('patWeight')}
-                  $error={errors.patWeight}
-                />
+                <Input type="number" step="0.01" id="patWeight" {...register('patWeight')} $error={errors.patWeight} />
+
                 <span>kg</span>
               </HeightWegithDiv>
 

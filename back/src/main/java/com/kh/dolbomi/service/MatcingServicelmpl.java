@@ -4,12 +4,14 @@ import com.kh.dolbomi.domain.Matching;
 import com.kh.dolbomi.domain.Notification;
 import com.kh.dolbomi.domain.User;
 import com.kh.dolbomi.dto.MatchingDto;
+import com.kh.dolbomi.dto.MatchingDto.Response;
 import com.kh.dolbomi.enums.StatusEnum.Status;
 import com.kh.dolbomi.exception.InvalidMatchingUserException;
 import com.kh.dolbomi.exception.MatchingNotFoundException;
 import com.kh.dolbomi.repository.MatchingRepository;
 import com.kh.dolbomi.repository.MatchingRepositoryV2;
 import com.kh.dolbomi.repository.NotificationRepositoryV2;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -96,6 +98,24 @@ public class MatcingServicelmpl implements MatchingService {
         return matchingRepositoryV2.findByCaregiver_UserNoAndStatusOrderByEndDateDesc(caregiverNo, status, pageable)
                 .map(MatchingDto.ResponsePat::from);
 
+    }
+
+
+    // 종료된 매칭에 회원탈퇴한 유저list
+    @Override
+    public Page<Response> getMatchedListByCheckStatus(Long patNo, Status status, Status userStatus, Pageable pageable) {
+
+        System.out.println("test :" + patNo + ":" + status + ":" + userStatus + ":" + pageable.getPageSize());
+        return matchingRepository.findByCheckList(patNo, status, userStatus, pageable)
+                .map(MatchingDto.Response::toDto);
+    }
+
+    @Override
+    public Page<Response> getMatchedListBySearch(Long patNo, LocalDateTime startDate, LocalDateTime endDate,
+                                                 Status status, Pageable pageable) {
+        
+        return matchingRepository.findBySearchDateList(patNo, startDate, endDate, status, pageable)
+                .map(MatchingDto.Response::toDto);
     }
 
 
