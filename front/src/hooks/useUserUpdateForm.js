@@ -2,6 +2,8 @@ import * as yup from 'yup';
 import { userService } from '../api/users';
 import { toast } from 'react-toastify';
 import { useState } from 'react';
+import api from '../api/axios';
+import { camelToSnake } from '../utils/formatData';
 
 // 유효성 스키마
 const updateSchema = yup.object().shape({
@@ -37,8 +39,6 @@ const updateSchema = yup.object().shape({
 const useUserUpdateForm = ({ profile }) => {
   const [updating, setUpdating] = useState(false);
 
-
-
   const validateAndSubmit = async (formData, licenseList, profileImageFile) => {
     try {
       // 변경된 값만 필터링
@@ -52,14 +52,13 @@ const useUserUpdateForm = ({ profile }) => {
       // 자격증도 변경되었는지 체크
       const licensesChanged = JSON.stringify(profile.licenses || []) !== JSON.stringify(licenseList);
 
-      // 이미지가 선택되었지만, 지금은 S3 업로드 기능 없음 → null로 대체
+      // 이미지가 선택되었는지 체크
       const imageChanged = !!profileImageFile;
 
       if (Object.keys(changedFields).length === 0 && !licensesChanged && !imageChanged) {
         toast.info('변경된 정보가 없습니다.');
         return;
       }
-
 
       // 유효성 검사
       await updateSchema.validate(formData, { abortEarly: false });
@@ -68,13 +67,53 @@ const useUserUpdateForm = ({ profile }) => {
       const updatedData = {
         ...changedFields,
         licenses: licenseList || [],
-        profileImage: 's3url보내야함', //나중에 s3 url
       };
 
-      console.log('보내는 데이터:', updatedData);
-      // 문자열을 숫자로 변환 (필요시)
+      // 나이 문자열 -> 숫자 변환
       if (updatedData.age) {
         updatedData.age = Number(updatedData.age);
+      }
+
+      // 프로필 이미지가 변경되었으면 S3 업로드 처리
+      if (profileImageFile) {
+        try {
+          // 1. presigned URL 요청
+          const { data: uploadInfo } = await api.post('/v1/files/upload-url', null, {
+            params: {
+              fileName: profileImageFile.name,
+              contentType: profileImageFile.type,
+              path: 'profiles/',
+            },
+          });
+          console.log('Presigned URL 응답:', uploadInfo); // presignedUrl, changeName 확인
+          console.log('파일 메타데이터 응답:', fileMeta); // change_name 포함 확인
+          console.log('User 최종 수정 데이터:', updatedData); // profileImage 포함되는지
+          const { changeName, presignedUrl } = uploadInfo;
+
+          // 2. S3에 직접 PUT 업로드
+          await api.put(presignedUrl, profileImageFile, {
+            headers: {
+              'Content-Type': profileImageFile.type,
+            },
+          });
+
+          // 3. 업로드 완료 처리 (메타데이터 저장)
+          const { data: fileMeta } = await api.post(
+            '/v1/files/complete',
+            camelToSnake({
+              originalName: profileImageFile.name,
+              changeName: changeName,
+              contentType: profileImageFile.type,
+            })
+          );
+
+          // 4. user 프로필 이미지 경로에 변경된 파일명 저장
+          updatedData.profileImage = fileMeta.change_name;
+        } catch (uploadError) {
+          toast.error('프로필 이미지 업로드에 실패했습니다.');
+          setUpdating(false);
+          throw uploadError;
+        }
       }
 
       // 여기 userNo 사용! (profile.userNo 또는 profile.user_no)
