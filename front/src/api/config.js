@@ -38,6 +38,7 @@ export const API_ENDPOINTS = {
     PROFILE_UPDATE: (userNo) => `/users/v1/${userNo}`,
     CAREPROFILE: (userNo) => `/users/v1?user_no=${userNo}`,
     DELETE: (userNo) => `/users/v1/${userNo}/delete`,
+    COUNT: '/users/v1/user-counts',
   },
   REVIEWS: {
     BASE: '/review/v1',
@@ -92,6 +93,7 @@ export const API_ENDPOINTS = {
     ACCEPT: '/proposer/v1/accept',
     CHECK_ACCEPTED: (hiringNo, resumeNo) => `/proposer/v1/accept/check?hiring_no=${hiringNo}&resume_no=${resumeNo}`,
     DELETE_HISTORY: (proposerNo) => `/proposer/v1/${proposerNo}`,
+    GET_HIRING_OWNER: (hiringNo) => `/proposer/v1/hiring/${hiringNo}/owner`,
   },
 
   MATCHING: {
@@ -101,7 +103,8 @@ export const API_ENDPOINTS = {
     ENDLIST: (patNo, status) => `/matching/v1/matched?pat_no=${patNo}&status=${status}`,
     PATLIST: (caregiverNo, status) => `/matching/v1/caregiver?caregiver_no=${caregiverNo}&status=${status}`,
     PAT_ENDLIST: (caregiverNo, status) => `/matching/v1/caregiver/matched?caregiver_no=${caregiverNo}&status=${status}`,
-    SEARCHLIST : () => `/matching/v1/matched/check`,
+    SEARCHLIST: () => `/matching/v1/matched/check`,
+    SEARCHDATELIST: () => `/matching/v1/matched/date`,
   },
 
   NOTIFICATIONS: {

@@ -1,0 +1,24 @@
+.react-datepicker-wrapper {
+  width: fit-content;
+}
+
+.custom-datepicker-button {
+  width: 140px;
+  padding: 8px 12px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background-color: #fff;
+  cursor: pointer;
+
+  background-image: url("../assets/icons/icon달력.png"); /* 경로는 프로젝트에 맞게 수정 */
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  background-size: 20px;
+}
+
+.custom-datepicker-button span {
+  font-size: 14px;
+}

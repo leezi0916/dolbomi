@@ -114,4 +114,15 @@ export const userService = {
       throw error;
     }
   },
+
+  //매인 페이지 간병사, 보호자 카운트
+  getUserCounts: async () => {
+    try {
+      const { data } = await api.get(API_ENDPOINTS.USERS.COUNT);
+      return snakeToCamel(data);
+    } catch (error) {
+      console.error('유저 수 통계 가져오기 실패: ', error);
+      throw error;
+    }
+  },
 };

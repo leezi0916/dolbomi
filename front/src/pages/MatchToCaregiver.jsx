@@ -12,9 +12,19 @@ import Paging from '../components/Paging';
 import ReviewModal from '../components/ReviewModal';
 import { CiCircleInfo } from 'react-icons/ci';
 import { IoCheckmarkOutline } from 'react-icons/io5';
-import { set } from 'react-hook-form';
+
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
+import '../styles/DatePiker.css';
+import { searchForm } from '../hooks/searchForm';
 
 const MatchToCaregiver = () => {
+  const CustomDateButton = React.forwardRef(({ value, onClick }, ref) => (
+    <button className="custom-datepicker-button" onClick={onClick} ref={ref}>
+      <span>{value || '날짜 선택'}</span>
+    </button>
+  ));
+
   const { user } = useUserStore();
   const navigate = useNavigate();
 
@@ -34,31 +44,25 @@ const MatchToCaregiver = () => {
   const [showReviewModal, setShowReviewModal] = useState(false);
   const [selectedCaregiver, setSelectedCaregiver] = useState(null); // 간병인 정보
 
-  // 체크박스
-  const [userStatus, setUserStatus] = useState(false);
+  // 날짜검색
+  const [startDate, setStartDate] = useState(new Date());
+  const [endDate, setEndDate] = useState(new Date());
 
-  // 체크박스 핸들러
-  const handleCheckChange = () => {
-    setUserStatus(prev => {
-      const next = !prev;
-      // 페이지 초기화
-      setEndedCurrentPage(1);
-      // 현재 환자 번호에 대해 다시 요청
-      Change(selectedPatNo, 1, 'N', next ? 'Y' : 'N');
-      return next;
-    });
-  };
+  // 날짜 검색 함수
+  const { getSearchDateList } = searchForm();
 
-  //체크시 조건기능을 실행
-  const Change = async (patNo, page=1, status = 'N', user_status = 'Y') => {
+  const handleSearchClick = async (page = 1) => {
+    if (!selectedPatNo) {
+      alert('돌봄대상자를 선택해주세요');
+    }
     try {
-      const res = await matchingService.getEndedMatchingCheckList(patNo, page - 1, 5, status, user_status);
+      const res = await getSearchDateList(selectedPatNo, page, 5, startDate, endDate);
 
-      setEndedCaregiverList(res.content);
-      setEndedTotalPage(res.totalPages || res.totalPage || 1);
-      setEndedCurrentPage((res.number || res.currentPage || 0) + 1);
-      setSelectedPatNo(patNo);
-
+      if (res) {
+        setEndedCaregiverList(res.content || []);
+        setEndedTotalPage(res.totalPage || res.totalPages || 1);
+        setEndedCurrentPage((res.currentPage || res.number || 0) + 1);
+      }
     } catch (err) {
       console.error(err);
     }
@@ -82,8 +86,6 @@ const MatchToCaregiver = () => {
 
   // 현재 매칭정보 : 특정 환자의 간병인 목록 가져오기
   const getCareGiver = (patNo) => {
-
-    
     const getList = async () => {
       try {
         const careGiverList = await matchingService.getMatchginCargiver(patNo, 'Y');
@@ -97,18 +99,16 @@ const MatchToCaregiver = () => {
 
   // 종료된 매칭정보
   const getEndedMatchingList = async (patNo, page = 1) => {
-
-    setUserStatus(false); // 체크박스 해제
-    setEndedCurrentPage(1); // 페이지 초기화
-
     try {
       const res = await matchingService.getEndedMatchingCaregivers(patNo, page - 1, 5, 'N');
       console.log(res);
-      setEndedCaregiverList(res.content);
 
+      setEndedCaregiverList(res.content);
       setEndedTotalPage(res.totalPage || res.totalPages || 1);
       setEndedCurrentPage((res.currentPage || res.number || 0) + 1);
       setSelectedPatNo(patNo);
+      setStartDate('');
+      setEndDate('');
     } catch (err) {
       console.error(err);
     }
@@ -126,16 +126,15 @@ const MatchToCaregiver = () => {
   // 종료된 매칭 페이지 변경 핸들러
   const handleEndedPageChange = (page) => {
     setEndedCurrentPage(page);
+
     if (selectedPatNo) {
-      if (userStatus) {
-        Change(selectedPatNo, page, 'N', userStatus ? 'Y' : 'N');
+      if (startDate && endDate) {
+        handleSearchClick(page);
         return;
       }
       getEndedMatchingList(selectedPatNo, page);
     }
   };
-
-  
 
   return (
     <>
@@ -246,29 +245,28 @@ const MatchToCaregiver = () => {
 
             <Div>
               <SearchDivWrap>
-                <SearchUserBtn>
-                  <AccommodationCheckboxLabel>
-                    <HiddenCheckbox type="checkbox" checked={userStatus} onChange={handleCheckChange} />
-                    <StyledCheckbox checked={userStatus}>
-                      {handleCheckChange && <IoCheckmarkOutline size="20px" color="white" />}
-                    </StyledCheckbox>
-                  </AccommodationCheckboxLabel>
-
-                  <p> 회원여부</p>
-                </SearchUserBtn>
                 <SearchDateWrap>
-                  <SearchInput type="date"></SearchInput>
+                  <DatePicker
+                    dateFormat={'yyyy/MM/dd'}
+                    selected={startDate}
+                    onChange={(date) => setStartDate(date)}
+                    customInput={<CustomDateButton />}
+                  ></DatePicker>
                   <p> ~ </p>
-                  <SearchInput type="date"></SearchInput>
-                  <SearchBtn>검색</SearchBtn>
-                </SearchDateWrap>
+                  <DatePicker
+                    dateFormat={'yyyy/MM/dd'}
+                    selected={endDate}
+                    onChange={(date) => setEndDate(date)}
+                    customInput={<CustomDateButton />}
+                  ></DatePicker>
 
-                {/* <SearchInput placeholder="찾으시는 간병인이름을 검색하세요"></SearchInput> */}
+                  <SearchBtn onClick={handleSearchClick}>검색</SearchBtn>
+                </SearchDateWrap>
               </SearchDivWrap>
 
               {selectedPatNo ? (
                 <>
-                  {endedCaregiverList.map((care) => (
+                  {endedCaregiverList?.map((care) => (
                     <CargiverWrap key={care.matNo}>
                       <CaregiverImg
                         src={care.profileImage ? care.profileImage : care_profileImage}
@@ -332,6 +330,11 @@ const MatchToCaregiver = () => {
   );
 };
 
+const DatePickerWrap = styled.div`
+  display: flex;
+  gap: 10px;
+`;
+
 const HeadSection = styled(Section)`
   height: 200px;
   display: flex;
@@ -354,17 +357,10 @@ const TipP = styled.p`
 
 const SearchDivWrap = styled.div`
   display: flex;
-  justify-content: space-around;
+  justify-content: flex-end;
   padding: 10px;
   width: 100%;
   border-bottom: 1px solid ${({ theme }) => theme.colors.gray[5]};
-`;
-
-const SearchUserBtn = styled.button`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 20px;
 `;
 
 const SearchDateWrap = styled.div`
@@ -391,7 +387,7 @@ const SearchInput = styled.input`
 const SearchBtn = styled.button`
   background: ${({ theme }) => theme.colors.primary};
   border-radius: ${({ theme }) => theme.borderRadius.md} ${({ theme }) => theme.borderRadius.md};
-  width: 200px;
+  width: 150px;
   background-color: ${({ theme }) => theme.colors.primary};
   color: white;
 

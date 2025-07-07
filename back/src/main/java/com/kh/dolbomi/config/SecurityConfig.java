@@ -39,6 +39,7 @@ public class SecurityConfig {
                                 "/users/v1/check",
                                 "/users/v1",
                                 "/users/v1/login",
+                                "/users/v1/user-counts",
                                 "/hiring/v1/simple-list",
                                 "/hiring/v1/list",
                                 "/resume/v1/simple-list",

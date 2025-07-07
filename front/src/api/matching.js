@@ -86,7 +86,7 @@ export const matchingService = {
 
   getEndedMatchingCheckList: async (patNo, page = 0, size = 5, status = 'N', user_status = 'Y') => {
     try {
-      console.log(API_ENDPOINTS.MATCHING.SEARCHLIST(patNo, status, user_status))
+      
       const { data } = await api.get(API_ENDPOINTS.MATCHING.SEARCHLIST(), {
         params: {
           pat_no: patNo,
@@ -96,7 +96,32 @@ export const matchingService = {
           size,
         },
       });
-      console.log;ongamepadconnected
+      console.log;
+      ongamepadconnected;
+      return snakeToCamel(data);
+    } catch (error) {
+      if (error.response) {
+        const message = error.response?.data?.message || '종료된 매칭을 불러오는데 실패했습니다.';
+        throw new Error(message);
+      }
+      throw new Error('서버 통신 불량');
+    }
+  },
+
+  //일자검색
+  getSearchingList: async (patNo, startDate, endDate, page = 0, size = 5) => {
+    try {
+   
+      const { data } = await api.get(API_ENDPOINTS.MATCHING.SEARCHDATELIST(), {
+        params: {
+          pat_no: patNo,
+          start_date: new Date(startDate).toISOString().slice(0, 19),
+          end_date: new Date(endDate).toISOString().slice(0, 19),
+          page,
+          size,
+        },
+      });
+     
       return snakeToCamel(data);
     } catch (error) {
       if (error.response) {

@@ -6,9 +6,12 @@ import com.kh.dolbomi.domain.User;
 import com.kh.dolbomi.dto.MatchingDto;
 import com.kh.dolbomi.dto.MatchingDto.Response;
 import com.kh.dolbomi.enums.StatusEnum.Status;
+import com.kh.dolbomi.exception.InvalidMatchingUserException;
+import com.kh.dolbomi.exception.MatchingNotFoundException;
 import com.kh.dolbomi.repository.MatchingRepository;
 import com.kh.dolbomi.repository.MatchingRepositoryV2;
 import com.kh.dolbomi.repository.NotificationRepositoryV2;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -59,7 +62,7 @@ public class MatcingServicelmpl implements MatchingService {
     @Override
     public Long changeStatus(Long matNo, Status matchingStatus) {
         Matching matching = matchingRepository.findByMetNo(matNo)
-                .orElseThrow(() -> new IllegalArgumentException("매칭이 존재하지 않습니다."));
+                .orElseThrow(() -> new MatchingNotFoundException("매칭이 존재하지 않습니다."));
         matching.updateStatus(matchingStatus);
         Matching saved = matchingRepository.save(matching);
 
@@ -67,6 +70,10 @@ public class MatcingServicelmpl implements MatchingService {
         if (matchingStatus == Status.N) {
             User caregiver = matching.getCaregiver(); //알림 수신자
             User guardian = matching.getPatient().getGuardian(); // 보호자(알림 발신자)
+
+            if (caregiver == null || guardian == null) {
+                throw new InvalidMatchingUserException("매칭된 간병인 또는 보호자 정보가 존재하지 않습니다.");
+            }
 
             String notificationMessage = caregiver.getUserName() + " 간병사님과의 매칭이 종료되었습니다.";
             String notificationLinkUrl = "/guardian/matchpage";
@@ -100,6 +107,14 @@ public class MatcingServicelmpl implements MatchingService {
 
         System.out.println("test :" + patNo + ":" + status + ":" + userStatus + ":" + pageable.getPageSize());
         return matchingRepository.findByCheckList(patNo, status, userStatus, pageable)
+                .map(MatchingDto.Response::toDto);
+    }
+
+    @Override
+    public Page<Response> getMatchedListBySearch(Long patNo, LocalDateTime startDate, LocalDateTime endDate,
+                                                 Status status, Pageable pageable) {
+        
+        return matchingRepository.findBySearchDateList(patNo, startDate, endDate, status, pageable)
                 .map(MatchingDto.Response::toDto);
     }
 

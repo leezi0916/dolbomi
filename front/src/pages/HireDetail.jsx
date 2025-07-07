@@ -8,7 +8,7 @@ import { DeleteButton, SubmitButton } from '../styles/common/Button';
 import { FaPlus } from 'react-icons/fa6';
 import { media } from '../styles/MediaQueries';
 import { useNavigate } from 'react-router-dom';
-import { Input, InputGroup,  Title } from '../styles/Auth.styles';
+import { Input, InputGroup, Title } from '../styles/Auth.styles';
 import useUserStore from '../store/userStore';
 import { hiringService } from '../api/hiring';
 import { useParams } from 'react-router-dom';
@@ -105,6 +105,13 @@ const HireDetail = () => {
   };
 
   useEffect(() => {
+    // 로그인하지 않은 경우 이전 페이지로 이동
+    if (!user) {
+      alert('로그인이 필요한 서비스입니다.');
+      navigate(-1);
+      return;
+    }
+
     const init = async () => {
       try {
         const data = await hiringService.getHirngById(Number(hiringNo), user?.userNo);
@@ -226,7 +233,7 @@ const HireDetail = () => {
               </InputRow>
             </Divider>
           </ContentWrapper>
-          
+
           <ContentWrapper>
             <DiseaseGroup>
               <Label>보유한 질병</Label>
@@ -245,9 +252,8 @@ const HireDetail = () => {
             <HireContent>
               <Label>제목</Label>
               <Input type="text" id="hiring_title" {...register('hiringTitle')} readOnly />
-             
-              <InputRow>
 
+              <InputRow>
                 <InputGrouping>
                   <Label>지급 금액 (시급)</Label>
                   <Input type="text" id="account" {...register('account')} readOnly />
@@ -268,7 +274,6 @@ const HireDetail = () => {
                   <Input type="number" id="maxApplicants" {...register('maxApplicants')} readOnly />
                 </InputGrouping>
               </InputRow>
-
 
               <Label>내용</Label>
               <Content type="text" id="hiringContent" {...register('hiringContent')} readOnly />
@@ -438,7 +443,6 @@ const InputRow = styled.div`
   `}
 `;
 
-
 const Label = styled.label`
   font-size: ${({ theme }) => theme.fontSizes.sm};
   font-weight: ${({ theme }) => theme.fontWeights.medium};
@@ -454,11 +458,11 @@ const RadioGroup = styled.div`
   margin-bottom: ${({ theme }) => theme.spacing[3]};
 `;
 const InputGrouping = styled(InputGroup)`
-  flex: 1;                    // 모든 input 그룹이 동일한 너비
+  flex: 1; // 모든 input 그룹이 동일한 너비
   display: flex;
   flex-direction: column;
-  min-width: 0;   
-`
+  min-width: 0;
+`;
 
 const RadioWrapper = styled.div`
   display: flex;
@@ -532,7 +536,7 @@ const DiseaseInputDiv = styled.div`
   text-align: center;
   align-items: center;
   max-width: 800px;
-  
+
   div {
     width: 80px;
     height: 32px;

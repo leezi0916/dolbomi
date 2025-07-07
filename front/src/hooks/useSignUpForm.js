@@ -2,11 +2,9 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { userService } from '../api/users';
-import { toast } from 'react-toastify';
-import { useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 
-//회원가입 폼의 유효성 검사 스키마
+// 유효성 검사 스키마
 const signUpSchema = yup.object().shape({
   userId: yup
     .string()
@@ -30,10 +28,6 @@ const signUpSchema = yup.object().shape({
 
   userPwdCheck: yup
     .string()
-    // yup.ref('userPw')는 다른 필드(userPw) 값을 참조
-    // 즉, userPwCheck가 userPw와 같은지 검사
-    // null은 비어있을 수도 있음을 대비한 처리
-    // oneOf([허용할 값 ~~~ ], '에러 메세지')
     .oneOf([yup.ref('userPwd'), null], '비밀번호가 일치하지 않습니다.')
     .required('비밀번호 확인을 입력하세요.'),
 
@@ -62,42 +56,34 @@ const signUpSchema = yup.object().shape({
 });
 
 export const useSignUpForm = () => {
-  const navigate = useNavigate();
-
-  //아이디 중복 검사
-  const [isIdChecked, setIsIdChecked] = useState(false); // 아이디 중복확인 완료 여부
+  const [isIdChecked, setIsIdChecked] = useState(false);
   const [idCheckMessage, setIdCheckMessage] = useState('');
 
-  //react-hook-form으로 폼 상태 초기화및 유효성 검사
   const {
     register,
     handleSubmit,
     setError,
     clearErrors,
     setValue,
-    formState: { errors, isSubmitting }, //유효성 에러및 제출중 상태
-    watch, // watch 함수를 추가로 가져옵니다.
+    formState: { errors, isSubmitting },
+    watch,
   } = useForm({
-    resolver: yupResolver(signUpSchema), // yup스키마와 연결
+    resolver: yupResolver(signUpSchema),
     mode: 'onChange',
     defaultValues: {
-      // gender 필드의 초기값을 설정합니다.
-      gender: 'M', // 기본값을 'male'로 설정 (또는 원하는 값으로)
-      // 나머지 필드에 대한 기본값이 있다면 여기에 추가
+      gender: 'M',
     },
   });
 
-  const userId = watch('userId'); //현재 입력된 아이디를 감시
+  const userId = watch('userId');
 
   useEffect(() => {
-    // userId 변경 시 아이디 중복 검사 상태 초기화
     setIsIdChecked(false);
     setIdCheckMessage('');
   }, [userId]);
 
   const checkUserId = async () => {
     if (!userId || userId.length < 5) {
-      //아마 훅폼으로 이미 유효성 검사할텐데 중복확인시에도 유효성 체크 할려는듯
       setIdCheckMessage('아이디는 최소 5자 이상 입력해주세요');
       return;
     }
@@ -106,55 +92,35 @@ export const useSignUpForm = () => {
       if (res.available) {
         setIdCheckMessage('사용 가능한 아이디입니다.');
         setIsIdChecked(true);
-        clearErrors('userId'); //유효성 오류 제거
+        clearErrors('userId');
       } else {
         setIdCheckMessage('이미 사용 중인 아이디입니다.');
         setIsIdChecked(false);
         setError('userId', { message: '이미 사용 중인 아이디입니다.' });
       }
-    } catch (err) {
+    } catch {
       setIdCheckMessage('중복 확인 중 오류가 발생했습니다.');
       setIsIdChecked(false);
     }
   };
 
   const formatPhoneNumber = (value) => {
-    // 숫자만 남기기
     const numbersOnly = value.replace(/\D/g, '');
-
-    // 010부터 시작하고 길이에 따라 포맷팅
     if (numbersOnly.length < 4) return numbersOnly;
     if (numbersOnly.length < 8) return `${numbersOnly.slice(0, 3)}-${numbersOnly.slice(3)}`;
     return `${numbersOnly.slice(0, 3)}-${numbersOnly.slice(3, 7)}-${numbersOnly.slice(7, 11)}`;
   };
 
-  const onSubmit = async (data) => {
-    if (!isIdChecked) {
-      toast.error('아이디 중복을 확인을 해주세요.');
-      return;
-    }
-
-    try {
-      //회원가입API호출
-      await userService.signUp(data);
-      toast.success('회원가입 완료!');
-      navigate('/login');
-    } catch (error) {
-      toast.error('회원가입 중 문제가 발생하였습니다.');
-      console.error('회원가입 에러 : ', error);
-    }
-  };
-
-  //컴포넌트에서 사용할 값들 반환
   return {
     register,
-    handleSubmit: handleSubmit(onSubmit),
+    handleSubmit,
     errors,
     isSubmitting,
-    watch, // watch 함수를 반환합니다.
+    watch,
     checkUserId,
     idCheckMessage,
     setValue,
     formatPhoneNumber,
+    isIdChecked, // 외부에서 중복 체크 확인 필요
   };
 };
