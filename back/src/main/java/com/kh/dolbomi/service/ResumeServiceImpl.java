@@ -4,6 +4,8 @@ import com.kh.dolbomi.domain.Resume;
 import com.kh.dolbomi.domain.User;
 import com.kh.dolbomi.dto.ResumeDto;
 import com.kh.dolbomi.enums.StatusEnum;
+import com.kh.dolbomi.exception.ResumeNotFoundException;
+import com.kh.dolbomi.exception.UserNotFoundException;
 import com.kh.dolbomi.repository.ResumeRepository;
 import com.kh.dolbomi.repository.ResumeRepositoryV2;
 import com.kh.dolbomi.repository.ReviewRepositoryV2;
@@ -53,7 +55,7 @@ public class ResumeServiceImpl implements ResumeService {
     public Long createResume(ResumeDto.Create createResumeDto) {
 
         User user = userRepository.findById(createResumeDto.getUser_no())
-                .orElseThrow(() -> new IllegalArgumentException("유저가 존재하지 않습니다."));
+                .orElseThrow(() -> new UserNotFoundException("이력서를 작성할 유저를 찾을 수 없습니다."));
 
         Resume resume = createResumeDto.toEntity(user);
 
@@ -77,7 +79,7 @@ public class ResumeServiceImpl implements ResumeService {
     public ResumeDto.Response updateResume(Long userNo, ResumeDto.Update updatePatDto) {
 
         Resume resume = resumeRepositoryV2.findById(userNo)
-                .orElseThrow(() -> new IllegalArgumentException("유저가 존재하지 않습니다."));
+                .orElseThrow(() -> new ResumeNotFoundException("해당 이력서를 찾을 수 없습니다."));
 
         resume.changeResume(updatePatDto.getResume_title(), updatePatDto.getResume_content(),
                 updatePatDto.getResume_account());
@@ -91,7 +93,7 @@ public class ResumeServiceImpl implements ResumeService {
     public ResumeDto.Response getResume(Long resumeNo) {
 
         Resume resume = resumeRepositoryV2.findById(resumeNo)
-                .orElseThrow(() -> new IllegalArgumentException("유저가 존재하지 않습니다."));
+                .orElseThrow(() -> new ResumeNotFoundException("해당 이력서를 찾을 수 없습니다."));
 
         return ResumeDto.Response.ResumeDto(resume);
     }

@@ -3,6 +3,7 @@ package com.kh.dolbomi.controller;
 
 import com.kh.dolbomi.auth.JwtTokenProvider;
 import com.kh.dolbomi.domain.User;
+import com.kh.dolbomi.dto.UserCountsDto;
 import com.kh.dolbomi.dto.UserDto;
 import com.kh.dolbomi.service.UserService;
 import jakarta.validation.Valid;
@@ -90,6 +91,14 @@ public class UserController {
     }
 
     //비밀번호 변경
+
+
+    //메인 페이지 간병사, 보호자 카운트
+    @GetMapping("/user-counts")
+    public ResponseEntity<UserCountsDto> getUserCounts() {
+        UserCountsDto result = userService.getUserCounts();
+        return ResponseEntity.ok(result);
+    }
 }
 
 

@@ -21,6 +21,8 @@ import useUserStore from '../store/userStore';
 import { patientService } from '../api/patient';
 import { toast } from 'react-toastify';
 import Tags from '../components/Tags';
+import styled from 'styled-components';
+import PostcodeSearch from '../components/PostcodeSearch';
 
 const PatientUpdate = () => {
   const { user, userStatus } = useUserStore();
@@ -68,6 +70,20 @@ const PatientUpdate = () => {
       setTags(patient.diseaseTags ? patient.diseaseTags : []);
     }
   }, [patient, setValue]);
+
+  //주소 관련
+  const [addressData, setAddressData] = useState({
+    zonecode: '',
+    address: '',
+    extraAddress: '',
+  });
+
+  useEffect(() => {
+    const fullAddress = `${addressData.address}${addressData.extraAddress}`.trim();
+    if (fullAddress) {
+      setValue('patAddress', fullAddress);
+    }
+  }, [addressData, setValue]);
 
   // tag 관련
   const [tags, setTags] = useState([]);
@@ -171,7 +187,18 @@ const PatientUpdate = () => {
 
             <InputGroup>
               <Label htmlFor="patAddress">주소</Label>
-              <Input type="text" id="patAddress" {...register('patAddress')} $error={errors.patAddress} />
+              <Row>
+                <AddressInput
+                  type="text"
+                  id="patAddress"
+                  {...register('patAddress')}
+                  $error={errors.patAddress}
+                  placeholder="주소를 검색해주세요"
+                  readOnly
+                />
+                <PostcodeSearch onAddressSelected={setAddressData} />
+              </Row>
+
               {errors.patAddress && <ErrorMessage>{errors.patAddress.message}</ErrorMessage>}
             </InputGroup>
 
@@ -187,7 +214,6 @@ const PatientUpdate = () => {
                 <Input type="number" id="patWeight" {...register('patWeight')} $error={errors.patWeight} />
                 <span>kg</span>
               </HeightWegithDiv>
-
 
               {errors.patWeight && <ErrorMessage>{errors.patWeight.message}</ErrorMessage>}
               {errors.patHeight && <ErrorMessage>{errors.patHeight.message}</ErrorMessage>}
@@ -229,5 +255,15 @@ const PatientUpdate = () => {
     </>
   );
 };
+
+const Row = styled.div`
+  display: flex;
+  align-items: center;
+  gap: ${({ theme }) => theme.spacing[2]};
+`;
+
+const AddressInput = styled(Input)`
+  width: 100%;
+`;
 
 export default PatientUpdate;

@@ -5,10 +5,12 @@ import com.kh.dolbomi.domain.Patient;
 import com.kh.dolbomi.domain.User;
 import com.kh.dolbomi.dto.HiringDto;
 import com.kh.dolbomi.enums.StatusEnum;
+import com.kh.dolbomi.exception.GuardianNotLinkedException;
+import com.kh.dolbomi.exception.HiringNotFoundException;
+import com.kh.dolbomi.exception.PatientNotFoundException;
 import com.kh.dolbomi.repository.HiringRepository;
 import com.kh.dolbomi.repository.PatientRepository;
 import com.kh.dolbomi.repository.ProposerRepository;
-import jakarta.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -29,12 +31,12 @@ public class HiringServiceImpl implements HiringService {
     @Override
     public Long createHiring(Long patNo, HiringDto.Create createDto) {
         Patient patient = patientRepository.findOne(patNo)
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 환자 번호입니다."));
+                .orElseThrow(() -> new PatientNotFoundException("존재하지 않는 환자 번호입니다: " + patNo));
 
         // 보호자 추출
         User user = patient.getGuardian(); // 또는 getUser() 등 필드에 따라 다름
         if (user == null) {
-            throw new IllegalStateException("해당 환자에 보호자가 연결되어 있지 않습니다.");
+            throw new GuardianNotLinkedException("해당 환자에 보호자가 연결되어 있지 않습니다.");
         }
 
         Hiring hiring = createDto.toEntity(patient, user);
@@ -49,7 +51,7 @@ public class HiringServiceImpl implements HiringService {
     @Transactional(readOnly = true)
     public HiringDto.Response getHiringDetail(Long hiringNo, Long caregiverNo) {
         Hiring hiring = hiringRepository.findById(hiringNo)
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 구인글 번호입니다: " + hiringNo));
+                .orElseThrow(() -> new HiringNotFoundException("존재하지 않는 구인글 번호입니다: " + hiringNo));
 
         boolean applied = proposerRepository.existsByHiringNoAndCaregiverNoAndStatus(hiringNo, caregiverNo,
                 StatusEnum.Status.Y);
@@ -63,7 +65,7 @@ public class HiringServiceImpl implements HiringService {
     @Transactional
     public void closeHiring(Long hiringNo) {
         Hiring hiring = hiringRepository.findById(hiringNo)
-                .orElseThrow(() -> new EntityNotFoundException("구인글이 없습니다."));
+                .orElseThrow(() -> new HiringNotFoundException("구인글이 없습니다."));
         hiring.closeHiring(); // 모집마감 상태로 update
     }
 
@@ -71,7 +73,7 @@ public class HiringServiceImpl implements HiringService {
     @Override
     public void deleteHiring(Long hiringNo) {
         Hiring hiring = hiringRepository.findById(hiringNo)
-                .orElseThrow(() -> new EntityNotFoundException("구인글이 없습니다."));
+                .orElseThrow(() -> new HiringNotFoundException("구인글이 없습니다."));
         hiring.hiringDeleted(); //삭제 상태로 변경
     }
 

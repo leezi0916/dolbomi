@@ -38,6 +38,7 @@ export const API_ENDPOINTS = {
     PROFILE_UPDATE: (userNo) => `/users/v1/${userNo}`,
     CAREPROFILE: (userNo) => `/users/v1?user_no=${userNo}`,
     DELETE: (userNo) => `/users/v1/${userNo}/delete`,
+    COUNT: '/users/v1/user-counts',
   },
   REVIEWS: {
     BASE: '/review/v1',

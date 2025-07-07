@@ -4,12 +4,15 @@ package com.kh.dolbomi.service;
 import com.kh.dolbomi.domain.License;
 import com.kh.dolbomi.domain.User;
 import com.kh.dolbomi.dto.LicenseDto;
+import com.kh.dolbomi.dto.UserCountsDto;
 import com.kh.dolbomi.dto.UserDto;
 import com.kh.dolbomi.dto.UserDto.Login;
 import com.kh.dolbomi.enums.StatusEnum;
 import com.kh.dolbomi.exception.LicenseNotFoundException;
 import com.kh.dolbomi.exception.UserNotFoundException;
+import com.kh.dolbomi.repository.HiringRepositoryV2;
 import com.kh.dolbomi.repository.LicenseRepository;
+import com.kh.dolbomi.repository.ResumeRepositoryV2;
 import com.kh.dolbomi.repository.UserRepository;
 import com.kh.dolbomi.repository.UserRepositoryV2;
 import java.util.List;
@@ -26,7 +29,8 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final LicenseRepository licenseRepository;
-
+    private final HiringRepositoryV2 hiringRepositoryV2;
+    private final ResumeRepositoryV2 resumeRepositoryV2;
     //    private final BCryptPasswordEncoder passwordEncoder; 구버전
 // PasswordEncoder 주입
     private final PasswordEncoder passwordEncoder;
@@ -156,6 +160,15 @@ public class UserServiceImpl implements UserService {
 
         //영속성 컨텍스트가 활성화된 상태라면 없어도 변경 가능
         userRepository.save(user);
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public UserCountsDto getUserCounts() {
+        int guardianCount = hiringRepositoryV2.countDistinctByUserNo();
+        int caregiverCount = resumeRepositoryV2.countDistinctByUserNo();
+
+        return new UserCountsDto(guardianCount, caregiverCount);
     }
 
 }
