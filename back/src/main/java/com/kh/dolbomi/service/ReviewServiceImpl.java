@@ -9,11 +9,16 @@ import com.kh.dolbomi.dto.ReviewDto.Create;
 import com.kh.dolbomi.dto.ReviewDto.Detail;
 import com.kh.dolbomi.dto.ReviewDto.Response;
 import com.kh.dolbomi.enums.StatusEnum;
+import com.kh.dolbomi.exception.InvalidReviewScoreException;
+import com.kh.dolbomi.exception.MatchingNotFoundException;
+import com.kh.dolbomi.exception.ReviewAlreadyExistsException;
+import com.kh.dolbomi.exception.UserNotFoundException;
 import com.kh.dolbomi.repository.MatchingRepositoryV2;
 import com.kh.dolbomi.repository.ResumeRepositoryV2;
 import com.kh.dolbomi.repository.ReviewRepository;
 import com.kh.dolbomi.repository.ReviewRepositoryV2;
 import com.kh.dolbomi.repository.UserRepositoryV2;
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -64,11 +69,22 @@ public class ReviewServiceImpl implements ReviewService {
     public Long createReview(Create reviewDto) {
         //매칭 정보 조회
         Matching matching = matchingRepositoryV2.findById(reviewDto.getMat_no())
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 매칭입니다."));
+                .orElseThrow(() -> new MatchingNotFoundException("존재하지 않는 매칭입니다."));
+
+        // 중복 리뷰 체크
+        if (matching.getReview() != null) {
+            throw new ReviewAlreadyExistsException("해당 매칭에는 이미 리뷰가 등록되어 있습니다.");
+        }
 
         //리뷰 작성자 조회
         User writer = userRepositoryV2.findById(reviewDto.getReview_writer_no())
-                .orElseThrow(() -> new IllegalArgumentException("작성자 유저 정보가 없습니다."));
+                .orElseThrow(() -> new UserNotFoundException("작성자 유저 정보가 없습니다."));
+
+        // 점수 유효성 체크 (예: 1~5점만 허용)
+        BigDecimal score = reviewDto.getScore();
+        if (score.compareTo(BigDecimal.valueOf(1.00)) < 0 || score.compareTo(BigDecimal.valueOf(5.00)) > 0) {
+            throw new InvalidReviewScoreException("리뷰 점수는 1점 이상 5점 이하만 가능합니다.");
+        }
 
         // 리뷰 저장
         Review review = Review.builder()

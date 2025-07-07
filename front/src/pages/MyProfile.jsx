@@ -22,7 +22,7 @@ import {
 import { AuthContainer, Label, Input, InputGroup } from '../styles/Auth.styles';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
-
+import PostcodeSearch from '../components/PostcodeSearch';
 const MyProfile = () => {
   const userNo = useUserStore((state) => state.user?.userNo);
   const [profile, setProfile] = useState(null);
@@ -37,9 +37,16 @@ const MyProfile = () => {
     email: '',
     address: '',
   });
+
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
+
+  const [addressData, setAddressData] = useState({
+    zonecode: '',
+    address: '',
+    extraAddress: '',
+  });
 
   const formatPhoneNumber = (value) => {
     // 숫자만 남기기
@@ -50,6 +57,11 @@ const MyProfile = () => {
     if (numbersOnly.length < 8) return `${numbersOnly.slice(0, 3)}-${numbersOnly.slice(3)}`;
     return `${numbersOnly.slice(0, 3)}-${numbersOnly.slice(3, 7)}-${numbersOnly.slice(7, 11)}`;
   };
+
+  useEffect(() => {
+    const fullAddress = `${addressData.address}${addressData.extraAddress}`.trim();
+    setFormData((prev) => ({ ...prev, address: fullAddress }));
+  }, [addressData]);
 
   useEffect(() => {
     const loadProfile = async () => {
@@ -78,6 +90,15 @@ const MyProfile = () => {
             email: userProfileData.email || '',
             address: userProfileData.address || '',
           });
+
+          // 주소 세팅
+          if (userProfileData.address) {
+            setAddressData({
+              zonecode: '',
+              address: userProfileData.address,
+              extraAddress: '',
+            });
+          }
 
           if (userProfileData.licenses && userProfileData.licenses.length > 0) {
             setLicenseList(userProfileData.licenses);
@@ -268,9 +289,7 @@ const MyProfile = () => {
           </GenderRadioGroup>
           <InputGroup>
             <Label htmlFor="phone">전화번호</Label>
-            <Input type="text" id="phone" value={formData.phone} 
-            onChange={handleChange} 
-            />
+            <Input type="text" id="phone" value={formData.phone} onChange={handleChange} />
           </InputGroup>
           <InputGroup>
             <Label htmlFor="email">이메일</Label>
@@ -278,7 +297,16 @@ const MyProfile = () => {
           </InputGroup>
           <InputGroup>
             <Label htmlFor="address">주소</Label>
-            <Input type="text" id="address" value={formData.address} onChange={handleChange} />
+            <Row>
+              <AddressInput
+                id="address"
+                type="text"
+                value={`${addressData.address}${addressData.extraAddress}`.trim()}
+                placeholder="주소를 검색해주세요"
+                readOnly
+              />
+              <PostcodeSearch onAddressSelected={setAddressData} />
+            </Row>
           </InputGroup>
           <LicenseGroup>
             <Label>자격증</Label>
@@ -389,4 +417,13 @@ const Plus = styled(FaPlus)`
   color: white;
 `;
 
+const Row = styled.div`
+  display: flex;
+  align-items: center;
+  gap: ${({ theme }) => theme.spacing[2]};
+`;
+
+const AddressInput = styled(Input)`
+  width: 100%;
+`;
 export default MyProfile;

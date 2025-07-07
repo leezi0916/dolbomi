@@ -5,11 +5,13 @@ import com.kh.dolbomi.domain.Report;
 import com.kh.dolbomi.domain.User;
 import com.kh.dolbomi.dto.ReportDto;
 import com.kh.dolbomi.enums.StatusEnum.Status;
+import com.kh.dolbomi.exception.PatientNotFoundException;
+import com.kh.dolbomi.exception.ReportNotFoundException;
+import com.kh.dolbomi.exception.UserNotFoundException;
 import com.kh.dolbomi.repository.PatientRepositoryV2;
 import com.kh.dolbomi.repository.ReportRepository;
 import com.kh.dolbomi.repository.ReportRepositoryV2;
 import com.kh.dolbomi.repository.UserRepositoryV2;
-import jakarta.persistence.EntityNotFoundException;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -27,7 +29,14 @@ public class ReportServiceImpl implements ReportService {
     @Override
     public Long createReport(ReportDto.Create createReportDto) {
         Patient patient = patientRepositoryV2.findByPatNo(createReportDto.getPat_no());
+        if (patient == null) {
+            throw new PatientNotFoundException("해당 환자를 찾을 수 없습니다.");
+        }
+
         User user = userRepositoryV2.findByUserNo(createReportDto.getCare_giver_no());
+        if (user == null) {
+            throw new UserNotFoundException("해당 간병인을 찾을 수 없습니다.");
+        }
 
         Report report = createReportDto.toEntity();
         report.changePatient(patient);
@@ -54,7 +63,7 @@ public class ReportServiceImpl implements ReportService {
     public void updateReport(ReportDto.Update update) {
 
         Report report = reportRepositoryV2.findById(update.getReport_no())
-                .orElseThrow(() -> new EntityNotFoundException("그런 일지는 없단다"));
+                .orElseThrow(() -> new ReportNotFoundException("해당 진단일지를 찾을 수 없습니다."));
 
         report.changReportTitle(update.getReport_title());
         report.changReportContent(update.getReport_content());
@@ -66,7 +75,7 @@ public class ReportServiceImpl implements ReportService {
     @Override
     public void deleteReport(Long reportNo) {
         Report report = reportRepositoryV2.findById(reportNo)
-                .orElseThrow(() -> new EntityNotFoundException("진단일지가 없음"));
+                .orElseThrow(() -> new ReportNotFoundException("해당 진단일지를 찾을 수 없습니다."));
         report.changeStatus(Status.N);
         reportRepositoryV2.save(report);
     }
