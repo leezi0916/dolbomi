@@ -4,7 +4,6 @@ package com.kh.dolbomi.controller;
 import com.kh.dolbomi.dto.HiringDto;
 import com.kh.dolbomi.dto.HiringDto.Response;
 import com.kh.dolbomi.dto.PageResponse;
-import com.kh.dolbomi.dto.SearchDataDto;
 import com.kh.dolbomi.service.HiringService;
 import java.util.HashMap;
 import java.util.List;
@@ -55,6 +54,7 @@ public class HiringController {
     @GetMapping("/list")
     public ResponseEntity<PageResponse<HiringDto.Response>> getPagedHiringList(
             Pageable pageable
+
 //          ,@Valid SearchDataDto searchDataDto
     ) {
 //        @PageableDefault(size = 10, sort = "createDate", direction = Sort.Direction.DESC)

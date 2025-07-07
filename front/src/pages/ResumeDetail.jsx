@@ -196,11 +196,11 @@ function ResumeDetail() {
 
               <RadioGroup>
                 <RadioContainer>
-                  <Label>숙식 가능</Label>
+                  <Label>입주형</Label>
                   <RadioWrapper>
                     <input type="radio" value="Y" checked={resumeData?.careStatus === 'Y'} readOnly />
                   </RadioWrapper>
-                  <Label>숙식 불가</Label>
+                  <Label>출퇴근형</Label>
                   <RadioWrapper>
                     <input type="radio" value="N" checked={resumeData?.careStatus === 'N'} readOnly />
                   </RadioWrapper>
