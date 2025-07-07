@@ -131,7 +131,7 @@ public class ResumeDto {
         private Long user_no;
         private String resume_title;
         private String resume_content;
-        private Integer account;
+        private Integer resume_account;
         @DateTimeFormat(pattern = "yyyy-mm-dd")
         private LocalDateTime create_date;
         private StatusEnum.CareStatus care_status;
@@ -143,7 +143,7 @@ public class ResumeDto {
                     .user(user)
                     .resumeTitle(this.resume_title)
                     .resumeContent(this.resume_content)
-                    .account(this.account)
+                    .account(this.resume_account)
                     .updateDate(this.create_date)
                     .careStatus(this.care_status)
                     .build();
@@ -160,7 +160,7 @@ public class ResumeDto {
         private Long resume_no;
         private String resume_title;
         private String resume_content;
-        private Integer account;
+        private Integer resume_account;
         @DateTimeFormat(pattern = "yyyy-mm-dd")
         private LocalDateTime update_date;
         private StatusEnum.CareStatus care_status;

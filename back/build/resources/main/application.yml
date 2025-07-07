@@ -11,7 +11,7 @@ spring:
       on-profile: dev
 
   datasource:
-    url: jdbc:mysql://localhost:3306/final?useSSL=false&serverTimezone=Asia/Seoul&characterEncoding=UTF-8
+    url: jdbc:mysql://localhost:3306/tdb?useSSL=false&serverTimezone=Asia/Seoul&characterEncoding=UTF-8
     driver-class-name: com.mysql.cj.jdbc.Driver
     username: user01
     password: pass01
@@ -48,6 +48,11 @@ sgis:
     key: c99f4eacee1f4cb78217
     secret: 145bbe8179aa42a891c5
 
+oauth:
+  kakao:
+    client-id: 57b3d384913a76fc8a1a7bdd2b00ac38 #kakao RestAPI 키
+    redirect-uri: http://localhost:3000/oauth/kakao/redirect
+
 aws:
   region: ap-northeast-2
   credentials:
@@ -56,7 +61,6 @@ aws:
 
   s3:
     bucket: project2025-dolbomi
-
 ---
 spring:
   config:
