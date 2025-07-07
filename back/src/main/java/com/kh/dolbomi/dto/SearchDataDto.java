@@ -13,6 +13,8 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class SearchDataDto {
+
+
     private String region;
     private LocalDate start_date;
     private LocalDate end_date;
@@ -20,5 +22,6 @@ public class SearchDataDto {
     private String pat_gender;
     private String home;
     private String keyword;
+
 
 }

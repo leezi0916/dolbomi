@@ -17,7 +17,7 @@ const GuardianMainPage = () => {
   const [resumeLiset, setResumeLiset] = useState([]);
   const [reviewList, setReviewList] = useState([]);
   const [counts, setCounts] = useState({ guardianCount: 0, caregiverCount: 0 });
-  
+
   useEffect(() => {
     const loadResumeList = async () => {
       try {
@@ -70,8 +70,8 @@ const GuardianMainPage = () => {
 
         <InfoBanner>
           <BannerMessage>
-            <MessageLine>도움이 필요한 보호자 {counts.guardianCount}명과</MessageLine>
-            <MessageLine>정성 어린 마음을 전할 {counts.caregiverCount}명의 간병인이 함께합니다.</MessageLine>
+            <MessageLine>지금까지 도움이 필요한 보호자 {counts.guardianCount}명과</MessageLine>
+            <MessageLine>정성 어린 마음을 전할 {counts.caregiverCount}명의 간병인이 함께 했습니다.</MessageLine>
           </BannerMessage>
 
           <BannerContact>

@@ -37,6 +37,8 @@ export const hiringService = {
 
   //돌봄대상자 모집 리스트
   getHiringList: async ({ page = 0, size = 10, searchData }) => {
+
+    console.log(searchData);
     try {
       // 쿼리 파라미터를 URL에 붙임
       const snake = camelToSnake(searchData);
