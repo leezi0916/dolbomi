@@ -2,6 +2,7 @@ package com.kh.dolbomi.service;
 
 import com.kh.dolbomi.dto.HiringDto;
 import com.kh.dolbomi.dto.HiringDto.Response;
+import com.kh.dolbomi.dto.SearchDataDto;
 import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -15,7 +16,7 @@ public interface HiringService {
     List<HiringDto.Response> getMainCareHiringList();
 
     // 구인글 페이징 리스트 조회 (상태 Y)
-    Page<HiringDto.Response> getHiringPage(Pageable pageable);
+    Page<HiringDto.Response> getHiringPage(Pageable pageable, SearchDataDto searchData);
 
     // 구인글 등록
     Long createHiring(Long patNo, HiringDto.Create createDto);

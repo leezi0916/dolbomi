@@ -1,13 +1,24 @@
 package com.kh.dolbomi.dto;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
+@Data
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class SearchDataDto {
     private String region;
-    private LocalDateTime start_data;
-    private LocalDateTime end_data;
+    private LocalDate start_date;
+    private LocalDate end_date;
     private Integer account;
-    private String gender;
-    private Boolean home;
+    private String pat_gender;
+    private String home;
+    private String keyword;
 
 }
