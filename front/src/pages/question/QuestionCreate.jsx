@@ -17,12 +17,14 @@ const QuestionCreate = () => {
   const { register, handleSubmit, reset } = useForm();
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+  const [files, setFiles] = useState([]);
+
   const onSubmit = async (data) => {
     if (!data.boardTitle.trim() || !data.boardContent.trim()) {
       alert('제목과 내용을 모두 입력해주세요.');
       return;
     }
-    console.log(userNo);
+
     try {
       setIsSubmitting(true);
       const questionData = {
@@ -37,21 +39,14 @@ const QuestionCreate = () => {
       const response = await commuService.createQuestion(questionData);
       console.log(response);
 
-      // 이미지 업로드 별도 처리 (샘플용)
-      // if (images.length > 0) {
-      //   const imagePromises = images.map((img) =>
-      //     fetch('http://localhost:3001/images', {
-      //       method: 'POST',
-      //       headers: {
-      //         'Content-Type': 'application/json',
-      //       },
-      //       body: JSON.stringify({
-      //         questionId: response.id,
-      //         fileName: img.file.name,
-      //       }),
-      //     })
-      //   );
-      //   await Promise.all(imagePromises);
+      // 파일 업로드
+      // if (files.length > 0) {
+      //   const formData = new FormData();
+      //   files.forEach((file) => {
+      //     formData.append('files', file);
+      //   });
+
+      //   await commuService.uploadFiles(response.board_no, formData);
       // }
       toast.success('등록되었습니다');
       navigate('/question/history');
@@ -63,12 +58,17 @@ const QuestionCreate = () => {
     } finally {
       setIsSubmitting(false);
       reset();
+      setFiles([]);
     }
   };
 
   if (error) {
     return null;
   }
+  const handleFileChange = (e) => {
+    const selectedFiles = Array.from(e.target.files); // FileList → 배열
+    setFiles(selectedFiles);
+  };
 
   return (
     <Page>
@@ -102,7 +102,17 @@ const QuestionCreate = () => {
             </div>
             <div>
               <div>파일 첨부</div>
-              <input type="file" />
+              <input type="file" multiple onChange={handleFileChange} />
+            </div>
+            <div>
+              <div></div>
+              <ul style={{ display: 'flex', flexDirection: 'column' }}>
+                {files.map((file, index) => (
+                  <li key={index} style={{ marginRight: 'auto' }}>
+                    {file.name}
+                  </li> // 파일 이름 출력
+                ))}
+              </ul>
             </div>
             <div>
               <div></div>
