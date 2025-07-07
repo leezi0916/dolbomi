@@ -15,6 +15,7 @@ import com.kh.dolbomi.exception.ProposerNotFoundException;
 import com.kh.dolbomi.exception.ResumeNotFoundException;
 import com.kh.dolbomi.exception.UserNotFoundException;
 import com.kh.dolbomi.repository.HiringRepository;
+import com.kh.dolbomi.repository.HiringRepositoryV2;
 import com.kh.dolbomi.repository.MatchingRepositoryV2;
 import com.kh.dolbomi.repository.NotificationRepositoryV2;
 import com.kh.dolbomi.repository.ProposerRepository;
@@ -44,6 +45,7 @@ public class ProposerServiceImpl implements ProposerService {
     private final UserRepositoryV2 userRepositoryV2;
     private final MatchingRepositoryV2 matchingRepositoryV2;
     private final NotificationRepositoryV2 notificationRepositoryV2;
+    private final HiringRepositoryV2 hiringRepositoryV2;
 
     @Transactional(readOnly = true)
     @Override
@@ -188,6 +190,19 @@ public class ProposerServiceImpl implements ProposerService {
 
         // 그대로 proposerNo 반환
         return proposer.getProposerNo();
+    }
+
+    @Override
+    public Long getHiringOwnerUserNo(Long hiringNo) {
+        Hiring hiring = hiringRepositoryV2.findById(hiringNo)
+                .orElseThrow(() -> new HiringNotFoundException("구인글이 존재하지 않습니다."));
+
+        User owner = hiring.getUser(); // 작성자
+        if (owner == null) {
+            throw new UserNotFoundException("구인글 작성자가 존재하지 않습니다.");
+        }
+
+        return owner.getUserNo();
     }
 
 }

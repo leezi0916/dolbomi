@@ -28,4 +28,7 @@ public interface ProposerService {
 
     // 나의 지원현황 내역삭제
     Long deleteProposerHistory(Long proposerNo);
+
+    //구인글의 작성자인지 권한체크
+    Long getHiringOwnerUserNo(Long hiringNo);
 }
