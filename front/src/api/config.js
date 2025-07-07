@@ -18,13 +18,13 @@ export const API_ENDPOINTS = {
 
   COMMUNITY: {
     BASE: '/community/v1',
-    CAREGIVER: `/community/v1/caregiver`,
-    GUARDIAN: `/community/v1/guardian`,
+    CAREGIVER: (page, size) => `/community/v1/caregiver?page=${page}&size=${size}`,
+    GUARDIAN: (page, size) => `/community/v1/guardian?page=${page}&size=${size}`,
     DETAIL: (boardNo) => `/community/v1/detail?board_no=${boardNo}`, // 특정 게시글
     REPLY: `/community/v1/reply`,
     REPLY_QUESTION: `/community/v1/reply/question`,
-    QUESTION: `/community/v1/question`,
-    QUESTION_HISTORY: (userNo) => `/community/v1/question?user_no=${userNo}`,
+    QUESTION: (page, size) => `/community/v1/question?page=${page}&size=${size}`,
+    QUESTION_HISTORY: (userNo, page, size) => `/community/v1/question?user_no=${userNo}&page=${page}&size=${size}`,
     CREATE_QUESTION: '/community/v1/question/create',
   },
 
