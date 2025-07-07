@@ -89,4 +89,17 @@ public class MatchingDto {
                     .build();
         }
     }
+
+    //매칭 insert 하는 dto
+    @Getter
+    @Setter
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class Search {
+        private Long pat_no;
+        private LocalDateTime start_date;
+        private LocalDateTime end_date;
+    }
+
+
 }

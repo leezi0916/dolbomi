@@ -80,7 +80,7 @@ public class ResumeServiceImpl implements ResumeService {
                 .orElseThrow(() -> new IllegalArgumentException("유저가 존재하지 않습니다."));
 
         resume.changeResume(updatePatDto.getResume_title(), updatePatDto.getResume_content(),
-                updatePatDto.getAccount());
+                updatePatDto.getResume_account());
 
         resume.changeStatus(updatePatDto.getStatus());
 

@@ -87,7 +87,7 @@ public class Resume {
 
     // 변경 set메서드
 
-    public void changeResume(String resumeTitle, String resumeContent, Integer Account) {
+    public void changeResume(String resumeTitle, String resumeContent, Integer resumeAccount) {
 
         if (resumeTitle != null && !resumeTitle.isEmpty()) {
             this.resumeTitle = resumeTitle;
@@ -96,7 +96,7 @@ public class Resume {
             this.resumeContent = resumeContent;
         }
         if (account != null) {
-            this.account = account;
+            this.account = resumeAccount;
         }
     }
 

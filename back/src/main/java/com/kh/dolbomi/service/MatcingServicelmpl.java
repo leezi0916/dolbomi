@@ -9,6 +9,7 @@ import com.kh.dolbomi.enums.StatusEnum.Status;
 import com.kh.dolbomi.repository.MatchingRepository;
 import com.kh.dolbomi.repository.MatchingRepositoryV2;
 import com.kh.dolbomi.repository.NotificationRepositoryV2;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -100,6 +101,14 @@ public class MatcingServicelmpl implements MatchingService {
 
         System.out.println("test :" + patNo + ":" + status + ":" + userStatus + ":" + pageable.getPageSize());
         return matchingRepository.findByCheckList(patNo, status, userStatus, pageable)
+                .map(MatchingDto.Response::toDto);
+    }
+
+    @Override
+    public Page<Response> getMatchedListBySearch(Long patNo, LocalDateTime startDate, LocalDateTime endDate,
+                                                 Status status, Pageable pageable) {
+        
+        return matchingRepository.findBySearchDateList(patNo, startDate, endDate, status, pageable)
                 .map(MatchingDto.Response::toDto);
     }
 
