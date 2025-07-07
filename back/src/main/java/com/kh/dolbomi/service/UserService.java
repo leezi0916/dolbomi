@@ -1,6 +1,7 @@
 package com.kh.dolbomi.service;
 
 import com.kh.dolbomi.domain.User;
+import com.kh.dolbomi.dto.UserCountsDto;
 import com.kh.dolbomi.dto.UserDto;
 
 public interface UserService {
@@ -22,4 +23,6 @@ public interface UserService {
     // 회원 탈퇴 (논리 삭제)
     void deleteUser(Long userNo);
 
+    //간병사, 보호자 카운트
+    UserCountsDto getUserCounts();
 }

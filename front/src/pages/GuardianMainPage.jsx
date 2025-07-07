@@ -11,11 +11,13 @@ import { reviewService } from '../api/reviews';
 import { useNavigate } from 'react-router-dom';
 import { MainMoveButton } from '../styles/common/Button';
 import defaultImage from '../assets/images/cargiver.png';
+import { userService } from '../api/users';
 
 const GuardianMainPage = () => {
   const [resumeLiset, setResumeLiset] = useState([]);
   const [reviewList, setReviewList] = useState([]);
-
+  const [counts, setCounts] = useState({ guardianCount: 0, caregiverCount: 0 });
+  
   useEffect(() => {
     const loadResumeList = async () => {
       try {
@@ -32,6 +34,20 @@ const GuardianMainPage = () => {
     };
 
     loadResumeList();
+  }, []);
+
+  //간병사 / 보호자수 카운트
+  useEffect(() => {
+    const fetchCounts = async () => {
+      try {
+        const data = await userService.getUserCounts();
+        setCounts(data);
+      } catch (error) {
+        toast.error('간병인/보호자 수를 불러오는데 실패했습니다.');
+      }
+    };
+
+    fetchCounts();
   }, []);
 
   const navigate = useNavigate();
@@ -54,8 +70,8 @@ const GuardianMainPage = () => {
 
         <InfoBanner>
           <BannerMessage>
-            <MessageLine>도움이 필요한 보호자 230명과</MessageLine>
-            <MessageLine>정성 어린 마음을 전할 728명의 간병인이 함께합니다.</MessageLine>
+            <MessageLine>도움이 필요한 보호자 {counts.guardianCount}명과</MessageLine>
+            <MessageLine>정성 어린 마음을 전할 {counts.caregiverCount}명의 간병인이 함께합니다.</MessageLine>
           </BannerMessage>
 
           <BannerContact>

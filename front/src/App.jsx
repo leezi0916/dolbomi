@@ -52,7 +52,7 @@ import GuardianCommunity from './pages/community/GuardianCommunity';
 import CommunityDetail from './pages/community/CommunityDetail';
 import CreateCommuBoardForm from './pages/community/CreateCommuBoardForm';
 import QuestionDetail from './pages/question/QuestionDetail';
-
+import FileUpload from './components/FileUpload';
 
 function AppRoutes() {
   const navigate = useNavigate();
@@ -119,6 +119,7 @@ function AppRoutes() {
           <Route path="/terms-of-service" element={<TermsOfService />} />
           <Route path="/contact" element={<ContactPage />} />
           <Route path="/modal" element={<Modal />} />
+          <Route path="/file" element={<FileUpload />} />
         </Routes>
       </Layout>
     </>

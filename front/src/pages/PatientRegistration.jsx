@@ -20,6 +20,8 @@ import { useNavigate } from 'react-router-dom';
 import { patientService } from '../api/patient';
 import { toast } from 'react-toastify';
 import Tags from '../components/Tags';
+import styled from 'styled-components';
+import PostcodeSearch from '../components/PostcodeSearch';
 
 const PatientRegistration = () => {
   const { user } = useUserStore();
@@ -37,6 +39,20 @@ const PatientRegistration = () => {
 
   // 'gender' 필드의 현재 값을 watch하여 라디오 버튼의 checked 상태를 제어합니다.
   const currentGender = watch('patGender');
+
+  //주소 관련
+  const [addressData, setAddressData] = useState({
+    zonecode: '',
+    address: '',
+    extraAddress: '',
+  });
+
+  useEffect(() => {
+    const fullAddress = `${addressData.address}${addressData.extraAddress}`.trim();
+    if (fullAddress) {
+      setValue('patAddress', fullAddress);
+    }
+  }, [addressData, setValue]);
 
   const [tags, setTags] = useState([]);
   useEffect(() => {
@@ -57,11 +73,18 @@ const PatientRegistration = () => {
             <GridInerContainer>
               <Label htmlFor="patName">이름</Label>
               <Label htmlFor="patAge">나이</Label>
-              <Input type="text" id="patName" {...register('patName')} $error={errors.patName} />
+              <Input
+                type="text"
+                id="patName"
+                placeholder="이름을 입력해주세요"
+                {...register('patName')}
+                $error={errors.patName}
+              />
               <Input
                 type="number"
                 id="patAge"
                 min="0"
+                placeholder="나이를 입력해주세요"
                 onWheel={(e) => e.target.blur()}
                 {...register('patAge')}
                 $error={errors.patAge}
@@ -106,6 +129,7 @@ const PatientRegistration = () => {
               <Input
                 type="text"
                 id="phone"
+                placeholder="전화번호를 입력해주세요"
                 {...register('patPhone')}
                 $error={errors.patPhone}
                 onChange={(e) => {
@@ -118,7 +142,18 @@ const PatientRegistration = () => {
 
             <InputGroup>
               <Label htmlFor="patAddress">주소</Label>
-              <Input type="text" id="patAddress" {...register('patAddress')} $error={errors.patAddress} />
+              <Row>
+                <AddressInput
+                  type="text"
+                  id="patAddress"
+                  {...register('patAddress')}
+                  $error={errors.patAddress}
+                  placeholder="주소를 검색해주세요"
+                  readOnly
+                />
+                <PostcodeSearch onAddressSelected={setAddressData} />
+              </Row>
+
               {errors.patAddress && <ErrorMessage>{errors.patAddress.message}</ErrorMessage>}
             </InputGroup>
 
@@ -128,11 +163,13 @@ const PatientRegistration = () => {
 
               <HeightWegithDiv>
                 <Input type="number" step="0.01" id="patHeight" {...register('patHeight')} $error={errors.patHeight} />
+
                 <span>cm</span>
               </HeightWegithDiv>
 
               <HeightWegithDiv>
                 <Input type="number" step="0.01" id="patWeight" {...register('patWeight')} $error={errors.patWeight} />
+
                 <span>kg</span>
               </HeightWegithDiv>
 
@@ -146,11 +183,12 @@ const PatientRegistration = () => {
             </InputGroup>
 
             <InputGroup>
-              <Label htmlFor="patContent">환자 특이사항</Label>
+              <Label htmlFor="patContent">돌봄대상자 특이사항</Label>
               <NotesTexttarea
                 id="notes"
                 className="textarea-field"
                 rows="5"
+                placeholder="돌봄대상자의 특이사항을 입력해주세요"
                 {...register('patContent')}
                 $error={errors.patContent}
               />
@@ -169,5 +207,15 @@ const PatientRegistration = () => {
     </>
   );
 };
+
+const Row = styled.div`
+  display: flex;
+  align-items: center;
+  gap: ${({ theme }) => theme.spacing[2]};
+`;
+
+const AddressInput = styled(Input)`
+  width: 100%;
+`;
 
 export default PatientRegistration;

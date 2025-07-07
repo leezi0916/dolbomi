@@ -6,10 +6,12 @@ import com.kh.dolbomi.domain.DiseaseTag;
 import com.kh.dolbomi.domain.Patient;
 import com.kh.dolbomi.domain.User;
 import com.kh.dolbomi.dto.PatientDto;
+import com.kh.dolbomi.exception.GuardianNotLinkedException;
+import com.kh.dolbomi.exception.PatientNotFoundException;
+import com.kh.dolbomi.exception.UserNotFoundException;
 import com.kh.dolbomi.repository.DiseaseRepository;
 import com.kh.dolbomi.repository.PatientRepository;
 import com.kh.dolbomi.repository.UserRepository;
-import jakarta.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -29,7 +31,7 @@ public class PatientServiceImpl implements PatientService {
     public Long createPatient(PatientDto.Create createDto) {
 
         User user = userRepository.findById(createDto.getGuardian_no())
-                .orElseThrow(() -> new IllegalArgumentException("유저가 존재하지 않습니다."));
+                .orElseThrow(() -> new UserNotFoundException("보호자 정보를 찾을 수 없습니다."));
 
         Patient patient = createDto.toEntity(user);
 
@@ -64,12 +66,12 @@ public class PatientServiceImpl implements PatientService {
     @Override
     public PatientDto.Response getPatient(Long patNo) {
         Patient patient = patientRepository.findOne(patNo).
-                orElseThrow(() -> new EntityNotFoundException("조회된 회원이 없습니다."));
+                orElseThrow(() -> new PatientNotFoundException("해당 환자를 찾을 수 없습니다."));
 
         // 보호자 추출
         User user = patient.getGuardian(); // 또는 getUser() 등 필드에 따라 다름
         if (user == null) {
-            throw new IllegalStateException("해당 환자에 보호자가 연결되어 있지 않습니다.");
+            throw new GuardianNotLinkedException("해당 환자에 보호자가 연결되어 있지 않습니다.");
         }
 
         return PatientDto.Response.toDetailDto(patient, user);
@@ -80,12 +82,11 @@ public class PatientServiceImpl implements PatientService {
     public PatientDto.Response updatePatient(Long patNo, PatientDto.Update updatePatDto) {
 
         Patient patient = patientRepository.findOne(patNo)
-                .orElseThrow(() -> new IllegalArgumentException("해당 환자가 없습니다."));
-
+                .orElseThrow(() -> new PatientNotFoundException("해당 환자가 없습니다."));
         // 보호자 추출
         User user = patient.getGuardian(); // 또는 getUser() 등 필드에 따라 다름
         if (user == null) {
-            throw new IllegalStateException("해당 환자에 보호자가 연결되어 있지 않습니다.");
+            throw new GuardianNotLinkedException("해당 환자에 보호자가 연결되어 있지 않습니다.");
         }
 
         patient.changePatName(updatePatDto.getPat_name());

@@ -10,8 +10,12 @@ import com.kh.dolbomi.domain.Resume;
 import com.kh.dolbomi.domain.User;
 import com.kh.dolbomi.dto.ProposerDto;
 import com.kh.dolbomi.enums.StatusEnum;
+import com.kh.dolbomi.exception.HiringNotFoundException;
 import com.kh.dolbomi.exception.ProposerNotFoundException;
+import com.kh.dolbomi.exception.ResumeNotFoundException;
+import com.kh.dolbomi.exception.UserNotFoundException;
 import com.kh.dolbomi.repository.HiringRepository;
+import com.kh.dolbomi.repository.HiringRepositoryV2;
 import com.kh.dolbomi.repository.MatchingRepositoryV2;
 import com.kh.dolbomi.repository.NotificationRepositoryV2;
 import com.kh.dolbomi.repository.ProposerRepository;
@@ -41,6 +45,7 @@ public class ProposerServiceImpl implements ProposerService {
     private final UserRepositoryV2 userRepositoryV2;
     private final MatchingRepositoryV2 matchingRepositoryV2;
     private final NotificationRepositoryV2 notificationRepositoryV2;
+    private final HiringRepositoryV2 hiringRepositoryV2;
 
     @Transactional(readOnly = true)
     @Override
@@ -62,11 +67,13 @@ public class ProposerServiceImpl implements ProposerService {
     public Long createProposer(ProposerDto.Create createProposerDto) {
 
         Hiring hiring = hiringRepository.findById(createProposerDto.getHiring_no())
-                .orElseThrow(() -> new IllegalArgumentException("해당 공고가 없습니다."));
+                .orElseThrow(() -> new HiringNotFoundException("해당 공고가 없습니다."));
+
         Resume resume = resumeRepositoryV2.findById(createProposerDto.getResume_no())
-                .orElseThrow(() -> new IllegalArgumentException("해당 이력서가 없습니다."));
+                .orElseThrow(() -> new ResumeNotFoundException("해당 이력서를 찾을 수 없습니다."));
+
         User caregiver = userRepositoryV2.findById(createProposerDto.getCaregiver_no())
-                .orElseThrow(() -> new IllegalArgumentException("해당 간병인이 없습니다."));
+                .orElseThrow(() -> new UserNotFoundException("해당 간병인을 찾을 수 없습니다."));
 
         Proposer proposer = createProposerDto.toEntity(hiring, resume, caregiver);
         proposerRepositoryV2.save(proposer);
@@ -101,7 +108,7 @@ public class ProposerServiceImpl implements ProposerService {
                 caregiverNo);
 
         Proposer proposer = proposerOpt.orElseThrow(() ->
-                new IllegalArgumentException("신청자가 존재하지 않습니다."));
+                new ProposerNotFoundException("신청자가 존재하지 않습니다."));
         proposerRepositoryV2.delete(proposer);
     }
 
@@ -110,7 +117,8 @@ public class ProposerServiceImpl implements ProposerService {
 
         // 1. 프로포저 상태 업데이트
         Proposer proposer = proposerRepository.findByHiringNoAndResumeNo(hiringNo, resumeNo)
-                .orElseThrow(() -> new IllegalArgumentException("신청 정보가 없습니다."));
+                .orElseThrow(() -> new ProposerNotFoundException("신청 정보가 없습니다."));
+
         proposer.updateStatus(StatusEnum.Status.Y); // 수락 상태로 변경
 
         // 2. 매칭 생성
@@ -182,6 +190,19 @@ public class ProposerServiceImpl implements ProposerService {
 
         // 그대로 proposerNo 반환
         return proposer.getProposerNo();
+    }
+
+    @Override
+    public Long getHiringOwnerUserNo(Long hiringNo) {
+        Hiring hiring = hiringRepositoryV2.findById(hiringNo)
+                .orElseThrow(() -> new HiringNotFoundException("구인글이 존재하지 않습니다."));
+
+        User owner = hiring.getUser(); // 작성자
+        if (owner == null) {
+            throw new UserNotFoundException("구인글 작성자가 존재하지 않습니다.");
+        }
+
+        return owner.getUserNo();
     }
 
 }

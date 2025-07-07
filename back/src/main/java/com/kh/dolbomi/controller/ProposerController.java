@@ -93,4 +93,11 @@ public class ProposerController {
 
         return ResponseEntity.ok(proposerService.deleteProposerHistory(proposerNo));
     }
+
+    //
+    @GetMapping("/hiring/{hiringNo}/owner")
+    public ResponseEntity<Long> getHiringOwner(@PathVariable Long hiringNo) {
+        Long ownerUserNo = proposerService.getHiringOwnerUserNo(hiringNo);
+        return ResponseEntity.ok(ownerUserNo);
+    }
 }

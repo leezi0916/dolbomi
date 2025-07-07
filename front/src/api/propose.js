@@ -20,7 +20,6 @@ export const proposerService = {
   proposerToHiring: async ({ hiringNo, resumeNo, caregiverNo }) => {
     try {
       const res = await api.post(API_ENDPOINTS.PROPOSER.BASE, camelToSnake({ hiringNo, resumeNo, caregiverNo }));
-
     } catch (error) {
       console.error('지원 신청 실패:', error.response?.data?.message || error.message);
       throw error;
@@ -99,6 +98,17 @@ export const proposerService = {
       }
 
       throw new Error('서버 통신 불량');
+    }
+  },
+
+  //구인글 작성자인지 권한체크
+  getHiringOwnerUserNo: async (hiringNo) => {
+    try {
+      const { data } = await api.get(API_ENDPOINTS.PROPOSER.GET_HIRING_OWNER(hiringNo));
+      return data; // userNo 반환 예상
+    } catch (error) {
+      console.error('구인글 작성자 조회 실패:', error.response?.data?.message || error.message);
+      throw error;
     }
   },
 };
