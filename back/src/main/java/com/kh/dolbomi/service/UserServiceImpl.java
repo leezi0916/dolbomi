@@ -4,12 +4,16 @@ package com.kh.dolbomi.service;
 import com.kh.dolbomi.domain.License;
 import com.kh.dolbomi.domain.User;
 import com.kh.dolbomi.dto.LicenseDto;
+import com.kh.dolbomi.dto.UserCountsDto;
 import com.kh.dolbomi.dto.UserDto;
 import com.kh.dolbomi.dto.UserDto.Login;
 import com.kh.dolbomi.dto.UserDto.Response;
 import com.kh.dolbomi.enums.StatusEnum;
+import com.kh.dolbomi.exception.LicenseNotFoundException;
 import com.kh.dolbomi.exception.UserNotFoundException;
+import com.kh.dolbomi.repository.HiringRepositoryV2;
 import com.kh.dolbomi.repository.LicenseRepository;
+import com.kh.dolbomi.repository.ResumeRepositoryV2;
 import com.kh.dolbomi.repository.UserRepository;
 import com.kh.dolbomi.repository.UserRepositoryV2;
 import java.util.List;
@@ -26,7 +30,8 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final LicenseRepository licenseRepository;
-
+    private final HiringRepositoryV2 hiringRepositoryV2;
+    private final ResumeRepositoryV2 resumeRepositoryV2;
     //    private final BCryptPasswordEncoder passwordEncoder; 구버전
 // PasswordEncoder 주입
     private final PasswordEncoder passwordEncoder;
@@ -92,7 +97,7 @@ public class UserServiceImpl implements UserService {
     @Transactional(readOnly = true)
     public UserDto.ProfileDto getUserProfile(Long userNo) {
         User user = userRepository.findById(userNo)
-                .orElseThrow(() -> new IllegalArgumentException("해당 회원이 존재하지 않습니다."));
+                .orElseThrow(() -> new UserNotFoundException("해당 회원을 찾을 수 없습니다."));
         return UserDto.ProfileDto.toDto(user);
     }
 
@@ -100,7 +105,7 @@ public class UserServiceImpl implements UserService {
     public UserDto.Response updateUser(Long userNo, UserDto.Update updateDto) {
 
         User user = userRepository.findById(userNo)
-                .orElseThrow(() -> new IllegalArgumentException("유저가 존재하지 않습니다."));
+                .orElseThrow(() -> new UserNotFoundException("해당 유저를 찾을 수 없습니다."));
 
         //1. 유저 정보 업데이트
         user.updateUserInfo(
@@ -137,10 +142,9 @@ public class UserServiceImpl implements UserService {
                 License license = existingLicenses.stream()
                         .filter(l -> l.getLicenseNo().equals(dto.getLicense_no()))
                         .findFirst()
-                        .orElseThrow(() -> new RuntimeException("존재하지 않는 자격증"));
+                        .orElseThrow(() -> new LicenseNotFoundException("해당 자격증을 찾을 수 없습니다."));
 
                 license.updateInfo(dto.getLicense_name(), dto.getLicense_publisher(), dto.getLicense_date());
-
             } else {
                 // 신규
                 License newLicense = License.builder()
@@ -160,13 +164,21 @@ public class UserServiceImpl implements UserService {
     @Override
     public void deleteUser(Long userNo) {
         User user = userRepository.findById(userNo)
-                .orElseThrow(() -> new IllegalArgumentException("유저가 존재하지 않습니다."));
+                .orElseThrow(() -> new UserNotFoundException("삭제하려는 유저가 존재하지 않습니다."));
         user.changeStatus(StatusEnum.Status.N);
 
         //영속성 컨텍스트가 활성화된 상태라면 없어도 변경 가능
         userRepository.save(user);
     }
 
+    @Transactional(readOnly = true)
+    @Override
+    public UserCountsDto getUserCounts() {
+        int guardianCount = hiringRepositoryV2.countDistinctByUserNo();
+        int caregiverCount = resumeRepositoryV2.countDistinctByUserNo();
+
+        return new UserCountsDto(guardianCount, caregiverCount);
+    }
 
 }
 

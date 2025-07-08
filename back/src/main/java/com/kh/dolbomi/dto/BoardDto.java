@@ -34,6 +34,32 @@ public class BoardDto {
 
     @Getter
     @AllArgsConstructor
+    public static class CreateQuestion {
+
+        @NotBlank(message = "제목을 적어주세요.")
+        private String board_title;
+        @NotBlank(message = "내용을 적어주세요.")
+        private String board_content;
+
+        private Long user_no;
+        private StatusEnum.Role role;
+        private StatusEnum.QuestionStatus question_status;
+        private StatusEnum.QuestionCategory question_category;
+
+        public Board toEntity() {
+            return Board.builder()
+                    .boardTitle(this.board_title)
+                    .boardContent(this.board_content)
+                    .role(this.role)
+                    .questionStatus(this.question_status)
+                    .questionCategory(this.question_category)
+                    .build();
+
+        }
+    }
+
+    @Getter
+    @AllArgsConstructor
     @NoArgsConstructor
     @Builder
     public static class Response {
@@ -45,7 +71,8 @@ public class BoardDto {
         private Long user_no;
         private String user_name;
         private StatusEnum.Role role;
-        private StatusEnum.QuestionStatus questionStatus;
+        private StatusEnum.QuestionStatus question_status;
+        private StatusEnum.QuestionCategory question_category;
         private List<FileDto.Response> files;
         private List<ReplyDto.Response> reply;
 
@@ -59,17 +86,8 @@ public class BoardDto {
                     .user_no(board.getUser().getUserNo())
                     .user_name(board.getUser().getUserName())
                     .role(board.getRole())
-                    .questionStatus(board.getQuestionStatus())
-                    .files(
-                            board.getFiles().stream()
-                                    .map(file -> FileDto.Response.builder()
-                                            .fileNo(file.getFileNo())
-                                            .originName(file.getOriginName())
-                                            .changeName(file.getChangeName())
-                                            .filePath(file.getFilePath())
-                                            .build())
-                                    .toList()
-                    )
+                    .question_status(board.getQuestionStatus())
+                    .question_category(board.getQuestionCategory())
                     .reply(
                             board.getReplyList().stream()
                                     .map(reply -> ReplyDto.Response.builder()
@@ -93,7 +111,8 @@ public class BoardDto {
                     .count(board.getCount())
                     .user_name(board.getUser().getUserName())
                     .role(board.getRole())
-                    .questionStatus(board.getQuestionStatus())
+                    .question_status(board.getQuestionStatus())
+                    .question_category(board.getQuestionCategory())
                     .build();
         }
     }

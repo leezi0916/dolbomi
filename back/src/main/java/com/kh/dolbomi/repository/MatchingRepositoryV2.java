@@ -17,15 +17,17 @@ public interface MatchingRepositoryV2 extends JpaRepository<Matching, Long> {
 
 
     // 매칭진행중 : 특정환자에 대한 간병인 목록가져오기
-    List<Matching> findByPatientPatNoAndStatus(Long patNo, Status status);
+    List<Matching> findByPatient_PatNoAndStatusOrderByMatNoDesc(Long patNo, Status status);
 
     // 매칭진행중 : 특정간병인 대한 환자 목록가져오기
-    List<Matching> findByCaregiverUserNoAndStatus(Long caregiverNo, Status status);
+    List<Matching> findByCaregiver_UserNoAndStatusOrderByMatNoDesc(Long caregiverNo, Status status);
 
 
-    Page<Matching> findByPatientPatNoAndStatus(Long patNo, Status status, Pageable pageable);
+    Page<Matching> findByPatient_PatNoAndStatusOrderByEndDateDesc(Long patNo, StatusEnum.Status status,
+                                                                  Pageable pageable);
 
-    Page<Matching> findByCaregiverUserNoAndStatus(Long caregiverNo, Status status, Pageable pageable);
+    Page<Matching> findByCaregiver_UserNoAndStatusOrderByEndDateDesc(Long caregiverNo, Status status,
+                                                                     Pageable pageable);
 
     //매칭 테이블에 접근해서 특정 간병인의 리뷰정보를 조회
     @Query("SELECT m.review FROM Matching m WHERE m.caregiver.userNo = :caregiverNo AND m.review IS NOT NULL AND m.review.status = :status ORDER BY m.review.updateDate DESC")

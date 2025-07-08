@@ -37,12 +37,16 @@ export const hiringService = {
 
   //돌봄대상자 모집 리스트
   getHiringList: async ({ page = 0, size = 10, searchData }) => {
+
+    console.log(searchData);
     try {
       // 쿼리 파라미터를 URL에 붙임
+      const snake = camelToSnake(searchData);
+
       const { data } = await api.get(API_ENDPOINTS.HIRING.LIST, {
-        params: { page, size },
-        searchData,
+        params: { page, size, ...snake },
       });
+      console.log('불러온 데이터 : ' + snakeToCamel(data));
       return snakeToCamel(data);
     } catch (error) {
       if (error.response) {
@@ -73,7 +77,6 @@ export const hiringService = {
     try {
       // 상세 보기에 들어가는 모든 정보(환자 정보, 보호자 전화번호, 보유질병, 제목,시급 등...) 불러와야함 실제 서버에서
       const { data } = await api.get(API_ENDPOINTS.HIRING.DETAIL(hiringNo), { params: { caregiverNo } });
-
       return snakeToCamel(data);
     } catch (error) {
       if (error.response) {

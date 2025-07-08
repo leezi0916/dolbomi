@@ -25,19 +25,14 @@ import {
 const QuestionFull = () => {
   const userId = useUserStore((state) => state.user?.userId);
 
-  // const ROLE = 'Q';
-  // const STATUS = 'Y';
-
   const [error, setError] = useState(null);
-  const [communityList, setCommunityList] = useState([]);
   const [loading, setLoading] = useState(true);
 
   const [currentPage, setCurrentPage] = useState(1);
+  const [data, setData] = useState([]);
+  const [totalPage, setTotalPage] = useState(0);
+  const [totalCount, setTotalCount] = useState(0);
   const ITEMS_PER_PAGE = 10;
-  const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
-  const endIndex = startIndex + ITEMS_PER_PAGE;
-  const currentList = communityList.slice(startIndex, endIndex);
-  const totalPage = Math.ceil(communityList.length / ITEMS_PER_PAGE);
 
   const chagneCurrentPage = (value) => {
     setCurrentPage(value);
@@ -51,9 +46,11 @@ const QuestionFull = () => {
   useEffect(() => {
     const loadCommunity = async () => {
       try {
-        const community = await commuService.getQuestion();
+        const community = await commuService.getQuestion(currentPage - 1, ITEMS_PER_PAGE);
         console.log(community);
-        setCommunityList(community.content);
+        setData(community.content); // 게시글 목록 등
+        setTotalPage(community.totalPage); // 총 페이지 수
+        setTotalCount(community.totalCount);
       } catch (error) {
         console.error(error);
         const errorMessage = '목록을 불러오는데 실패했습니다.';
@@ -78,7 +75,7 @@ const QuestionFull = () => {
   if (error) {
     return null;
   }
-  if (!communityList || communityList.length === 0) {
+  if (!data || totalCount === 0) {
     return (
       <Page>
         <PageInfo>
@@ -95,7 +92,7 @@ const QuestionFull = () => {
 
           <BoardTop>
             <BoardTopLeft>총 0건</BoardTopLeft>
-            <BoardTopRight>
+            <BoardTopRight style={{ flex: '7' }}>
               <Drop value={sortOption} onChange={(e) => setSortOption(e.target.value)}>
                 <option value="date">날짜순</option>
                 <option value="views">조회순</option>
@@ -106,6 +103,7 @@ const QuestionFull = () => {
           </BoardTop>
           <BoardItemTop>
             <div>No</div>
+            <div>유형</div>
             <div style={{ flex: '3' }}>제목</div>
             <div>작성자</div>
             <div style={{ flex: '2' }}>작성 일자</div>
@@ -139,8 +137,8 @@ const QuestionFull = () => {
         </PageTop>
 
         <BoardTop>
-          <BoardTopLeft>총 {communityList.length}건</BoardTopLeft>
-          <BoardTopRight>
+          <BoardTopLeft>총 {totalCount}건</BoardTopLeft>
+          <BoardTopRight style={{ flex: '7' }}>
             <Drop value={sortOption} onChange={(e) => setSortOption(e.target.value)}>
               <option value="date">날짜순</option>
               <option value="views">조회순</option>
@@ -151,16 +149,27 @@ const QuestionFull = () => {
         </BoardTop>
         <BoardItemTop>
           <div>No</div>
+          <div>유형</div>
           <div style={{ flex: '3' }}>제목</div>
           <div>작성자</div>
           <div style={{ flex: '2' }}>작성 일자</div>
         </BoardItemTop>
-        {currentList.map((community) => (
-          <BoardItem key={community.boardNo} to={`/question/detail/${community.boardNo}`}>
-            <div>{community.boardNo}</div>
-            <div style={{ flex: '3' }}>{community.boardTitle}</div>
-            <div>{community.userName}</div>
-            <div style={{ flex: '2' }}>{community.createDate}</div>
+        {data.map((info) => (
+          <BoardItem key={info.boardNo} to={`/question/detail/${info.boardNo}`}>
+            <div>{info.boardNo}</div>
+            <div>
+              {' '}
+              {info.questionCategory === 'T'
+                ? '기술적 문제'
+                : info.questionCategory === 'S'
+                  ? '서비스 관련'
+                  : info.questionCategory === 'E'
+                    ? '기타'
+                    : '알 수 없음'}
+            </div>
+            <div style={{ flex: '3' }}>{info.boardTitle}</div>
+            <div>{info.userName}</div>
+            <div style={{ flex: '2' }}>{info.createDate}</div>
           </BoardItem>
         ))}
 

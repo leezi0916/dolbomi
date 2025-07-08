@@ -23,7 +23,7 @@ import { useForm } from 'react-hook-form';
 
 const CommunityDetail = () => {
   const userNo = useUserStore((state) => state.user?.userNo);
-  // 수정하기 버튼 때문에 추가
+
   const [error, setError] = useState(null);
   const [communityDetail, setCommunityDetail] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -52,7 +52,7 @@ const CommunityDetail = () => {
     };
 
     loadCommunity();
-  }, [boardNo]);
+  }, [boardNo, reset]);
 
   if (loading) {
     return (
@@ -107,7 +107,9 @@ const CommunityDetail = () => {
             <PageTitle>보호자 게시판 상세</PageTitle>
           )}
           <div>
-            <RightBtn>뒤로가기</RightBtn>
+            <RightBtn type="button" onClick={() => navigate(-1)}>
+              뒤로가기
+            </RightBtn>
           </div>
         </PageTop>
         <PageBody>
@@ -184,7 +186,7 @@ const CommunityDetail = () => {
         </PageBody>
         <CommentSelectBox>
           <div style={{ gap: '6px', paddingLeft: '10px' }}>
-            <div style={{ fontWeight: theme.fontWeights.bold }}>답변</div>
+            <div style={{ fontWeight: theme.fontWeights.bold }}>댓글</div>
             <div style={{ color: theme.colors.primary, fontWeight: theme.fontWeights.bold }}>
               {communityDetail.reply.length}
             </div>

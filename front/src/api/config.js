@@ -18,14 +18,14 @@ export const API_ENDPOINTS = {
 
   COMMUNITY: {
     BASE: '/community/v1',
-    CAREGIVER: `/community/v1/caregiver`,
-    GUARDIAN: `/community/v1/guardian`,
+    CAREGIVER: (page, size) => `/community/v1/caregiver?page=${page}&size=${size}`,
+    GUARDIAN: (page, size) => `/community/v1/guardian?page=${page}&size=${size}`,
     DETAIL: (boardNo) => `/community/v1/detail?board_no=${boardNo}`, // 특정 게시글
     REPLY: `/community/v1/reply`,
-    QUESTION: `/community/v1/question`,
-    QUESTION_HISTORY: (userNo) => `/community/v1/question?user_no=${userNo}`,
-
-    CREATE: (role) => `/community/v1/${role}/create`,
+    REPLY_QUESTION: `/community/v1/reply/question`,
+    QUESTION: (page, size) => `/community/v1/question?page=${page}&size=${size}`,
+    QUESTION_HISTORY: (userNo, page, size) => `/community/v1/question?user_no=${userNo}&page=${page}&size=${size}`,
+    CREATE_QUESTION: '/community/v1/question/create',
   },
 
   USERS: {
@@ -38,6 +38,7 @@ export const API_ENDPOINTS = {
     PROFILE_UPDATE: (userNo) => `/users/v1/${userNo}`,
     CAREPROFILE: (userNo) => `/users/v1?user_no=${userNo}`,
     DELETE: (userNo) => `/users/v1/${userNo}/delete`,
+    COUNT: '/users/v1/user-counts',
   },
   REVIEWS: {
     BASE: '/review/v1',
@@ -92,19 +93,24 @@ export const API_ENDPOINTS = {
     ACCEPT: '/proposer/v1/accept',
     CHECK_ACCEPTED: (hiringNo, resumeNo) => `/proposer/v1/accept/check?hiring_no=${hiringNo}&resume_no=${resumeNo}`,
     DELETE_HISTORY: (proposerNo) => `/proposer/v1/${proposerNo}`,
+    GET_HIRING_OWNER: (hiringNo) => `/proposer/v1/hiring/${hiringNo}/owner`,
   },
 
   MATCHING: {
     BASE: '/matching/v1',
     LIST: (patNo, status) => `/matching/v1?pat_no=${patNo}&status=${status}`,
-    PATCH : (matNo, status) => `/matching/v1?mat_no=${matNo}&status=${status}`,
+    PATCH: (matNo, status) => `/matching/v1?mat_no=${matNo}&status=${status}`,
     ENDLIST: (patNo, status) => `/matching/v1/matched?pat_no=${patNo}&status=${status}`,
     PATLIST: (caregiverNo, status) => `/matching/v1/caregiver?caregiver_no=${caregiverNo}&status=${status}`,
     PAT_ENDLIST: (caregiverNo, status) => `/matching/v1/caregiver/matched?caregiver_no=${caregiverNo}&status=${status}`,
+    SEARCHLIST: () => `/matching/v1/matched/check`,
+    SEARCHDATELIST: () => `/matching/v1/matched/date`,
   },
 
   NOTIFICATIONS: {
     LIST: (userNo) => `/notifications/v1/list?user_no=${userNo}`,
+    IS_READ: (userNo) => `/notifications/v1/unread-count?user_no=${userNo}`,
+    READ: (userNo) => `/notifications/v1/mark-read?user_no=${userNo}`,
   },
 
   API: {

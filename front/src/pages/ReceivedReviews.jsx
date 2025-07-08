@@ -19,14 +19,22 @@ import Paging from '../components/Paging';
 import { media } from '../styles/MediaQueries';
 import useUserStore from '../store/userStore';
 import { toast } from 'react-toastify';
+import { useNavigate } from 'react-router-dom';
 
 const ReceivedReviews = () => {
   const [reviews, setReviews] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
 
   const { user } = useUserStore();
+  const navigate = useNavigate();
 
   useEffect(() => {
+    // 로그인하지 않은 경우 이전 페이지로 이동
+    if (!user) {
+      alert('로그인이 필요한 서비스입니다.');
+      navigate('/');
+      return;
+    }
     const fetchReviews = async () => {
       try {
         const data = await reviewService.getReceivedReviews(currentPage, user.userNo);
@@ -90,7 +98,11 @@ const ReceivedReviews = () => {
         )}
       </ReceivedReviewsGridContainer>
 
-      <Paging currentPage={currentPage} totalPage={reviews.totalPage} chagneCurrentPage={chagneCurrentPage} />
+      <Paging
+        currentPage={currentPage}
+        totalPage={reviews?.receivedReview?.totalPage}
+        chagneCurrentPage={chagneCurrentPage}
+      />
     </ReviewWrapper>
   );
 };

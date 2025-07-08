@@ -2,11 +2,10 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { userService } from '../api/users';
-import { toast } from 'react-toastify';
-import { useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
-//회원가입 폼의 유효성 검사 스키마
+// 유효성 검사 스키마
 const signUpSchema = yup.object().shape({
   userId: yup
     .string()
@@ -26,6 +25,11 @@ const signUpSchema = yup.object().shape({
     .string()
     .required('비밀번호를 입력하세요.')
     .matches(/^(?=.*[a-zA-Z]).{5,}$/, '비밀번호는 영문자를 포함해 5자 이상이어야 합니다.'),
+
+  userPwdCheck: yup
+    .string()
+    .oneOf([yup.ref('userPwd'), null], '비밀번호가 일치하지 않습니다.')
+    .required('비밀번호 확인을 입력하세요.'),
 
   age: yup
     .number()
@@ -58,36 +62,31 @@ export const useSignUpForm = (socialType, socialId) => {
   const [isIdChecked, setIsIdChecked] = useState(false); // 아이디 중복확인 완료 여부
   const [idCheckMessage, setIdCheckMessage] = useState('');
 
-  //react-hook-form으로 폼 상태 초기화및 유효성 검사
   const {
     register,
     handleSubmit,
     setError,
     clearErrors,
     setValue,
-    formState: { errors, isSubmitting }, //유효성 에러및 제출중 상태
-    watch, // watch 함수를 추가로 가져옵니다.
+    formState: { errors, isSubmitting },
+    watch,
   } = useForm({
-    resolver: yupResolver(signUpSchema), // yup스키마와 연결
+    resolver: yupResolver(signUpSchema),
     mode: 'onChange',
     defaultValues: {
-      // gender 필드의 초기값을 설정합니다.
-      gender: 'M', // 기본값을 'male'로 설정 (또는 원하는 값으로)
-      // 나머지 필드에 대한 기본값이 있다면 여기에 추가
+      gender: 'M',
     },
   });
 
-  const userId = watch('userId'); //현재 입력된 아이디를 감시
+  const userId = watch('userId');
 
   useEffect(() => {
-    // userId 변경 시 아이디 중복 검사 상태 초기화
     setIsIdChecked(false);
     setIdCheckMessage('');
   }, [userId]);
 
   const checkUserId = async () => {
     if (!userId || userId.length < 5) {
-      //아마 훅폼으로 이미 유효성 검사할텐데 중복확인시에도 유효성 체크 할려는듯
       setIdCheckMessage('아이디는 최소 5자 이상 입력해주세요');
       return;
     }
@@ -96,23 +95,20 @@ export const useSignUpForm = (socialType, socialId) => {
       if (res.available) {
         setIdCheckMessage('사용 가능한 아이디입니다.');
         setIsIdChecked(true);
-        clearErrors('userId'); //유효성 오류 제거
+        clearErrors('userId');
       } else {
         setIdCheckMessage('이미 사용 중인 아이디입니다.');
         setIsIdChecked(false);
         setError('userId', { message: '이미 사용 중인 아이디입니다.' });
       }
-    } catch (err) {
+    } catch {
       setIdCheckMessage('중복 확인 중 오류가 발생했습니다.');
       setIsIdChecked(false);
     }
   };
 
   const formatPhoneNumber = (value) => {
-    // 숫자만 남기기
     const numbersOnly = value.replace(/\D/g, '');
-
-    // 010부터 시작하고 길이에 따라 포맷팅
     if (numbersOnly.length < 4) return numbersOnly;
     if (numbersOnly.length < 8) return `${numbersOnly.slice(0, 3)}-${numbersOnly.slice(3)}`;
     return `${numbersOnly.slice(0, 3)}-${numbersOnly.slice(3, 7)}-${numbersOnly.slice(7, 11)}`;
@@ -146,15 +142,17 @@ export const useSignUpForm = (socialType, socialId) => {
   };
 
   //컴포넌트에서 사용할 값들 반환
+
   return {
     register,
-    handleSubmit: handleSubmit(onSubmit),
+    handleSubmit,
     errors,
     isSubmitting,
-    watch, // watch 함수를 반환합니다.
+    watch,
     checkUserId,
     idCheckMessage,
     setValue,
     formatPhoneNumber,
+    isIdChecked, // 외부에서 중복 체크 확인 필요
   };
 };

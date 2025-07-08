@@ -4,10 +4,11 @@ import styled from 'styled-components';
 import { BoardItemTop, BoardTop, BorderDiv, Button, Left, Right } from '../styles/common/Board';
 import { reportService } from '../api/report';
 import { toast } from 'react-toastify';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import { ButtonText, SubmitButton } from '../styles/common/Button';
 import { patientService } from '../api/patient';
 import useUserStatusStore from '../store/userStatusStore';
+import useUserStore from '../store/userStore';
 
 const ReportMain = () => {
   const { patNo } = useParams(); // URL의 :patNo 값 가져오기
@@ -18,6 +19,8 @@ const ReportMain = () => {
   const [reportList, setReportList] = useState([]); // 필터링 후 일지목록
   const { userStatus } = useUserStatusStore();
   const [error, setError] = useState(null);
+  const { user } = useUserStore();
+  const navigate = useNavigate();
 
   // 일지목록에서 가져온, 드롭다운박스에 넣을 날짜들과 작성자들
   const uniqueDates = [...new Set(allReport.map((report) => report.createDate.slice(0, 10)))];
@@ -28,6 +31,13 @@ const ReportMain = () => {
   };
 
   useEffect(() => {
+    // 로그인하지 않은 경우 이전 페이지로 이동
+    if (!user) {
+      alert('로그인이 필요한 서비스입니다.');
+      navigate(-1);
+      return;
+    }
+
     const patient = async () => {
       try {
         const patient = await patientService.getPatientId(patNo);

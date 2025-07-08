@@ -181,11 +181,11 @@ const MyResume = () => {
             <p>{errors.resumeContent?.message}</p>
             <RadioGroup>
               <RadioContainer>
-                <Label>숙식 가능</Label>
+                <Label>입주형</Label>
                 <RadioWrapper>
                   <input type="radio" value="Y" {...register('careStatus')} />
                 </RadioWrapper>
-                <Label>숙식 불가</Label>
+                <Label>출퇴근형</Label>
                 <RadioWrapper>
                   <input type="radio" value="N" {...register('careStatus')} />
                 </RadioWrapper>

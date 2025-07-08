@@ -11,11 +11,13 @@ import java.util.List;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -54,12 +56,13 @@ public class HiringController {
     //돌봄대상자 모집 리스트 불러오기
     @GetMapping("/list")
     public ResponseEntity<PageResponse<HiringDto.Response>> getPagedHiringList(
-            Pageable pageable
-//          ,@Valid SearchDataDto searchDataDto
+            @RequestParam Integer page,
+            @RequestParam Integer size,
+            @ModelAttribute SearchDataDto searchData
     ) {
-//        @PageableDefault(size = 10, sort = "createDate", direction = Sort.Direction.DESC)
+        Pageable pageable = PageRequest.of(page, size);
 
-        Page<HiringDto.Response> hiringPage = hiringService.getHiringPage(pageable);
+        Page<HiringDto.Response> hiringPage = hiringService.getHiringPage(pageable, searchData);
         PageResponse<HiringDto.Response> response = new PageResponse<>(hiringPage);
 
         return ResponseEntity.ok(response);

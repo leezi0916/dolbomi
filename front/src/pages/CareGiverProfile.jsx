@@ -12,7 +12,7 @@ import { ModalContainer } from '../styles/common/Modal';
 import { RiAlarmWarningLine } from "react-icons/ri";
 import { matchingService } from '../api/matching';
 import { useLocation } from 'react-router-dom';
-
+import chatImage from '../assets/icons/icon_채팅아이콘.png'; // 채팅 이미지 경로
 
 const CareGiverProfile = () => {
   const [error, setError] = useState(null);
@@ -25,8 +25,6 @@ const CareGiverProfile = () => {
   
   
   const matNo = location.state?.matNo;
-
-  console.log(matNo);
   const [formData, setFormData] = useState({
     userId: '', // 아이디 필드도 포함
     userName: '',
@@ -48,10 +46,7 @@ const CareGiverProfile = () => {
         return;
       }
       try {
-        console.log(userNo);
         const info = await userService.getCareGiverProfile(Number(userNo));
-        console.log(info);
-
         if (info !== null) {
           setProfile(info); // 프로필 원본 데이터 저장
 
@@ -140,6 +135,9 @@ const CareGiverProfile = () => {
               세(<Strong>{profile.gender}</Strong>)
             </UserAge>
           </ProfileInfo>
+          <ChatButton>
+              <img src={chatImage} alt="프로필 이미지" sizes='10px'/> 채팅하기
+            </ChatButton>
         </ProfileCard>
       </ProfileCardWrap>
 
@@ -148,17 +146,23 @@ const CareGiverProfile = () => {
         <ContentTitle> 자격증</ContentTitle>
         {licenseList && licenseList.length > 0 ? (
           <LicenseTable>
-            <tr>
+            <thead>
+              <tr>
               <th>자격증명</th>
               <th>발급기관</th>
               <th>발급일자</th>
-            </tr>
+              </tr>
+
+            </thead>
             {licenseList.map((li) => (
-              <tr key={li.licenseName}>
+              <tbody key={li.licenseName}>
+                <tr>
                 <td>{li.licenseName}</td>
                 <td>{li.licensePublisher}</td>
                 <td>{li.licenseDate}</td>
-              </tr>
+                </tr>
+
+              </tbody>
             ))}
           </LicenseTable>
         ) : (
@@ -178,6 +182,7 @@ const CareGiverProfile = () => {
 };
 
 export const ModalContainer2 = styled(ModalContainer)`
+  min-height: min-content;
   margin-top: 50px;
   padding: ${({ theme }) => theme.spacing[8]} ${({ theme }) => theme.spacing[16]};
 
@@ -263,6 +268,7 @@ const LicenseTable = styled.table`
 
   th {
     background-color: ${({ theme }) => theme.colors.gray[5]};
+    align-items: center;
   }
   th,
   td {
@@ -278,6 +284,23 @@ const LicenseTable = styled.table`
     overflow: hidden;
     text-overflow: ellipsis;
     font-size: 14px;
+  }
+`;
+
+const ChatButton = styled.button`
+  border: 1px solid ${({ theme, $error }) => ($error ? theme.colors.error : theme.colors.gray[5])};
+  border-radius: ${({ theme }) => theme.borderRadius.md};
+  width: fit-content;
+  font-size: ${({ theme }) => theme.fontSizes.md};
+  font-weight: ${({ theme }) => theme.fontWeights.medium};
+  display: flex;
+  margin-right:${({ theme }) => theme.spacing[3]} ;
+  justify-content: center;
+  align-items: center;
+  gap: ${({ theme }) => theme.spacing[2]};
+  img {
+    width: 20px;
+    height: 20px;
   }
 `;
 

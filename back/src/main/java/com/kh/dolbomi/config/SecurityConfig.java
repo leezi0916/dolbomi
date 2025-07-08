@@ -41,6 +41,7 @@ public class SecurityConfig {
                                 "/users/v1/check",
                                 "/users/v1",
                                 "/users/v1/login",
+                                "/users/v1/user-counts",
                                 "/hiring/v1/simple-list",
                                 "/hiring/v1/list",
                                 "/resume/v1/simple-list",
@@ -50,6 +51,7 @@ public class SecurityConfig {
                                 "/community/v1/guardian",
                                 "/community/v1/question",
                                 "/community/v1/detail",
+                                "/api/address/region",
                                 "/"
 
                         ).permitAll()
@@ -89,6 +91,7 @@ public class SecurityConfig {
     public PasswordEncoder passwordEncoder() {
         return PasswordEncoderFactories.createDelegatingPasswordEncoder();
     }
+
 
 }
 

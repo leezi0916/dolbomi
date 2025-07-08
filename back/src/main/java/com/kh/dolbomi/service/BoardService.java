@@ -21,4 +21,8 @@ public interface BoardService {
     BoardDto.Response getCommunityDetail(Long boardNo);
 
     Long createReply(ReplyDto.Create replyCreate);
+
+    Long createQuestion(BoardDto.CreateQuestion questionCreate);
+
+    Long createReplyQuestion(ReplyDto.Create replyCreate);
 }

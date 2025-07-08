@@ -40,20 +40,47 @@ function ResumeDetail() {
   const [resumeData, setResumeData] = useState(null);
   const [isMatched, setIsMatched] = useState(false);
 
+  // **새로 추가: 구인글 작성자인지 체크하는 상태**
+  const [isHiringOwner, setIsHiringOwner] = useState(false);
+  const [loading, setLoading] = useState(true);
+
   /*이력서 정보를 갖고오는 (유저 정보 담아서) */
   useEffect(() => {
-    const fetchResume = async () => {
-      try {
-        const data = await jobSeekingService.getResume(Number(resumeNo));
+    // 로그인하지 않은 경우 이전 페이지로 이동
+    if (!user) {
+      alert('로그인이 필요한 서비스입니다.');
+      navigate(-1);
+      return;
+    }
 
-        setResumeData(data);
-        console.log(data);
+    const fetchData = async () => {
+      try {
+        // 1) 이력서 데이터 불러오기
+        const resume = await jobSeekingService.getResume(Number(resumeNo));
+        setResumeData(resume);
+
+        if (hiringNo) {
+          // 2) 백엔드 API로 해당 hiringNo 구인글 작성자가 로그인 유저인지 체크
+          const hiringOwnerNo = await proposerService.getHiringOwnerUserNo(Number(hiringNo));
+          if (user?.userNo === hiringOwnerNo) {
+            setIsHiringOwner(true);
+          } else {
+            alert('권한이 없습니다.');
+            navigate('/'); // 권한 없으면 이전 페이지로 이동
+            return;
+          }
+        }
       } catch (error) {
-        console.log(error);
+        console.error(error);
+        alert('데이터를 불러오는데 실패했습니다.');
+        navigate(-1);
+      } finally {
+        setLoading(false);
       }
     };
-    fetchResume();
-  }, []);
+
+    fetchData();
+  }, [resumeNo, hiringNo, user, navigate]);
 
   /*작성자의  리뷰를 갖고오는 코드 */
   useEffect(() => {
@@ -107,6 +134,9 @@ function ResumeDetail() {
     checkMatched();
   }, [resumeNo, hiringNo]);
 
+  if (loading) {
+    return <div>로딩중...</div>;
+  }
   return (
     <HireRegistSection>
       <HireContainer>
@@ -196,11 +226,11 @@ function ResumeDetail() {
 
               <RadioGroup>
                 <RadioContainer>
-                  <Label>숙식 가능</Label>
+                  <Label>입주형</Label>
                   <RadioWrapper>
                     <input type="radio" value="Y" checked={resumeData?.careStatus === 'Y'} readOnly />
                   </RadioWrapper>
-                  <Label>숙식 불가</Label>
+                  <Label>출퇴근형</Label>
                   <RadioWrapper>
                     <input type="radio" value="N" checked={resumeData?.careStatus === 'N'} readOnly />
                   </RadioWrapper>

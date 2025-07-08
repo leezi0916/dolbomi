@@ -42,6 +42,7 @@ const ResumeRegistration = () => {
   const onSubmit = async (formData) => {
     const newData = {
       ...formData,
+
       userNo: Number(user.userNo),
     };
     try {
@@ -152,11 +153,11 @@ const ResumeRegistration = () => {
 
               <RadioGroup>
                 <RadioContainer>
-                  <Label>숙식 가능</Label>
+                  <Label>입주형</Label>
                   <RadioWrapper>
                     <input type="radio" value="Y" {...register('careStatus')} />
                   </RadioWrapper>
-                  <Label>숙식 불가</Label>
+                  <Label>출퇴근형</Label>
                   <RadioWrapper>
                     <input type="radio" value="N" {...register('careStatus')} />
                   </RadioWrapper>
@@ -165,8 +166,8 @@ const ResumeRegistration = () => {
                 <AccountGroup>
                   <InputGroup>
                     <Label>희망 시급</Label>
-                    <Input {...register('account')} placeholder="희망 시급" />
-                    <p>{errors.account?.message}</p>
+                    <Input {...register('resumeAccount')} placeholder="희망 시급" />
+                    <p>{errors.resumeAccount?.message}</p>
                   </InputGroup>
                 </AccountGroup>
               </RadioGroup>

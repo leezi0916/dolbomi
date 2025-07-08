@@ -26,15 +26,13 @@ const QuestionHistory = () => {
   const userNo = useUserStore((state) => state.user?.userNo);
 
   const [error, setError] = useState(null);
-  const [questionList, setQuestionList] = useState([]);
   const [loading, setLoading] = useState(true);
 
   const [currentPage, setCurrentPage] = useState(1);
+  const [data, setData] = useState([]);
+  const [totalPage, setTotalPage] = useState(0);
+  const [totalCount, setTotalCount] = useState(0);
   const ITEMS_PER_PAGE = 10;
-  const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
-  const endIndex = startIndex + ITEMS_PER_PAGE;
-  const currentList = questionList.slice(startIndex, endIndex);
-  const totalPage = Math.ceil(questionList.length / ITEMS_PER_PAGE);
 
   const chagneCurrentPage = (value) => {
     setCurrentPage(value);
@@ -48,9 +46,12 @@ const QuestionHistory = () => {
   useEffect(() => {
     const loadQuestion = async () => {
       try {
-        const myHistory = await commuService.getQuestionHistory(userNo);
+        const myHistory = await commuService.getQuestionHistory(userNo, currentPage - 1, ITEMS_PER_PAGE);
         console.log(myHistory);
-        setQuestionList(myHistory.content);
+
+        setData(myHistory.content); // 게시글 목록 등
+        setTotalPage(myHistory.totalPage); // 총 페이지 수
+        setTotalCount(myHistory.totalCount);
       } catch (error) {
         console.error(error);
         const errorMessage = '목록을 불러오는데 실패했습니다.';
@@ -62,7 +63,7 @@ const QuestionHistory = () => {
     };
 
     loadQuestion();
-  }, [userNo]);
+  }, [userNo, currentPage]);
 
   if (loading) {
     return (
@@ -75,7 +76,7 @@ const QuestionHistory = () => {
   if (error) {
     return null;
   }
-  if (!questionList || questionList.length === 0) {
+  if (!data || totalCount === 0) {
     return (
       <Page>
         <PageInfo>
@@ -92,7 +93,7 @@ const QuestionHistory = () => {
 
           <BoardTop>
             <BoardTopLeft>총 0건</BoardTopLeft>
-            <BoardTopRight>
+            <BoardTopRight style={{ flex: '7' }}>
               <Drop value={sortOption} onChange={(e) => setSortOption(e.target.value)}>
                 <option value="date">날짜순</option>
                 <option value="views">조회순</option>
@@ -103,6 +104,7 @@ const QuestionHistory = () => {
           </BoardTop>
           <BoardItemTop>
             <div>No</div>
+            <div>유형</div>
             <div style={{ flex: '2' }}>제목</div>
             <div>작성자</div>
             <div style={{ flex: '2' }}>작성 일자</div>
@@ -137,8 +139,8 @@ const QuestionHistory = () => {
         </PageTop>
 
         <BoardTop>
-          <BoardTopLeft>총 {questionList.length}건</BoardTopLeft>
-          <BoardTopRight>
+          <BoardTopLeft>총 {totalCount}건</BoardTopLeft>
+          <BoardTopRight style={{ flex: '7' }}>
             <Drop value={sortOption} onChange={(e) => setSortOption(e.target.value)}>
               <option value="date">날짜순</option>
               <option value="views">조회순</option>
@@ -149,14 +151,24 @@ const QuestionHistory = () => {
         </BoardTop>
         <BoardItemTop>
           <div>No</div>
+          <div>유형</div>
           <div style={{ flex: '2' }}>제목</div>
           <div>작성자</div>
           <div style={{ flex: '2' }}>작성 일자</div>
           <div>처리 현황</div>
         </BoardItemTop>
-        {currentList.map((info) => (
+        {data.map((info) => (
           <BoardItem key={info.boardNo} to={`/question/detail/${info.boardNo}`}>
             <div>{info.boardNo}</div>
+            <div>
+              {info.questionCategory === 'T'
+                ? '기술적 문제'
+                : info.questionCategory === 'S'
+                  ? '서비스 관련'
+                  : info.questionCategory === 'E'
+                    ? '기타'
+                    : '알 수 없음'}
+            </div>
             <div style={{ flex: '2' }}>{info.boardTitle}</div>
             <div>{info.userName}</div>
             <div style={{ flex: '2' }}>{info.createDate}</div>
