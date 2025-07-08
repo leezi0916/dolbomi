@@ -26,8 +26,21 @@ import PostcodeSearch from '../components/PostcodeSearch';
 const PatientRegistration = () => {
   const { user } = useUserStore();
   const navigate = useNavigate();
-  const { register, handleSubmit, errors, onSubmit, watch, setValue, formatPhoneNumber } =
+  const [isopen, setIsOpen] = useState(false);
+  const { register, handleSubmit, errors, onSubmit, watch, setValue, formatPhoneNumber, handleUpload, previewUrl } =
     usepatientRegistrationForm(user);
+
+  const [selectedFile, setSelectedFile] = useState(null);
+
+  console.log('환자쪽', previewUrl);
+  const handleOpen = () => {
+    setIsOpen(!isopen);
+  };
+
+  const handleFileSelect = (event) => {
+    const file = event.target.files[0];
+    setSelectedFile(file);
+  };
 
   useEffect(() => {
     // 일단 접근가능하게 로그인 구현 되면 user -> !user 바꿀것
@@ -68,7 +81,15 @@ const PatientRegistration = () => {
       <AuthContainer>
         <FromWrap>
           <NewTitle>돌봄 대상자 등록</NewTitle>
-          <Img src="/src/assets/profileImg/img_환자소.png"></Img>
+          <input type="file" onChange={handleFileSelect} />
+          <button type="button" onClick={() => handleUpload(selectedFile)}>
+            {' '}
+            클릭{' '}
+          </button>
+
+          {/* {isopen && <FileUpload path="patient/" handlePreview={handlePreview} />} */}
+
+          <Img src={previewUrl} {...register('prfileImage')} $error={errors.patName}></Img>
           <GridForm onSubmit={handleSubmit(onSubmit)}>
             <GridInerContainer>
               <Label htmlFor="patName">이름</Label>

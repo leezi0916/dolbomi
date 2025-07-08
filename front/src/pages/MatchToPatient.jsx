@@ -182,7 +182,9 @@ const MatchToPatient = () => {
                       </UserAge>
                     </ProfileInfo>
                     <ButtonRow>
-                      <InfoButton onClick={() => navigate(`/report/${pat.patNo}`)}>간병일지</InfoButton>
+                      <InfoButton onClick={() => navigate(`/report/${pat.patNo}`,  {
+                                state: { matNo: pat.matNo, status: pat.status },
+                              }) }>간병일지</InfoButton>
                     </ButtonRow>
                   </ProfileCard>
                 </ProfileCardPair>
