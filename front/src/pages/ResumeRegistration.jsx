@@ -99,13 +99,13 @@ const ResumeRegistration = () => {
                   <label htmlFor="female">여성</label>
                 </RadioWrapper>
               </RadioGroup>
-              <InputGroup>
+              {/* <InputGroup>
                 <Label>전화번호</Label>
                 <Input type="text" value={careGiver?.phone || ''} readOnly />
-              </InputGroup>
+              </InputGroup> */}
               <InputGroup>
                 <Label>주소</Label>
-                <Input type="text" value={careGiver?.address || ''} readOnly />
+                <Input type="text" value={careGiver?.address?.split(" ").slice(0, 2).join(" ") || ''} readOnly />
               </InputGroup>
             </Divider>
           </ContentWrapper>

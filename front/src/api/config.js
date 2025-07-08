@@ -62,7 +62,7 @@ export const API_ENDPOINTS = {
     SIMPLE_LIST: '/resume/v1/simple-list',
     LIST: '/resume/v1/list',
     DETAIL: (resumeNo) => `/resume/v1/detail/${resumeNo}`,
-    MYRESUME: (userNo) => `/resume/v1/user/${userNo}`,
+    MYRESUME: (currentPage, userNo) => `/resume/v1/user?page=${currentPage - 1}&userNo=${userNo}`,
     UPDATE: (resumeNo) => `/resume/v1/${resumeNo}`,
   },
 

@@ -180,7 +180,7 @@ function ResumeDetail() {
             </InputGroup> */}
             <InputGroup>
               <Label>주소</Label>
-              <Input type="text" value={resumeData?.address || ''} readOnly />
+              <Input type="text" value={resumeData?.address.split(" ").slice(0, 2).join(" ") || ''} readOnly />
             </InputGroup>
           </Divider>
         </ContentWrapper>

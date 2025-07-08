@@ -7,6 +7,7 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -32,9 +34,12 @@ public class ResumeController {
     }
 
     //내가 작성한 이력서 불러오기
-    @GetMapping("/user/{userNo}")
-    public ResponseEntity<List<ResumeDto.Response>> getResumeList(@PathVariable Long userNo) {
-        return ResponseEntity.ok(resumeService.getResumList(userNo));
+    @GetMapping("/user")
+    public ResponseEntity<PageResponse<ResumeDto.Response>> getResumeList(
+            @RequestParam("userNo") Long userNo,
+            @PageableDefault(size = 12) Pageable pageable
+    ) {
+        return ResponseEntity.ok(new PageResponse<>(resumeService.getResumList(userNo, pageable)));
     }
 
     //이력서 상세보기

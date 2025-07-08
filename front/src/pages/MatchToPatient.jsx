@@ -50,7 +50,6 @@ const MatchToPatient = () => {
     fetchAll();
   }, [user]);
 
-
   const fetchAll = async () => {
     if (!user) {
       alert('로그인 후 이용해주세요');
@@ -80,7 +79,6 @@ const MatchToPatient = () => {
       console.error(err);
     }
   };
-
 
   useEffect(() => {
     const fetchEndedMatching = async () => {
@@ -117,27 +115,23 @@ const MatchToPatient = () => {
             <SubTitle onClick={() => handleTabChange('matched')} $active={activeTab === 'matched'}>
               종료된 매칭
             </SubTitle>
-            <TipP>
-              <CiCircleInfo color="#EF7A46" size={'20px'}></CiCircleInfo> 환자에 마우스를 올려 종료된 매칭 목록을
-              확인하세요.
-            </TipP>
           </Tab>
         </TitleDiv>
       </HeadSection>
 
-        {activeTab === 'matched' ? (
-          <SearchDivWrap>
-            <SearchInput placeholder="찾으시는 돌봄대상자를 검색하세요"></SearchInput>
-            <SearchBtn>
-              <SearchIcon>
-                <IoSearchOutline />
-              </SearchIcon>
-            </SearchBtn>
-          </SearchDivWrap>
-        ) : (
-          <></>
-        )}
-   
+      {/* {activeTab === 'matched' ? (
+        <SearchDivWrap>
+          <SearchInput placeholder="찾으시는 돌봄대상자를 검색하세요"></SearchInput>
+          <SearchBtn>
+            <SearchIcon>
+              <IoSearchOutline />
+            </SearchIcon>
+          </SearchBtn>
+        </SearchDivWrap>
+      ) : (
+        <></>
+      )} */}
+
       {/*진행중 매칭 */}
       <MatchSection>
         {activeTab === 'matching' && (
@@ -163,7 +157,7 @@ const MatchToPatient = () => {
                 </ProfileCardPair>
               ))
             ) : (
-              <InfoP> 매칭된 환자가 없습니다. </InfoP>
+              <EmptyMessage> 매칭된 환자가 없습니다. </EmptyMessage>
             )}
           </>
         )}
@@ -182,15 +176,21 @@ const MatchToPatient = () => {
                       </UserAge>
                     </ProfileInfo>
                     <ButtonRow>
-                      <InfoButton onClick={() => navigate(`/report/${pat.patNo}`,  {
-                                state: { matNo: pat.matNo, status: pat.status },
-                              }) }>간병일지</InfoButton>
+                      <InfoButton
+                        onClick={() =>
+                          navigate(`/report/${pat.patNo}`, {
+                            state: { matNo: pat.matNo, status: pat.status },
+                          })
+                        }
+                      >
+                        간병일지
+                      </InfoButton>
                     </ButtonRow>
                   </ProfileCard>
                 </ProfileCardPair>
               ))
             ) : (
-              <InfoP> 종료된 매칭 환자가 없습니다. </InfoP>
+              <EmptyMessage> 종료된 매칭 환자가 없습니다. </EmptyMessage>
             )}
 
             <Paging currentPage={endedCurrentPage} totalPage={endedTotalPage} chagneCurrentPage={chagneCurrentPage} />
@@ -255,12 +255,11 @@ const MatchSection = styled(Section)`
 `;
 
 const TipP = styled.p`
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 10px;
-`
-
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+`;
 
 const SearchDivWrap = styled.div`
   display: flex;
@@ -391,15 +390,11 @@ const ReportButton = styled.button`
   white-space: nowrap;
 `;
 
-const CareLogButton = styled(InfoButton)`
-  /* InfoButton 스타일을 상속받아 '간병일지' 버튼 스타일링 */
-  /* 필요하다면 여기에서 추가 스타일을 정의할 수 있습니다. */
-  margin-top: ${({ theme }) => theme.spacing[2]}; /* 나이 아래 버튼 간격 */
-  align-self: flex-start; /* 왼쪽 정렬 */
-  border-radius: ${({ theme }) => theme.borderRadius.md};
-`;
-
-const InfoP = styled.p`
-  margin: 50px;
+const EmptyMessage = styled.p`
+  width: 100%;
+  text-align: center;
+  color: ${({ theme }) => theme.colors.gray[3]};
+  font-size: ${({ theme }) => theme.fontSizes.base};
+  padding: ${({ theme }) => theme.spacing[8]} 0;
 `;
 export default MatchToPatient;

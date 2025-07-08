@@ -17,7 +17,7 @@ public interface ResumeService {
 
     Long createResume(Create createResumeDto);
 
-    List<Response> getResumList(Long userNo);
+    Page<Response> getResumList(Long userNo, Pageable pageable);
 
     ResumeDto.Response updateResume(Long userNo, Update updatePatDto);
 
