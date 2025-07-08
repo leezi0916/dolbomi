@@ -95,7 +95,7 @@ const HireList = () => {
     const finalForm = {
       ...data,
       keyword: keyword,
-      region: finalRegionValue.fullAddr,
+      region: finalRegionValue?.fullAddr,
     }; // 최신 상태 생성
 
     setUpdateData(finalForm); // 상태 업데이트
