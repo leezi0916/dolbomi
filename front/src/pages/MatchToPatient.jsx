@@ -50,7 +50,6 @@ const MatchToPatient = () => {
     fetchAll();
   }, [user]);
 
-
   const fetchAll = async () => {
     if (!user) {
       alert('로그인 후 이용해주세요');
@@ -81,7 +80,6 @@ const MatchToPatient = () => {
     }
   };
 
-
   useEffect(() => {
     const fetchEndedMatching = async () => {
       if (!user || activeTab !== 'matched') return;
@@ -102,6 +100,14 @@ const MatchToPatient = () => {
 
   const chagneCurrentPage = (value) => {
     setEndedCurrentPage(value);
+  };
+
+  const CLOUDFRONT_URL = 'https://d20jnum8mfke0j.cloudfront.net/';
+  //이미지 경로 갖고오고 없다면 기본이미지
+  const getProfileImageUrl = (path) => {
+    if (!path) return profileImage; // 기본 이미지
+    const cleanPath = path.replace(/^\//, ''); // 앞에 / 있으면 제거
+    return `${CLOUDFRONT_URL}${cleanPath}`;
   };
 
   return (
@@ -125,19 +131,19 @@ const MatchToPatient = () => {
         </TitleDiv>
       </HeadSection>
 
-        {activeTab === 'matched' ? (
-          <SearchDivWrap>
-            <SearchInput placeholder="찾으시는 돌봄대상자를 검색하세요"></SearchInput>
-            <SearchBtn>
-              <SearchIcon>
-                <IoSearchOutline />
-              </SearchIcon>
-            </SearchBtn>
-          </SearchDivWrap>
-        ) : (
-          <></>
-        )}
-   
+      {activeTab === 'matched' ? (
+        <SearchDivWrap>
+          <SearchInput placeholder="찾으시는 돌봄대상자를 검색하세요"></SearchInput>
+          <SearchBtn>
+            <SearchIcon>
+              <IoSearchOutline />
+            </SearchIcon>
+          </SearchBtn>
+        </SearchDivWrap>
+      ) : (
+        <></>
+      )}
+
       {/*진행중 매칭 */}
       <MatchSection>
         {activeTab === 'matching' && (
@@ -146,7 +152,7 @@ const MatchToPatient = () => {
               patientList.map((pat) => (
                 <ProfileCardPair key={pat.matNo}>
                   <ProfileCard type="patient">
-                    <ProfileImage src={profileImage} alt="환자" />
+                    <ProfileImage src={getProfileImageUrl(pat?.profileImage)} alt="프로필" />
                     <ProfileInfo>
                       <UserName>{pat.patName} 님</UserName>
                       <UserAge>
@@ -174,7 +180,7 @@ const MatchToPatient = () => {
               endedPatientList.map((pat) => (
                 <ProfileCardPair key={pat.matNo}>
                   <ProfileCard type="patient">
-                    <ProfileImage src={profileImage} alt="환자" />
+                    <ProfileImage src={getProfileImageUrl(pat?.profileImage)} alt="프로필" />
                     <ProfileInfo>
                       <UserName>{pat.patName} 님</UserName>
                       <UserAge>
@@ -182,9 +188,15 @@ const MatchToPatient = () => {
                       </UserAge>
                     </ProfileInfo>
                     <ButtonRow>
-                      <InfoButton onClick={() => navigate(`/report/${pat.patNo}`,  {
-                                state: { matNo: pat.matNo, status: pat.status },
-                              }) }>간병일지</InfoButton>
+                      <InfoButton
+                        onClick={() =>
+                          navigate(`/report/${pat.patNo}`, {
+                            state: { matNo: pat.matNo, status: pat.status },
+                          })
+                        }
+                      >
+                        간병일지
+                      </InfoButton>
                     </ButtonRow>
                   </ProfileCard>
                 </ProfileCardPair>
@@ -255,12 +267,11 @@ const MatchSection = styled(Section)`
 `;
 
 const TipP = styled.p`
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 10px;
-`
-
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+`;
 
 const SearchDivWrap = styled.div`
   display: flex;

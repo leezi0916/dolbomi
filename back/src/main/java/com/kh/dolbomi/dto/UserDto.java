@@ -147,6 +147,7 @@ public class UserDto {
         private StatusEnum.Gender gender;
         private List<LicenseDto.Response> licenses;
         private String profile_image;
+        private SocialType social_type;
 
         public static ProfileDto toDto(User user) {
             return ProfileDto.builder()
@@ -164,6 +165,7 @@ public class UserDto {
                                     .collect(Collectors.toList())
                     )
                     .profile_image(user.getProfileImage())
+                    .social_type(user.getSocialType())
                     .build();
         }
     }

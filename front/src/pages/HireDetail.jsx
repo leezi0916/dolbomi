@@ -171,7 +171,7 @@ const HireDetail = () => {
             {proposerList.slice(0, 3).map((list, index) => (
               <ProfileImg
                 key={index}
-                src={list.profileImage ? list.profileImage : caregiverImage} // 기본 이미지로 대체
+                src={getProfileImageUrl(list.profileImage)} // 기본 이미지로 대체
                 style={{ left: `${index * 20}px`, zIndex: proposerList.length - index }}
               />
             ))}
@@ -296,21 +296,23 @@ const HireDetail = () => {
                   <label>불가능</label>
                 </RadioWrapper>
               </RadioGroup>
-              <InputGroup>
-                <Label>숙소 정보</Label>
-                <RoomImage>
-                  {jobOpening.roomImage ? (
-                    <img
-                      src={getProfileImageUrl(jobOpening.roomImage)}
-                      alt="숙소 사진"
-                      style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '4px' }}
-                    />
-                  ) : (
-                    <Plus />
-                  )}
-                </RoomImage>
-                <input type="file" style={{ display: 'none' }} readOnly />
-              </InputGroup>
+              {jobOpening?.careStatus === 'Y' && (
+                <InputGroup>
+                  <Label>숙소 정보</Label>
+                  <RoomImage>
+                    {jobOpening.roomImage ? (
+                      <img
+                        src={getProfileImageUrl(jobOpening.roomImage)}
+                        alt="숙소 사진"
+                        style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '4px' }}
+                      />
+                    ) : (
+                      <Plus />
+                    )}
+                  </RoomImage>
+                  <input type="file" style={{ display: 'none' }} readOnly />
+                </InputGroup>
+              )}
             </HireContent>
           </ContentWrapper1>
         </form>

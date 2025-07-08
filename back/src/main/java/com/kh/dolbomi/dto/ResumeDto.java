@@ -84,6 +84,7 @@ public class ResumeDto {
             return Response.builder()
                     .resume_no(resume.getResumeNo())
                     .resume_title(resume.getResumeTitle())
+                    .profile_image(resume.getUser().getProfileImage())
                     .status(resume.getStatus())
                     .build();
 

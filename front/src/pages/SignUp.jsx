@@ -16,9 +16,9 @@ import { IoCheckmarkOutline } from 'react-icons/io5'; // 체크마크 아이콘 
 import { useSignUpForm } from '../hooks/useSignUpForm';
 import { useLocation } from 'react-router-dom';
 import PostcodeSearch from '../components/PostcodeSearch';
-import { userService } from '../api/users';
-import { toast } from 'react-toastify';
-import { useNavigate } from 'react-router-dom';
+// import { userService } from '../api/users';
+// import { toast } from 'react-toastify';
+// import { useNavigate } from 'react-router-dom';
 
 const SignUp = () => {
   const location = useLocation();
@@ -39,11 +39,12 @@ const SignUp = () => {
     checkUserId,
     idCheckMessage,
     setValue,
-    isIdChecked,
+    // isIdChecked,
     formatPhoneNumber,
+    onSubmit,
   } = useSignUpForm(socialType, socialId);
 
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
   const currentGender = watch('gender');
 
@@ -58,28 +59,6 @@ const SignUp = () => {
     const baseAddress = `${addressData.address}${addressData.extraAddress}`.trim();
     setValue('address', baseAddress);
   }, [addressData, setValue]);
-
-  const onSubmit = async (data) => {
-    if (!isIdChecked) {
-      toast.error('아이디 중복을 확인해주세요.');
-      return;
-    }
-
-    // 기본주소 + 참고주소는 data.address에 있고, 상세주소는 별도로 추가
-    const submitData = {
-      ...data,
-      address: `${data.address}`.trim(),
-    };
-
-    try {
-      await userService.signUp(submitData);
-      toast.success('회원가입 완료!');
-      navigate('/login');
-    } catch (error) {
-      toast.error('회원가입 중 문제가 발생하였습니다.');
-      console.error(error);
-    }
-  };
 
   return (
     <AuthContainer>
