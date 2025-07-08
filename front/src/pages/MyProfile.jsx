@@ -24,8 +24,11 @@ import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import PostcodeSearch from '../components/PostcodeSearch';
 const MyProfile = () => {
+  // const profileImageUrl = profile?.profileImage ? CLOUDFRONT_URL + profile.profileImage : null;
+  const CLOUDFRONT_URL = 'https://d20jnum8mfke0j.cloudfront.net/';
   const userNo = useUserStore((state) => state.user?.userNo);
   const [profile, setProfile] = useState(null);
+  console.log('profile.profileImage:', profile?.profileImage);
   const [licenseList, setLicenseList] = useState([]);
   const [selectedFile, setSelectedFile] = useState(null); // 추가
   const [formData, setFormData] = useState({
@@ -115,6 +118,12 @@ const MyProfile = () => {
     };
     loadProfile();
   }, [userNo]);
+
+  useEffect(() => {
+    if (profile) {
+      console.log('📸 profile.profileImage:', profile.profileImage);
+    }
+  }, [profile]);
 
   const { validateAndSubmit, updating } = useUserUpdateForm({ profile });
 
@@ -218,6 +227,16 @@ const MyProfile = () => {
       toast.error('회원탈퇴 처리 중 오류가 발생했습니다.');
     }
   };
+  
+  const getProfileImageUrl = () => {
+    if (previewUrl) return previewUrl;
+    if (profile?.profileImage) {
+      const baseUrl = CLOUDFRONT_URL.replace(/\/$/, '');
+      const imgPath = profile.profileImage.replace(/^\//, '');
+      return `${baseUrl}/${imgPath}`;
+    }
+    return profileImg; // 기본 이미지
+  };
 
   if (loading) {
     return (
@@ -241,16 +260,18 @@ const MyProfile = () => {
         <NewTitle>회원정보 수정 / 탈퇴</NewTitle>
         <Form onSubmit={handleSubmit}>
           <ProfileImage onClick={handleDivClick}>
-            {previewUrl ? (
-              <img
-                src={previewUrl || profileImg}
-                alt="미리보기"
-                style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '50%' }}
-              />
-            ) : (
-              <Plus />
-            )}
+            <img
+              src={getProfileImageUrl()}
+              alt="프로필 이미지"
+              style={{
+                width: '100%',
+                height: '100%',
+                objectFit: 'cover',
+                borderRadius: '50%',
+              }}
+            />
           </ProfileImage>
+
           <input type="file" accept="image/*" ref={inputRef} onChange={handleFileChange} style={{ display: 'none' }} />
           <InputGroup>
             <Label htmlFor="userId">아이디</Label>

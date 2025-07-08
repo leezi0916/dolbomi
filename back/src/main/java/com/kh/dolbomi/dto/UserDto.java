@@ -1,6 +1,7 @@
 package com.kh.dolbomi.dto;
 
 import com.kh.dolbomi.domain.User;
+import com.kh.dolbomi.enums.SocialType;
 import com.kh.dolbomi.enums.StatusEnum;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -39,6 +40,9 @@ public class UserDto {
         @Email(message = "올바른 이메일 형식이 아닙니다.")
         private String email;
 
+        // 소셜타입, 아이디 추가
+        private SocialType social_type;
+        private String social_id;
 
         public User toEntity() {
             return User.builder()
@@ -50,6 +54,8 @@ public class UserDto {
                     .phone(this.phone)
                     .address(this.address)
                     .email(this.email)
+                    .socialType(this.social_type)
+                    .socialId(this.social_id)
                     .build();
         }
     }
@@ -113,6 +119,7 @@ public class UserDto {
         private String phone;
         private String email;
         private String address;
+        private String profileImage;
 
         // 자격증 여러 개를 받도록 리스트로 수정
         private List<LicenseDto.Response> licenses;
@@ -136,6 +143,7 @@ public class UserDto {
         private Integer age;
         private StatusEnum.Gender gender;
         private List<LicenseDto.Response> licenses;
+        private String profile_image;
 
         public static ProfileDto toDto(User user) {
             return ProfileDto.builder()
@@ -152,9 +160,10 @@ public class UserDto {
                                     .map(LicenseDto::toDto)
                                     .collect(Collectors.toList())
                     )
+                    .profile_image(user.getProfileImage())
                     .build();
         }
     }
 
-    
+
 }

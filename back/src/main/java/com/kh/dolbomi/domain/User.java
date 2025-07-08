@@ -1,6 +1,7 @@
 package com.kh.dolbomi.domain;
 
 import com.kh.dolbomi.enums.Role;
+import com.kh.dolbomi.enums.SocialType;
 import com.kh.dolbomi.enums.StatusEnum;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -71,6 +72,13 @@ public class User {
 
     @Column(name = "PROFILE_IMAGE", length = 100)
     private String profileImage;
+
+
+    @Enumerated(EnumType.STRING)
+    private SocialType socialType;
+
+    @Column(name = "SOCIAL_ID", unique = true, length = 50)
+    private String socialId;
 
 //    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
 
