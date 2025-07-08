@@ -8,6 +8,8 @@ import { Link, useParams } from 'react-router-dom';
 import { ButtonText, SubmitButton } from '../styles/common/Button';
 import { patientService } from '../api/patient';
 import useUserStatusStore from '../store/userStatusStore';
+import { matchingService } from '../api/matching';
+import { useLocation } from 'react-router-dom';
 
 const ReportMain = () => {
   const { patNo } = useParams(); // URL의 :patNo 값 가져오기
@@ -22,10 +24,21 @@ const ReportMain = () => {
   // 일지목록에서 가져온, 드롭다운박스에 넣을 날짜들과 작성자들
   const uniqueDates = [...new Set(allReport.map((report) => report.createDate.slice(0, 10)))];
   const uniqueAuthors = [...new Set(allReport.map((report) => report.userName))];
+  const location = useLocation();
+  const status = location.state?.status;
 
   const formatPhoneNumber = (phone = '') => {
     return phone.replace(/(\d{3})(\d{4})(\d{4})/, '$1-$2-$3');
   };
+
+  //  const statusMatching = async () =>  {
+  //   try{
+  //       const status = await matchingService.findStatus(matNo)
+
+  //   }catch(error){
+  // console.log(error)
+  //   }
+  //  }
 
   useEffect(() => {
     const patient = async () => {
@@ -119,7 +132,7 @@ const ReportMain = () => {
                   <ButtonText>목록으로</ButtonText>
                 </SubmitButton>
               </Link>
-              {userStatus || (
+              {!(userStatus || status === 'N') && (
                 <Link to={`/caregiver/reportform/${patNo}`} state={pat.patName}>
                   <SubmitButton>
                     <ButtonText>글쓰기</ButtonText>

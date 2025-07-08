@@ -2,7 +2,12 @@ import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { getUploadUrl, uploadFileToS3, getAllFiles, getDownloadUrl, completeUpload } from '../api/fileApi';
 
+
 const CLOUDFRONT_URL = 'https://d20jnum8mfke0j.cloudfront.net/';
+
+const IsImage = (fileName) => /\.(jpg|jpeg|png|gif|bmp|webp)$/i.test(fileName);
+
+
 
 const Container = styled.div`
   max-width: 800px;
@@ -151,9 +156,9 @@ const ButtonWrapper = styled.div`
   gap: 0.5rem;
 `;
 
-const isImage = (fileName) => /\.(jpg|jpeg|png|gif|bmp|webp)$/i.test(fileName);
 
-const FileUpload = () => {
+
+const FileUpload = ({path, handlePreview}) => {
   const [files, setFiles] = useState([]);
   const [isUploading, setIsUploading] = useState(false);
   const [selectedFile, setSelectedFile] = useState(null);
@@ -222,9 +227,9 @@ const FileUpload = () => {
     }
   };
 
-  const handlePreview = (changeName) => {
-    setPreviewUrl(CLOUDFRONT_URL + changeName);
-  };
+  // const handlePreview = (changeName) => {
+  //   setPreviewUrl(CLOUDFRONT_URL + changeName);
+  // };
 
   return (
     <Container>

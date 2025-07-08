@@ -54,7 +54,6 @@ public class HiringController {
     @GetMapping("/list")
     public ResponseEntity<PageResponse<HiringDto.Response>> getPagedHiringList(
             Pageable pageable
-
 //          ,@Valid SearchDataDto searchDataDto
     ) {
 //        @PageableDefault(size = 10, sort = "createDate", direction = Sort.Direction.DESC)

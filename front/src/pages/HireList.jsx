@@ -110,7 +110,7 @@ const HireList = () => {
       console.log('검색조건 JSON 데이터:', searchData);
       setLoading(true);
       setError(null);
-      const res = await hiringService.getHiringList({ page: pageNumber, size: pageSize, searchData });
+      const res = await hiringService.getHiringList({ page: pageNumber, size: pageSize, searchData});
       console.log('돌봄대상자 Response:', res); // 여기서 totalPages, content 등 확인
       if (res.totalElements === 0) {
         setHireLists([]);
@@ -169,7 +169,11 @@ const HireList = () => {
       }
       setInternalStartDate(newStartDate);
       // data 객체에도 문자열 형태로 반영
-      setData((data) => ({ ...data, startDate: newStartDate ? newStartDate.toISOString().split('T')[0] : '' }));
+      // setData((data) => ({ ...data, startDate: newStartDate ? newStartDate.toISOString().split('T')[0] : '' }));
+      setData((data) => ({
+        ...data,
+        startDate: newStartDate ? new Date(newStartDate).toISOString().slice(0, 19) : '',
+      }));
     }
     //종료일 유효성
     else if (name === 'endDate') {
