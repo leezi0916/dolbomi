@@ -60,4 +60,6 @@ public class FileController {
     public ResponseEntity<List<File>> getAllFiles() {
         return ResponseEntity.ok(fileService.getAllFiles());
     }
+
+    
 }
