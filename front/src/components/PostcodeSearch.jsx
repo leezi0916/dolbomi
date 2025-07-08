@@ -55,9 +55,11 @@ const PostcodeSearch = ({ onAddressSelected }) => {
         document.body.scrollTop = currentScroll;
         document.documentElement.scrollTop = currentScroll;
       },
+      //여기서 속성추가 가능
       width: '100%',
       height: '100%',
       maxSuggestItems: 5,
+      shorthand: false,
     }).embed(layerRef.current);
 
     if (layerRef.current) {
@@ -70,8 +72,8 @@ const PostcodeSearch = ({ onAddressSelected }) => {
   const centerLayer = () => {
     if (!layerRef.current) return;
 
-    const width = 300;
-    const height = 400;
+    const width = 500;
+    const height = 600;
     const borderWidth = 5;
 
     layerRef.current.style.width = `${width}px`;
