@@ -32,36 +32,36 @@ export const commuService = {
   //     throw new Error('서버 통신 불량');
   //   }
   // },
-  getCaregiver: async () => {
+  getCaregiver: async (page, size) => {
     try {
-      const { data } = await api.get(API_ENDPOINTS.COMMUNITY.CAREGIVER);
+      const { data } = await api.get(API_ENDPOINTS.COMMUNITY.CAREGIVER(page, size));
       return snakeToCamel(data);
     } catch (error) {
       console.log('게시판정보를 가져오지 못함 : ', error.response?.data?.message || '게시판목록 불러오기 실패');
       throw new Error('서버 통신 불량');
     }
   },
-  getQuestion: async () => {
+  getQuestion: async (page, size) => {
     try {
-      const { data } = await api.get(API_ENDPOINTS.COMMUNITY.QUESTION);
+      const { data } = await api.get(API_ENDPOINTS.COMMUNITY.QUESTION(page, size));
       return snakeToCamel(data);
     } catch (error) {
       console.log('게시판정보를 가져오지 못함 : ', error.response?.data?.message || '게시판목록 불러오기 실패');
       throw new Error('서버 통신 불량');
     }
   },
-  getQuestionHistory: async (userNo) => {
+  getQuestionHistory: async (userNo, page, size) => {
     try {
-      const { data } = await api.get(API_ENDPOINTS.COMMUNITY.QUESTION_HISTORY(userNo));
+      const { data } = await api.get(API_ENDPOINTS.COMMUNITY.QUESTION_HISTORY(userNo, page, size));
       return snakeToCamel(data);
     } catch (error) {
       console.log(`질문 상세(${userNo})를 가져오지 못함: `, error.response?.data?.message || '실패');
       throw new Error('서버 통신 불량');
     }
   },
-  getGuardian: async () => {
+  getGuardian: async (page, size) => {
     try {
-      const { data } = await api.get(API_ENDPOINTS.COMMUNITY.GUARDIAN);
+      const { data } = await api.get(API_ENDPOINTS.COMMUNITY.GUARDIAN(page, size));
       return snakeToCamel(data);
     } catch (error) {
       console.log('게시판정보를 가져오지 못함 : ', error.response?.data?.message || '게시판목록 불러오기 실패');

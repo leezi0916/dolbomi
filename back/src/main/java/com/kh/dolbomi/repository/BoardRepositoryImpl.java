@@ -46,7 +46,7 @@ public class BoardRepositoryImpl implements BoardRepository {
     public Page<Board> findByUserNo(Status status, Role role, Long userNo, Pageable pageable) {
         // 1. 페이징된 데이터 조회
         List<Board> content = em.createQuery(
-                        "SELECT b FROM Board b WHERE b.status = :status AND b.role = :role AND b.user.userNo = :userNo ORDER BY b.boardNo DESC",
+                        "SELECT b FROM Board b WHERE b.status = :status AND b.role = :role AND b.user.userNo = :userNo ORDER BY b.createDate DESC",
                         Board.class)
                 .setParameter("status", status)
                 .setParameter("role", role)
