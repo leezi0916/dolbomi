@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import useUserStore from '../../store/userStore';
 import theme from '../../styles/theme';
@@ -9,33 +9,75 @@ import { BodyTop, FileBox, FileTitle, Icons, Left, PageBody, PageTitle, PageTop 
 import { commuService } from '../../api/community';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
+import { ClipLoader } from 'react-spinners';
 
-const CreateCommuBoardForm = () => {
+const UpdateCommuBoardForm = () => {
   const userNo = useUserStore((state) => state.user?.userNo);
   const userName = useUserStore((state) => state.user?.userName);
-  const { role } = useParams();
+  const { boardNo } = useParams();
 
   const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [data, setDate] = useState(null);
+
   const navigate = useNavigate();
-  const { register, handleSubmit } = useForm();
+  const { register, handleSubmit, reset } = useForm();
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const onSubmit = async (data) => {
-    if (!data.boardTitle.trim() || !data.boardContent.trim()) {
+  const [images, setImages] = useState([]);
+  const fileInputRef = useRef(null);
+
+  useEffect(() => {
+    const loadCommunity = async () => {
+      try {
+        const community = await commuService.getCommunityDetail(boardNo);
+        console.log(community);
+        setDate(community);
+        reset({
+          boardTitle: community.boardTitle,
+          boardContent: community.boardContent,
+        });
+        if (community.userNo !== userNo) {
+          toast.error('작성자만 수정 가능합니다.');
+          navigate(-1);
+        }
+      } catch (error) {
+        console.error(error);
+        const errorMessage = '목록을 불러오는데 실패했습니다.';
+        setError(errorMessage);
+        toast.error(errorMessage);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadCommunity();
+  }, [boardNo, reset, userNo, navigate]);
+
+  if (loading) {
+    return (
+      <div>
+        <ClipLoader size={50} aria-label="Loading Spinner" />
+      </div>
+    );
+  }
+
+  const onSubmit = async (updateData) => {
+    if (!updateData.boardTitle.trim() || !updateData.boardContent.trim()) {
       alert('제목과 내용을 모두 입력해주세요.');
       return;
     }
+
     console.log(userNo);
     try {
       setIsSubmitting(true);
       const boardData = {
-        board_title: data.boardTitle,
-        board_content: data.boardContent,
-        user_no: userNo,
-        role: role,
+        board_title: updateData.boardTitle,
+        board_content: updateData.boardContent,
+        board_no: data.boardNo,
       };
 
-      const response = await commuService.createCommunity(boardData);
+      const response = await commuService.updateCommunity(boardData);
       console.log(response);
 
       // 이미지 업로드 별도 처리 (샘플용)
@@ -54,12 +96,11 @@ const CreateCommuBoardForm = () => {
       //   );
       //   await Promise.all(imagePromises);
       // }
-      toast.success('등록되었습니다');
-      if (role === 'C') navigate('/community/caregiver');
-      else navigate('/community/guardian');
+      toast.success('수정되었습니다');
+      navigate(-1);
     } catch (error) {
       console.error(error);
-      const errorMessage = '등록에 실패했습니다. 다시 시도해주세요.';
+      const errorMessage = '수정에 실패했습니다. 다시 시도해주세요.';
       setError(errorMessage);
       toast.error(errorMessage);
     } finally {
@@ -68,8 +109,6 @@ const CreateCommuBoardForm = () => {
   };
   //
   //이미지 관련
-  const [images, setImages] = useState([]);
-  const fileInputRef = useRef(null);
   const handleClick = () => {
     fileInputRef.current.click(); // 숨겨진 input을 클릭
   };
@@ -102,7 +141,7 @@ const CreateCommuBoardForm = () => {
     <Page>
       <PageInfo>
         <PageTop>
-          {role === 'C' ? <PageTitle>간병 게시판 등록</PageTitle> : <PageTitle>보호자 게시판 등록</PageTitle>}
+          {data.role === 'C' ? <PageTitle>간병 게시판 수정</PageTitle> : <PageTitle>보호자 게시판 수정</PageTitle>}
         </PageTop>
         <form onSubmit={handleSubmit(onSubmit)}>
           <PageBody>
@@ -159,9 +198,7 @@ const CreateCommuBoardForm = () => {
               <button type="button" onClick={() => navigate(-1)}>
                 이전으로
               </button>
-              <button type="submit" onClick={handleSubmit}>
-                등록하기
-              </button>
+              <button type="submit">등록하기</button>
             </BtnBox>
           </PageBody>
         </form>
@@ -262,4 +299,4 @@ const PageEndBox = styled.div`
   }
 `;
 
-export default CreateCommuBoardForm;
+export default UpdateCommuBoardForm;

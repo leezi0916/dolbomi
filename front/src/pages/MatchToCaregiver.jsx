@@ -136,6 +136,17 @@ const MatchToCaregiver = () => {
     }
   };
 
+  const CLOUDFRONT_URL = 'https://d20jnum8mfke0j.cloudfront.net/';
+  //이미지 경로 갖고오고 없다면 기본이미지
+
+  const getProfileImageUrl = (path, type = 'caregiver') => {
+    if (!path) {
+      return type === 'patient' ? pat_profileImage : care_profileImage;
+    }
+    const cleanPath = path.replace(/^\//, ''); // 슬래시 제거
+    return `${CLOUDFRONT_URL}${cleanPath}`;
+  };
+  console.log(caregiverList);
   return (
     <>
       <HeadSection>
@@ -166,7 +177,14 @@ const MatchToCaregiver = () => {
                 {userPatients && userPatients.length > 0 ? (
                   userPatients?.map((pat) => (
                     <ProfileCard key={pat.patNo} type="patient" onMouseEnter={() => getCareGiver(pat.patNo)}>
-                      <ProfileImage src={pat_profileImage} alt="환자" />
+                      <ProfileImage
+                        src={getProfileImageUrl(pat.profileImage, 'patient')}
+                        alt="환자"
+                        onError={(e) => {
+                          e.target.onerror = null;
+                          e.target.src = pat_profileImage;
+                        }}
+                      />
                       <ProfileInfo>
                         <UserName>{pat.patName} 님</UserName>
                         <UserAge>
@@ -185,7 +203,14 @@ const MatchToCaregiver = () => {
                   caregiverList?.map((care) => (
                     <>
                       <CargiverWrap key={care.caregiverNo}>
-                        <CaregiverImg src={care_profileImage} alt="" />
+                        <CaregiverImg
+                          src={getProfileImageUrl(care.caregiverProfileImage, 'caregiver')}
+                          alt="간병인"
+                          onError={(e) => {
+                            e.target.onerror = null;
+                            e.target.src = care_profileImage;
+                          }}
+                        />
                         <CaregiverTextDiv>
                           <ProfileTextGray>
                             <ProfileTextStrong>{care.userName}</ProfileTextStrong> 님

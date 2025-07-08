@@ -244,6 +244,14 @@ const HireList = () => {
     }
   };
 
+  const CLOUDFRONT_URL = 'https://d20jnum8mfke0j.cloudfront.net/';
+  //이미지 경로 갖고오고 없다면 기본이미지
+  const getProfileImageUrl = (path) => {
+    if (!path) return profileImage; // 기본 이미지
+    const cleanPath = path.replace(/^\//, ''); // 앞에 / 있으면 제거
+    return `${CLOUDFRONT_URL}${cleanPath}`;
+  };
+
   return (
     <>
       <SearchSection>
@@ -403,7 +411,8 @@ const HireList = () => {
           {hireLists.map((hire) => (
             <HireListCard key={hire.hiringNo} to={`/hireDetail/${hire.hiringNo}`}>
               <CardHeader>
-                <ProfileImage src={hire.profileImage || profileImage} alt="프로필" />
+                <ProfileImage src={getProfileImageUrl(hire.profileImage)} alt="프로필" />
+
                 <HeaderContent>
                   <Divder>
                     <UserInfo>

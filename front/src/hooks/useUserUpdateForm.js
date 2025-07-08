@@ -88,11 +88,11 @@ const useUserUpdateForm = ({ profile }) => {
           await uploadFileToS3(presignedUrl, profileImageFile);
 
           // 3. 파일 업로드 완료 후 메타데이터 저장
-          const fileMeta = await completeUpload(profileImageFile.name, changeName, profileImageFile.type);
-          console.log('completeUpload 응답:', fileMeta); // 👈 이걸 반드시 찍어보세요
+          // const fileMeta = await completeUpload(profileImageFile.name, changeName, profileImageFile.type);
+          // console.log('completeUpload 응답:', fileMeta); // 👈 이걸 반드시 찍어보세요
 
           // 4. 유저 프로필에 파일명 저장
-          updatedData.profileImage = fileMeta.changeName;
+          updatedData.profileImage = changeName;
         } catch (uploadError) {
           toast.error('프로필 이미지 업로드에 실패했습니다.');
           setUpdating(false);

@@ -22,6 +22,7 @@ const CaregiverList = () => {
   const [page, setPage] = useState(1);
   const [size] = useState(10);
   const [totalPages, setTotalPages] = useState(0);
+
   //검색창
   const [keyword, setKeyword] = useState('');
   const navigate = useNavigate();
@@ -77,6 +78,15 @@ const CaregiverList = () => {
     setCareStatus(e.target.checked);
     // 이 상태 변경 역시 위에 있는 useEffect를 트리거하여 자동으로 검색을 실행시킬 것입니다.
   };
+
+  const CLOUDFRONT_URL = 'https://d20jnum8mfke0j.cloudfront.net/';
+  //이미지 경로 갖고오고 없다면 기본이미지
+  const getProfileImageUrl = (path) => {
+    if (!path) return profileImage; // 기본 이미지
+    const cleanPath = path.replace(/^\//, ''); // 앞에 / 있으면 제거
+    return `${CLOUDFRONT_URL}${cleanPath}`;
+  };
+
   return (
     <>
       <SearchSection>
@@ -190,7 +200,8 @@ const CaregiverList = () => {
           {caregiverLists.map((resume) => (
             <HireListCard onClick={() => navigate(`/caregiver/resumeDetail/${resume.resumeNo}`)} key={resume.resumeNo}>
               <CardHeader>
-                <ProfileImage src={resume.profileImage || profileImage} alt="프로필" />
+                <ProfileImage src={getProfileImageUrl(resume.profileImage)} alt="프로필" />
+
                 <HeaderContent>
                   <Divder>
                     <UserInfo>

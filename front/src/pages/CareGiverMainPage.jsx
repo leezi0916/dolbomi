@@ -56,6 +56,15 @@ const CareGiverMainPage = () => {
 
   const navigate = useNavigate();
 
+  const CLOUDFRONT_URL = 'https://d20jnum8mfke0j.cloudfront.net/';
+
+  //이미지 경로 갖고오고 없다면 기본이미지
+  const getProfileImageUrl = (path) => {
+    if (!path) return defaultImage; // 기본 이미지
+    const cleanPath = path.replace(/^\//, ''); // 앞에 / 있으면 제거
+    return `${CLOUDFRONT_URL}${cleanPath}`;
+  };
+
   return (
     <>
       <HomeBannerSection>
@@ -91,7 +100,7 @@ const CareGiverMainPage = () => {
               jobOpeningList.all?.map((jobOpening) => (
                 <Card key={jobOpening.hiringNo}>
                   <CardTopContent>
-                    <CardImage src={jobOpening.profileImage} alt="프로필" />
+                    <CardImage src={getProfileImageUrl(jobOpening.profileImage)} alt="프로필" />
                     <CardTextGroup>
                       <CardTitle>{maskName(jobOpening.patName)} 님</CardTitle>
                       <CardText>
@@ -130,7 +139,7 @@ const CareGiverMainPage = () => {
               jobOpeningList.careOnly?.map((jobOpening) => (
                 <Card key={jobOpening.hiringNo}>
                   <CardTopContent>
-                    <CardImage src={jobOpening.profileImage} alt="프로필" />
+                    <CardImage src={getProfileImageUrl(jobOpening.profileImage)} alt="프로필" />
                     <CardTextGroup>
                       <CardTitle>{maskName(jobOpening.patName)} 님</CardTitle>
                       <CardText>

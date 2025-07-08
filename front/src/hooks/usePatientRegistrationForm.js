@@ -3,7 +3,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { patientService } from '../api/patient';
 import { useNavigate } from 'react-router-dom';
-import { getUploadUrl, uploadFileToS3, completeUpload, getAllFiles } from '../api/fileApi';
+import { getUploadUrl, uploadFileToS3 } from '../api/fileApi';
 
 import { useState } from 'react';
 
@@ -46,8 +46,7 @@ export const usepatientRegistrationForm = (user) => {
   const navigate = useNavigate();
 
   const [previewUrl, setPreviewUrl] = useState(null);
-
-  const CLOUDFRONT_URL = 'https://d20jnum8mfke0j.cloudfront.net/';
+  const [selectedFile, setSelectedFile] = useState(null); // 추가
 
   //react-hook-form으로 폼 상태 초기화및 유효성 검사
   const {
@@ -75,43 +74,78 @@ export const usepatientRegistrationForm = (user) => {
     return `${numbersOnly.slice(0, 3)}-${numbersOnly.slice(3, 7)}-${numbersOnly.slice(7, 11)}`;
   };
 
-  const onSubmit = async (data) => {
-    try {
-      await patientService.postNewPatient({
-        guardianNo: user.userNo,
-        patName: data.patName,
-        patAge: data.patAge,
-        patPhone: data.patPhone,
-        patAddress: data.patAddress,
-        patGender: data.patGender,
-        patHeight: data.patHeight,
-        patWeight: data.patWeight,
-        patContent: data.patContent,
-        diseaseTags: data.tags,
-      });
+  const handleFileChange = (e) => {
+    const file = e.target.files?.[0];
 
-      navigate('/modal');
+    if (file) {
+      setSelectedFile(file); // 파일 저장
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setPreviewUrl(reader.result);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+
+  const onSubmit = async (formData) => {
+    try {
+      console.log('test', selectedFile);
+
+      // 이미지가 선택되었는지 체크
+      const imageChanged = !!selectedFile;
+
+      // 프로필 이미지가 변경된 경우
+      if (imageChanged) {
+        // 1. Presigned URL 요청
+        const { presignedUrl, changeName } = await getUploadUrl(
+          selectedFile.name,
+          selectedFile.type,
+          'patient/' // 업로드 경로
+        );
+
+        console.log('Presigned URL 응답:', { presignedUrl, changeName });
+
+        // 2. S3 직접 업로드
+        await uploadFileToS3(presignedUrl, selectedFile);
+
+        await patientService.postNewPatient({
+          guardianNo: user.userNo,
+          patName: formData.patName,
+          patAge: formData.patAge,
+          patPhone: formData.patPhone,
+          patAddress: formData.patAddress,
+          patGender: formData.patGender,
+          patHeight: formData.patHeight,
+          patWeight: formData.patWeight,
+          patContent: formData.patContent,
+          diseaseTags: formData.tags,
+          profileImage: changeName,
+        });
+
+        navigate('/modal');
+      }
     } catch (error) {
       console.error('돌봄대상자 등록 에러 : ', error);
     }
   };
 
-  const handleUpload = async (file) => {
-    try {
-      console.log('확인', file.type);
-      // 1. Presigned URL 발급 (path와 fileName 분리해서 전송)
+  // const handleUpload = async (file) => {
+  //   try {
+  //     console.log('확인', file.type);
+  //     // 1. Presigned URL 발급 (path와 fileName 분리해서 전송)
 
-      const { presignedUrl, changeName } = await getUploadUrl(file.name, file.type, 'patient/');
-      console.log('확인', presignedUrl);
-      // 2. S3에 파일 업로드
-      await uploadFileToS3(presignedUrl, file);
+  //     const { presignedUrl, changeName } = await getUploadUrl(file.name, file.type, 'patient/');
+  //     console.log('확인', presignedUrl);
+  //     // 2. S3에 파일 업로드
+  //     await uploadFileToS3(presignedUrl, file);
 
-      setPreviewUrl(CLOUDFRONT_URL + changeName);
-      console.log(previewUrl);
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  //     setPreviewUrl(CLOUDFRONT_URL + changeName);
+  //     console.log(previewUrl);
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
 
   //컴포넌트에서 사용할 값들 반환
   return {
@@ -123,7 +157,8 @@ export const usepatientRegistrationForm = (user) => {
     formatPhoneNumber,
     onSubmit,
     previewUrl,
-    handleUpload,
+    selectedFile,
+    handleFileChange,
     watch, // watch 함수를 반환합니다.
   };
 };
