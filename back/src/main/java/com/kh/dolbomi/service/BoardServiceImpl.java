@@ -13,8 +13,10 @@ import com.kh.dolbomi.repository.BoardRepositoryV2;
 import com.kh.dolbomi.repository.ReplyRepositoryV2;
 import com.kh.dolbomi.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.NoSuchElementException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -103,10 +105,47 @@ public class BoardServiceImpl implements BoardService {
     }
 
     @Override
-    public Response getCommunityDetail(Long boardNo) {
-        return boardRepository.findByBoardNo(boardNo)
-                .map(BoardDto.Response::toDto)
-                .orElseThrow(() -> new NoSuchElementException("해당 게시글이 존재하지 않습니다."));
+    public Response getCommunityDetail(Long boardNo,
+                                       HttpServletRequest request,
+                                       HttpServletResponse response) {
+//        return boardRepository.findByBoardNo(boardNo)
+//                .map(BoardDto.Response::toDto)
+//                .orElseThrow(() -> new NoSuchElementException("해당 게시글이 존재하지 않습니다."));
+        //
+//        Board board = boardRepository.findByBoardNo(boardNo)
+//                .orElseThrow(() -> new RuntimeException("게시글 없음"));
+//
+//        board.increaseViews();
+//        return BoardDto.Response.toDto(board);
+
+        // 쿠키에서 조회 기록 확인
+        boolean alreadyViewed = false;
+        Cookie[] cookies = request.getCookies();
+
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if (cookie.getName().equals("viewed_" + boardNo)) {
+                    alreadyViewed = true;
+                    break;
+                }
+            }
+        }
+
+        // 게시글 조회
+        Board board = boardRepository.findByBoardNo(boardNo)
+                .orElseThrow(() -> new RuntimeException("게시글 없음"));
+
+        // 조회수 증가 조건
+        if (!alreadyViewed) {
+            board.increaseViews();
+
+            Cookie viewCookie = new Cookie("viewed_" + boardNo, "true");
+            viewCookie.setMaxAge(60 * 60); // 1시간
+            viewCookie.setPath("/");
+            response.addCookie(viewCookie);
+        }
+
+        return BoardDto.Response.toDto(board);
     }
 
     @Override

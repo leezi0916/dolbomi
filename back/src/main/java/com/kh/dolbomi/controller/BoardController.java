@@ -5,6 +5,8 @@ import com.kh.dolbomi.dto.BoardDto.Response;
 import com.kh.dolbomi.dto.PageResponse;
 import com.kh.dolbomi.dto.ReplyDto;
 import com.kh.dolbomi.service.BoardService;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
@@ -57,8 +59,10 @@ public class BoardController {
     }
 
     @GetMapping("/detail")
-    public ResponseEntity<BoardDto.Response> getCommunityDetail(@RequestParam("board_no") Long boardNo) {
-        return ResponseEntity.ok(boardService.getCommunityDetail(boardNo));
+    public ResponseEntity<BoardDto.Response> getCommunityDetail(@RequestParam("board_no") Long boardNo,
+                                                                HttpServletRequest request,
+                                                                HttpServletResponse response) {
+        return ResponseEntity.ok(boardService.getCommunityDetail(boardNo, request, response));
     }
 
     @GetMapping("/question")

@@ -73,6 +73,10 @@ public class Board {
 
     private int count;
 
+    public void increaseViews() {
+        this.count += 1;
+    }
+
     public void changeUser(User user) {
         this.user = user;
         if (!user.getBoards().contains(this)) {
