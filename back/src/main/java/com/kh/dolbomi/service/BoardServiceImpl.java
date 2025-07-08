@@ -154,7 +154,7 @@ public class BoardServiceImpl implements BoardService {
                 .orElseThrow(() -> new EntityNotFoundException("회원을 찾을 수 없습니다."));
 
         Board board = boardRepository.findByBoardNo(replyCreate.getBoard_no())
-                .orElseThrow(() -> new EntityNotFoundException("회원을 찾을 수 없습니다."));
+                .orElseThrow(() -> new EntityNotFoundException("게시물을 찾을 수 없습니다."));
 
         Reply reply = replyCreate.toEntity();
         reply.changeUser(user);
@@ -180,7 +180,7 @@ public class BoardServiceImpl implements BoardService {
                 .orElseThrow(() -> new EntityNotFoundException("회원을 찾을 수 없습니다."));
 
         Board board = boardRepository.findByBoardNo(replyCreate.getBoard_no())
-                .orElseThrow(() -> new EntityNotFoundException("회원을 찾을 수 없습니다."));
+                .orElseThrow(() -> new EntityNotFoundException("게시물을 찾을 수 없습니다."));
 
         Reply reply = replyCreate.toEntity();
         reply.changeUser(user);
@@ -190,6 +190,14 @@ public class BoardServiceImpl implements BoardService {
         boardRepositoryV2.save(board);
 
         return replyRepositoryV2.save(reply).getReplyNo();
+    }
+
+    @Override
+    public Long updateBoard(BoardDto.Update boardUpdate) {
+        Board board = boardRepository.findByBoardNo(boardUpdate.getBoard_no())
+                .orElseThrow(() -> new EntityNotFoundException("게시물을 찾을 수 없습니다."));
+        board.update(boardUpdate);
+        return boardRepositoryV2.save(board).getBoardNo();
     }
 
 

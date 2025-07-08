@@ -34,6 +34,17 @@ public class BoardDto {
 
     @Getter
     @AllArgsConstructor
+    public static class Update {
+
+        @NotBlank(message = "제목은 필수입니다.")
+        private String board_title;
+        private String board_content;
+        private Long board_no;
+
+    }
+
+    @Getter
+    @AllArgsConstructor
     public static class CreateQuestion {
 
         @NotBlank(message = "제목을 적어주세요.")

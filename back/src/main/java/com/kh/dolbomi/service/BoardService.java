@@ -28,4 +28,6 @@ public interface BoardService {
     Long createQuestion(BoardDto.CreateQuestion questionCreate);
 
     Long createReplyQuestion(ReplyDto.Create replyCreate);
+
+    Long updateBoard(BoardDto.Update boardUpdate);
 }

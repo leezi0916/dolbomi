@@ -99,4 +99,16 @@ export const commuService = {
       throw new Error('서버 통신 불량');
     }
   },
+  updateCommunity: async (boardData) => {
+    try {
+      const { data } = await api.post(API_ENDPOINTS.COMMUNITY.UPDATE, boardData);
+      return snakeToCamel(data);
+    } catch (error) {
+      if (error.response) {
+        const errorMessage = error.response.data.message || '게시글 작성에 실패했습니다.';
+        throw new Error(errorMessage);
+      }
+      throw new Error('서버와의 통신에 실패했습니다.');
+    }
+  },
 };
