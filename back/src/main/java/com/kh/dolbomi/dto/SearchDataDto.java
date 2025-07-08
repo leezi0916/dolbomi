@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+
 @Data
 @Getter
 @Setter
@@ -22,6 +23,5 @@ public class SearchDataDto {
     private String pat_gender;
     private String home;
     private String keyword;
-
 
 }

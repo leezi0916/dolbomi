@@ -119,6 +119,7 @@ public class UserDto {
         private String phone;
         private String email;
         private String address;
+        private String profileImage;
 
         // 자격증 여러 개를 받도록 리스트로 수정
         private List<LicenseDto.Response> licenses;
