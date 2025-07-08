@@ -227,6 +227,7 @@ const MyProfile = () => {
       toast.error('회원탈퇴 처리 중 오류가 발생했습니다.');
     }
   };
+  
   const getProfileImageUrl = () => {
     if (previewUrl) return previewUrl;
     if (profile?.profileImage) {
@@ -252,7 +253,7 @@ const MyProfile = () => {
       </AuthContainer>
     );
   }
-
+  console.log(' 최종 이미지 URL:', getProfileImageUrl());
   return (
     <AuthContainer>
       <FromWrap>

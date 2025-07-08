@@ -115,6 +115,14 @@ const HireRegistration = () => {
     }
   };
 
+  const CLOUDFRONT_URL = 'https://d20jnum8mfke0j.cloudfront.net/';
+  //이미지 경로 갖고오고 없다면 기본이미지
+  const getProfileImageUrl = (path) => {
+    if (!path) return profileImage; // 기본 이미지
+    const cleanPath = path.replace(/^\//, ''); // 앞에 / 있으면 제거
+    return `${CLOUDFRONT_URL}${cleanPath}`;
+  };
+
   return (
     <HireRegistSection>
       <HireContainer>
@@ -122,7 +130,7 @@ const HireRegistration = () => {
           <HireHeadTitle>구인 등록</HireHeadTitle>
           <SelectDiv>
             {selectPatientNo === undefined && (
-              <p style={{ textAlign: 'left', color: '#EF7A46', display: "flex" , alignItems: "center"}}>
+              <p style={{ textAlign: 'left', color: '#EF7A46', display: 'flex', alignItems: 'center' }}>
                 &nbsp;
                 <BsFillExclamationCircleFill color="'#EF7A46'"></BsFillExclamationCircleFill>&nbsp;&nbsp;필수
                 선택사항입니다.
@@ -143,7 +151,7 @@ const HireRegistration = () => {
           <ContentWrapper>
             <selectDiv>
               <ProfilImageWrapper>
-                <img src={profileImage} alt="프로필 이미지" />
+                <img src={getProfileImageUrl(patient.profileImage)} alt="프로필" />
               </ProfilImageWrapper>
             </selectDiv>
             <Divider>

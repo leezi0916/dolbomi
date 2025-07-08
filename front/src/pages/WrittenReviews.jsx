@@ -19,7 +19,7 @@ import Paging from '../components/Paging';
 import { media } from '../styles/MediaQueries';
 import useUserStore from '../store/userStore';
 import { toast } from 'react-toastify';
-
+import profileImage from '../assets/profileImg/img_간병인.png';
 const WrittenReviews = () => {
   const [reviews, setReviews] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
@@ -42,6 +42,14 @@ const WrittenReviews = () => {
     setCurrentPage(value);
   };
 
+  const CLOUDFRONT_URL = 'https://d20jnum8mfke0j.cloudfront.net/';
+  //이미지 경로 갖고오고 없다면 기본이미지
+  const getProfileImageUrl = (path) => {
+    if (!path) return profileImage; // 기본 이미지
+    const cleanPath = path.replace(/^\//, ''); // 앞에 / 있으면 제거
+    return `${CLOUDFRONT_URL}${cleanPath}`;
+  };
+
   return (
     <ReviewWrapper>
       <TopSection>
@@ -55,7 +63,7 @@ const WrittenReviews = () => {
           reviews.myWrittenReview.content.map((review) => (
             <Card key={review.reviewNo}>
               <CardTopContent>
-                <CardImage src={review.profileImage} />
+                <CardImage src={getProfileImageUrl(review.profileImage)} />
                 <CardTextGroup>
                   <CardTitle>{review.userName} 간병사</CardTitle>
                   <CardText>

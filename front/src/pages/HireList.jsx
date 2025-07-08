@@ -95,7 +95,7 @@ const HireList = () => {
     const finalForm = {
       ...data,
       keyword: keyword,
-      region: finalRegionValue.fullAddr,
+      region: finalRegionValue?.fullAddr,
     }; // 최신 상태 생성
 
     setUpdateData(finalForm); // 상태 업데이트
@@ -110,7 +110,7 @@ const HireList = () => {
       // console.log('검색조건 JSON 데이터:', searchData);
       setLoading(true);
       setError(null);
-      const res = await hiringService.getHiringList({ page: pageNumber, size: pageSize, searchData});
+      const res = await hiringService.getHiringList({ page: pageNumber, size: pageSize, searchData });
       console.log('돌봄대상자 Response:', res); // 여기서 totalPages, content 등 확인
       if (res.totalElements === 0) {
         setHireLists([]);
@@ -238,6 +238,14 @@ const HireList = () => {
     } catch (error) {
       console.error('시군구 조회 실패:', error);
     }
+  };
+
+  const CLOUDFRONT_URL = 'https://d20jnum8mfke0j.cloudfront.net/';
+  //이미지 경로 갖고오고 없다면 기본이미지
+  const getProfileImageUrl = (path) => {
+    if (!path) return profileImage; // 기본 이미지
+    const cleanPath = path.replace(/^\//, ''); // 앞에 / 있으면 제거
+    return `${CLOUDFRONT_URL}${cleanPath}`;
   };
 
   return (
@@ -399,7 +407,8 @@ const HireList = () => {
           {hireLists.map((hire) => (
             <HireListCard key={hire.hiringNo} to={`/hireDetail/${hire.hiringNo}`}>
               <CardHeader>
-                <ProfileImage src={hire.profileImage || profileImage} alt="프로필" />
+                <ProfileImage src={getProfileImageUrl(hire.profileImage)} alt="프로필" />
+
                 <HeaderContent>
                   <Divder>
                     <UserInfo>

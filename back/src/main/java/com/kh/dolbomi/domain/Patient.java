@@ -146,4 +146,10 @@ public class Patient {
 
     }
 
+    public void changeProfileImage(String profileImage) {
+        if (profileImage != null && !profileImage.isEmpty()) {
+            this.profileImage = profileImage;
+        }
+    }
+
 }
