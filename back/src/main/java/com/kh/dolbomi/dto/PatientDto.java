@@ -29,6 +29,7 @@ public class PatientDto {
         private String pat_address;
         private String pat_content;
         private String status;
+        private String profile_image;
         private List<String> disease_tags;
 
         public Patient toEntity(User user) {
@@ -43,6 +44,7 @@ public class PatientDto {
                     .patContent(this.pat_content)
                     .patGender(this.pat_gender)
                     .patAddress(this.pat_address)
+                    .profileImage(this.profile_image)
                     .build();
         }
     }
