@@ -136,6 +136,7 @@ public class UserDto {
         private Integer age;
         private StatusEnum.Gender gender;
         private List<LicenseDto.Response> licenses;
+        private String profile_image;
 
         public static ProfileDto toDto(User user) {
             return ProfileDto.builder()
@@ -152,9 +153,10 @@ public class UserDto {
                                     .map(LicenseDto::toDto)
                                     .collect(Collectors.toList())
                     )
+                    .profile_image(user.getProfileImage())
                     .build();
         }
     }
 
-    
+
 }
