@@ -65,9 +65,9 @@ export const jobSeekingService = {
     }
   },
 
-  getMyResumeList: async (userNo) => {
+  getMyResumeList: async (userNo, currentPage) => {
     try {
-      const { data } = await api.get(`${API_ENDPOINTS.RESUME.MYRESUME(userNo)}`);
+      const { data } = await api.get(`${API_ENDPOINTS.RESUME.MYRESUME(currentPage, userNo)}`);
       return snakeToCamel(data);
     } catch (error) {
       const message = error.response?.data?.message || '이력서 리스트를 가져오는데에 실패했습니다.';
@@ -95,6 +95,7 @@ export const jobSeekingService = {
       throw new Error('서버 통신 불량');
     }
   },
+
 
   deleteResume: async (resumeNo) => {
     try {

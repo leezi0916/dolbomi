@@ -95,7 +95,7 @@ public class Resume {
         if (resumeContent != null && !resumeContent.isEmpty()) {
             this.resumeContent = resumeContent;
         }
-        if (account != null) {
+        if (resumeAccount != null) {
             this.account = resumeAccount;
         }
     }

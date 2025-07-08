@@ -8,7 +8,6 @@ import {
   FromWrap,
   NotesTexttarea,
   SubmitBtn,
-  Img,
   NewTitle,
   BtnWrap,
   BackBtn,
@@ -17,22 +16,29 @@ import { AuthContainer, Label, Input, InputGroup, ErrorMessage } from '../styles
 import { usepatientRegistrationForm } from '../hooks/usePatientRegistrationForm';
 import useUserStore from '../store/userStore';
 import { useNavigate } from 'react-router-dom';
-import { patientService } from '../api/patient';
-import { toast } from 'react-toastify';
 import Tags from '../components/Tags';
 import styled from 'styled-components';
 import PostcodeSearch from '../components/PostcodeSearch';
-import profileImg from '../assets/profileImg/img_환자소.png';
 import { useRef } from 'react';
+import { HiMiniPencilSquare } from 'react-icons/hi2';
 
 const PatientRegistration = () => {
   const { user } = useUserStore();
   const navigate = useNavigate();
 
-  const { register, handleSubmit, errors, onSubmit, watch, setValue, formatPhoneNumber, selectedFile, handleFileChange, previewUrl } =
-    usepatientRegistrationForm(user);
-    const CLOUDFRONT_URL = 'https://d20jnum8mfke0j.cloudfront.net/';
-
+  const {
+    register,
+    handleSubmit,
+    errors,
+    onSubmit,
+    watch,
+    setValue,
+    formatPhoneNumber,
+    selectedFile,
+    handleFileChange,
+    previewUrl,
+  } = usepatientRegistrationForm(user);
+  const CLOUDFRONT_URL = 'https://d20jnum8mfke0j.cloudfront.net/';
 
   useEffect(() => {
     // 일단 접근가능하게 로그인 구현 되면 user -> !user 바꿀것
@@ -59,7 +65,6 @@ const PatientRegistration = () => {
     }
   }, [addressData, setValue]);
 
-
   // 태그관련
   const [tags, setTags] = useState([]);
   useEffect(() => {
@@ -75,9 +80,6 @@ const PatientRegistration = () => {
     inputRef.current?.click(); // 파일 선택창 열기
   };
 
-  // 
-
-
   return (
     <>
       <AuthContainer>
@@ -85,20 +87,29 @@ const PatientRegistration = () => {
           <NewTitle>돌봄 대상자 등록</NewTitle>
 
           <GridForm onSubmit={handleSubmit(onSubmit)}>
-          <ProfileImage onClick={handleDivClick} >
-            <img
-              src={previewUrl}
-              alt="프로필 이미지"
-              style={{
-                width: '100%',
-                height: '100%',
-                objectFit: 'cover',
-                borderRadius: '50%',
-              }}
+            <ProfileImageWrapper>
+              <ProfileImage>
+                <img
+                  src={previewUrl}
+                  alt="프로필 이미지"
+                  style={{
+                    width: '100%',
+                    height: '100%',
+                    objectFit: 'cover',
+                  }}
+                />
+              </ProfileImage>
+              <EditIcon onClick={handleDivClick}>
+                <HiMiniPencilSquare size={30} />
+              </EditIcon>
+            </ProfileImageWrapper>
+            <input
+              type="file"
+              accept="image/*"
+              ref={inputRef}
+              onChange={handleFileChange}
+              style={{ display: 'none' }}
             />
-          </ProfileImage>
-
-          <input type="file" accept="image/*" ref={inputRef} onChange={handleFileChange} style={{ display: 'none' }} />
             <GridInerContainer>
               <Label htmlFor="patName">이름</Label>
               <Label htmlFor="patAge">나이</Label>
@@ -237,17 +248,37 @@ const PatientRegistration = () => {
   );
 };
 
-const ProfileImage = styled.div`
-  width: 200px;
+const ProfileImageWrapper = styled.div`
+  position: relative;
+  width: 200px; /* 원하는 크기로 조절 */
   height: 200px;
-  background-color: ${({ theme }) => theme.colors.gray[5]};
-  border-radius: ${({ theme }) => theme.borderRadius.md};
-  cursor: pointer;
   display: flex;
   justify-content: center;
   align-items: center;
   margin: 0 auto;
+`;
+
+const ProfileImage = styled.div`
+  width: 200px;
+  height: 200px;
+  background-color: ${({ theme }) => theme.colors.gray[5]};
   border-radius: 50%;
+
+  overflow: hidden;
+  cursor: pointer;
+`;
+
+const EditIcon = styled.div`
+  position: absolute;
+  bottom: 5px;
+  right: 1px;
+  background: white;
+  border-radius: 50%;
+  padding: 5px;
+  display: flex;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+  padding: 10px;
+  cursor: pointer;
 `;
 
 const Row = styled.div`

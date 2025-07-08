@@ -66,13 +66,10 @@ public class ResumeServiceImpl implements ResumeService {
 
 
     @Override
-    public List<ResumeDto.Response> getResumList(Long userNo) {
+    public Page<ResumeDto.Response> getResumList(Long userNo, Pageable pageable) {
+        Page<Resume> resumes = resumeRepository.getResumeList(userNo, pageable);
 
-        List<Resume> resumes = resumeRepository.getResumeList(userNo);
-
-        return resumes.stream()
-                .map(ResumeDto.Response::ResumeListDto)
-                .collect(Collectors.toList());
+        return resumes.map(ResumeDto.Response::ResumeListDto);
     }
 
     @Override

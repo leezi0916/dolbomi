@@ -51,14 +51,21 @@ public class ResumeRepositoryImpl implements ResumeRepository {
     }
 
     @Override
-    public List<Resume> getResumeList(Long userNo) {
+    public Page<Resume> getResumeList(Long userNo, Pageable pageable) {
 
         String query = "SELECT r FROM Resume r  WHERE r.user.userNo = :userNo and r.status <> 'N'";
-        return em.createQuery(query, Resume.class)
+
+        List<Resume> result = em.createQuery(query, Resume.class)
                 .setParameter("userNo", userNo)
+                .setFirstResult((int) pageable.getOffset())
+                .setMaxResults(pageable.getPageSize())
                 .getResultList();
 
+        Long total = em.createQuery(
+                        "SELECT COUNT(r) FROM Resume r WHERE r.user.userNo = :userNo and r.status <> 'N'", Long.class)
+                .setParameter("userNo", userNo)
+                .getSingleResult();
+
+        return new PageImpl<>(result, pageable, total);
     }
-
-
 }
