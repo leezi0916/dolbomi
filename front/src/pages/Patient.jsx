@@ -5,9 +5,9 @@ import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import useUserStore from '../store/userStore';
 import { useEffect } from 'react';
-import { ProfileImg } from '../styles/common/Profile';
+import profileImage from '../assets/profileImg/img_환자소.png';
 import { patientService } from '../api/patient';
-
+import { ProfileImg } from '../styles/common/Profile';
 
 const Patient = () => {
   const { user } = useUserStore();
@@ -23,6 +23,7 @@ const Patient = () => {
 
       try {
         const patientsList = await patientService.getPatients(user.userNo);
+        console.log(patientsList);
         setUserpatients(patientsList);
       } catch (err) {
         console.error(err);
@@ -30,6 +31,14 @@ const Patient = () => {
     };
     fetchAll();
   }, []);
+
+  const CLOUDFRONT_URL = 'https://d20jnum8mfke0j.cloudfront.net/';
+  //이미지 경로 갖고오고 없다면 기본이미지
+  const getProfileImageUrl = (path) => {
+    if (!path) return profileImage; // 기본 이미지
+    const cleanPath = path.replace(/^\//, ''); // 앞에 / 있으면 제거
+    return `${CLOUDFRONT_URL}${cleanPath}`;
+  };
 
   return (
     <>
@@ -43,7 +52,7 @@ const Patient = () => {
           {userPatients?.map((pat) => (
             <Card key={pat.patNo}>
               <ProfileDiv>
-                <Img src={pat.profileImage} alt="" />
+                <Img src={getProfileImageUrl(pat.profileImage)} alt="프로필" />
                 <div>
                   <ProfileTextGray>
                     <ProfileTextStrong>{pat.patName}</ProfileTextStrong> 님
@@ -60,9 +69,7 @@ const Patient = () => {
 
               <ButtonDiv>
                 <MainMoveBtn onClick={() => navigate(`/guardian/patient/${pat.patNo}`)}>관리</MainMoveBtn>
-                { 
-
-                }
+                {}
                 <MainMoveBtn onClick={() => navigate(`/report/${pat.patNo}`)}>일지</MainMoveBtn>
               </ButtonDiv>
             </Card>
@@ -115,6 +122,7 @@ const Img = styled(ProfileImg)`
   width: 50px;
   height: 50px;
   margin-right: ${({ theme }) => theme.spacing[4]};
+  border-radius: 50%;
 `;
 
 const ProfileTextGray = styled.p`

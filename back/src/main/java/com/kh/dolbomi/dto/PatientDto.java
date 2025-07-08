@@ -69,12 +69,15 @@ public class PatientDto {
 
         private String phone; // 보호자 번호
 
+        private String profile_image; //환자 프로필
+
         public static PatientDto.Response toDto(Patient patient) {
             return Response.builder()
                     .pat_no(patient.getPatNo())
                     .pat_name(patient.getPatName())
                     .pat_age(patient.getPatAge())
                     .pat_gender(patient.getPatGender())
+                    .profile_image(patient.getProfileImage())
                     .build();
         }
 
@@ -93,7 +96,8 @@ public class PatientDto {
 
                     //보호자 연락처
                     .phone(user.getPhone())
-
+                    //환자 프로필
+                    .profile_image(patient.getProfileImage())
                     // 질병 정보 (List<String>)
                     .disease_tags(
                             patient.getDiseaseTags().stream()
@@ -126,7 +130,7 @@ public class PatientDto {
         private String pat_content;
         private String status;
         private List<String> disease_tags;
-
+        private String profile_image;
 
     }
 
