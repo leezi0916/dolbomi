@@ -5,10 +5,6 @@ import styled from 'styled-components';
 //달력 라이브러리 및 한글화
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
-import { registerLocale, setDefaultLocale } from 'react-datepicker';
-import { ko } from 'date-fns/locale/ko';
-registerLocale('ko', ko);
-setDefaultLocale('ko');
 
 // import { toast } from 'react-toastify';
 import profileImage from '../assets/images/pat.png'; // 프로필 이미지 경로
@@ -311,7 +307,6 @@ const HireList = () => {
                   <DateContentBox>
                     <SearchTitle> 시작일: </SearchTitle>
                     <DateInput
-                      locale="ko"
                       selected={internalStartDate}
                       onChange={(date) => handledateChange(date, 'startDate')}
                       dateFormat="yyyy-MM-dd"
@@ -323,7 +318,6 @@ const HireList = () => {
                   <DateContentBox>
                     <SearchTitle> 종료일: </SearchTitle>
                     <DateInput
-                      locale={ko}
                       selected={internalEndDate} // Date 객체를 받음
                       onChange={(date) => handledateChange(date, 'endDate')} // 날짜와 필드명 전달
                       dateFormat="yyyy-MM-dd"
@@ -344,7 +338,7 @@ const HireList = () => {
                     </SelectBox>
                   </Item>
                   <Item>
-                    <SearchTitle>시급: </SearchTitle>
+                    <SearchTitle>최소 시급: </SearchTitle>
                     <ACCOUNT
                       name="account"
                       type="number"
@@ -462,12 +456,54 @@ const Title = styled.h1`
   justify-content: flex-start;
 `;
 
+const SearchContainer2 = styled(Container)`
+  padding: 20px;
+  width: 100%;
+  background-color: ${({ theme }) => theme.colors.gray[5]};
+  border-radius: 4px;
+`;
+
+const Search = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
+const DetailBtn = styled.p`
+  width: 100px;
+  padding-left: 16px;
+  color: ${({ theme }) => theme.colors.gray[3]};
+  cursor: pointer;
+  user-select: none;
+  &:hover {
+    color: ${({ theme }) => theme.colors.gray[2]};
+  }
+`;
+
 const Detail = styled.div`
   margin-top: 30px;
   user-select: none;
   display: ${({ $visible }) => ($visible ? 'flex' : 'none')};
   flex-direction: column;
   gap: 10px;
+`;
+
+const Item = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
+const RegionDiv = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+`;
+
+const RegionLabel = styled.label`
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+  gap: 10px;
+  padding-left: 10px;
 `;
 
 const RegionBtn = styled.button`
@@ -482,26 +518,25 @@ const RegionBtn = styled.button`
   }
 `;
 
-const SearchContainer2 = styled(Container)`
-  padding: 20px;
+const SearchSelect = styled.div`
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-auto-rows: min-content;
+  row-gap: 20px;
+`;
+
+const DateBox = styled.div`
+  margin-top: 20px;
+  display: flex;
+  grid-column: span 4;
   width: 100%;
-  background-color: ${({ theme }) => theme.colors.gray[5]};
-  border-radius: 4px;
+  gap: 20px;
 `;
 
-const DetailBtn = styled.p`
-  width: 100px;
-  padding-left: 16px;
-  color: ${({ theme }) => theme.colors.gray[3]};
-  cursor: pointer;
-  user-select: none;
-  &:hover {
-    color: ${({ theme }) => theme.colors.gray[2]};
-  }
-`;
-
-const SearchSection = styled(Section)`
-  padding-bottom: 0;
+const DateContentBox = styled.div`
+  display: flex;
+  align-items: center;
+  width: 100%;
 `;
 
 const SearchTitle = styled.span`
@@ -512,6 +547,46 @@ const SearchTitle = styled.span`
   color: ${({ theme }) => theme.colors.gray[1]};
 `;
 
+const DateInput = styled(DatePicker)`
+  width: 100%;
+  height: 30px;
+  text-align: center;
+  border-radius: ${({ theme }) => theme.borderRadius.base};
+  font-size: ${({ theme }) => theme.spacing[4]};
+  caret-color: transparent;
+  cursor: pointer;
+`;
+
+const Items = styled.div`
+  display: flex;
+  align-items: center;
+  grid-column: span 1;
+`;
+
+const SelectBox = styled.select`
+  width: 120px;
+  height: 30px;
+  text-align: center;
+  padding: 0 ${({ theme }) => theme.spacing[5]};
+  border: none;
+  border-radius: ${({ theme }) => theme.borderRadius.base};
+  font-size: ${({ theme }) => theme.spacing[4]};
+
+  &:option {
+    text-align: center;
+  }
+`;
+
+const ACCOUNT = styled.input`
+  width: 150px;
+  height: 30px;
+  text-align: center;
+  padding: 0 ${({ theme }) => theme.spacing[5]};
+  border: none;
+  border-radius: ${({ theme }) => theme.borderRadius.base};
+  font-size: ${({ theme }) => theme.spacing[4]};
+`;
+
 const RadioGroup2 = styled.div`
   display: flex;
   grid-column: span 1;
@@ -519,28 +594,6 @@ const RadioGroup2 = styled.div`
   gap: ${({ theme }) => theme.spacing[4]};
 `;
 
-const Label = styled.label`
-  padding-left: 10px;
-  width: 40px;
-  text-align: center;
-`;
-
-const Label2 = styled.label`
-  width: 70px;
-  text-align: center;
-`;
-const RegionDiv = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-`;
-
-const RegionLabel = styled.label`
-  display: flex;
-  align-items: center;
-  margin-bottom: 10px;
-  gap: 10px;
-  padding-left: 10px;
-`;
 const RadioWrapper = styled.div`
   display: flex;
   gap: 0;
@@ -588,73 +641,23 @@ const RadioWrapper = styled.div`
   }
 `;
 
-const Item = styled.div`
-  display: flex;
-  align-items: center;
-`;
-const Items = styled.div`
-  display: flex;
-  align-items: center;
-  grid-column: span 1;
-`;
-const Search = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-`;
-
-const SearchSelect = styled.div`
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  grid-auto-rows: min-content;
-  row-gap: 20px;
-`;
-
-const DateBox = styled.div`
-  margin-top: 20px;
-  display: flex;
-  grid-column: span 4;
-  width: 100%;
-  gap: 20px;
-`;
-const DateContentBox = styled.div`
-  display: flex;
-  align-items: center;
-  width: 100%;
-`;
-const DateInput = styled(DatePicker)`
-  width: 100%;
-  height: 30px;
+const Label = styled.label`
+  padding-left: 10px;
+  width: 40px;
   text-align: center;
-  border-radius: ${({ theme }) => theme.borderRadius.base};
-  font-size: ${({ theme }) => theme.spacing[4]};
-  caret-color: transparent;
-  cursor: pointer;
 `;
 
-const SelectBox = styled.select`
-  width: 120px;
-  height: 30px;
+const Label2 = styled.label`
+  width: 70px;
   text-align: center;
-  padding: 0 ${({ theme }) => theme.spacing[5]};
-  border: none;
-  border-radius: ${({ theme }) => theme.borderRadius.base};
-  font-size: ${({ theme }) => theme.spacing[4]};
-
-  &:option {
-    text-align: center;
-  }
 `;
 
-const ACCOUNT = styled.input`
-  width: 150px;
-  height: 30px;
-  text-align: center;
-  padding: 0 ${({ theme }) => theme.spacing[5]};
-  border: none;
-  border-radius: ${({ theme }) => theme.borderRadius.base};
-  font-size: ${({ theme }) => theme.spacing[4]};
+//-----------------------------------------------------
+
+const SearchSection = styled(Section)`
+  padding-bottom: 0;
 `;
+
 const DateInfo = styled.span`
   grid-column: 1 / span 2; //작은 화면에서는 1줄 전체 사용
   grid-row: auto;
@@ -671,6 +674,7 @@ const DateInfo = styled.span`
     text-align: right; /* sm 이상에서 오른쪽 정렬 */
   `}
 `;
+
 /*돌봄 대상자 리스트 관련 */
 const HireListSection = styled(Section)`
   height: auto;

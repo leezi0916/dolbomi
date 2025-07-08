@@ -7,8 +7,10 @@ import SearchBar from '../components/SearchBar';
 import { IoCheckmarkOutline } from 'react-icons/io5';
 import { ClipLoader } from 'react-spinners';
 import { jobSeekingService } from '../api/jobSeeking';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import Paging from '../components/Paging';
+import DatePicker from 'react-datepicker';
+import { addressService } from '../api/address';
 
 const CaregiverList = () => {
   const [caregiverLists, setCaregiverLists] = useState([]);
@@ -23,37 +25,44 @@ const CaregiverList = () => {
   const [size] = useState(10);
   const [totalPages, setTotalPages] = useState(0);
 
-  //검색창
-  const [keyword, setKeyword] = useState('');
-  const navigate = useNavigate();
-  // 1. 컴포넌트가 처음 마운트될 때 전체 리스트를 불러옵니다.
+  //상세검색창
+  const [visible, setVisible] = useState(false);
+  const [data, setData] = useState({
+    region: '',
+    endDate: '',
+    account: '',
+    home: '',
+    startDate: '',
+    patGender: '',
+    keyword: '',
+  });
+  const [region, setRegion] = useState([]); // 지역
+  const [sgg, setSgg] = useState([]); // 시,군,구
+  const [selectedCd, setSelectedCd] = useState(null);
+  const [selectedRegion, setSelectedRegion] = useState('');
+  const [selectedSgg, setSelectedSgg] = useState('');
+  const [updateData, setUpdateData] = useState({});
+
+  // 'region': 지역 목록 보여줌, 'sgg': 시군구 목록 보여줌
+  const [displayMode, setDisplayMode] = useState('region');
+
+  //마운트시 페이징처리 및 지역불러오기
   useEffect(() => {
-    loadHireLists(page - 1, size); // API에선 0부터 시작일 가능성 있어 -1 처리
-  }, [page]);
+    // API에선 0부터 시작일 가능성 있어 -1 처리
+    loadCaregiverLists(page - 1, size, updateData);
 
-  // 간병사모집 리스트를 불러오는 함수
-  const loadHireLists = async (pageNumber, pageSize) => {
-    try {
-      setLoading(true);
-      setError(null);
-
-      const caregiverList = await jobSeekingService.getCaregiverList();
-      setCaregiverLists(caregiverList); // 이게 구조를 보여줌
-      if (caregiverList.totalElements === 0) {
-        setCaregiverLists([]);
-        setError('등록된 간병사 모집 글이 없습니다.');
-      } else {
-        setCaregiverLists(caregiverList.content);
-        setTotalPages(caregiverList.totalPage);
+    //마운트시 초기 지역목록 가져오기(region)
+    const fetchInitialRegions = async () => {
+      try {
+        const initialRegions = await addressService.getRegionList();
+        setRegion(initialRegions);
+        // console.log('CaregiverList에 온 값:', initialRegions);
+      } catch (error) {
+        console.error('초기 지역 목록 조회 실패:', error);
       }
-    } catch (error) {
-      console.error(error);
-      const errorMessage = '간병사모집 리스트를 가져오지 못했습니다.';
-      setError(errorMessage);
-    } finally {
-      setLoading(false);
-    }
-  };
+    };
+    fetchInitialRegions();
+  }, [page, size]);
 
   // 이름 첫글자 O 처리하기
   const maskName = (name) => {
@@ -67,16 +76,104 @@ const CaregiverList = () => {
   };
 
   // SearchBar에서 검색 버튼을 눌렀을 때 호출되는 함수
-  const handleSearchSubmit = (keyword) => {
+  const handleSearchSubmit = async (keyword) => {
     // SearchBar로부터 받은 키워드를 searchKeyword 상태에 저장합니다.
-    setKeyword(keyword);
-    // 이 상태 변경은 위에 있는 useEffect를 트리거하여 자동으로 검색을 실행시킬 것입니다.
+
+    let finalRegionValue = ``;
+    if (selectedSgg) {
+      finalRegionValue = selectedSgg;
+    } else {
+      finalRegionValue = selectedRegion;
+    }
+
+    const finalForm = {
+      ...data,
+      keyword: keyword,
+      region: finalRegionValue?.fullAddr,
+    }; // 최신 상태 생성
+
+    setUpdateData(finalForm); // 상태 업데이트
+    setPage(1);
+
+    await loadCaregiverLists(page - 1, size, finalForm);
   };
 
-  // 숙식 제공 체크박스 변경 핸들러
-  const handleCheckChange = (e) => {
-    setCareStatus(e.target.checked);
-    // 이 상태 변경 역시 위에 있는 useEffect를 트리거하여 자동으로 검색을 실행시킬 것입니다.
+  // 간병사모집 리스트를 불러오는 함수
+  const loadCaregiverLists = async (pageNumber, pageSize, searchData) => {
+    try {
+      setLoading(true);
+      setError(null);
+
+      const caregiverList = await jobSeekingService.getCaregiverList({ page: pageNumber, size: pageSize, searchData });
+      console.log('간병인 Response:', caregiverList);
+      setCaregiverLists(caregiverList); // 이게 구조를 보여줌
+      if (caregiverList.totalElements === 0) {
+        setCaregiverLists([]);
+        setError('등록된 간병사 모집 글이 없습니다.');
+      } else {
+        setCaregiverLists(caregiverList.content);
+        setTotalPages(caregiverList.totalPage);
+      }
+    } catch (error) {
+      setError('간병사모집 리스트를 가져오지 못했습니다.' + error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  //상세검색 눌렀는가? 창 오픈
+  const handleDetail = () => {
+    setVisible((prev) => !prev);
+  };
+
+  //범용적인 input값 처리용
+  const dataInfo = (e) => {
+    const { name, value } = e.target;
+    setData((data) => ({
+      ...data,
+      [name]: value,
+    }));
+  };
+
+  //지역선택 버튼 클릭시 지역들 출력
+  const handleGetRegionClick = () => {
+    setSelectedCd(null);
+    setSelectedRegion(null);
+    setSgg([]);
+    setSelectedSgg(null);
+    setDisplayMode('region'); //지역 목록을 보여주도록 세팅
+  };
+
+  //지역 선택시 시군구 출력
+  const handleRegionChange = async (region) => {
+    // 이미 선택된 지역이면 API 호출 방지 (불필요한 재렌더링 및 API 호출 방지)
+    if (selectedCd === region.cd && displayMode == 'sgg') {
+      return;
+    }
+
+    setSelectedCd(region.cd);
+    setSelectedRegion(region);
+
+    //지역을 바꾸면 시군구도 초기화되게
+    setSelectedSgg(null);
+    setSgg([]);
+
+    try {
+      const sggList = await addressService.getRegionList(region.cd);
+      setSgg(sggList);
+      setDisplayMode('sgg');
+    } catch (error) {
+      console.error('시군구 조회 실패:', error);
+    }
+  };
+
+  //시군구 선택시
+  const handleSggChange = async (sgg) => {
+    try {
+      setSelectedSgg(sgg);
+    } catch (error) {
+      console.error('시군구 조회 실패:', error);
+    }
   };
 
   const CLOUDFRONT_URL = 'https://d20jnum8mfke0j.cloudfront.net/';
@@ -90,101 +187,122 @@ const CaregiverList = () => {
   return (
     <>
       <SearchSection>
-        <Title>간병사 모집</Title>
-        <SearchContainer>
-          <SearchDivder>
-            <Section1>
-              <SearchDivder1>
-                <SelectBox value={address} onChange={(e) => setAddress(e.target.value)}>
-                  <option value="">지역</option>
-                  <option value="서울">서울</option>
-                  <option value="부산">부산</option>
-                  <option value="제주">제주</option>
-                  {/* 더 많은 지역 옵션 */}
-                </SelectBox>
-              </SearchDivder1>
+        <Title>돌봄대상자 모집</Title>
 
-              <SearchDivder1>
-                <ACCOUNT
-                  type="number"
-                  placeholder="시급 ~ 이상"
-                  value={account}
-                  onChange={(e) => setAccount(e.target.value)}
-                />
-              </SearchDivder1>
-            </Section1>
-            <Section2>
-              <SearchDivder1>
-                <AccommodationCheckboxLabel>
-                  <HiddenCheckbox type="checkbox" checked={careStatus} onChange={handleCheckChange} />
-                  <StyledCheckbox checked={careStatus}>
-                    {handleCheckChange && <IoCheckmarkOutline size="20px" color="white" />}
-                  </StyledCheckbox>
-                  관련 자격증 소지
-                </AccommodationCheckboxLabel>
-                <AccommodationCheckboxLabel>
-                  <HiddenCheckbox type="checkbox" checked={careStatus} onChange={handleCheckChange} />
-                  <StyledCheckbox checked={careStatus}>
-                    {handleCheckChange && <IoCheckmarkOutline size="20px" color="white" />}
-                  </StyledCheckbox>
-                  상주 간병인
-                </AccommodationCheckboxLabel>
-                <AccommodationCheckboxLabel>
-                  <HiddenCheckbox type="checkbox" checked={careStatus} onChange={handleCheckChange} />
-                  <StyledCheckbox checked={careStatus}>
-                    {handleCheckChange && <IoCheckmarkOutline size="20px" color="white" />}
-                  </StyledCheckbox>
-                  높은 평점 순
-                </AccommodationCheckboxLabel>
-              </SearchDivder1>
-              <SearchDivder1>
-                <SearchBar onSearch={handleSearchSubmit} />
-              </SearchDivder1>
-            </Section2>
-            <Section3>
-              <SearchDivder1>
-                <RadioGroup>
+        <SearchContainer2>
+          <Search>
+            <SearchBar onSearch={handleSearchSubmit} />
+            <DetailBtn onClick={handleDetail}>상세검색</DetailBtn>
+          </Search>
+          {visible && (
+            <Detail $visible={visible}>
+              <Item>
+                <RegionDiv>
+                  {displayMode === 'region' && region.length > 0
+                    ? region.map((region) => (
+                        <RegionLabel key={region.cd}>
+                          <input
+                            type="radio"
+                            name="region"
+                            value={region.cd}
+                            checked={selectedCd === region.cd}
+                            onChange={() => handleRegionChange(region)}
+                          />
+                          {region.addrName}
+                        </RegionLabel>
+                      ))
+                    : displayMode === 'region' && <p>로딩중...</p>}
+                </RegionDiv>
+              </Item>
+              <Item>
+                <RegionDiv>
+                  {displayMode === 'sgg' && sgg.length > 0
+                    ? sgg.map((sgg) => (
+                        <RegionLabel key={sgg.cd}>
+                          <input
+                            type="radio"
+                            name="sgg"
+                            value={sgg}
+                            // checked={}
+                            onChange={() => handleSggChange(sgg)}
+                          />
+                          {sgg.addrName}
+                        </RegionLabel>
+                      ))
+                    : displayMode === 'sgg' &&
+                      selectedRegion && <p>{selectedRegion.addrName}에 해당하는 시군구가 없습니다.</p>}
+                </RegionDiv>
+              </Item>
+              <Item>
+                <RegionBtn onClick={handleGetRegionClick}>지역 초기화</RegionBtn>
+                {selectedRegion && <p>지역 :{selectedSgg ? selectedSgg.fullAddr : selectedRegion.fullAddr}</p>}
+              </Item>
+
+              <SearchSelect>
+                <Items>
+                  <Item>
+                    <SearchTitle>근무유형: </SearchTitle>
+                    <SelectBox name="home" value={data.home} onChange={dataInfo}>
+                      <option value="">전체</option>
+                      <option value="Y">입주</option>
+                      <option value="N">출퇴근</option>
+                    </SelectBox>
+                  </Item>
+                  <Item>
+                    <SearchTitle>시급: </SearchTitle>
+                    <ACCOUNT
+                      name="account"
+                      type="number"
+                      min="0"
+                      step="1000"
+                      placeholder="시급"
+                      value={data.account}
+                      onChange={dataInfo}
+                    />
+                  </Item>
+                </Items>
+                <RadioGroup2>
+                  <SearchTitle>성별:</SearchTitle>
                   <RadioWrapper>
                     {/* checked prop 전달 */}
                     <input
                       type="radio"
                       id="male"
-                      name="gender"
-                      value="male"
-                      checked={gender === 'M'}
-                      onChange={() => setGender('M')}
+                      name="patGender"
+                      value="M"
+                      checked={data.patGender === 'M'}
+                      onChange={dataInfo}
                     />
-                    <label htmlFor="male">남성</label>
+                    <Label htmlFor="male">남성</Label>
                   </RadioWrapper>
                   <RadioWrapper>
                     {/* checked prop 전달 */}
                     <input
                       type="radio"
                       id="female"
-                      name="gender"
-                      value="female"
-                      checked={gender === 'F'}
-                      onChange={() => setGender('F')}
+                      name="patGender"
+                      value="F"
+                      checked={data.patGender === 'F'}
+                      onChange={dataInfo}
                     />
-                    <label htmlFor="female">여성</label>
+                    <Label htmlFor="female">여성</Label>
                   </RadioWrapper>
                   <RadioWrapper>
                     <input
                       type="radio"
                       id="anyGender"
-                      name="gender"
+                      name="patGender"
                       value="" // 성별 무관을 위해 빈 문자열로 설정
-                      checked={gender === ''}
-                      onChange={() => setGender('')}
+                      checked={data.patGender === ''}
+                      onChange={dataInfo}
                     />
-                    <label htmlFor="anyGender">성별 무관</label>
+                    <Label2 htmlFor="anyGender">성별 무관</Label2>
                   </RadioWrapper>
-                </RadioGroup>
-              </SearchDivder1>
-              <SearchDivder2></SearchDivder2>
-            </Section3>
-          </SearchDivder>
-        </SearchContainer>
+                </RadioGroup2>
+              </SearchSelect>
+            </Detail>
+          )}
+        </SearchContainer2>
       </SearchSection>
 
       {/* 여기부턴 간병인 리스트 */}
@@ -196,9 +314,9 @@ const CaregiverList = () => {
       ) : error ? (
         <ErrorMessage>{error}</ErrorMessage>
       ) : (
-        <HireListSection>
+        <CaregiverListSection>
           {caregiverLists.map((resume) => (
-            <HireListCard onClick={() => navigate(`/caregiver/resumeDetail/${resume.resumeNo}`)} key={resume.resumeNo}>
+            <CaregiverListCard t0={`/caregiver/resumeDetail/${resume.resumeNo}`} key={resume.resumeNo}>
               <CardHeader>
                 <ProfileImage src={getProfileImageUrl(resume.profileImage)} alt="프로필" />
 
@@ -237,15 +355,16 @@ const CaregiverList = () => {
                   )}
                 </USERINFO1>
               </CardFooter>
-            </HireListCard>
+            </CaregiverListCard>
           ))}
           <Paging totalPage={totalPages} currentPage={page} chagneCurrentPage={(newPage) => setPage(newPage)} />
-        </HireListSection>
+        </CaregiverListSection>
       )}
     </>
   );
 };
 
+//----------------------------- 검색 -----------------------------------
 const Title = styled.h1`
   font-size: ${({ theme }) => theme.fontSizes['2xl']};
   font-weight: ${({ theme }) => theme.fontWeights.bold};
@@ -257,93 +376,149 @@ const Title = styled.h1`
   justify-content: flex-start;
 `;
 
-const SearchContainer = styled(Container)`
-  height: 300px;
+const SearchContainer2 = styled(Container)`
+  padding: 20px;
+  width: 100%;
   background-color: ${({ theme }) => theme.colors.gray[5]};
   border-radius: 4px;
 `;
-const SearchDivder1 = styled.div`
-  height: 50%;
+
+const Search = styled.div`
   display: flex;
-  justify-content: center;
   align-items: center;
-  gap: ${({ theme }) => theme.spacing[6]};
+  justify-content: center;
 `;
 
-const SearchDivder2 = styled.div`
+const DetailBtn = styled.p`
+  width: 100px;
+  padding-left: 16px;
+  color: ${({ theme }) => theme.colors.gray[3]};
+  cursor: pointer;
+  user-select: none;
+  &:hover {
+    color: ${({ theme }) => theme.colors.gray[2]};
+  }
+`;
+
+const Detail = styled.div`
+  margin-top: 30px;
+  user-select: none;
+  display: ${({ $visible }) => ($visible ? 'flex' : 'none')};
+  flex-direction: column;
+  gap: 10px;
+`;
+
+const Item = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
+const RegionDiv = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+`;
+
+const RegionLabel = styled.label`
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+  gap: 10px;
+  padding-left: 10px;
+`;
+
+const RegionBtn = styled.button`
+  border: 1px solid ${({ theme }) => theme.colors.gray[3]};
+  border-radius: ${({ theme }) => theme.borderRadius.full};
+  background-color: ${({ theme }) => theme.colors.secondary};
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* 기본 그림자 */
+  margin: 0 100px 10px 0;
+
+  &:hover {
+    transform: scale(0.95); /* 5% 확대 */
+  }
+`;
+
+const SearchSelect = styled.div`
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-auto-rows: min-content;
+  row-gap: 20px;
+`;
+
+const DateBox = styled.div`
+  margin-top: 20px;
+  display: flex;
+  grid-column: span 4;
   width: 100%;
-  height: 50%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: flex-start;
-  padding: 0 ${({ theme }) => theme.spacing[3]};
-  gap: ${({ theme }) => theme.spacing[2]};
+  gap: 20px;
 `;
 
-const SearchDivder = styled.div`
+const DateContentBox = styled.div`
   display: flex;
-  height: 100%;
-`;
-
-const SearchSection = styled(Section)``;
-
-const Section1 = styled(Section)`
-  width: 25%;
-  display: flex;
-  flex-direction: column;
-  gap: ${({ theme }) => theme.spacing[5]};
-  justify-content: center;
-  text-align: center;
-`;
-const Section2 = styled(Section)`
-  width: 50%;
-  display: flex;
-  flex-direction: column;
-  gap: ${({ theme }) => theme.spacing[5]};
-`;
-const Section3 = styled(Section)`
-  width: 25%;
-  display: flex;
-  flex-direction: column;
-  gap: ${({ theme }) => theme.spacing[5]};
-  justify-content: center;
-  text-align: center;
   align-items: center;
+  width: 100%;
 `;
 
-const SelectBox = styled.select`
-  width: 80%;
-  height: 50px;
-  padding: 0 ${({ theme }) => theme.spacing[5]};
-  border: none;
-  border-radius: ${({ theme }) => theme.spacing[1]};
-  font-size: ${({ theme }) => theme.spacing[4]};
-`;
-
-const DateInput = styled.input`
-  height: 50px;
-
-  border-radius: ${({ theme }) => theme.spacing[1]};
-  padding: 0 ${({ theme }) => theme.spacing[4]};
-  font-size: ${({ theme }) => theme.spacing[4]};
-  background-color: white;
-`;
-
-const DateSeparator = styled.span`
-  margin: 0 5px;
+const SearchTitle = styled.span`
+  text-align: end;
+  margin: 0 20px 0 5px;
+  width: 80px;
   font-weight: ${({ theme }) => theme.fontWeights.bold};
   color: ${({ theme }) => theme.colors.gray[1]};
 `;
-const RadioGroup = styled.div`
+
+const DateInput = styled(DatePicker)`
+  width: 100%;
+  height: 30px;
+  text-align: center;
+  border-radius: ${({ theme }) => theme.borderRadius.base};
+  font-size: ${({ theme }) => theme.spacing[4]};
+  caret-color: transparent;
+  cursor: pointer;
+`;
+
+const Items = styled.div`
   display: flex;
+  align-items: center;
+  grid-column: span 1;
+`;
+
+const SelectBox = styled.select`
+  width: 120px;
+  height: 30px;
+  text-align: center;
+  padding: 0 ${({ theme }) => theme.spacing[5]};
+  border: none;
+  border-radius: ${({ theme }) => theme.borderRadius.base};
+  font-size: ${({ theme }) => theme.spacing[4]};
+
+  &:option {
+    text-align: center;
+  }
+`;
+
+const ACCOUNT = styled.input`
+  width: 150px;
+  height: 30px;
+  text-align: center;
+  padding: 0 ${({ theme }) => theme.spacing[5]};
+  border: none;
+  border-radius: ${({ theme }) => theme.borderRadius.base};
+  font-size: ${({ theme }) => theme.spacing[4]};
+`;
+
+const RadioGroup2 = styled.div`
+  display: flex;
+  grid-column: span 1;
+  align-items: center;
   gap: ${({ theme }) => theme.spacing[4]};
 `;
 
 const RadioWrapper = styled.div`
   display: flex;
+  gap: 0;
   align-items: center;
-  gap: ${({ theme }) => theme.spacing[3]};
+  /* gap: ${({ theme }) => theme.spacing[3]}; */
 
   // 'checked' prop을 받아서 스타일을 동적으로 적용합니다.
   input[type='radio'] {
@@ -386,59 +561,30 @@ const RadioWrapper = styled.div`
   }
 `;
 
-const ACCOUNT = styled.input`
-  width: 80%;
-  height: 50px;
-  padding: 0 ${({ theme }) => theme.spacing[5]};
-  border: none;
-  border-radius: ${({ theme }) => theme.spacing[1]};
-  font-size: ${({ theme }) => theme.spacing[4]};
+const Label = styled.label`
+  padding-left: 10px;
+  width: 40px;
+  text-align: center;
 `;
 
-const AccommodationCheckboxLabel = styled.label`
-  display: flex;
-  align-items: center;
-  cursor: pointer;
-  white-space: nowrap; /* 텍스트가 줄바꿈되지 않도록 */
-  color: ${({ theme }) => theme.colors.gray[800]}; /* 텍스트 색상 */
-  font-size: ${({ theme }) => theme.fontSizes.base};
-  gap: ${({ theme }) => theme.spacing[2]};
+const Label2 = styled.label`
+  width: 70px;
+  text-align: center;
 `;
 
-const HiddenCheckbox = styled.input.attrs({ type: 'checkbox' })`
-  border: 0;
-  clip: rect(0 0 0 0);
-  clip-path: inset(50%);
-  height: 1px;
-  margin: -1px;
-  overflow: hidden;
-  padding: 0;
-  position: absolute;
-  white-space: nowrap;
-  width: 1px;
-`;
+//-------------------------------------------
 
-const StyledCheckbox = styled.div`
-  width: 18px;
-  height: 18px;
-  border: 1px solid ${({ theme, checked }) => (checked ? theme.colors.primary : theme.colors.gray[4])}; /* 회색 400으로 통일 */
-  border-radius: 4px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: ${({ theme, checked }) => (checked ? theme.colors.primary : 'white')};
-  cursor: pointer;
-  transition: all 0.2s ease-in-out;
-`;
+const SearchSection = styled(Section)``;
+
 /*돌봄 대상자 리스트 관련 */
-const HireListSection = styled(Section)`
+const CaregiverListSection = styled(Section)`
   height: auto;
   display: flex;
   flex-direction: column;
   gap: ${({ theme }) => theme.spacing[6]};
 `;
 
-const HireListCard = styled.div`
+const CaregiverListCard = styled(Link)`
   width: 100%;
   margin: 0 auto; /* 중앙 정렬 */
   background-color: white;
@@ -524,23 +670,6 @@ const CareContent = styled.span`
   ${media.sm`
     font-size: ${({ theme }) => theme.fontSizes.md}; /* sm 이상 폰트 크기 */
     text-align: left; /* sm 이상에서 왼쪽 정렬 */
-  `}
-`;
-
-const DateInfo = styled.span`
-  grid-column: 1 / span 2; /* 작은 화면에서는 1줄 전체 사용 */
-  grid-row: auto;
-  font-size: ${({ theme }) => theme.fontSizes.xs}; /* 작은 화면 폰트 크기 */
-  color: ${({ theme }) => theme.colors.gray[500]};
-  white-space: nowrap;
-  align-self: center; /* 수직 중앙 정렬 */
-  text-align: center; /* 작은 화면에서 중앙 정렬 */
-
-  ${media.sm`
-    grid-column: 2; /* sm 이상에서 원래 컬럼 */
-    grid-row: 1 / span 2; /* sm 이상에서 원래 행 */
-    font-size: ${({ theme }) => theme.fontSizes.sm}; /* sm 이상 폰트 크기 */
-    text-align: right; /* sm 이상에서 오른쪽 정렬 */
   `}
 `;
 
