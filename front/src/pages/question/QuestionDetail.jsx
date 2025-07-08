@@ -115,6 +115,34 @@ const QuestionDetail = () => {
       setSubmitting(false);
     }
   };
+
+  const handleUpdateReply = async () => {
+    if (submitting) return;
+
+    console.log('작성 버튼 클릭');
+
+    try {
+      setSubmitting(true);
+      const replyData = {
+        reply_no: communityDetail.reply[0].replyNo,
+        reply_content: editedContent,
+      };
+
+      await commuService.updateReply(replyData); // API 호출
+
+      const updatedCommunity = await commuService.getCommunityDetail(boardNo); // 데이터만 다시 요청
+      setCommunityDetail(updatedCommunity); // 상태 갱신
+      setReplyMode('none'); // 작성 모드 종료
+      setEditedContent(''); // 작성 내용 초기화
+    } catch (error) {
+      toast.error(error.message);
+      const errorMessage = '등록에 실패했습니다. 다시 시도해주세요.';
+      setError(errorMessage);
+      toast.error(errorMessage);
+    } finally {
+      setSubmitting(false);
+    }
+  };
   return (
     <Page>
       <PageInfo>
@@ -213,7 +241,9 @@ const QuestionDetail = () => {
                     <div>{reply.userName}</div>
                     <div>{reply.updateDate}</div>
                     <div style={{ marginLeft: 'auto' }}>
-                      <Btn type="button">수정</Btn>
+                      <Btn type="button" onClick={handleUpdateReply}>
+                        수정
+                      </Btn>
                       <Btn type="button" style={{ margin: '0 10PX' }} onClick={handleUpdateClick}>
                         취소
                       </Btn>

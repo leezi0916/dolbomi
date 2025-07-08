@@ -19,6 +19,7 @@ export const API_ENDPOINTS = {
   COMMUNITY: {
     BASE: '/community/v1',
     UPDATE: '/community/v1/update',
+    UPDATE_REPLY: '/community/v1/update_reply',
     CAREGIVER: (page, size) => `/community/v1/caregiver?page=${page}&size=${size}`,
     GUARDIAN: (page, size) => `/community/v1/guardian?page=${page}&size=${size}`,
     DETAIL: (boardNo) => `/community/v1/detail?board_no=${boardNo}`, // 특정 게시글

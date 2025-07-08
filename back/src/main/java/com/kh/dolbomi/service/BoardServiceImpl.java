@@ -6,6 +6,7 @@ import com.kh.dolbomi.domain.User;
 import com.kh.dolbomi.dto.BoardDto;
 import com.kh.dolbomi.dto.BoardDto.CreateQuestion;
 import com.kh.dolbomi.dto.BoardDto.Response;
+import com.kh.dolbomi.dto.ReplyDto;
 import com.kh.dolbomi.dto.ReplyDto.Create;
 import com.kh.dolbomi.enums.StatusEnum;
 import com.kh.dolbomi.repository.BoardRepository;
@@ -199,5 +200,14 @@ public class BoardServiceImpl implements BoardService {
         return boardRepositoryV2.save(board).getBoardNo();
     }
 
+    @Override
+    public Long updateReply(ReplyDto.Update replyUpdate) {
+        Reply reply = replyRepositoryV2.findByReplyNo(replyUpdate.getReply_no())
+                .orElseThrow(() -> new EntityNotFoundException("게시물을 찾을 수 없습니다."));
 
+        reply.update(replyUpdate);
+        return reply.getReplyNo();
+
+
+    }
 }
