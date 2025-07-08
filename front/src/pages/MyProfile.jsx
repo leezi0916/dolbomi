@@ -252,7 +252,7 @@ const MyProfile = () => {
       </AuthContainer>
     );
   }
-
+  console.log(' 최종 이미지 URL:', getProfileImageUrl());
   return (
     <AuthContainer>
       <FromWrap>

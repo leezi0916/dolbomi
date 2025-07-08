@@ -3,6 +3,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { userService } from '../api/users';
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 // 유효성 검사 스키마
 const signUpSchema = yup.object().shape({
@@ -14,7 +15,6 @@ const signUpSchema = yup.object().shape({
       /^[가-힣a-zA-Z][^!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?\s]*$/,
       '아이디에 특수문자가 포함되면 안되고 숫자로 시작하면 안됩니다!'
     ),
-
   userName: yup
     .string()
     .required('이름을 입력하세요.')
@@ -55,8 +55,11 @@ const signUpSchema = yup.object().shape({
   email: yup.string().email('유효한 이메일 주소를 입력하세요.').required('이메일을 입력해주세요.'),
 });
 
-export const useSignUpForm = () => {
-  const [isIdChecked, setIsIdChecked] = useState(false);
+export const useSignUpForm = (socialType, socialId) => {
+  const navigate = useNavigate();
+
+  //아이디 중복 검사
+  const [isIdChecked, setIsIdChecked] = useState(false); // 아이디 중복확인 완료 여부
   const [idCheckMessage, setIdCheckMessage] = useState('');
 
   const {
@@ -110,6 +113,35 @@ export const useSignUpForm = () => {
     if (numbersOnly.length < 8) return `${numbersOnly.slice(0, 3)}-${numbersOnly.slice(3)}`;
     return `${numbersOnly.slice(0, 3)}-${numbersOnly.slice(3, 7)}-${numbersOnly.slice(7, 11)}`;
   };
+
+  const onSubmit = async (data) => {
+    if (!isIdChecked) {
+      toast.error('아이디 중복을 확인을 해주세요.');
+      return;
+    }
+
+    // 소셜아이디 있으면 추가
+    if (socialId) {
+      data.socialId = socialId;
+    }
+
+    // 소셜타입이 있으면 추가
+    if (socialType) {
+      data.socialType = socialType;
+    }
+
+    try {
+      //회원가입API호출
+      await userService.signUp(data);
+      toast.success('회원가입 완료!');
+      navigate('/login');
+    } catch (error) {
+      toast.error('회원가입 중 문제가 발생하였습니다.');
+      console.error('회원가입 에러 : ', error);
+    }
+  };
+
+  //컴포넌트에서 사용할 값들 반환
 
   return {
     register,

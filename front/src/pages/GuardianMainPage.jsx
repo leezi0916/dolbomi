@@ -63,6 +63,14 @@ const GuardianMainPage = () => {
     return name;
   };
 
+  const CLOUDFRONT_URL = 'https://d20jnum8mfke0j.cloudfront.net/';
+
+  const getProfileImageUrl = (path) => {
+    if (!path) return defaultImage; // 기본 이미지
+    const cleanPath = path.replace(/^\//, '');
+    return `${CLOUDFRONT_URL}${cleanPath}`;
+  };
+
   return (
     <>
       <HomeBannerSection>
@@ -98,7 +106,7 @@ const GuardianMainPage = () => {
               resumeLiset.map((resume) => (
                 <Card key={resume.resumeNo}>
                   <CardTopContent>
-                    <CardImage $src={resume.profileImage} />
+                    <CardImage src={getProfileImageUrl(resume.profileImage)} alt="프로필" />
                     <CardTextGroup>
                       <CardTitle>
                         {maskName(resume.userName)} <span>간병사</span>
@@ -151,9 +159,9 @@ const GuardianMainPage = () => {
                     <CardText>
                       <span>나이</span> : {review.age}세({review.gender == 'M' ? '남' : '여'})
                     </CardText>
-                    <CardText>
+                    <CardRegionText>
                       <span>지역</span> : {review.address}
-                    </CardText>
+                    </CardRegionText>
                   </CardTextGroup>
                 </CardTopContent>
                 <CardMidBottomContent>
