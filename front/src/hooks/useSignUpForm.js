@@ -4,6 +4,7 @@ import * as yup from 'yup';
 import { userService } from '../api/users';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 // 유효성 검사 스키마
 const signUpSchema = yup.object().shape({
@@ -116,28 +117,27 @@ export const useSignUpForm = (socialType, socialId) => {
 
   const onSubmit = async (data) => {
     if (!isIdChecked) {
-      toast.error('아이디 중복을 확인을 해주세요.');
+      toast.error('아이디 중복을 확인해주세요.');
       return;
     }
 
-    // 소셜아이디 있으면 추가
-    if (socialId) {
-      data.socialId = socialId;
-    }
+    // 주소 정리
+    const submitData = {
+      ...data,
+      address: `${data.address}`.trim(),
+    };
 
-    // 소셜타입이 있으면 추가
-    if (socialType) {
-      data.socialType = socialType;
-    }
+    // 소셜 정보 추가
+    if (socialId) submitData.socialId = socialId;
+    if (socialType) submitData.socialType = socialType;
 
     try {
-      //회원가입API호출
-      await userService.signUp(data);
+      await userService.signUp(submitData);
       toast.success('회원가입 완료!');
       navigate('/login');
     } catch (error) {
       toast.error('회원가입 중 문제가 발생하였습니다.');
-      console.error('회원가입 에러 : ', error);
+      console.error(error);
     }
   };
 
@@ -154,5 +154,6 @@ export const useSignUpForm = (socialType, socialId) => {
     setValue,
     formatPhoneNumber,
     isIdChecked, // 외부에서 중복 체크 확인 필요
+    onSubmit,
   };
 };
