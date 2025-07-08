@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { AuthContainer } from '../styles/Auth.styles';
 import { Title } from '../styles/Auth.styles';
 import {
@@ -23,53 +23,20 @@ import { toast } from 'react-toastify';
 import Tags from '../components/Tags';
 import styled from 'styled-components';
 import PostcodeSearch from '../components/PostcodeSearch';
+import profileImg from '../assets/profileImg/img_환자소.png';
+import { getUploadUrl, uploadFileToS3, completeUpload } from '../api/fileApi';
 
 const PatientUpdate = () => {
   const { user, userStatus } = useUserStore();
   const { patNo } = useParams();
-  const [patient, setPatinet] = useState();
-
-  const { register, handleSubmit, errors, isSubmitting, formatPhoneNumber, watch, setValue } =
-    usepatientRegistrationForm();
-  const currentGender = watch('patGender');
-
   const navigate = useNavigate();
 
-  const handleTagChange = (newVal) => {
-    setTags(newVal); // set을 대체하는 커스텀 함수
-  };
+  const [patient, setPatient] = useState();
+  // tag 관련
+  const [tags, setTags] = useState([]);
 
-  useEffect(() => {
-    if (!user) {
-      alert('로그인 후 이용해주세요');
-      // navigate('/guardian');
-    } else {
-      const getPatient = async () => {
-        try {
-          const onePatient = await patientService.getPatientId(patNo);
-          setPatinet(onePatient);
-        } catch (error) {
-          console.log(error);
-        }
-      };
-      getPatient();
-    }
-  }, [user, userStatus, patNo]);
-
-  useEffect(() => {
-    if (patient) {
-      setValue('patName', patient.patName || '');
-      setValue('patAge', patient.patAge || '');
-      setValue('patGender', patient.patGender || '');
-      setValue('patAddress', patient.patAddress || '');
-      setValue('patHeight', patient.patHeight || '');
-      setValue('patWeight', patient.patWeight || '');
-      setValue('patContent', patient.patContent || '');
-      setValue('patPhone', patient.patPhone || '');
-      setValue('diseaseTags', patient.diseaseTags || '');
-      setTags(patient.diseaseTags ? patient.diseaseTags : []);
-    }
-  }, [patient, setValue]);
+  const [selectedFile, setSelectedFile] = useState(null);
+  const [previewUrl, setPreviewUrl] = useState(null);
 
   //주소 관련
   const [addressData, setAddressData] = useState({
@@ -78,15 +45,53 @@ const PatientUpdate = () => {
     extraAddress: '',
   });
 
+  const { register, handleSubmit, watch, setValue, formatPhoneNumber, errors, isSubmitting } =
+    usepatientRegistrationForm();
+
+  const currentGender = watch('patGender');
+  const inputRef = useRef(null);
+
+  const handleTagChange = (newVal) => {
+    setTags(newVal); // set을 대체하는 커스텀 함수
+  };
+
+  //환자 정보 가져오기
+  // 환자 정보 가져오기
+  useEffect(() => {
+    if (!user) {
+      alert('로그인 후 이용해주세요');
+      return;
+    }
+    const fetchPatient = async () => {
+      try {
+        const onePatient = await patientService.getPatientId(patNo);
+        console.log('환자 정보:', onePatient);
+        setPatient(onePatient);
+        setTags(onePatient.diseaseTags || []);
+        setValue('patName', onePatient.patName || '');
+        setValue('patAge', onePatient.patAge || '');
+        setValue('patGender', onePatient.patGender || '');
+        setValue('patPhone', onePatient.patPhone || '');
+        setValue('patAddress', onePatient.patAddress || '');
+        setValue('patHeight', onePatient.patHeight || '');
+        setValue('patWeight', onePatient.patWeight || '');
+        setValue('patContent', onePatient.patContent || '');
+        setValue('diseaseTags', onePatient.diseaseTags || []);
+      } catch (err) {
+        console.error(err);
+        toast.error('환자 정보를 불러오는 데 실패했습니다.');
+      }
+    };
+    fetchPatient();
+  }, [user, userStatus, patNo, setValue]);
+
+  // 주소가 바뀌면 form 값에도 반영
   useEffect(() => {
     const fullAddress = `${addressData.address}${addressData.extraAddress}`.trim();
     if (fullAddress) {
       setValue('patAddress', fullAddress);
     }
   }, [addressData, setValue]);
-
-  // tag 관련
-  const [tags, setTags] = useState([]);
 
   // 이게 있어야 tag가 변경됌
   useEffect(() => {
@@ -95,11 +100,27 @@ const PatientUpdate = () => {
 
   const onSubmit = async (data) => {
     try {
-      await patientService.updatePatient(patient.patNo, { ...patient, ...data });
-      toast.success('돌봄대상자 수정완료!');
+      let imagePath = patient?.patImage || '';
+
+      if (selectedFile) {
+        const { presignedUrl, changeName } = await getUploadUrl(selectedFile.name, selectedFile.type, 'patient/');
+        await uploadFileToS3(presignedUrl, selectedFile);
+        console.log('Presigned URL 응답:', { presignedUrl, changeName });
+        imagePath = changeName;
+      }
+
+      console.log(imagePath);
+      await patientService.updatePatient(patNo, {
+        ...patient,
+        ...data,
+        profileImage: imagePath,
+      });
+
+      toast.success('돌봄대상자 수정 완료!');
       navigate('/guardian/patient');
-    } catch (error) {
-      console.log(error);
+    } catch (err) {
+      toast.error('수정 중 오류가 발생했습니다.');
+      console.error(err);
     }
   };
 
@@ -122,12 +143,49 @@ const PatientUpdate = () => {
     }
   };
 
+  const handleImageClick = () => {
+    inputRef.current?.click();
+  };
+
+  const handleFileChange = (e) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setSelectedFile(file);
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setPreviewUrl(reader.result);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const CLOUDFRONT_URL = 'https://d20jnum8mfke0j.cloudfront.net/';
+  const getProfileImageUrl = () => {
+    if (previewUrl) return previewUrl;
+    if (patient?.profileImage) {
+      return `${CLOUDFRONT_URL}${patient.profileImage}`;
+    }
+    return profileImg; // 기본 이미지
+  };
+
   return (
     <>
       <AuthContainer>
         <FromWrap>
           <Title>돌봄 대상자 목록</Title>
-          <Img src="/src/assets/profileImg/img_환자소.png"></Img>
+          <Img
+            src={getProfileImageUrl()}
+            alt="프로필 이미지"
+            onClick={handleImageClick}
+            style={{
+              width: '200px',
+              height: '200px',
+              objectFit: 'cover',
+              borderRadius: '50%',
+              cursor: 'pointer',
+            }}
+          />
+          <input type="file" ref={inputRef} style={{ display: 'none' }} accept="image/*" onChange={handleFileChange} />
           <GridForm onSubmit={handleSubmit(onSubmit)}>
             <GridInerContainer>
               <Label htmlFor="patName">이름</Label>

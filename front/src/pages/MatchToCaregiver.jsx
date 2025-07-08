@@ -136,6 +136,14 @@ const MatchToCaregiver = () => {
     }
   };
 
+  // const CLOUDFRONT_URL = 'https://d20jnum8mfke0j.cloudfront.net/';
+  // //이미지 경로 갖고오고 없다면 기본이미지
+  // const getProfileImageUrl = (path) => {
+  //   if (!path) return profileImage; // 기본 이미지
+  //   const cleanPath = path.replace(/^\//, ''); // 앞에 / 있으면 제거
+  //   return `${CLOUDFRONT_URL}${cleanPath}`;
+  // };
+
   return (
     <>
       <HeadSection>

@@ -98,7 +98,7 @@ public class PatientServiceImpl implements PatientService {
         patient.changePatHeight(updatePatDto.getPat_height());
         patient.changePatContent(updatePatDto.getPat_content());
         patient.changeStatus(updatePatDto.getStatus());
-
+        patient.changeProfileImage(updatePatDto.getProfile_image());
         if (updatePatDto.getDisease_tags() != null && !updatePatDto.getDisease_tags().isEmpty()) {
 
             patient.getDiseaseTags().clear();
