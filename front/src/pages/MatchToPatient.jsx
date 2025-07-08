@@ -102,6 +102,14 @@ const MatchToPatient = () => {
     setEndedCurrentPage(value);
   };
 
+  const CLOUDFRONT_URL = 'https://d20jnum8mfke0j.cloudfront.net/';
+  //이미지 경로 갖고오고 없다면 기본이미지
+  const getProfileImageUrl = (path) => {
+    if (!path) return profileImage; // 기본 이미지
+    const cleanPath = path.replace(/^\//, ''); // 앞에 / 있으면 제거
+    return `${CLOUDFRONT_URL}${cleanPath}`;
+  };
+
   return (
     <>
       <HeadSection>
@@ -119,7 +127,10 @@ const MatchToPatient = () => {
         </TitleDiv>
       </HeadSection>
 
+
       {/* {activeTab === 'matched' ? (
+
+ 
         <SearchDivWrap>
           <SearchInput placeholder="찾으시는 돌봄대상자를 검색하세요"></SearchInput>
           <SearchBtn>
@@ -132,6 +143,7 @@ const MatchToPatient = () => {
         <></>
       )} */}
 
+
       {/*진행중 매칭 */}
       <MatchSection>
         {activeTab === 'matching' && (
@@ -140,7 +152,7 @@ const MatchToPatient = () => {
               patientList.map((pat) => (
                 <ProfileCardPair key={pat.matNo}>
                   <ProfileCard type="patient">
-                    <ProfileImage src={profileImage} alt="환자" />
+                    <ProfileImage src={getProfileImageUrl(pat?.profileImage)} alt="프로필" />
                     <ProfileInfo>
                       <UserName>{pat.patName} 님</UserName>
                       <UserAge>
@@ -168,7 +180,7 @@ const MatchToPatient = () => {
               endedPatientList.map((pat) => (
                 <ProfileCardPair key={pat.matNo}>
                   <ProfileCard type="patient">
-                    <ProfileImage src={profileImage} alt="환자" />
+                    <ProfileImage src={getProfileImageUrl(pat?.profileImage)} alt="프로필" />
                     <ProfileInfo>
                       <UserName>{pat.patName} 님</UserName>
                       <UserAge>

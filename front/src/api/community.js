@@ -3,35 +3,6 @@ import { API_ENDPOINTS } from './config';
 import { snakeToCamel } from '../utils/formatData';
 
 export const commuService = {
-  // getCommunity: async (status, role) => {
-  //   try {
-  //     const { data } = await api.get(API_ENDPOINTS.COMMUNITY.LIST(status, role));
-  //     return data;
-  //   } catch (error) {
-  //     console.log('게시판정보를 가져오지 못함 : ', error.response?.data?.message || '게시판목록 불러오기 실패');
-  //     throw new Error('서버 통신 불량');
-  //   }
-  // },
-  // getQuestion: async (status, role, id) => {
-  //   try {
-  //     const { data } = await api.get(API_ENDPOINTS.COMMUNITY.QUESTION(status, role, id));
-  //     return data;
-  //   } catch (error) {
-  //     console.log('게시판정보를 가져오지 못함 : ', error.response?.data?.message || '게시판목록 불러오기 실패');
-  //     throw new Error('서버 통신 불량');
-  //   }
-  // },
-  // getCommunityDetail: async (no) => {
-  //   try {
-  //     const { data } = await api.get(API_ENDPOINTS.COMMUNITY.DETAIL(no));
-  //     console.log('요청 URL:', API_ENDPOINTS.COMMUNITY.DETAIL(no));
-
-  //     return data;
-  //   } catch (error) {
-  //     console.error('프로필 조회 실패:', error.response?.data?.message || error.message);
-  //     throw new Error('서버 통신 불량');
-  //   }
-  // },
   getCaregiver: async (page, size) => {
     try {
       const { data } = await api.get(API_ENDPOINTS.COMMUNITY.CAREGIVER(page, size));
@@ -118,12 +89,26 @@ export const commuService = {
   },
   getCommunityDetail: async (boardNo) => {
     try {
-      const { data } = await api.get(API_ENDPOINTS.COMMUNITY.DETAIL(boardNo));
+      const { data } = await api.get(API_ENDPOINTS.COMMUNITY.DETAIL(boardNo), {
+        withCredentials: true,
+      });
       console.log('요청 URL:', API_ENDPOINTS.COMMUNITY.DETAIL(boardNo));
       return snakeToCamel(data);
     } catch (error) {
       console.error('게시글 조회 실패:', error.response?.data?.message || error.message);
       throw new Error('서버 통신 불량');
+    }
+  },
+  updateCommunity: async (boardData) => {
+    try {
+      const { data } = await api.post(API_ENDPOINTS.COMMUNITY.UPDATE, boardData);
+      return snakeToCamel(data);
+    } catch (error) {
+      if (error.response) {
+        const errorMessage = error.response.data.message || '게시글 작성에 실패했습니다.';
+        throw new Error(errorMessage);
+      }
+      throw new Error('서버와의 통신에 실패했습니다.');
     }
   },
 };

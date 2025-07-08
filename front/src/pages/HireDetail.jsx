@@ -155,6 +155,14 @@ const HireDetail = () => {
   const isMyJobOpening = user?.userNo === jobOpening?.userNo;
   // 모집 마감 상태 확인 (DTO에 hire_status 필드가 있다고 가정)
 
+  const CLOUDFRONT_URL = 'https://d20jnum8mfke0j.cloudfront.net/';
+  //이미지 경로 갖고오고 없다면 기본이미지
+  const getProfileImageUrl = (path) => {
+    if (!path) return profileImage; // 기본 이미지
+    const cleanPath = path.replace(/^\//, ''); // 앞에 / 있으면 제거
+    return `${CLOUDFRONT_URL}${cleanPath}`;
+  };
+
   return (
     <HireRegistSection>
       {isMyJobOpening ? (
@@ -163,7 +171,7 @@ const HireDetail = () => {
             {proposerList.slice(0, 3).map((list, index) => (
               <ProfileImg
                 key={index}
-                src={list.profileImage ? list.profileImage : caregiverImage} // 기본 이미지로 대체
+                src={getProfileImageUrl(list.profileImage)} // 기본 이미지로 대체
                 style={{ left: `${index * 20}px`, zIndex: proposerList.length - index }}
               />
             ))}
@@ -185,7 +193,7 @@ const HireDetail = () => {
           <ContentWrapper>
             <div>
               <ProfilImageWrapper>
-                <img src={jobOpening.profileImage ? jobOpening.profileImage : profileImage} alt="프로필" />
+                <img src={getProfileImageUrl(jobOpening.profileImage)} alt="프로필" />
               </ProfilImageWrapper>
               <ChatButton>
                 <img src={chatImage} alt="프로필 이미지" />1 : 1 채팅하기
@@ -288,14 +296,23 @@ const HireDetail = () => {
                   <label>불가능</label>
                 </RadioWrapper>
               </RadioGroup>
-              <InputGroup>
-                <Label>숙소 정보</Label>
-                {/* 클릭 가능한 div */}
-                <RoomImage>
-                  <Plus />
-                </RoomImage>
-                <input type="file" style={{ display: 'none' }} readOnly />
-              </InputGroup>
+              {jobOpening?.careStatus === 'Y' && (
+                <InputGroup>
+                  <Label>숙소 정보</Label>
+                  <RoomImage>
+                    {jobOpening.roomImage ? (
+                      <img
+                        src={getProfileImageUrl(jobOpening.roomImage)}
+                        alt="숙소 사진"
+                        style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '4px' }}
+                      />
+                    ) : (
+                      <Plus />
+                    )}
+                  </RoomImage>
+                  <input type="file" style={{ display: 'none' }} readOnly />
+                </InputGroup>
+              )}
             </HireContent>
           </ContentWrapper1>
         </form>
@@ -590,7 +607,6 @@ const Content = styled.textarea`
 `;
 
 const RoomImage = styled.div`
-  padding: ${({ theme }) => theme.spacing[3]};
   width: 50%;
   height: 200px;
   background-color: ${({ theme }) => theme.colors.gray[5]};

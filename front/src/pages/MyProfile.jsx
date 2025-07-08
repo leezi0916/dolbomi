@@ -227,6 +227,7 @@ const MyProfile = () => {
       toast.error('회원탈퇴 처리 중 오류가 발생했습니다.');
     }
   };
+
   const getProfileImageUrl = () => {
     if (previewUrl) return previewUrl;
     if (profile?.profileImage) {
@@ -252,7 +253,7 @@ const MyProfile = () => {
       </AuthContainer>
     );
   }
-
+  console.log(' 최종 이미지 URL:', getProfileImageUrl());
   return (
     <AuthContainer>
       <FromWrap>
@@ -317,7 +318,13 @@ const MyProfile = () => {
           </InputGroup>
           <InputGroup>
             <Label htmlFor="email">이메일</Label>
-            <Input type="email" id="email" value={formData.email} onChange={handleChange} />
+            <Input
+              type="email"
+              id="email"
+              value={formData.email}
+              onChange={handleChange}
+              disabled={!!profile?.socialType}
+            />
           </InputGroup>
           <InputGroup>
             <Label htmlFor="address">주소</Label>

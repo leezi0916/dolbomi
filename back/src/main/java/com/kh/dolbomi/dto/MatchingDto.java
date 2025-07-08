@@ -39,6 +39,7 @@ public class MatchingDto {
         private LocalDateTime end_date;
         private StatusEnum.Status status;
         private Long review_no;
+        private String caregiver_profile_image;
         private StatusEnum.Status user_status;
 
         public static Response toDto(Matching matching) {
@@ -52,6 +53,7 @@ public class MatchingDto {
                     .end_date(matching.getEndDate())
                     .status(matching.getStatus())
                     .review_no(matching.getReview() != null ? matching.getReview().getReviewNo() : null)
+                    .caregiver_profile_image(matching.getCaregiver().getProfileImage())
                     .user_status(matching.getCaregiver().getStatus())
                     .build();
         }
@@ -74,6 +76,7 @@ public class MatchingDto {
         private LocalDateTime end_date;
         private StatusEnum.Status status;
         private Long review_no;
+        private String profile_image;
 
         public static ResponsePat from(Matching matching) {
             return ResponsePat.builder()
@@ -86,6 +89,7 @@ public class MatchingDto {
                     .end_date(matching.getEndDate())
                     .status(matching.getStatus())
                     .review_no(matching.getReview() != null ? matching.getReview().getReviewNo() : null)
+                    .profile_image(matching.getPatient().getProfileImage())
                     .build();
         }
     }

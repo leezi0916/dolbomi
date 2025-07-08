@@ -1,5 +1,6 @@
 package com.kh.dolbomi.domain;
 
+import com.kh.dolbomi.dto.BoardDto;
 import com.kh.dolbomi.enums.StatusEnum;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -73,11 +74,20 @@ public class Board {
 
     private int count;
 
+    public void increaseViews() {
+        this.count += 1;
+    }
+
     public void changeUser(User user) {
         this.user = user;
         if (!user.getBoards().contains(this)) {
             user.getBoards().add(this);
         }
+    }
+
+    public void update(BoardDto.Update dto) {
+        this.boardTitle = dto.getBoard_title();
+        this.boardContent = dto.getBoard_content();
     }
 
     @PrePersist
