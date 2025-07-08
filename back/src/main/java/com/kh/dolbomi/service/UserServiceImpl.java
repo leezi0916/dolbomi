@@ -6,6 +6,7 @@ import com.kh.dolbomi.domain.User;
 import com.kh.dolbomi.dto.LicenseDto;
 import com.kh.dolbomi.dto.UserDto;
 import com.kh.dolbomi.dto.UserDto.Login;
+import com.kh.dolbomi.dto.UserDto.Response;
 import com.kh.dolbomi.enums.StatusEnum;
 import com.kh.dolbomi.exception.UserNotFoundException;
 import com.kh.dolbomi.repository.LicenseRepository;
@@ -74,6 +75,14 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDto.Response getUserInfoByUserId(String userId) {
         User user = userRepositoryV2.findByUserId(userId)
+                .orElseThrow(() -> new UserNotFoundException("회원정보를 찾을 수 없습니다."));
+        return UserDto.Response.toDto(user);
+    }
+
+    // 이메일로 유저 정보 찾기
+    @Override
+    public Response getUserInfoByEmail(String email) {
+        User user = userRepositoryV2.findByEmail(email)
                 .orElseThrow(() -> new UserNotFoundException("회원정보를 찾을 수 없습니다."));
         return UserDto.Response.toDto(user);
     }
@@ -157,6 +166,7 @@ public class UserServiceImpl implements UserService {
         //영속성 컨텍스트가 활성화된 상태라면 없어도 변경 가능
         userRepository.save(user);
     }
+
 
 }
 

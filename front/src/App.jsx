@@ -53,7 +53,6 @@ import CommunityDetail from './pages/community/CommunityDetail';
 import CreateCommuBoardForm from './pages/community/CreateCommuBoardForm';
 import QuestionDetail from './pages/question/QuestionDetail';
 
-
 function AppRoutes() {
   const navigate = useNavigate();
   const location = useLocation();

@@ -1,6 +1,7 @@
 package com.kh.dolbomi.config;
 
 import com.kh.dolbomi.auth.JwtTokenFilter;
+import com.kh.dolbomi.service.GoogleOauth2LoginSuccess;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -26,6 +27,7 @@ public class SecurityConfig {
 
     private final JwtTokenFilter jwtTokenFilter;
 
+    private final GoogleOauth2LoginSuccess successHandler;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -54,6 +56,7 @@ public class SecurityConfig {
                         .anyRequest().authenticated() // 위의 요청경로를 제외한 나머지 경로는 인증
                 )
                 .addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class)
+                .oauth2Login(oauth2 -> oauth2.successHandler(successHandler)) // 여기서 등록
                 .build();
     }
 

@@ -33,6 +33,7 @@ public class UserController {
     //회원 등록
     @PostMapping
     public ResponseEntity<Long> addUser(@Valid @RequestBody UserDto.Create createDto) {
+        System.out.println(createDto.getSocial_type());
         Long userNo = userService.createUser(createDto);
         return ResponseEntity.ok(userNo);
     }
@@ -61,8 +62,17 @@ public class UserController {
     @GetMapping("/me")
     public ResponseEntity<?> getMemberInfo() {
         //jwt토큰에서 아이디 추출
-        String userId = jwtTokenProvider.getUserIdFromToken();
-        UserDto.Response userInfo = userService.getUserInfoByUserId(userId);
+        String identifier = jwtTokenProvider.getUserIdFromToken(); // 이메일 또는 아이디가 올 수 있음 -> 소셜 로그인때문
+        UserDto.Response userInfo;
+
+        if (identifier.contains("@")) {
+            // 이메일 형식이면 이메일로 유저 조회
+            userInfo = userService.getUserInfoByEmail(identifier);
+        } else {
+            // 아니면 일반 userId로 유저 조회
+            userInfo = userService.getUserInfoByUserId(identifier);
+        }
+
         return new ResponseEntity<>(userInfo, HttpStatus.OK);
     }
 

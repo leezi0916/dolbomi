@@ -22,4 +22,5 @@ public interface UserService {
     // 회원 탈퇴 (논리 삭제)
     void deleteUser(Long userNo);
 
+    UserDto.Response getUserInfoByEmail(String email);
 }

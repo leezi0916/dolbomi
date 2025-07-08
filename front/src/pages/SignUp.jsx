@@ -12,11 +12,19 @@ import {
   InputContainer,
 } from '../styles/Auth.styles';
 import styled from 'styled-components';
-import { FcGoogle } from 'react-icons/fc';
 import { IoCheckmarkOutline } from 'react-icons/io5'; // 체크마크 아이콘 import
 import { useSignUpForm } from '../hooks/useSignUpForm';
+import { useLocation } from 'react-router-dom';
 
 const SignUp = () => {
+  const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
+  const email = searchParams.get('email');
+  const name = searchParams.get('name');
+  const socialType = searchParams.get('socialType');
+  const emailVerified = searchParams.get('verified');
+  const socialId = searchParams.get('openId');
+
   // watch 함수를 useSignUpForm 훅에서 가져옵니다.
   const {
     register,
@@ -28,7 +36,7 @@ const SignUp = () => {
     idCheckMessage,
     setValue,
     formatPhoneNumber,
-  } = useSignUpForm();
+  } = useSignUpForm(socialType, socialId);
 
   // 'gender' 필드의 현재 값을 watch하여 라디오 버튼의 checked 상태를 제어합니다.
   const currentGender = watch('gender');
@@ -99,7 +107,7 @@ const SignUp = () => {
             </GoogleLogin>
           </Head> */}
           <Center>
-            <Title>회원가입</Title>
+            <SignUpTitle>회원가입</SignUpTitle>
             <InputContainer1>
               <InputGroup>
                 <Label htmlFor="userId">아이디</Label>
@@ -135,13 +143,18 @@ const SignUp = () => {
               </InputGroup>
               <InputGroup>
                 <Label htmlFor="userName">이름</Label>
-                <Input
-                  id="userName"
-                  type="text"
-                  placeholder="이름을 입력해주세요"
-                  {...register('userName')}
-                  $error={errors.userName}
-                />
+                {name === null ? (
+                  <Input
+                    id="userName"
+                    type="text"
+                    placeholder="이름을 입력해주세요"
+                    {...register('userName')}
+                    $error={errors.userName}
+                  />
+                ) : (
+                  <Input id="userName" type="text" value={name} {...register('userName')} disabled />
+                )}
+
                 {errors.userName && <ErrorMessage>{errors.userName.message}</ErrorMessage>}
               </InputGroup>
               <InputGroup>
@@ -215,100 +228,82 @@ const SignUp = () => {
                 />
                 {errors.address && <ErrorMessage>{errors.address.message}</ErrorMessage>}
               </InputGroup>
+
               <InputGroup>
                 <Label htmlFor="email">이메일</Label>
-                <Input
-                  id="email"
-                  type="email"
-                  placeholder="이메일을 입력해주세요"
-                  {...register('email')}
-                  $error={errors.email}
-                />
-                {errors.email && <ErrorMessage>{errors.email.message}</ErrorMessage>}
+                <Row>
+                  {email === null ? (
+                    <Inputs
+                      id="email"
+                      type="email"
+                      placeholder="이메일을 입력해주세요"
+                      {...register('email')}
+                      $error={errors.email}
+                    />
+                  ) : (
+                    <Inputs id="email" type="email" {...register('email')} value={email} disabled />
+                  )}
+
+                  {errors.email && <ErrorMessage>{errors.email.message}</ErrorMessage>}
+
+                  {emailVerified === null ? (
+                    <CheckDuplicateButton type="button" onClick={checkUserId}>
+                      인증하기
+                    </CheckDuplicateButton>
+                  ) : (
+                    ''
+                  )}
+                </Row>
               </InputGroup>
+              <SignUpButton type="submit" disabled={isSubmitting}>
+                {isSubmitting ? '처리중...' : '가입하기'}
+              </SignUpButton>
             </InputContainer1>
           </Center>
-
-          <Button type="submit" disabled={isSubmitting}>
-            {isSubmitting ? '처리중...' : '가입하기'}
-          </Button>
         </Form>
       </AuthContainer>
     </>
   );
 };
 
-// ... (아래 styled-components 정의는 동일)
+// styled-components (필요시 조절)
+const SignUpTitle = styled(Title)`
+  margin: 0;
+`;
 
-const Head = styled.div`
-  width: 100%;
-  height: 200px;
-  background-color: white;
-  box-shadow: ${({ theme }) => theme.shadows.base};
-  padding: ${({ theme }) => theme.spacing[8]};
+const SignUpButton = styled(Button)`
+  margin-top: ${({ theme }) => theme.spacing[6]};
 `;
 
 const Center = styled.div`
   width: 100%;
-  height: auto; /* 고정된 높이 대신 내용에 따라 높이 자동 조절 */
-  min-height: 850px; /* 최소 높이를 설정하여 초기 레이아웃이 너무 작아지는 것을 방지 */
+  min-height: 850px;
   background-color: white;
   box-shadow: ${({ theme }) => theme.shadows.base};
   padding: ${({ theme }) => theme.spacing[8]};
 `;
-const Bottom = styled.div`
-  width: 100%;
-  height: auto; /* 내용에 따라 높이 자동 조절 */
-  background-color: white;
-  box-shadow: ${({ theme }) => theme.shadows.base};
-  padding: ${({ theme }) => theme.spacing[8]}; /* 상하좌우 패딩 추가 */
-  display: flex;
-  flex-direction: column;
-  gap: ${({ theme }) => theme.spacing[4]}; /* 섹션 간 간격 */
-`;
 
-// const MainTitle = styled(Title)`
-//   font-size: ${({ theme }) => theme.fontSizes['3xl']};
-//   display: flex;
-//   justify-content: flex-start;
-//   padding: ${({ theme }) => theme.spacing[1]};
-// `;
-
-const Text = styled(Title)`
-  font-size: ${({ theme }) => theme.fontSizes.xl};
-`;
-
-const GoogleLogo = styled(FcGoogle)`
-  width: 60px;
-  height: 60px;
-  border: 1px solid ${({ theme }) => theme.colors.gray[500]};
-  border-radius: 100%;
-  padding: 10px;
-`;
-
-const GoogleLogin = styled.div`
-  display: flex;
-  text-align: center;
-  justify-content: space-around;
-  align-items: center;
+const InputContainer1 = styled(InputContainer)`
+  max-width: 600px;
+  margin: 0 auto;
+  gap: ${({ theme }) => theme.spacing[2]};
 `;
 
 const Row = styled.div`
   display: flex;
   align-items: center;
-  width: 100%;
   gap: ${({ theme }) => theme.spacing[2]};
 `;
 
-const CheckDuplicateButton = styled(Button)`
-  width: auto; /* 버튼 너비 자동 조절 */
-  min-width: 100px; /* 최소 너비 지정 */
-  font-size: ${({ theme }) => theme.fontSizes.sm};
-  white-space: nowrap; /* 텍스트 줄바꿈 방지 */
+const Inputs = styled(Input)`
+  flex-grow: 1;
 `;
 
-const Inputs = styled(Input)`
-  flex-grow: 1; /* 아이디 input이 남은 공간을 채우도록 flex-grow 추가 */
+const CheckDuplicateButton = styled(Button)`
+  width: auto;
+  min-width: 100px;
+  font-size: ${({ theme }) => theme.fontSizes.sm};
+  white-space: nowrap;
 `;
 
 const GenderRadioGroup = styled.div`
@@ -322,20 +317,16 @@ const RadioWrapper = styled.div`
   align-items: center;
   gap: ${({ theme }) => theme.spacing[3]};
 
-  // 'checked' prop을 받아서 스타일을 동적으로 적용합니다.
   input[type='radio'] {
     appearance: none;
-    -webkit-appearance: none;
     width: 20px;
     height: 20px;
     border-radius: 50%;
     outline: none;
     cursor: pointer;
     position: relative;
-    transition: all 0.2s ease-in-out;
-
-    // RadioWrapper에서 전달받은 checked prop 사용
     border: 2px solid ${({ theme, checked }) => (checked ? theme.colors.primary : theme.colors.gray[400])};
+    transition: all 0.2s ease-in-out;
   }
 
   input[type='radio']::before {
@@ -361,123 +352,6 @@ const RadioWrapper = styled.div`
     color: ${({ theme }) => theme.colors.gray[700]};
     cursor: pointer;
   }
-`;
-
-// New styled components for the Bottom section
-const AllAgreementContainer = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  width: 100%;
-  padding-bottom: ${({ theme }) => theme.spacing[4]}; /* 리스트 전 공간 */
-  border-bottom: 1px solid ${({ theme }) => theme.colors.gray[300]}; /* 하단 구분선 */
-`;
-
-const AllAgreementText = styled.span`
-  font-size: ${({ theme }) => theme.fontSizes.lg};
-  font-weight: ${({ theme }) => theme.fontWeights.bold};
-  color: ${({ theme }) => theme.colors.gray[800]};
-`;
-
-const AgreementList = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: ${({ theme }) => theme.spacing[4]}; /* 동의 항목 간 간격 */
-  padding-top: ${({ theme }) => theme.spacing[4]};
-`;
-
-const AgreementItem = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  font-size: ${({ theme }) => theme.fontSizes.base};
-  color: ${({ theme }) => theme.colors.gray[700]};
-`;
-
-const AgreementLabel = styled.label`
-  display: flex;
-  align-items: center;
-  gap: ${({ theme }) => theme.spacing[2]};
-  cursor: pointer;
-`;
-
-const CustomCheckbox = styled.div`
-  width: 24px;
-  height: 24px;
-  border: 1px solid ${({ theme, checked }) => (checked ? theme.colors.primary : theme.colors.gray[4])};
-  border-radius: 4px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: ${({ theme, checked }) => (checked ? theme.colors.primary : 'white')};
-  cursor: pointer;
-  transition: all 0.2s ease-in-out;
-`;
-
-//내용보기
-const ViewContentButton = styled.button`
-  background: none;
-  border: none;
-  color: ${({ theme }) => theme.colors.gray[600]};
-
-  cursor: pointer;
-  padding: ${({ theme }) => theme.spacing[1]} ${({ theme }) => theme.spacing[2]};
-
-  white-space: nowrap; /* 텍스트 줄바꿈 방지 */
-
-  &:hover {
-    background-color: ${({ theme }) => theme.colors.gray[100]};
-  }
-`;
-
-const Divider = styled.div`
-  width: 100%;
-  height: 1px;
-  background-color: ${({ theme }) => theme.colors.gray[200]};
-  margin: ${({ theme }) => theme.spacing[4]} 0;
-`;
-
-const RequiredText = styled.span`
-  color: ${({ theme }) => theme.colors.primary};
-  font-weight: bold;
-`;
-
-const OptionalText = styled.span`
-  color: ${({ theme }) => theme.colors.gray[500]};
-  font-weight: bold;
-`;
-
-const HiddenCheckbox = styled.input.attrs({ type: 'checkbox' })`
-  border: 0;
-  //기존 체크 박스 요소 숨기기
-  clip: rect(0 0 0 0);
-  height: 1px;
-  margin: -1px;
-  overflow: hidden;
-  padding: 0;
-  position: absolute;
-  white-space: nowrap;
-  width: 1px;
-`;
-
-const StyledCheckbox = styled.div`
-  width: 24px;
-  height: 24px;
-  border: 1px solid ${({ theme, checked }) => (checked ? theme.colors.primary : theme.colors.gray[4])};
-  border-radius: 4px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: ${({ theme, checked }) => (checked ? theme.colors.primary : 'white')};
-  cursor: pointer;
-  transition: all 0.2s ease-in-out;
-`;
-const InputContainer1 = styled.div`
-  display: flex;
-  flex-direction: column;
-  max-width: 600px;
-  margin: 0 auto;
-  gap: ${({ theme }) => theme.spacing[2]};
 `;
 
 export default SignUp;

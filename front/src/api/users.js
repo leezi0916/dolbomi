@@ -1,3 +1,4 @@
+import { use } from 'react';
 import { camelToSnake, snakeToCamel } from '../utils/formatData';
 
 import api from './axios';
@@ -38,6 +39,7 @@ export const userService = {
 
   //회원가입
   signUp: async (userData) => {
+    console.log(userData);
     try {
       const { data } = await api.post(API_ENDPOINTS.USERS.BASE, camelToSnake(userData));
       console.log(data);
