@@ -76,6 +76,7 @@ public class MatchingDto {
         private LocalDateTime end_date;
         private StatusEnum.Status status;
         private Long review_no;
+        private String profile_image;
 
         public static ResponsePat from(Matching matching) {
             return ResponsePat.builder()
@@ -88,6 +89,7 @@ public class MatchingDto {
                     .end_date(matching.getEndDate())
                     .status(matching.getStatus())
                     .review_no(matching.getReview() != null ? matching.getReview().getReviewNo() : null)
+                    .profile_image(matching.getPatient().getProfileImage())
                     .build();
         }
     }

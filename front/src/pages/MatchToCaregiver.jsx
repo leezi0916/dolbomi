@@ -256,7 +256,7 @@ const MatchToCaregiver = () => {
                   onMouseEnter={() => getEndedMatchingList(pat.patNo, 1)}
                   style={{ cursor: 'pointer' }}
                 >
-                  <ProfileImage src={pat_profileImage} alt="환자" />
+                  <ProfileImage src={getProfileImageUrl(pat.profileImage, 'patient')} />
                   <ProfileInfo>
                     <UserName>{pat.patName} 님</UserName>
                     <UserAge>
@@ -294,8 +294,12 @@ const MatchToCaregiver = () => {
                   {endedCaregiverList?.map((care) => (
                     <CargiverWrap key={care.matNo}>
                       <CaregiverImg
-                        src={care.profileImage ? care.profileImage : care_profileImage}
-                        alt="간병인 프로필"
+                        src={getProfileImageUrl(care.caregiverProfileImage, 'caregiver')}
+                        alt="간병인"
+                        onError={(e) => {
+                          e.target.onerror = null;
+                          e.target.src = care_profileImage;
+                        }}
                       />
                       <CaregiverTextDiv>
                         <ProfileTextGray>
