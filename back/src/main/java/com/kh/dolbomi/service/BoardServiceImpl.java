@@ -187,7 +187,6 @@ public class BoardServiceImpl implements BoardService {
         reply.changeBoard(board);
 
         board.setQuestionStatus();
-        boardRepositoryV2.save(board);
 
         return replyRepositoryV2.save(reply).getReplyNo();
     }

@@ -7,6 +7,7 @@ import com.kh.dolbomi.dto.LicenseDto;
 import com.kh.dolbomi.dto.UserCountsDto;
 import com.kh.dolbomi.dto.UserDto;
 import com.kh.dolbomi.dto.UserDto.Login;
+import com.kh.dolbomi.dto.UserDto.Response;
 import com.kh.dolbomi.enums.StatusEnum;
 import com.kh.dolbomi.exception.LicenseNotFoundException;
 import com.kh.dolbomi.exception.UserNotFoundException;
@@ -79,6 +80,14 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDto.Response getUserInfoByUserId(String userId) {
         User user = userRepositoryV2.findByUserId(userId)
+                .orElseThrow(() -> new UserNotFoundException("회원정보를 찾을 수 없습니다."));
+        return UserDto.Response.toDto(user);
+    }
+
+    // 이메일로 유저 정보 찾기
+    @Override
+    public Response getUserInfoByEmail(String email) {
+        User user = userRepositoryV2.findByEmail(email)
                 .orElseThrow(() -> new UserNotFoundException("회원정보를 찾을 수 없습니다."));
         return UserDto.Response.toDto(user);
     }

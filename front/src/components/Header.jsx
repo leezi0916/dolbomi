@@ -8,8 +8,12 @@ import useUserStore from '../store/userStore';
 import { useNavigate } from 'react-router-dom';
 import useUserStatusStore from '../store/userStatusStore';
 import NotificationDropdown from './NotificationDropdown';
+import Cookies from 'js-cookie';
+import { userService } from '../api/users';
 import { notificationService } from '../api/notification';
 const Header = () => {
+  const { login } = useUserStore();
+
   const { user, isAuthenticated } = useUserStore();
   const { userStatus, setUserStatus } = useUserStatusStore();
 
@@ -39,6 +43,43 @@ const Header = () => {
     setIsNotiOpen(false);
   };
 
+  // 구글 로그인시 유저 정보 가져오기
+  const fetchUserInfo = async () => {
+    try {
+      const user = await userService.getMyInfo();
+
+      // store에 유저 저장
+      login({
+        userNo: user.userNo,
+        userId: user.userId,
+        userName: user.userName,
+        userRole: user.role,
+      });
+
+      //  상태 기본 저장
+      setUserStatus(userStatus);
+    } catch (error) {
+      console.error('사용자 정보 조회 실패:', error);
+    }
+  };
+
+  // 구글 로그인시 쿠키의 토큰 여부 확인 및 토큰으로 유저 정보 가져오기
+  // 쿠키에서 sessionStorage에 저장
+  useEffect(() => {
+    const token = Cookies.get('token');
+    if (token) {
+      sessionStorage.setItem('token', token);
+      Cookies.remove('token');
+    }
+  }, []);
+
+  // sessionStorage에 토큰이 있는지 확인 후 유저 정보 요청
+  useEffect(() => {
+    const token = sessionStorage.getItem('token');
+    if (token) {
+      fetchUserInfo(); // 이 시점에 무조건 토큰이 있도록 만들기 위해 useEffect 두개로 분리
+    }
+  }, []);
   //알림 안읽음 여부
   const [unreadCount, setUnreadCount] = useState(0);
 

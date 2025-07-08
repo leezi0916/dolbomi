@@ -2,9 +2,7 @@ import * as yup from 'yup';
 import { userService } from '../api/users';
 import { toast } from 'react-toastify';
 import { useState } from 'react';
-import api from '../api/axios';
-import { camelToSnake } from '../utils/formatData';
-
+import { getUploadUrl, uploadFileToS3, completeUpload } from '../api/fileApi';
 // 유효성 스키마
 const updateSchema = yup.object().shape({
   userName: yup
@@ -74,41 +72,27 @@ const useUserUpdateForm = ({ profile }) => {
         updatedData.age = Number(updatedData.age);
       }
 
-      // 프로필 이미지가 변경되었으면 S3 업로드 처리
-      if (profileImageFile) {
+      // 프로필 이미지가 변경된 경우
+      if (imageChanged) {
         try {
-          // 1. presigned URL 요청
-          const { data: uploadInfo } = await api.post('/v1/files/upload-url', null, {
-            params: {
-              fileName: profileImageFile.name,
-              contentType: profileImageFile.type,
-              path: 'profiles/',
-            },
-          });
-          console.log('Presigned URL 응답:', uploadInfo); // presignedUrl, changeName 확인
-          console.log('파일 메타데이터 응답:', fileMeta); // change_name 포함 확인
-          console.log('User 최종 수정 데이터:', updatedData); // profileImage 포함되는지
-          const { changeName, presignedUrl } = uploadInfo;
-
-          // 2. S3에 직접 PUT 업로드
-          await api.put(presignedUrl, profileImageFile, {
-            headers: {
-              'Content-Type': profileImageFile.type,
-            },
-          });
-
-          // 3. 업로드 완료 처리 (메타데이터 저장)
-          const { data: fileMeta } = await api.post(
-            '/v1/files/complete',
-            camelToSnake({
-              originalName: profileImageFile.name,
-              changeName: changeName,
-              contentType: profileImageFile.type,
-            })
+          // 1. Presigned URL 요청
+          const { presignedUrl, changeName } = await getUploadUrl(
+            profileImageFile.name,
+            profileImageFile.type,
+            'profile/' // 업로드 경로
           );
 
-          // 4. user 프로필 이미지 경로에 변경된 파일명 저장
-          updatedData.profileImage = fileMeta.change_name;
+          console.log('Presigned URL 응답:', { presignedUrl, changeName });
+
+          // 2. S3 직접 업로드
+          await uploadFileToS3(presignedUrl, profileImageFile);
+
+          // 3. 파일 업로드 완료 후 메타데이터 저장
+          const fileMeta = await completeUpload(profileImageFile.name, changeName, profileImageFile.type);
+          console.log('completeUpload 응답:', fileMeta); // 👈 이걸 반드시 찍어보세요
+
+          // 4. 유저 프로필에 파일명 저장
+          updatedData.profileImage = fileMeta.changeName;
         } catch (uploadError) {
           toast.error('프로필 이미지 업로드에 실패했습니다.');
           setUpdating(false);

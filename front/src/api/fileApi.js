@@ -6,6 +6,7 @@ export const getPresignedUploadUrl = async ({ filename, contentType }) => {
     const formData = new URLSearchParams();
     formData.append('filename', filename);
     formData.append('contentType', contentType);
+    
     const response = await axiosInstance.post('/v1/files/upload-url', formData, {
       headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
     });

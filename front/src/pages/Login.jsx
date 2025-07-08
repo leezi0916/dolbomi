@@ -19,6 +19,10 @@ const Login = () => {
   const { register, handleSubmit, errors, onSubmit, isLoading } = useLoginForm();
   const navigate = useNavigate();
 
+  const googleServerLogin = () => {
+    window.location.href = 'http://localhost:8555/oauth2/authorization/google';
+  };
+
   return (
     <AuthContainer>
       <LoginSection>
@@ -72,7 +76,7 @@ const Login = () => {
               <SnsDivider />
             </SnsWrap>
             <GoogleLogoContainer>
-              <GoogleLogo />
+              <GoogleLogo onClick={googleServerLogin} />
             </GoogleLogoContainer>
           </LoginForm>
         </LoginInputContainer>
@@ -142,6 +146,7 @@ const GoogleLogo = styled(FcGoogle)`
   border: 1px solid ${({ theme }) => theme.colors.gray[500]};
   border-radius: 100%;
   padding: ${({ theme }) => theme.spacing[3]};
+  cursor: pointer;
 `;
 
 const GoogleLogoContainer = styled.div`

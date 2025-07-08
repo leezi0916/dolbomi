@@ -44,4 +44,5 @@ public class JwtTokenProvider {
         //JwtTokenFilter에서 토큰 검증 후에 호출
         return SecurityContextHolder.getContext().getAuthentication().getName();
     }
+
 }
