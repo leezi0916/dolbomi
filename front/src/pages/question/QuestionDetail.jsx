@@ -21,6 +21,7 @@ import {
 import { PageInfo, Textarea } from './style/Question.styles';
 
 const QuestionDetail = () => {
+  const userRole = useUserStore((state) => state.user?.userRole);
   const userNo = useUserStore((state) => state.user?.userNo);
   const userName = useUserStore((state) => state.user?.userName);
   const { boardNo } = useParams();
@@ -30,6 +31,7 @@ const QuestionDetail = () => {
   const [loading, setLoading] = useState(true);
 
   const [communityDetail, setCommunityDetail] = useState(null);
+  const [submitting, setSubmitting] = useState(false);
 
   const [replyMode, setReplyMode] = useState('none');
   const handleCreateClick = () => {
@@ -50,6 +52,7 @@ const QuestionDetail = () => {
   }, [communityDetail]);
 
   useEffect(() => {
+    console.log('?:' + userRole);
     const loadCommunity = async () => {
       try {
         const community = await commuService.getCommunityDetail(boardNo);
@@ -67,7 +70,7 @@ const QuestionDetail = () => {
     };
 
     loadCommunity();
-  }, [boardNo]);
+  }, [boardNo, userRole]);
 
   if (loading) {
     return (
@@ -85,7 +88,12 @@ const QuestionDetail = () => {
     return <Page>게시글을 찾을 수 없습니다.</Page>;
   }
   const handleSaveReply = async () => {
+    if (submitting) return;
+
+    console.log('작성 버튼 클릭');
+
     try {
+      setSubmitting(true);
       const replyData = {
         board_no: boardNo,
         user_no: userNo,
@@ -93,12 +101,18 @@ const QuestionDetail = () => {
       };
 
       await commuService.createReplyQusetion(replyData); // API 호출
-      navigate(0);
+
+      const updatedCommunity = await commuService.getCommunityDetail(boardNo); // 데이터만 다시 요청
+      setCommunityDetail(updatedCommunity); // 상태 갱신
+      setReplyMode('none'); // 작성 모드 종료
+      setEditedContent(''); // 작성 내용 초기화
     } catch (error) {
       toast.error(error.message);
       const errorMessage = '등록에 실패했습니다. 다시 시도해주세요.';
       setError(errorMessage);
       toast.error(errorMessage);
+    } finally {
+      setSubmitting(false);
     }
   };
   return (
@@ -130,7 +144,7 @@ const QuestionDetail = () => {
                   <ul>
                     <li>
                       <img src="/src/assets/icons/icon_수정.png" alt="" />
-                      <LinkLi to={`/community/update/${communityDetail?.no}`}>수정</LinkLi>
+                      <LinkLi to={`/community/update/${communityDetail.boardNo}`}>수정</LinkLi>
                     </li>
                     <li>
                       <img src="/src/assets/icons/icon_삭제.png" alt="" />
@@ -173,14 +187,20 @@ const QuestionDetail = () => {
                 {communityDetail.questionStatus === 'Y' ? '완료' : '대기'}
               </div>
             </div>
-            {userNo == '1' && replyMode === 'none' && (
+            {userRole === 'ADMIN' && replyMode === 'none' && (
               <div style={{ marginLeft: 'auto' }}>
                 {communityDetail.questionStatus === 'Y' ? (
-                  <Btn onClick={handleUpdateClick}>수정</Btn>
+                  <Btn type="button" onClick={handleUpdateClick}>
+                    수정
+                  </Btn>
                 ) : (
-                  <Btn onClick={handleCreateClick}>작성</Btn>
+                  <Btn type="button" onClick={handleCreateClick}>
+                    작성
+                  </Btn>
                 )}
-                <Btn style={{ margin: '0 10PX' }}>삭제</Btn>
+                <Btn type="button" style={{ margin: '0 10PX' }}>
+                  삭제
+                </Btn>
               </div>
             )}
           </div>
@@ -193,8 +213,8 @@ const QuestionDetail = () => {
                     <div>{reply.userName}</div>
                     <div>{reply.updateDate}</div>
                     <div style={{ marginLeft: 'auto' }}>
-                      <Btn>수정</Btn>
-                      <Btn style={{ margin: '0 10PX' }} onClick={handleUpdateClick}>
+                      <Btn type="button">수정</Btn>
+                      <Btn type="button" style={{ margin: '0 10PX' }} onClick={handleUpdateClick}>
                         취소
                       </Btn>
                     </div>
@@ -205,8 +225,10 @@ const QuestionDetail = () => {
                   <Icons src="/src/assets/icons/icon_작성자.png" alt="" />
                   <div>{userName}</div>
                   <div style={{ marginLeft: 'auto' }}>
-                    <Btn onClick={handleSaveReply}>작성</Btn>
-                    <Btn style={{ margin: '0 10PX' }} onClick={handleCreateClick}>
+                    <Btn type="button" onClick={handleSaveReply}>
+                      작성
+                    </Btn>
+                    <Btn type="button" style={{ margin: '0 10PX' }} onClick={handleCreateClick}>
                       취소
                     </Btn>
                   </div>

@@ -146,13 +146,13 @@ const CareGiverCommunity = () => {
           <div style={{ flex: '2' }}>작성 일자</div>
           <div>조회수</div>
         </BoardItemTop>
-        {data.map((community) => (
-          <BoardItem key={community.boardNo} to={`/community/detail/${community.boardNo}`}>
-            <div>{community.boardNo}</div>
-            <div style={{ flex: '3' }}>{community.boardTitle}</div>
-            <div>{community.userName}</div>
-            <div style={{ flex: '2' }}>{community.createDate}</div>
-            <div>{community.count}</div>
+        {data.map((info) => (
+          <BoardItem key={info.boardNo} to={`/community/detail/${info.boardNo}`}>
+            <div>{info.boardNo}</div>
+            <div style={{ flex: '3' }}>{info.boardTitle}</div>
+            <div>{info.userName}</div>
+            <div style={{ flex: '2' }}>{info.createDate}</div>
+            <div>{info.count}</div>
           </BoardItem>
         ))}
         <BorderDiv></BorderDiv>
