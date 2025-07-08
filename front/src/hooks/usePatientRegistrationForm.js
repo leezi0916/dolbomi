@@ -46,9 +46,8 @@ export const usepatientRegistrationForm = (user) => {
   const navigate = useNavigate();
 
   const [previewUrl, setPreviewUrl] = useState(null);
-  
-  // 인혜 test용
-  const CLOUDFRONT_URL = 'https://d2c0vhw8dfqg8l.cloudfront.net/';
+
+  const CLOUDFRONT_URL = 'https://d20jnum8mfke0j.cloudfront.net/';
 
   //react-hook-form으로 폼 상태 초기화및 유효성 검사
   const {
