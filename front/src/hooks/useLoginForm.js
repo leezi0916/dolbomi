@@ -45,6 +45,7 @@ export const useLoginForm = () => {
         userNo: user.userNo,
         userId: user.userId,
         userName: user.userName,
+        userRole: user.role,
       });
 
       // 4. 상태 기본 저장

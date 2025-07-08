@@ -25,7 +25,6 @@ import CareGiverMainPage from './pages/CareGiverMainPage';
 import { useEffect } from 'react';
 
 import ReportMain from './pages/ReportMain';
-// import UpdateCommuBoardForm from './pages/UpdateCommuBoardForm';
 import ReviewModal from './components/ReviewModal';
 
 import CareGiverSupportBoard from './pages/CareGiverSupportBoard';
@@ -53,6 +52,7 @@ import CommunityDetail from './pages/community/CommunityDetail';
 import CreateCommuBoardForm from './pages/community/CreateCommuBoardForm';
 import QuestionDetail from './pages/question/QuestionDetail';
 import FileUpload from './components/FileUpload';
+import UpdateCommuBoardForm from './pages/community/UpdateCommuBoardForm';
 
 function AppRoutes() {
   const navigate = useNavigate();
@@ -102,7 +102,7 @@ function AppRoutes() {
           <Route path="/community/detail/:boardNo" element={<CommunityDetail />} />
           <Route path="/community/guardian" element={<GuardianCommunity />} />
           <Route path="/community/caregiver" element={<CareGiverCommunity />} />
-          {/* <Route path="/community/update/:no" element={<UpdateCommuBoardForm />} /> */}
+          <Route path="/community/update/:boardNo" element={<UpdateCommuBoardForm />} />
           <Route path="/question/full" element={<QuestionFull />} />
           <Route path="/question/history" element={<QuestionHistory />} />
           <Route path="/question/create" element={<QuestionCreate />} />

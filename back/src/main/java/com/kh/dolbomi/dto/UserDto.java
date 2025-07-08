@@ -1,6 +1,7 @@
 package com.kh.dolbomi.dto;
 
 import com.kh.dolbomi.domain.User;
+import com.kh.dolbomi.enums.Role;
 import com.kh.dolbomi.enums.SocialType;
 import com.kh.dolbomi.enums.StatusEnum;
 import jakarta.validation.constraints.Email;
@@ -89,6 +90,7 @@ public class UserDto {
         private String phone;
         private String address;
         private Integer age;
+        private Role role;
 
         private StatusEnum.Status status;
 
@@ -103,6 +105,7 @@ public class UserDto {
                     .email(user.getEmail())
                     .address(user.getAddress())
                     .status(user.getStatus())
+                    .role(user.getRole())
                     .build();
         }
     }

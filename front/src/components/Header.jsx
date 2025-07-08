@@ -53,6 +53,7 @@ const Header = () => {
         userNo: user.userNo,
         userId: user.userId,
         userName: user.userName,
+        userRole: user.role,
       });
 
       //  상태 기본 저장
