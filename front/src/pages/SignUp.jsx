@@ -12,15 +12,24 @@ import {
   InputContainer,
 } from '../styles/Auth.styles';
 import styled from 'styled-components';
+import { IoCheckmarkOutline } from 'react-icons/io5'; // 체크마크 아이콘 import
 import { useSignUpForm } from '../hooks/useSignUpForm';
+import { useLocation } from 'react-router-dom';
 import PostcodeSearch from '../components/PostcodeSearch';
 import { userService } from '../api/users';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 
 const SignUp = () => {
-  const navigate = useNavigate();
+  const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
+  const email = searchParams.get('email');
+  const name = searchParams.get('name');
+  const socialType = searchParams.get('socialType');
+  const emailVerified = searchParams.get('verified');
+  const socialId = searchParams.get('openId');
 
+  // watch 함수를 useSignUpForm 훅에서 가져옵니다.
   const {
     register,
     handleSubmit,
@@ -32,7 +41,9 @@ const SignUp = () => {
     setValue,
     isIdChecked,
     formatPhoneNumber,
-  } = useSignUpForm();
+  } = useSignUpForm(socialType, socialId);
+
+  const navigate = useNavigate();
 
   const currentGender = watch('gender');
 
@@ -75,7 +86,6 @@ const SignUp = () => {
       <Form onSubmit={handleSubmit(onSubmit)}>
         <Center>
           <SignUpTitle>회원가입</SignUpTitle>
-
           <InputContainer1>
             <InputGroup>
               <Label htmlFor="userId">아이디</Label>
@@ -120,12 +130,18 @@ const SignUp = () => {
 
             <InputGroup>
               <Label htmlFor="userName">이름</Label>
-              <Input
-                id="userName"
-                placeholder="이름을 입력해주세요"
-                {...register('userName')}
-                $error={errors.userName}
-              />
+              {name === null ? (
+                <Input
+                  id="userName"
+                  type="text"
+                  placeholder="이름을 입력해주세요"
+                  {...register('userName')}
+                  $error={errors.userName}
+                />
+              ) : (
+                <Input id="userName" type="text" value={name} {...register('userName')} disabled />
+              )}
+
               {errors.userName && <ErrorMessage>{errors.userName.message}</ErrorMessage>}
             </InputGroup>
 
@@ -201,16 +217,29 @@ const SignUp = () => {
 
             <InputGroup>
               <Label htmlFor="email">이메일</Label>
-              <Input
-                id="email"
-                type="email"
-                placeholder="이메일을 입력해주세요"
-                {...register('email')}
-                $error={errors.email}
-              />
+              <Row>
+                {email === null ? (
+                  <Inputs
+                    id="email"
+                    type="email"
+                    placeholder="이메일을 입력해주세요"
+                    {...register('email')}
+                    $error={errors.email}
+                  />
+                ) : (
+                  <Inputs id="email" type="email" {...register('email')} value={email} disabled />
+                )}
+
+                {emailVerified === null ? (
+                  <CheckDuplicateButton type="button" onClick={checkUserId}>
+                    인증하기
+                  </CheckDuplicateButton>
+                ) : (
+                  ''
+                )}
+              </Row>
               {errors.email && <ErrorMessage>{errors.email.message}</ErrorMessage>}
             </InputGroup>
-
             <SignUpButton type="submit" disabled={isSubmitting}>
               {isSubmitting ? '처리중...' : '가입하기'}
             </SignUpButton>
