@@ -22,25 +22,17 @@ import { toast } from 'react-toastify';
 import Tags from '../components/Tags';
 import styled from 'styled-components';
 import PostcodeSearch from '../components/PostcodeSearch';
+import profileImg from '../assets/profileImg/img_환자소.png';
+import { useRef } from 'react';
 
 const PatientRegistration = () => {
   const { user } = useUserStore();
   const navigate = useNavigate();
-  const [isopen, setIsOpen] = useState(false);
-  const { register, handleSubmit, errors, onSubmit, watch, setValue, formatPhoneNumber, handleUpload, previewUrl } =
+
+  const { register, handleSubmit, errors, onSubmit, watch, setValue, formatPhoneNumber, selectedFile, handleFileChange, previewUrl } =
     usepatientRegistrationForm(user);
+    const CLOUDFRONT_URL = 'https://d20jnum8mfke0j.cloudfront.net/';
 
-  const [selectedFile, setSelectedFile] = useState(null);
-
-  console.log('환자쪽', previewUrl);
-  const handleOpen = () => {
-    setIsOpen(!isopen);
-  };
-
-  const handleFileSelect = (event) => {
-    const file = event.target.files[0];
-    setSelectedFile(file);
-  };
 
   useEffect(() => {
     // 일단 접근가능하게 로그인 구현 되면 user -> !user 바꿀것
@@ -67,6 +59,8 @@ const PatientRegistration = () => {
     }
   }, [addressData, setValue]);
 
+
+  // 태그관련
   const [tags, setTags] = useState([]);
   useEffect(() => {
     setValue('tags', tags);
@@ -76,21 +70,35 @@ const PatientRegistration = () => {
     setTags(newVal); // set을 대체하는 커스텀 함수
   };
 
+  const inputRef = useRef(null);
+  const handleDivClick = () => {
+    inputRef.current?.click(); // 파일 선택창 열기
+  };
+
+  // 
+
+
   return (
     <>
       <AuthContainer>
         <FromWrap>
           <NewTitle>돌봄 대상자 등록</NewTitle>
-          <input type="file" onChange={handleFileSelect} />
-          <button type="button" onClick={() => handleUpload(selectedFile)}>
-            {' '}
-            클릭{' '}
-          </button>
 
-          {/* {isopen && <FileUpload path="patient/" handlePreview={handlePreview} />} */}
-
-          <Img src={previewUrl} {...register('prfileImage')} $error={errors.patName}></Img>
           <GridForm onSubmit={handleSubmit(onSubmit)}>
+          <ProfileImage onClick={handleDivClick} >
+            <img
+              src={previewUrl}
+              alt="프로필 이미지"
+              style={{
+                width: '100%',
+                height: '100%',
+                objectFit: 'cover',
+                borderRadius: '50%',
+              }}
+            />
+          </ProfileImage>
+
+          <input type="file" accept="image/*" ref={inputRef} onChange={handleFileChange} style={{ display: 'none' }} />
             <GridInerContainer>
               <Label htmlFor="patName">이름</Label>
               <Label htmlFor="patAge">나이</Label>
@@ -228,6 +236,19 @@ const PatientRegistration = () => {
     </>
   );
 };
+
+const ProfileImage = styled.div`
+  width: 200px;
+  height: 200px;
+  background-color: ${({ theme }) => theme.colors.gray[5]};
+  border-radius: ${({ theme }) => theme.borderRadius.md};
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto;
+  border-radius: 50%;
+`;
 
 const Row = styled.div`
   display: flex;

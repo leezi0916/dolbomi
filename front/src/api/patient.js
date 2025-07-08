@@ -7,7 +7,7 @@ export const patientService = {
   getPatients: async (guardianNo) => {
     try {
       const { data } = await api.get(API_ENDPOINTS.PATIENT.DETAIL(guardianNo));
-    
+
       return snakeToCamel(data);
     } catch (error) {
       if (error.response) {
@@ -52,5 +52,4 @@ export const patientService = {
       throw new Error('돌봄대상자 수정하는데 실패했습니다.');
     }
   },
-
 };
