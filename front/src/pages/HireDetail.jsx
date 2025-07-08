@@ -298,9 +298,16 @@ const HireDetail = () => {
               </RadioGroup>
               <InputGroup>
                 <Label>숙소 정보</Label>
-                {/* 클릭 가능한 div */}
                 <RoomImage>
-                  <Plus />
+                  {jobOpening.roomImage ? (
+                    <img
+                      src={getProfileImageUrl(jobOpening.roomImage)}
+                      alt="숙소 사진"
+                      style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '4px' }}
+                    />
+                  ) : (
+                    <Plus />
+                  )}
                 </RoomImage>
                 <input type="file" style={{ display: 'none' }} readOnly />
               </InputGroup>
@@ -598,7 +605,6 @@ const Content = styled.textarea`
 `;
 
 const RoomImage = styled.div`
-  padding: ${({ theme }) => theme.spacing[3]};
   width: 50%;
   height: 200px;
   background-color: ${({ theme }) => theme.colors.gray[5]};
