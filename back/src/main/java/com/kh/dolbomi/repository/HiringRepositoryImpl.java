@@ -1,6 +1,7 @@
 package com.kh.dolbomi.repository;
 
 import com.kh.dolbomi.domain.Hiring;
+import com.kh.dolbomi.dto.SearchDataDto;
 import com.kh.dolbomi.enums.StatusEnum;
 import com.kh.dolbomi.enums.StatusEnum.CareStatus;
 import com.kh.dolbomi.enums.StatusEnum.Status;
@@ -53,10 +54,13 @@ public class HiringRepositoryImpl implements HiringRepository {
     }
 
     @Override
-    public Page<Hiring> findByStatus(StatusEnum.Status status, Pageable pageable) {
+    public Page<Hiring> findByStatus(StatusEnum.Status status, Pageable pageable, SearchDataDto searchData) {
         // 1. 페이징된 데이터 조회
         List<Hiring> content = em.createQuery(
-                        "SELECT h FROM Hiring h WHERE h.status = :status AND h.hiringStatus = 'Y' ORDER BY h.hiringNo DESC",
+                        "SELECT h FROM Hiring h "
+                                + "WHERE h.status = :status "
+                                + "AND h.hiringStatus = 'Y' "
+                                + "ORDER BY h.hiringNo DESC",
                         Hiring.class)
                 .setParameter("status", status)
                 .setFirstResult((int) pageable.getOffset())

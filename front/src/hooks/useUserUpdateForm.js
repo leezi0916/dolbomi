@@ -2,7 +2,7 @@ import * as yup from 'yup';
 import { userService } from '../api/users';
 import { toast } from 'react-toastify';
 import { useState } from 'react';
-
+import { getUploadUrl, uploadFileToS3, completeUpload } from '../api/fileApi';
 // 유효성 스키마
 const updateSchema = yup.object().shape({
   userName: yup
@@ -37,8 +37,6 @@ const updateSchema = yup.object().shape({
 const useUserUpdateForm = ({ profile }) => {
   const [updating, setUpdating] = useState(false);
 
-
-
   const validateAndSubmit = async (formData, licenseList, profileImageFile) => {
     try {
       // 변경된 값만 필터링
@@ -52,14 +50,13 @@ const useUserUpdateForm = ({ profile }) => {
       // 자격증도 변경되었는지 체크
       const licensesChanged = JSON.stringify(profile.licenses || []) !== JSON.stringify(licenseList);
 
-      // 이미지가 선택되었지만, 지금은 S3 업로드 기능 없음 → null로 대체
+      // 이미지가 선택되었는지 체크
       const imageChanged = !!profileImageFile;
 
       if (Object.keys(changedFields).length === 0 && !licensesChanged && !imageChanged) {
         toast.info('변경된 정보가 없습니다.');
         return;
       }
-
 
       // 유효성 검사
       await updateSchema.validate(formData, { abortEarly: false });
@@ -68,13 +65,39 @@ const useUserUpdateForm = ({ profile }) => {
       const updatedData = {
         ...changedFields,
         licenses: licenseList || [],
-        profileImage: 's3url보내야함', //나중에 s3 url
       };
 
-      console.log('보내는 데이터:', updatedData);
-      // 문자열을 숫자로 변환 (필요시)
+      // 나이 문자열 -> 숫자 변환
       if (updatedData.age) {
         updatedData.age = Number(updatedData.age);
+      }
+
+      // 프로필 이미지가 변경된 경우
+      if (imageChanged) {
+        try {
+          // 1. Presigned URL 요청
+          const { presignedUrl, changeName } = await getUploadUrl(
+            profileImageFile.name,
+            profileImageFile.type,
+            'profile/' // 업로드 경로
+          );
+
+          console.log('Presigned URL 응답:', { presignedUrl, changeName });
+
+          // 2. S3 직접 업로드
+          await uploadFileToS3(presignedUrl, profileImageFile);
+
+          // 3. 파일 업로드 완료 후 메타데이터 저장
+          const fileMeta = await completeUpload(profileImageFile.name, changeName, profileImageFile.type);
+          console.log('completeUpload 응답:', fileMeta); // 👈 이걸 반드시 찍어보세요
+
+          // 4. 유저 프로필에 파일명 저장
+          updatedData.profileImage = fileMeta.changeName;
+        } catch (uploadError) {
+          toast.error('프로필 이미지 업로드에 실패했습니다.');
+          setUpdating(false);
+          throw uploadError;
+        }
       }
 
       // 여기 userNo 사용! (profile.userNo 또는 profile.user_no)

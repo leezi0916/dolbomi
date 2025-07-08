@@ -4,6 +4,7 @@ import com.kh.dolbomi.domain.Hiring;
 import com.kh.dolbomi.domain.Patient;
 import com.kh.dolbomi.domain.User;
 import com.kh.dolbomi.dto.HiringDto;
+import com.kh.dolbomi.dto.SearchDataDto;
 import com.kh.dolbomi.enums.StatusEnum;
 import com.kh.dolbomi.exception.GuardianNotLinkedException;
 import com.kh.dolbomi.exception.HiringNotFoundException;
@@ -104,8 +105,8 @@ public class HiringServiceImpl implements HiringService {
 
     @Override
     @Transactional(readOnly = true)
-    public Page<HiringDto.Response> getHiringPage(Pageable pageable) {
-        return hiringRepository.findByStatus(StatusEnum.Status.Y, pageable)
+    public Page<HiringDto.Response> getHiringPage(Pageable pageable, SearchDataDto searchData) {
+        return hiringRepository.findByStatus(StatusEnum.Status.Y, pageable, searchData)
                 .map(HiringDto.Response::toDto);
     }
 }

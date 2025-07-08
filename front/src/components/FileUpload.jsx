@@ -251,7 +251,7 @@ const FileUpload = ({path, handlePreview}) => {
           <ProfileButton onClick={() => handleUpload('room/')} disabled={!selectedFile || isUploading}>
             방사진 업로드
           </ProfileButton>
-          <ProfileButton onClick={() => handleUpload('profile/')} disabled={!selectedFile || isUploading}>
+          <ProfileButton onClick={() => handleUpload('image/')} disabled={!selectedFile || isUploading}>
             게시판 사진 업로드
           </ProfileButton>
         </ButtonGroup>

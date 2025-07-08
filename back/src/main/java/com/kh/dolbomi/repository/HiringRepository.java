@@ -1,6 +1,7 @@
 package com.kh.dolbomi.repository;
 
 import com.kh.dolbomi.domain.Hiring;
+import com.kh.dolbomi.dto.SearchDataDto;
 import com.kh.dolbomi.enums.StatusEnum;
 import com.kh.dolbomi.enums.StatusEnum.CareStatus;
 import com.kh.dolbomi.enums.StatusEnum.Status;
@@ -24,7 +25,7 @@ public interface HiringRepository {
     List<Hiring> getMainCareHiringList(Status status, CareStatus careStatus);
 
     // 돌봄대상자 모집 리스트(페이징)
-    Page<Hiring> findByStatus(StatusEnum.Status status, Pageable pageable);
+    Page<Hiring> findByStatus(StatusEnum.Status status, Pageable pageable, SearchDataDto searchData);
 
     // 구인글 삭제
     void softDeleteByHiringNo(Long hiringNo);

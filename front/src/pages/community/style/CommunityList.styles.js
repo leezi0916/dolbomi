@@ -3,6 +3,7 @@ import styled from 'styled-components';
 
 export const PageInfo = styled.div`
   width: 74%;
+  padding-bottom: 100px;
   > div {
     display: flex;
     justify-content: center;

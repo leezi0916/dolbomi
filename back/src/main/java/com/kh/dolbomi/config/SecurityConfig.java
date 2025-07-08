@@ -49,6 +49,7 @@ public class SecurityConfig {
                                 "/community/v1/guardian",
                                 "/community/v1/question",
                                 "/community/v1/detail",
+                                "/api/address/region",
                                 "/"
 
                         ).permitAll()
@@ -87,6 +88,7 @@ public class SecurityConfig {
     public PasswordEncoder passwordEncoder() {
         return PasswordEncoderFactories.createDelegatingPasswordEncoder();
     }
+
 
 }
 

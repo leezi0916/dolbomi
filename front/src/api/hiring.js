@@ -40,8 +40,10 @@ export const hiringService = {
     try {
   
       // 쿼리 파라미터를 URL에 붙임
+      const snake = camelToSnake(searchData);
+
       const { data } = await api.get(API_ENDPOINTS.HIRING.LIST, {
-        params: { page, size, searchData },
+        params: { page, size, ...snake },
       });
       console.log('불러온 데이터 : ' + snakeToCamel(data));
       return snakeToCamel(data);

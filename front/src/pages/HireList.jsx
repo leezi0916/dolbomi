@@ -107,7 +107,7 @@ const HireList = () => {
   //돌봄리스트 불러오기
   const loadHireLists = async (pageNumber, pageSize, searchData) => {
     try {
-      console.log('검색조건 JSON 데이터:', searchData);
+      // console.log('검색조건 JSON 데이터:', searchData);
       setLoading(true);
       setError(null);
       const res = await hiringService.getHiringList({ page: pageNumber, size: pageSize, searchData});
