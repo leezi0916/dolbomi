@@ -68,7 +68,9 @@ const Login = () => {
               <Button type="button" onClick={() => navigate('/signup')}>
                 회원가입
               </Button>
-              <Button type="button">비밀번호 찾기</Button>
+              <Button type="button" onClick={() => navigate('/change-password')}>
+                비밀번호 찾기
+              </Button>
             </LoginButtonGroup>
             <SnsWrap>
               <SnsDivider />

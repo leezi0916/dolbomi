@@ -39,8 +39,8 @@ const SignUp = () => {
     checkUserId,
     idCheckMessage,
     setValue,
-    isIdChecked,
     formatPhoneNumber,
+    onSubmit,
   } = useSignUpForm(socialType, socialId);
 
   const navigate = useNavigate();
@@ -58,28 +58,6 @@ const SignUp = () => {
     const baseAddress = `${addressData.address}${addressData.extraAddress}`.trim();
     setValue('address', baseAddress);
   }, [addressData, setValue]);
-
-  const onSubmit = async (data) => {
-    if (!isIdChecked) {
-      toast.error('아이디 중복을 확인해주세요.');
-      return;
-    }
-
-    // 기본주소 + 참고주소는 data.address에 있고, 상세주소는 별도로 추가
-    const submitData = {
-      ...data,
-      address: `${data.address}`.trim(),
-    };
-
-    try {
-      await userService.signUp(submitData);
-      toast.success('회원가입 완료!');
-      navigate('/login');
-    } catch (error) {
-      toast.error('회원가입 중 문제가 발생하였습니다.');
-      console.error(error);
-    }
-  };
 
   return (
     <AuthContainer>
@@ -240,9 +218,14 @@ const SignUp = () => {
               </Row>
               {errors.email && <ErrorMessage>{errors.email.message}</ErrorMessage>}
             </InputGroup>
-            <SignUpButton type="submit" disabled={isSubmitting}>
-              {isSubmitting ? '처리중...' : '가입하기'}
-            </SignUpButton>
+            <div style={{ display: 'flex', gap: '20px' }}>
+              <SignUpButton type="button" onClick={() => navigate(-1)}>
+                뒤로가기
+              </SignUpButton>
+              <SignUpButton type="submit" disabled={isSubmitting}>
+                {isSubmitting ? '처리중...' : '가입하기'}
+              </SignUpButton>
+            </div>
           </InputContainer1>
         </Center>
       </Form>

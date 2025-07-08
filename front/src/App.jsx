@@ -53,6 +53,7 @@ import CommunityDetail from './pages/community/CommunityDetail';
 import CreateCommuBoardForm from './pages/community/CreateCommuBoardForm';
 import QuestionDetail from './pages/question/QuestionDetail';
 import FileUpload from './components/FileUpload';
+import ChangePassword from './pages/ChangePassword';
 
 function AppRoutes() {
   const navigate = useNavigate();
@@ -109,6 +110,7 @@ function AppRoutes() {
           <Route path="/question/detail/:boardNo" element={<QuestionDetail />} />
 
           <Route path="/login" element={<Login />} />
+          <Route path="/change-password" element={<ChangePassword />} />
           <Route path="/signup" element={<SignUp />} />
           <Route path="/myprofile" element={<MyProfile />} />
           <Route path="/caregiverProfile/:userNo" element={<CareGviverProfile />} />

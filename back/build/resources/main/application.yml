@@ -47,6 +47,20 @@ spring:
             user-info-uri: https://openidconnect.googleapis.com/v1/userinfo
             user-name-attribute: sub
 
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: wlstjr2015@gmail.com
+    password: "mkje rdma auxk vmmq"
+    properties:
+      mail:
+        smtp:
+          auth: true
+          timeout: 5000
+          starttls:
+            enable: true
+    default-encoding: UTF-8
+
 server:
   port: 8555
   servlet:
@@ -72,7 +86,7 @@ aws:
 
   s3:
     bucket: project2025-dolbomi
-    
+
 ---
 spring:
   config:
