@@ -5,6 +5,7 @@ import com.kh.dolbomi.domain.Patient;
 import com.kh.dolbomi.domain.User;
 import com.kh.dolbomi.enums.StatusEnum;
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import lombok.AllArgsConstructor;
@@ -28,8 +29,8 @@ public class HiringDto {
         private String hiring_content;
         private Integer account;
 
-        private LocalDateTime start_date;
-        private LocalDateTime end_date;
+        private LocalDate start_date;
+        private LocalDate end_date;
 
         private Integer max_applicants;
         private StatusEnum.CareStatus care_status;
@@ -65,8 +66,8 @@ public class HiringDto {
         private Integer account;
         private LocalDateTime create_date;
 
-        private LocalDateTime start_date;
-        private LocalDateTime end_date;
+        private LocalDate start_date;
+        private LocalDate end_date;
 
 
         private Integer max_applicants;

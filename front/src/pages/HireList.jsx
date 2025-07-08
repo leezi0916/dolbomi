@@ -5,7 +5,10 @@ import styled from 'styled-components';
 //달력 라이브러리 및 한글화
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
-import { ko } from 'date-fns/locale';
+import { registerLocale, setDefaultLocale } from 'react-datepicker';
+import { ko } from 'date-fns/locale/ko';
+registerLocale('ko', ko);
+setDefaultLocale('ko');
 
 // import { toast } from 'react-toastify';
 import profileImage from '../assets/images/pat.png'; // 프로필 이미지 경로
@@ -145,12 +148,13 @@ const HireList = () => {
     const today = new Date(); //오늘날짜
     today.setHours(0, 0, 0, 0); //시간초기화
 
+    let koDate = date.getTime() + 9 * 60 * 60 * 1000;
     let isValid = true;
     let errMsg = '';
 
     //시작일유효성
     if (name === 'startDate') {
-      const newStartDate = date; // 새로 입력된 시작일
+      const newStartDate = new Date(koDate); // 새로 입력된 시작일
 
       if (newStartDate && newStartDate.getTime() < today.getTime()) {
         errMsg = '시작일은 오늘 이후로 설정해야 합니다.';
@@ -172,12 +176,12 @@ const HireList = () => {
       // setData((data) => ({ ...data, startDate: newStartDate ? newStartDate.toISOString().split('T')[0] : '' }));
       setData((data) => ({
         ...data,
-        startDate: newStartDate ? new Date(newStartDate).toISOString().slice(0, 19) : '',
+        startDate: newStartDate ? new Date(newStartDate).toISOString().slice(0, 10) : '',
       }));
     }
     //종료일 유효성
     else if (name === 'endDate') {
-      const newEndDate = date; // 새로 입력된 종료일
+      const newEndDate = new Date(koDate); // 새로 입력된 종료일
 
       if (newEndDate && newEndDate.getTime() < today.getTime()) {
         errMsg = '종료일은 오늘 이후로 설정해야 합니다.';
@@ -195,7 +199,7 @@ const HireList = () => {
       }
       setInternalEndDate(newEndDate);
       // data 객체에도 문자열 형태로 반영 (필요하다면)
-      setData((data) => ({ ...data, endDate: newEndDate ? newEndDate.toISOString().split('T')[0] : '' }));
+      setData((data) => ({ ...data, endDate: newEndDate ? newEndDate.toISOString().slice(0, 10) : '' }));
     }
   };
 
@@ -307,7 +311,7 @@ const HireList = () => {
                   <DateContentBox>
                     <SearchTitle> 시작일: </SearchTitle>
                     <DateInput
-                      locale={ko}
+                      locale="ko"
                       selected={internalStartDate}
                       onChange={(date) => handledateChange(date, 'startDate')}
                       dateFormat="yyyy-MM-dd"

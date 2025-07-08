@@ -41,6 +41,8 @@ export const hiringService = {
       // 쿼리 파라미터를 URL에 붙임
       const snake = camelToSnake(searchData);
 
+      console.log('검색조건', snake);
+
       const { data } = await api.get(API_ENDPOINTS.HIRING.LIST, {
         params: { page, size, ...snake },
       });
