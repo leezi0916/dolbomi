@@ -1,26 +1,34 @@
 import styled from 'styled-components';
 import { Container, Section } from './common/Container';
 import { media } from './MediaQueries';
-import { MessageLine,BannerMessage, HomeBannerSection } from '../pages/GuardianMainPage';
-import { Title } from './Auth.styles';
-
+import { MessageLine, BannerMessage, HomeBannerSection } from '../pages/GuardianMainPage';
+import { Title, Button } from './Auth.styles';
 
 export const NewCantainer = styled(Container)`
-margin-top: 50px;
-`
+  margin-top: 50px;
+`;
+export const BackBtn = styled(Button)`
+  width: fit-content;
+  background-color: ${({ theme }) => theme.colors.white};
+  color: ${({ theme }) => theme.colors.black1};
 
-export const NewTitle = styled(Title)`
-text-align: left;
-`
-
-export const CardWrap = styled.div`
-padding:${({ theme }) => theme.spacing[5]} ;
-  background-color: white;
-  box-shadow: ${({ theme }) => theme.shadows.base};
-  min-height: 800px;
-  border: 1px solid  ${({ theme }) => theme.colors.gray[5]};
+  p {
+    font-size: ${({ theme }) => theme.fontSizes.m};
+    font-weight: ${({ theme }) => theme.fontWeights.bold};
+  }
 `;
 
+export const NewTitle = styled(Title)`
+  text-align: left;
+`;
+
+export const CardWrap = styled.div`
+  padding: ${({ theme }) => theme.spacing[5]};
+  background-color: white;
+  box-shadow: ${({ theme }) => theme.shadows.base};
+  min-height: 700px;
+  border: 1px solid ${({ theme }) => theme.colors.gray[5]};
+`;
 
 // 유저 카드 섹션
 export const HiringCardSection = styled(Section)`
@@ -129,7 +137,6 @@ export const HiringCardButton = styled.button`
   cursor: pointer;
 `;
 
-
 //  구인 관련 섹션
 export const JobSeekingSection = styled(HomeBannerSection)`
   padding-top: ${({ theme }) => theme.spacing[0]};
@@ -151,7 +158,6 @@ export const JobSeekingTextSectionTitle = styled(MessageLine)`
 // 유저 카드 섹션
 export const JobSeekingCardSection = styled(Section)`
   padding: ${({ theme }) => theme.spacing[0]};
-  
 `;
 
 // 각 카드

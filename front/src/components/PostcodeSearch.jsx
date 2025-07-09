@@ -1,6 +1,7 @@
 import React, { useRef, useEffect } from 'react';
 import styled from 'styled-components';
 import { Button } from '../styles/Auth.styles';
+import { yellow } from '@mui/material/colors';
 
 const PostcodeSearch = ({ onAddressSelected }) => {
   const layerRef = useRef(null);
@@ -73,8 +74,8 @@ const PostcodeSearch = ({ onAddressSelected }) => {
     if (!layerRef.current) return;
 
     const width = 500;
-    const height = 600;
-    const borderWidth = 5;
+    const height = 500;
+    const borderWidth = 1;
 
     layerRef.current.style.width = `${width}px`;
     layerRef.current.style.height = `${height}px`;

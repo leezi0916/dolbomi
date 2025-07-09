@@ -105,7 +105,7 @@ public class HiringServiceImpl implements HiringService {
 
     @Override
     @Transactional(readOnly = true)
-    public Page<HiringDto.Response> getHiringPage(Pageable pageable, SearchDataDto searchData) {
+    public Page<HiringDto.Response> getHiringPage(Pageable pageable, SearchDataDto.HiringSearch searchData) {
         return hiringRepository.findByStatus(StatusEnum.Status.Y, pageable, searchData)
                 .map(HiringDto.Response::toDto);
     }

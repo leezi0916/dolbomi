@@ -25,7 +25,7 @@ public interface HiringRepository {
     List<Hiring> getMainCareHiringList(Status status, CareStatus careStatus);
 
     // 돌봄대상자 모집 리스트(페이징)
-    Page<Hiring> findByStatus(StatusEnum.Status status, Pageable pageable, SearchDataDto searchData);
+    Page<Hiring> findByStatus(StatusEnum.Status status, Pageable pageable, SearchDataDto.HiringSearch searchData);
 
     // 구인글 삭제
     void softDeleteByHiringNo(Long hiringNo);

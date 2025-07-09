@@ -171,7 +171,7 @@ const HireDetail = () => {
             {proposerList.slice(0, 3).map((list, index) => (
               <ProfileImg
                 key={index}
-                src={list.profileImage ? list.profileImage : caregiverImage} // 기본 이미지로 대체
+                src={getProfileImageUrl(list.profileImage)} // 기본 이미지로 대체
                 style={{ left: `${index * 20}px`, zIndex: proposerList.length - index }}
               />
             ))}
@@ -227,7 +227,7 @@ const HireDetail = () => {
               </InputGroup> */}
               <InputGroup>
                 <Label>주소</Label>
-                <Input type="text" id="patAddress" value={jobOpening?.patAddress} readOnly />
+                <Input type="text" id="patAddress" value={jobOpening?.patAddress.split(" ").slice(0, 2).join(" ")} readOnly />
               </InputGroup>
               <InputRow>
                 <InputGroup>
@@ -296,14 +296,23 @@ const HireDetail = () => {
                   <label>불가능</label>
                 </RadioWrapper>
               </RadioGroup>
-              <InputGroup>
-                <Label>숙소 정보</Label>
-                {/* 클릭 가능한 div */}
-                <RoomImage>
-                  <Plus />
-                </RoomImage>
-                <input type="file" style={{ display: 'none' }} readOnly />
-              </InputGroup>
+              {jobOpening?.careStatus === 'Y' && (
+                <InputGroup>
+                  <Label>숙소 정보</Label>
+                  <RoomImage>
+                    {jobOpening.roomImage ? (
+                      <img
+                        src={getProfileImageUrl(jobOpening.roomImage)}
+                        alt="숙소 사진"
+                        style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '4px' }}
+                      />
+                    ) : (
+                      <Plus />
+                    )}
+                  </RoomImage>
+                  <input type="file" style={{ display: 'none' }} readOnly />
+                </InputGroup>
+              )}
             </HireContent>
           </ContentWrapper1>
         </form>
@@ -598,7 +607,6 @@ const Content = styled.textarea`
 `;
 
 const RoomImage = styled.div`
-  padding: ${({ theme }) => theme.spacing[3]};
   width: 50%;
   height: 200px;
   background-color: ${({ theme }) => theme.colors.gray[5]};

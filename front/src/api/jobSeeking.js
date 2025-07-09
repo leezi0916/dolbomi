@@ -20,19 +20,22 @@ export const jobSeekingService = {
   },
 
   // 간병사 모집 리스트 가져오기
-  getCaregiverList: async ({ page = 0, size = 10 } = {}) => {
+  getCaregiverList: async ({ page = 0, size = 10, searchData }) => {
     try {
+      const snake = camelToSnake(searchData);
+      console.log('검색조건: ', snake);
+
       // 쿼리 파라미터를 URL에 붙임
       const { data } = await api.get(API_ENDPOINTS.RESUME.LIST, {
-        params: { page, size },
+        params: { page, size, ...snake },
       });
+      console.log('불러온 데이터 : ' + snakeToCamel(data));
       return snakeToCamel(data);
     } catch (error) {
       if (error.response) {
         const message = error.response?.data?.message || '이력서 리스트를 가져오는데에 실패했습니다.';
         throw new Error(message);
       }
-
       throw new Error('서버 통신 불량');
     }
   },
@@ -54,7 +57,6 @@ export const jobSeekingService = {
 
   //이력서등록
   postNewResume: async (newData) => {
-
     try {
       await api.post(API_ENDPOINTS.RESUME.BASE, camelToSnake(newData));
     } catch (error) {
@@ -63,9 +65,9 @@ export const jobSeekingService = {
     }
   },
 
-  getMyResumeList: async (userNo) => {
+  getMyResumeList: async (userNo, currentPage) => {
     try {
-      const { data } = await api.get(`${API_ENDPOINTS.RESUME.MYRESUME(userNo)}`);
+      const { data } = await api.get(`${API_ENDPOINTS.RESUME.MYRESUME(currentPage, userNo)}`);
       return snakeToCamel(data);
     } catch (error) {
       const message = error.response?.data?.message || '이력서 리스트를 가져오는데에 실패했습니다.';
@@ -93,6 +95,7 @@ export const jobSeekingService = {
       throw new Error('서버 통신 불량');
     }
   },
+
 
   deleteResume: async (resumeNo) => {
     try {

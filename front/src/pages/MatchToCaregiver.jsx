@@ -11,7 +11,7 @@ import { useNavigate } from 'react-router-dom';
 import Paging from '../components/Paging';
 import ReviewModal from '../components/ReviewModal';
 import { CiCircleInfo } from 'react-icons/ci';
-import { IoCheckmarkOutline } from 'react-icons/io5';
+
 
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
@@ -42,11 +42,27 @@ const MatchToCaregiver = () => {
 
   //리뷰 관련 모달
   const [showReviewModal, setShowReviewModal] = useState(false);
-  const [selectedCaregiver, setSelectedCaregiver] = useState(null); // 간병인 정보
+  const [selectedCaregiver, setSelectedCaregiver] = useState(null);
+
+  //간병인 정보
 
   // 날짜검색
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
+
+  const handleStartDateChange = (date) => {
+    if (!date) return;
+    const startOfDay = new Date(date);
+    startOfDay.setHours(0, 0, 0, 0); // 오전 00:00:00
+    setStartDate(startOfDay);
+  };
+
+  const handleEndDateChange = (date) => {
+    if (!date) return;
+    const endOfDay = new Date(date);
+    endOfDay.setHours(23, 59, 59); // 오후 11:59:59
+    setEndDate(endOfDay);
+  };
 
   // 날짜 검색 함수
   const { getSearchDateList } = searchForm();
@@ -136,14 +152,17 @@ const MatchToCaregiver = () => {
     }
   };
 
-  // const CLOUDFRONT_URL = 'https://d20jnum8mfke0j.cloudfront.net/';
-  // //이미지 경로 갖고오고 없다면 기본이미지
-  // const getProfileImageUrl = (path) => {
-  //   if (!path) return profileImage; // 기본 이미지
-  //   const cleanPath = path.replace(/^\//, ''); // 앞에 / 있으면 제거
-  //   return `${CLOUDFRONT_URL}${cleanPath}`;
-  // };
+  const CLOUDFRONT_URL = 'https://d20jnum8mfke0j.cloudfront.net/';
+  //이미지 경로 갖고오고 없다면 기본이미지
 
+  const getProfileImageUrl = (path, type = 'caregiver') => {
+    if (!path) {
+      return type === 'patient' ? pat_profileImage : care_profileImage;
+    }
+    const cleanPath = path.replace(/^\//, ''); // 슬래시 제거
+    return `${CLOUDFRONT_URL}${cleanPath}`;
+  };
+  console.log(caregiverList);
   return (
     <>
       <HeadSection>
@@ -174,7 +193,14 @@ const MatchToCaregiver = () => {
                 {userPatients && userPatients.length > 0 ? (
                   userPatients?.map((pat) => (
                     <ProfileCard key={pat.patNo} type="patient" onMouseEnter={() => getCareGiver(pat.patNo)}>
-                      <ProfileImage src={pat_profileImage} alt="환자" />
+                      <ProfileImage
+                        src={getProfileImageUrl(pat.profileImage, 'patient')}
+                        alt="환자"
+                        onError={(e) => {
+                          e.target.onerror = null;
+                          e.target.src = pat_profileImage;
+                        }}
+                      />
                       <ProfileInfo>
                         <UserName>{pat.patName} 님</UserName>
                         <UserAge>
@@ -185,7 +211,7 @@ const MatchToCaregiver = () => {
                     </ProfileCard>
                   ))
                 ) : (
-                  <InfoP>등록된 환자가 없습니다. </InfoP>
+                  <EmptyMessage>등록된 환자가 없습니다. </EmptyMessage>
                 )}
               </RightLineDiv>
               <div>
@@ -193,7 +219,14 @@ const MatchToCaregiver = () => {
                   caregiverList?.map((care) => (
                     <>
                       <CargiverWrap key={care.caregiverNo}>
-                        <CaregiverImg src={care_profileImage} alt="" />
+                        <CaregiverImg
+                          src={getProfileImageUrl(care.caregiverProfileImage, 'caregiver')}
+                          alt="간병인"
+                          onError={(e) => {
+                            e.target.onerror = null;
+                            e.target.src = care_profileImage;
+                          }}
+                        />
                         <CaregiverTextDiv>
                           <ProfileTextGray>
                             <ProfileTextStrong>{care.userName}</ProfileTextStrong> 님
@@ -222,7 +255,7 @@ const MatchToCaregiver = () => {
                     </>
                   ))
                 ) : (
-                  <InfoP> 매칭된 간병이 없습니다. </InfoP>
+                  <EmptyMessage> 매칭된 간병이 없습니다. </EmptyMessage>
                 )}
               </div>
             </ProfileCardPair>
@@ -239,7 +272,7 @@ const MatchToCaregiver = () => {
                   onMouseEnter={() => getEndedMatchingList(pat.patNo, 1)}
                   style={{ cursor: 'pointer' }}
                 >
-                  <ProfileImage src={pat_profileImage} alt="환자" />
+                  <ProfileImage src={getProfileImageUrl(pat.profileImage, 'patient')} />
                   <ProfileInfo>
                     <UserName>{pat.patName} 님</UserName>
                     <UserAge>
@@ -257,14 +290,14 @@ const MatchToCaregiver = () => {
                   <DatePicker
                     dateFormat={'yyyy/MM/dd'}
                     selected={startDate}
-                    onChange={(date) => setStartDate(date)}
+                    onChange={handleStartDateChange}
                     customInput={<CustomDateButton />}
                   ></DatePicker>
                   <p> ~ </p>
                   <DatePicker
                     dateFormat={'yyyy/MM/dd'}
                     selected={endDate}
-                    onChange={(date) => setEndDate(date)}
+                    onChange={handleEndDateChange}
                     customInput={<CustomDateButton />}
                   ></DatePicker>
 
@@ -277,8 +310,12 @@ const MatchToCaregiver = () => {
                   {endedCaregiverList?.map((care) => (
                     <CargiverWrap key={care.matNo}>
                       <CaregiverImg
-                        src={care.profileImage ? care.profileImage : care_profileImage}
-                        alt="간병인 프로필"
+                        src={getProfileImageUrl(care.caregiverProfileImage, 'caregiver')}
+                        alt="간병인"
+                        onError={(e) => {
+                          e.target.onerror = null;
+                          e.target.src = care_profileImage;
+                        }}
                       />
                       <CaregiverTextDiv>
                         <ProfileTextGray>
@@ -451,30 +488,16 @@ const MatchSection = styled(Section)`
   padding: ${({ theme }) => theme.spacing[8]} 0; /* 상하 패딩 추가 */
 `;
 
-const InfoP = styled.p`
-  margin: 50px;
+const EmptyMessage = styled.p`
+  width: 100%;
+  text-align: center;
+  color: ${({ theme }) => theme.colors.gray[3]};
+  font-size: ${({ theme }) => theme.fontSizes.base};
+  padding: ${({ theme }) => theme.spacing[8]} 0;
 `;
 
 const Div = styled.div`
   position: relative;
-`;
-
-//=== 종료된 매칭
-const EndProfileCard = styled.div`
-  width: 100%;
-  border: 1px solid ${({ theme }) => theme.colors.gray[5]};
-  padding: ${({ theme }) => theme.spacing[8]} ${({ theme }) => theme.spacing[16]};
-  border-radius: ${({ theme }) => theme.borderRadius.md};
-  box-shadow: ${({ theme }) => theme.shadows.md};
-  display: flex;
-  gap: ${({ theme }) => theme.spacing[40]};
-  align-items: center;
-`;
-
-const RowProfileCard = styled.div`
-  display: flex;
-  justify-content: left;
-  gap: ${({ theme }) => theme.spacing[8]};
 `;
 
 // 환자정보랑 간병인 정보 분리
@@ -621,38 +644,5 @@ const PageWrapper = styled.div`
   width: 100%;
   padding: ${({ theme }) => theme.spacing[5]};
 `;
-const AccommodationCheckboxLabel = styled.label`
-  display: flex;
-  align-items: center;
-  cursor: pointer;
-  white-space: nowrap; /* 텍스트가 줄바꿈되지 않도록 */
-  color: ${({ theme }) => theme.colors.gray[800]}; /* 텍스트 색상 */
-  font-size: ${({ theme }) => theme.fontSizes.base};
-  gap: ${({ theme }) => theme.spacing[2]};
-`;
-const HiddenCheckbox = styled.input.attrs({ type: 'checkbox' })`
-  border: 0;
-  clip: rect(0 0 0 0);
-  clip-path: inset(50%);
-  height: 1px;
-  margin: -1px;
-  overflow: hidden;
-  padding: 0;
-  position: absolute;
-  white-space: nowrap;
-  width: 1px;
-`;
 
-const StyledCheckbox = styled.div`
-  width: 25px;
-  height: 25px;
-  border: 1px solid ${({ theme, checked }) => (checked ? theme.colors.primary : theme.colors.gray[4])}; /* 회색 400으로 통일 */
-  border-radius: 4px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: ${({ theme, checked }) => (checked ? theme.colors.primary : 'white')};
-  cursor: pointer;
-  transition: all 0.2s ease-in-out;
-`;
 export default MatchToCaregiver;

@@ -58,8 +58,9 @@ public class HiringController {
     public ResponseEntity<PageResponse<HiringDto.Response>> getPagedHiringList(
             @RequestParam Integer page,
             @RequestParam Integer size,
-            @ModelAttribute SearchDataDto searchData
+            @ModelAttribute SearchDataDto.HiringSearch searchData
     ) {
+
         Pageable pageable = PageRequest.of(page, size);
 
         Page<HiringDto.Response> hiringPage = hiringService.getHiringPage(pageable, searchData);

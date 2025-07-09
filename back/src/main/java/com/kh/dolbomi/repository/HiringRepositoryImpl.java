@@ -58,30 +58,8 @@ public class HiringRepositoryImpl implements HiringRepository {
     }
 
     @Override
-    public Page<Hiring> findByStatus(StatusEnum.Status status, Pageable pageable, SearchDataDto searchData) {
-        /*
-        // 상세검색이없는 불러오기
-        // 1. 페이징된 데이터 조회
-        List<Hiring> content = em.createQuery(
-                        "SELECT h FROM Hiring h "
-                                + "WHERE h.status = :status "
-                                + "AND h.hiringStatus = 'Y' "
-                                + "ORDER BY h.hiringNo DESC",
-                        Hiring.class)
-                .setParameter("status", status)
-                .setFirstResult((int) pageable.getOffset())
-                .setMaxResults(pageable.getPageSize())
-                .getResultList();
-
-        // 2. 전체 개수 조회
-        Long total = em.createQuery(
-                        "SELECT COUNT(h) FROM Hiring h WHERE h.status = :status AND h.hiringStatus = 'Y'", Long.class)
-                .setParameter("status", status)
-                .getSingleResult();
-
-        // 3. Page 객체로 변환
-        return new PageImpl<>(content, pageable, total);
-        */
+    public Page<Hiring> findByStatus(StatusEnum.Status status, Pageable pageable,
+                                     SearchDataDto.HiringSearch searchData) {
 
         // JPQL과 파라미터를 동적으로 구성
         StringBuilder jpqlBuilder = new StringBuilder(
@@ -99,12 +77,12 @@ public class HiringRepositoryImpl implements HiringRepository {
             // 시작일
             if (searchData.getStart_date() != null) {
                 jpqlBuilder.append(" AND h.startDate >= :startDate");
-                parameters.put("startDate", searchData.getStart_date().atStartOfDay());
+                parameters.put("startDate", searchData.getStart_date());
             }
             // 종료일
             if (searchData.getEnd_date() != null) {
                 jpqlBuilder.append(" AND h.endDate <= :endDate");
-                parameters.put("endDate", searchData.getEnd_date().plusDays(1).atStartOfDay()); // 해당 날짜 전체 포함
+                parameters.put("endDate", searchData.getEnd_date().plusDays(1)); // 해당 날짜 전체 포함
             }
             // 급여 (최소 급여 검색)
             if (searchData.getAccount() != null) {
@@ -188,7 +166,7 @@ public class HiringRepositoryImpl implements HiringRepository {
 
         String countQuery = """
                     SELECT COUNT(DISTINCT h.hiringNo)
-                    FROM Hiring h                
+                    FROM Hiring h
                     WHERE h.status = :status AND h.user.userNo = :userNo
                 """;
 

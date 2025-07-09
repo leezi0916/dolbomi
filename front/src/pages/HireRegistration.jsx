@@ -14,6 +14,7 @@ import useUserStore from '../store/userStore';
 import { guardianHiringForm } from '../hooks/guardianHiringForm';
 import { hiringService } from '../api/hiring';
 import { BsFillExclamationCircleFill } from 'react-icons/bs';
+import { getUploadUrl, uploadFileToS3 } from '../api/fileApi';
 
 const HireRegistration = () => {
   const { user } = useUserStore();
@@ -99,19 +100,38 @@ const HireRegistration = () => {
   };
 
   const onSubmit = async (data) => {
-    console.log(data);
     try {
+      let roomImageKey = null;
+
+      if (careStatus === 'Y' && inputRef.current?.files?.[0]) {
+        const file = inputRef.current.files[0];
+        const ext = file.name.split('.').pop();
+        // 파일 이름 생성, 필요하면 userNo 등도 추가 가능
+        const fileName = `room_${Date.now()}.${ext}`;
+
+        // 1. presigned URL 및 changeName 받기
+        const { presignedUrl, changeName } = await getUploadUrl(fileName, file.type, 'room/');
+
+        // 2. S3에 PUT 업로드
+        await uploadFileToS3(presignedUrl, file);
+
+        roomImageKey = changeName;
+      }
+
+      // 4. 구인글 등록 요청에 roomImageKey 포함
       await hiringService.postNewHiring({
         ...data,
-        startDate: new Date(data.startDate).toISOString(), // ISO 8601 형식
+        startDate: new Date(data.startDate).toISOString(),
         endDate: new Date(data.endDate).toISOString(),
         patNo: Number(selectPatientNo),
+        roomImage: roomImageKey,
       });
-      toast.success('돌봄대상자 등록 완료!');
+
+      toast.success('구인 등록 완료!');
       navigate('/guardian/jobopening-management');
     } catch (error) {
-      toast.error('돌봄대상자 등록 중 문제가 발생하였습니다.');
-      console.error('돌본대상자 등록 에러 : ', error);
+      toast.error('등록 중 오류 발생');
+      console.error(error);
     }
   };
 
@@ -151,7 +171,7 @@ const HireRegistration = () => {
           <ContentWrapper>
             <selectDiv>
               <ProfilImageWrapper>
-                <img src={getProfileImageUrl(patient.profileImage)} alt="프로필" />
+                <img src={getProfileImageUrl(patient?.profileImage)} alt="프로필" />
               </ProfilImageWrapper>
             </selectDiv>
             <Divider>
