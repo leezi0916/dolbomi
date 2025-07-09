@@ -664,6 +664,7 @@ const UserAge = styled.span`
 const CareContent = styled.span`
   text-align: center; /* 작은 화면에서 중앙 정렬 */
   display: none;
+  
   ${media.md`
   display: block;
   color: ${({ theme }) => theme.colors.black1}; */
@@ -684,10 +685,8 @@ const CardFooter = styled.div`
     flex-direction: row; /* sm 이상에서는 가로로 나열 */
     padding: ${({ theme }) => theme.spacing[4]} ${({ theme }) => theme.spacing[6]}; /* sm 이상 패딩 */
     gap: ${({ theme }) => theme.spacing[4]}; /* sm 이상 간격 */
-    
+
   `}
-  
-  
 `;
 
 const LocationWage = styled.div`
@@ -723,6 +722,7 @@ const BoldText = styled.span`
     font-size: ${({ theme }) => theme.fontSizes.base};
   `}
 `;
+
 const CareStatusTag = styled.div`
   margin: ${({ theme }) => theme.spacing[2]};
   display: inline;
@@ -736,11 +736,9 @@ const CareStatusTag = styled.div`
   padding: ${({ theme }) => theme.spacing[1]} ${({ theme }) => theme.spacing[5]};
 
   ${media.sm`
-    strong {
       font-size: ${({ theme }) => theme.fontSizes.base}; 
-    }
-  `}
 
+  `}
 `;
 
 const AccuontText = styled.span`
