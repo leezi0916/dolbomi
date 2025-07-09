@@ -4,23 +4,16 @@ import styled from 'styled-components';
 import profileImage from '../assets/profileImg/img_간병인.png'; // 프로필 이미지 경로
 import { media } from '../styles/MediaQueries';
 import SearchBar from '../components/SearchBar';
-import { IoCheckmarkOutline } from 'react-icons/io5';
 import { ClipLoader } from 'react-spinners';
 import { jobSeekingService } from '../api/jobSeeking';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import Paging from '../components/Paging';
-import DatePicker from 'react-datepicker';
 import { addressService } from '../api/address';
 
 const CaregiverList = () => {
   const [caregiverLists, setCaregiverLists] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [address, setAddress] = useState('');
-  const [account, setAccount] = useState('');
-  const [gender, setGender] = useState('');
-  const [hasLicense, setHasLicense] = useState(false);
-  const [careStatus, setCareStatus] = useState(false);
   const [page, setPage] = useState(1);
   const [size] = useState(10);
   const [totalPages, setTotalPages] = useState(0);
@@ -29,10 +22,8 @@ const CaregiverList = () => {
   const [visible, setVisible] = useState(false);
   const [data, setData] = useState({
     region: '',
-    endDate: '',
     account: '',
     home: '',
-    startDate: '',
     patGender: '',
     keyword: '',
   });
@@ -249,7 +240,7 @@ const CaregiverList = () => {
                     </SelectBox>
                   </Item>
                   <Item>
-                    <SearchTitle>시급: </SearchTitle>
+                    <SearchTitle>최대 시급: </SearchTitle>
                     <ACCOUNT
                       name="account"
                       type="number"
@@ -445,36 +436,12 @@ const SearchSelect = styled.div`
   row-gap: 20px;
 `;
 
-const DateBox = styled.div`
-  margin-top: 20px;
-  display: flex;
-  grid-column: span 4;
-  width: 100%;
-  gap: 20px;
-`;
-
-const DateContentBox = styled.div`
-  display: flex;
-  align-items: center;
-  width: 100%;
-`;
-
 const SearchTitle = styled.span`
   text-align: end;
   margin: 0 20px 0 5px;
   width: 80px;
   font-weight: ${({ theme }) => theme.fontWeights.bold};
   color: ${({ theme }) => theme.colors.gray[1]};
-`;
-
-const DateInput = styled(DatePicker)`
-  width: 100%;
-  height: 30px;
-  text-align: center;
-  border-radius: ${({ theme }) => theme.borderRadius.base};
-  font-size: ${({ theme }) => theme.spacing[4]};
-  caret-color: transparent;
-  cursor: pointer;
 `;
 
 const Items = styled.div`
@@ -572,7 +539,7 @@ const Label2 = styled.label`
   text-align: center;
 `;
 
-//-------------------------------------------
+//------------------------------------------------------------
 
 const SearchSection = styled(Section)``;
 
