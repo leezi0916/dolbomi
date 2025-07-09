@@ -52,7 +52,6 @@ const QuestionDetail = () => {
   }, [communityDetail]);
 
   useEffect(() => {
-    console.log('?:' + userRole);
     const loadCommunity = async () => {
       try {
         const community = await commuService.getCommunityDetail(boardNo);
@@ -281,7 +280,7 @@ const QuestionDetail = () => {
                   <div>{reply.userName}</div>
                   <div>{reply.updateDate}</div>
                 </div>
-                <div style={{ padding: '5px 10px 0' }}>{reply.replyContent}</div>
+                <div style={{ textAlign: 'left', padding: '5px 10px 0' }}>{reply.replyContent}</div>
               </CommentSelect>
             ))}
         </CommentSelectBox>
