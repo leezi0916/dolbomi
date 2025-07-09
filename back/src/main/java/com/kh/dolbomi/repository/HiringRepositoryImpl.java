@@ -58,7 +58,8 @@ public class HiringRepositoryImpl implements HiringRepository {
     }
 
     @Override
-    public Page<Hiring> findByStatus(StatusEnum.Status status, Pageable pageable, SearchDataDto searchData) {
+    public Page<Hiring> findByStatus(StatusEnum.Status status, Pageable pageable,
+                                     SearchDataDto.HiringSearch searchData) {
 
         // JPQL과 파라미터를 동적으로 구성
         StringBuilder jpqlBuilder = new StringBuilder(

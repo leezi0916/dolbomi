@@ -1,6 +1,7 @@
 package com.kh.dolbomi.repository;
 
 import com.kh.dolbomi.domain.Resume;
+import com.kh.dolbomi.dto.SearchDataDto;
 import com.kh.dolbomi.enums.StatusEnum;
 import java.util.List;
 import org.springframework.data.domain.Page;
@@ -11,11 +12,11 @@ public interface ResumeRepository {
     List<Resume> getMainResumeList(StatusEnum.Status status);
 
     //간병사 모집 리스트(페이징)
-    Page<Resume> findByStatus(StatusEnum.Status status, Pageable pageable);
+    Page<Resume> findByStatus(StatusEnum.Status status, Pageable pageable, SearchDataDto.ResumeSearch searchData);
 
     void save(Resume resume);
 
     List<Resume> getResumeList(Long userNo);
-    
+
 
 }
