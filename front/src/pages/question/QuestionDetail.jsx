@@ -142,6 +142,20 @@ const QuestionDetail = () => {
       setSubmitting(false);
     }
   };
+  const handleDeleteBoard = async () => {
+    try {
+      const deleteBoard = await commuService.deleteBoard(boardNo); // API 호출
+      toast.success(deleteBoard);
+      navigate(-1);
+      // 데이터만 다시 요청
+    } catch (error) {
+      toast.error(error.message);
+      const errorMessage = '삭제 실패했습니다. 다시 시도해주세요.';
+      setError(errorMessage);
+      toast.error(errorMessage);
+    }
+  };
+
   return (
     <Page>
       <PageInfo>
@@ -166,19 +180,9 @@ const QuestionDetail = () => {
               <Icons src="/src/assets/icons/icon_작성일자.png" alt="" />
               <div style={{ paddingRight: '10px' }}>{communityDetail?.createDate}</div>
               {communityDetail.userNo === userNo ? (
-                <MenuBox>
-                  <img src="/src/assets/icons/icon_설정메뉴.png" alt="" />
-                  <ul>
-                    <li>
-                      <img src="/src/assets/icons/icon_수정.png" alt="" />
-                      <LinkLi to={`/community/update/${communityDetail.boardNo}`}>수정</LinkLi>
-                    </li>
-                    <li>
-                      <img src="/src/assets/icons/icon_삭제.png" alt="" />
-                      <LinkLi> 삭제</LinkLi>
-                    </li>
-                  </ul>
-                </MenuBox>
+                <button style={{ padding: '0', color: 'gray' }} type="button" onClick={handleDeleteBoard}>
+                  삭제
+                </button>
               ) : null}
             </Right>
           </BodyTop>
@@ -215,7 +219,7 @@ const QuestionDetail = () => {
               </div>
             </div>
             {userRole === 'ADMIN' && replyMode === 'none' && (
-              <div style={{ marginLeft: 'auto' }}>
+              <div>
                 {communityDetail.questionStatus === 'Y' ? (
                   <Btn type="button" onClick={handleUpdateClick}>
                     수정
@@ -225,9 +229,6 @@ const QuestionDetail = () => {
                     작성
                   </Btn>
                 )}
-                <Btn type="button" style={{ margin: '0 10PX' }}>
-                  삭제
-                </Btn>
               </div>
             )}
           </div>

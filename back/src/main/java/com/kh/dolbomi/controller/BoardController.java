@@ -84,5 +84,17 @@ public class BoardController {
         return ResponseEntity.ok(new PageResponse<>(boardService.getQuestionList(pageable)));
     }
 
+    @GetMapping("/delete")
+    public ResponseEntity<String> deleteBoard(
+            @RequestParam("boardNo") Long boardNo) {
+        return ResponseEntity.ok(boardService.deleteBoard(boardNo));
+    }
+
+    @GetMapping("/reply_delete")
+    public ResponseEntity<String> deleteReply(
+            @RequestParam("replyNo") Long replyNo) {
+        return ResponseEntity.ok(boardService.deleteReply(replyNo));
+    }
+
 
 }

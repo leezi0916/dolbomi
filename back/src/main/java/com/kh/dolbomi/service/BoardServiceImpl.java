@@ -210,4 +210,28 @@ public class BoardServiceImpl implements BoardService {
 
 
     }
+
+    @Override
+    public String deleteBoard(Long boardNo) {
+        Board board = boardRepositoryV2.findByBoardNo(boardNo)
+                .orElseThrow(() -> new EntityNotFoundException("게시물을 찾을 수 없습니다."));
+        if (board != null) {
+            board.delete();
+            return "게시물 삭제 완료";
+        }
+        return null;
+
+    }
+
+    @Override
+    public String deleteReply(Long replyNo) {
+        Reply reply = replyRepositoryV2.findByReplyNo(replyNo)
+                .orElseThrow(() -> new EntityNotFoundException("게시물을 찾을 수 없습니다."));
+        if (reply != null) {
+            reply.delete();
+            return "댓글 삭제 완료";
+        }
+        return null;
+
+    }
 }

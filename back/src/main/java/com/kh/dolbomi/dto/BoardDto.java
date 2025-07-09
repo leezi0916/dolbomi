@@ -101,6 +101,7 @@ public class BoardDto {
                     .question_category(board.getQuestionCategory())
                     .reply(
                             board.getReplyList().stream()
+                                    .filter(reply -> reply.getStatus() == StatusEnum.Status.Y)
                                     .map(reply -> ReplyDto.Response.builder()
                                             .replyNo(reply.getReplyNo())
                                             .user_no(reply.getUser().getUserNo())

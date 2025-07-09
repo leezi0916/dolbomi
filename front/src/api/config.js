@@ -28,6 +28,8 @@ export const API_ENDPOINTS = {
     QUESTION: (page, size) => `/community/v1/question?page=${page}&size=${size}`,
     QUESTION_HISTORY: (userNo, page, size) => `/community/v1/question?user_no=${userNo}&page=${page}&size=${size}`,
     CREATE_QUESTION: '/community/v1/question/create',
+    DELETE: (boardNo) => `/community/v1/delete?boardNo=${boardNo}`,
+    DELETE_REPLY: (replyNo) => `/community/v1/reply_delete?replyNo=${replyNo}`,
   },
 
   USERS: {

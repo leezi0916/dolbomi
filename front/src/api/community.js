@@ -123,4 +123,25 @@ export const commuService = {
       throw new Error('서버와의 통신에 실패했습니다.');
     }
   },
+  deleteBoard: async (boardNo) => {
+    try {
+      const { data } = await api.get(API_ENDPOINTS.COMMUNITY.DELETE(boardNo));
+      console.log('요청 URL:', API_ENDPOINTS.COMMUNITY.DELETE(boardNo));
+      return snakeToCamel(data);
+    } catch (error) {
+      console.error('게시글 조회 실패:', error.response?.data?.message || error.message);
+      throw new Error('서버 통신 불량');
+    }
+  },
+
+  deleteReply: async (replyNo) => {
+    try {
+      const { data } = await api.get(API_ENDPOINTS.COMMUNITY.DELETE_REPLY(replyNo));
+      console.log('요청 URL:', API_ENDPOINTS.COMMUNITY.DELETE_REPLY(replyNo));
+      return snakeToCamel(data);
+    } catch (error) {
+      console.error('게시글 조회 실패:', error.response?.data?.message || error.message);
+      throw new Error('서버 통신 불량');
+    }
+  },
 };

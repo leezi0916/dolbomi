@@ -132,6 +132,35 @@ const CommunityDetail = () => {
       toast.error(errorMessage);
     }
   };
+  const handleDeleteBoard = async () => {
+    try {
+      const deleteBoard = await commuService.deleteBoard(boardNo); // API 호출
+      toast.success(deleteBoard);
+      navigate(-1);
+      // 데이터만 다시 요청
+    } catch (error) {
+      toast.error(error.message);
+      const errorMessage = '삭제 실패했습니다. 다시 시도해주세요.';
+      setError(errorMessage);
+      toast.error(errorMessage);
+    }
+  };
+
+  const handleDeleteReply = async (replyNo) => {
+    try {
+      const deleteReply = await commuService.deleteReply(replyNo); // API 호출
+      toast.success(deleteReply);
+      const updatedCommunity = await commuService.getCommunityDetail(boardNo); // 데이터만 다시 요청
+      setCommunityDetail(updatedCommunity); // 상태 갱신
+      setEditedContent(''); // 작성 내용 초기화
+      setEditingReplyNo(null);
+    } catch (error) {
+      toast.error(error.message);
+      const errorMessage = '삭제 실패했습니다. 다시 시도해주세요.';
+      setError(errorMessage);
+      toast.error(errorMessage);
+    }
+  };
   return (
     <Page>
       <PageInfo>
@@ -169,7 +198,7 @@ const CommunityDetail = () => {
                     </li>
                     <li>
                       <img src="/src/assets/icons/icon_삭제.png" alt="" />
-                      <button> 삭제</button>
+                      <button onClick={handleDeleteBoard}> 삭제</button>
                     </li>
                   </ul>
                 </MenuBox>
@@ -244,7 +273,10 @@ const CommunityDetail = () => {
                       ) : null}
                       <li>
                         <img src="/src/assets/icons/icon_삭제.png" alt="" />
-                        <button> 삭제</button>
+                        <button type="button" onClick={() => handleDeleteReply(reply.replyNo)}>
+                          {' '}
+                          삭제
+                        </button>
                       </li>
                     </ul>
                   </MenuBox>

@@ -59,6 +59,10 @@ public class Reply {
         this.replyContent = dto.getReply_content();
     }
 
+    public void delete() {
+        this.status = StatusEnum.Status.N;
+    }
+
     public void changeUser(User user) {
         this.user = user;
         if (!user.getReplyList().contains(this)) {
@@ -86,4 +90,6 @@ public class Reply {
     public void preUpdate() {
         this.updateDate = LocalDateTime.now();
     }
+
+
 }
