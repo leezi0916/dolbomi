@@ -18,7 +18,7 @@ import {
   NewTitle,
   BackBtn,
 } from '../styles/PatientRegistration';
-
+import { HiMiniPencilSquare } from 'react-icons/hi2';
 import { AuthContainer, Label, Input, InputGroup } from '../styles/Auth.styles';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
@@ -259,18 +259,22 @@ const MyProfile = () => {
       <FromWrap>
         <NewTitle>회원정보 수정 / 탈퇴</NewTitle>
         <Form onSubmit={handleSubmit}>
-          <ProfileImage onClick={handleDivClick}>
-            <img
-              src={getProfileImageUrl()}
-              alt="프로필 이미지"
-              style={{
-                width: '100%',
-                height: '100%',
-                objectFit: 'cover',
-                borderRadius: '50%',
-              }}
-            />
-          </ProfileImage>
+          <ProfileImageWrapper>
+            <ProfileImage>
+              <img
+                src={getProfileImageUrl()}
+                alt="프로필 이미지"
+                style={{
+                  width: '100%',
+                  height: '100%',
+                  objectFit: 'cover',
+                }}
+              />
+            </ProfileImage>
+            <EditIcon onClick={handleDivClick}>
+              <HiMiniPencilSquare size={30} />
+            </EditIcon>
+          </ProfileImageWrapper>
 
           <input type="file" accept="image/*" ref={inputRef} onChange={handleFileChange} style={{ display: 'none' }} />
           <InputGroup>
@@ -425,19 +429,38 @@ const LicenseGroup = styled(InputGroup)`
   justify-content: center;
 `;
 
-const ProfileImage = styled.div`
-  width: 200px;
+const ProfileImageWrapper = styled.div`
+  position: relative;
+  width: 200px; /* 원하는 크기로 조절 */
   height: 200px;
-  background-color: ${({ theme }) => theme.colors.gray[5]};
-  border-radius: ${({ theme }) => theme.borderRadius.md};
-  cursor: pointer;
   display: flex;
   justify-content: center;
   align-items: center;
   margin: 0 auto;
-  border-radius: 50%;
 `;
 
+const ProfileImage = styled.div`
+  width: 200px;
+  height: 200px;
+  background-color: ${({ theme }) => theme.colors.gray[5]};
+  border-radius: 50%;
+
+  overflow: hidden;
+  cursor: pointer;
+`;
+
+const EditIcon = styled.div`
+  position: absolute;
+  bottom: 5px;
+  right: 1px;
+  background: white;
+  border-radius: 50%;
+  padding: 5px;
+  display: flex;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+  padding: 10px;
+  cursor: pointer;
+`;
 const Plus = styled(FaPlus)`
   width: 30px;
   height: 30px;

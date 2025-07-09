@@ -96,6 +96,7 @@ public class MatchingController {
     ) {
         Status status = Status.valueOf("N");
 
+        System.out.println("test" + startDate + "-" + endDate);
         return ResponseEntity.ok(
                 new PageResponse<>(
                         matchingService.getMatchedListBySearch(patNo, startDate, endDate, status, pageable)));

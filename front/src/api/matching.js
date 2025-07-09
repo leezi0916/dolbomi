@@ -86,7 +86,6 @@ export const matchingService = {
 
   getEndedMatchingCheckList: async (patNo, page = 0, size = 5, status = 'N', user_status = 'Y') => {
     try {
-      
       const { data } = await api.get(API_ENDPOINTS.MATCHING.SEARCHLIST(), {
         params: {
           pat_no: patNo,
@@ -110,18 +109,23 @@ export const matchingService = {
 
   //일자검색
   getSearchingList: async (patNo, startDate, endDate, page = 0, size = 5) => {
+    const formatDateToLocalISOString = (date) => {
+      const offset = date.getTimezoneOffset() * 60000; // 분 단위를 밀리초로 변환
+      const localISOTime = new Date(date - offset).toISOString().slice(0, 19); // Z 제거
+      return localISOTime; // 예: "2025-07-06T00:00:00"
+    };
     try {
-   
       const { data } = await api.get(API_ENDPOINTS.MATCHING.SEARCHDATELIST(), {
         params: {
           pat_no: patNo,
-          start_date: new Date(startDate).toISOString().slice(0, 19),
-          end_date: new Date(endDate).toISOString().slice(0, 19),
+          start_date: formatDateToLocalISOString(startDate),
+          end_date: formatDateToLocalISOString(endDate),
+          // end_date: new Date(endDate).toISOString().slice(0, 19),
           page,
           size,
         },
       });
-     
+
       return snakeToCamel(data);
     } catch (error) {
       if (error.response) {
@@ -131,5 +135,4 @@ export const matchingService = {
       throw new Error('서버 통신 불량');
     }
   },
-
 };
