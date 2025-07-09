@@ -28,7 +28,7 @@ import { reviewService } from '../api/reviews';
 import useUserStore from '../store/userStore';
 import { toast } from 'react-toastify';
 import { proposerService } from '../api/propose';
-
+import {extractRegionFromEnd} from '../utils/formatData'
 function ResumeDetail() {
   const { user } = useUserStore();
   const [activeTab, setActiveTab] = useState('info');
@@ -188,7 +188,7 @@ function ResumeDetail() {
             </InputGroup> */}
             <InputGroup>
               <Label>주소</Label>
-              <Input type="text" value={resumeData?.address.split(" ").slice(0, 2).join(" ") || ''} readOnly />
+              <Input type="text" value={extractRegionFromEnd(resumeData?.address)} readOnly />
             </InputGroup>
           </Divider>
         </ContentWrapper>

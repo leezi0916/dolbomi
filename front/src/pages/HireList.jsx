@@ -16,7 +16,7 @@ import { Link } from 'react-router-dom';
 import { hiringService } from '../api/hiring';
 import Paging from '../components/Paging';
 import { addressService } from '../api/address';
-
+import { extractRegionFromEnd } from '../utils/formatData';
 const HireList = () => {
   const [hireLists, setHireLists] = useState([]);
   const [loading, setLoading] = useState(false); // 초기 false
@@ -72,9 +72,9 @@ const HireList = () => {
   // 이름 첫글자 O 처리하기
   const maskName = (name) => {
     if (name.length === 2) {
-      return name[0] + '○';
+      return name[0] + ' ○ ';
     } else if (name.length >= 3) {
-      return name[0] + '○' + name.slice(2);
+      return name[0] + ' ○ ' + name.slice(2);
     }
 
     return name;
@@ -410,7 +410,10 @@ const HireList = () => {
                 <HeaderContent>
                   <Divder>
                     <UserInfo>
-                      <UserName>{maskName(hire.patName)}</UserName>
+                      <UserName>
+                        {maskName(hire.patName)}
+                        <GrayText> 님</GrayText>
+                      </UserName>
                       <UserAge>
                         나이 {hire.patAge}세(
                         {hire.patGender === 'M' ? '남' : hire.patGender === 'F' ? '여' : ''})
@@ -427,14 +430,19 @@ const HireList = () => {
               <CardFooter>
                 <LocationWage>
                   <LocationText>
-                    <GrayText>시급</GrayText> <BoldAccount>{hire.account}원</BoldAccount>
+                    <GrayText>시급</GrayText>
+                    <BoldText>{hire.account}원</BoldText>
                   </LocationText>
                   <AccuontText>
                     <GrayText>지역 </GrayText>
-                    {hire.patAddress}
+                    <BoldText>{extractRegionFromEnd(hire.patAddress)}</BoldText>
                   </AccuontText>
                 </LocationWage>
-                {hire.careStatus === 'Y' && <AccommodationInfo>숙식 제공 가능</AccommodationInfo>}
+                <AccommodationInfo>
+                  {' '}
+                  근무유형
+                  {hire.careStatus ? <CareStatusTag>입주형 </CareStatusTag> : <CareStatusTag>출퇴근형</CareStatusTag>}
+                </AccommodationInfo>
               </CardFooter>
             </HireListCard>
           ))}
@@ -450,7 +458,7 @@ const Title = styled.h1`
   font-weight: ${({ theme }) => theme.fontWeights.bold};
   text-align: center;
   margin-bottom: ${({ theme }) => theme.spacing[5]};
-  color: ${({ theme }) => theme.colors.gray[800]};
+  color: ${({ theme }) => theme.colors.gray[1]};
   padding: ${({ theme }) => theme.spacing[3]};
   display: flex;
   justify-content: flex-start;
@@ -662,7 +670,7 @@ const DateInfo = styled.span`
   grid-column: 1 / span 2; //작은 화면에서는 1줄 전체 사용
   grid-row: auto;
   font-size: ${({ theme }) => theme.fontSizes.xs}; /* 작은 화면 폰트 크기 */
-  color: ${({ theme }) => theme.colors.gray[500]};
+  color: ${({ theme }) => theme.colors.gray[3]};
   white-space: nowrap;
   align-self: center;
   text-align: center; /* 작은 화면에서 중앙 정렬 */
@@ -670,7 +678,7 @@ const DateInfo = styled.span`
   ${media.sm`
     grid-column: 2; /* sm 이상에서 원래 컬럼 */
     grid-row: 1 / span 2; /* sm 이상에서 원래 행 */
-    font-size: ${({ theme }) => theme.fontSizes.sm}; /* sm 이상 폰트 크기 */
+    font-size: ${({ theme }) => theme.fontSizes.base}; /* sm 이상 폰트 크기 */
     text-align: right; /* sm 이상에서 오른쪽 정렬 */
   `}
 `;
@@ -754,20 +762,20 @@ const UserName = styled.span`
 
 const UserAge = styled.span`
   font-size: ${({ theme }) => theme.fontSizes.sm}; /* 작은 화면 폰트 크기 */
-  color: ${({ theme }) => theme.colors.gray[600]};
+  color: ${({ theme }) => theme.colors.gray[3]};
   ${media.sm`
-    font-size: ${({ theme }) => theme.fontSizes.md}; /* sm 이상 폰트 크기 */
+    font-size: ${({ theme }) => theme.fontSizes.base}; /* sm 이상 폰트 크기 */
   `};
 `;
 
 const CareContent = styled.span`
   grid-column: 1;
   font-size: ${({ theme }) => theme.fontSizes.sm}; /* 작은 화면 폰트 크기 */
-  color: ${({ theme }) => theme.colors.gray[800]};
+  color: ${({ theme }) => theme.colors.black1};
   text-align: center; /* 작은 화면에서 중앙 정렬 */
 
   ${media.sm`
-    font-size: ${({ theme }) => theme.fontSizes.md}; /* sm 이상 폰트 크기 */
+    font-size: ${({ theme }) => theme.fontSizes.lg}; /* sm 이상 폰트 크기 */
     text-align: left; /* sm 이상에서 왼쪽 정렬 */
   `}
 `;
@@ -790,16 +798,39 @@ const CardFooter = styled.div`
 
 const LocationWage = styled.div`
   display: flex;
-  gap: ${({ theme }) => theme.spacing[4]}; /* 지역과 시급 사이 간격 */
-  font-size: ${({ theme }) => theme.fontSizes.md};
-  color: ${({ theme }) => theme.colors.gray[700]};
+  gap: ${({ theme }) => theme.spacing[6]}; /* 지역과 시급 사이 간격 */
+  font-size: ${({ theme }) => theme.fontSizes.base};
+  color: ${({ theme }) => theme.colors.gray[3]};
 `;
 
-const LocationText = styled.span``;
-const GrayText = styled.span`
-  font-weight: ${({ theme }) => theme.fontWeights.medium};
-  color: ${({ theme }) => theme.colors.gray[4]};
+const LocationText = styled.span`
+  font-size: ${({ theme }) => theme.fontSizes.base};
 `;
+
+const GrayText = styled.span`
+  font-size: ${({ theme }) => theme.fontSizes.base};
+  font-weight: ${({ theme }) => theme.fontWeights.medium};
+  color: ${({ theme }) => theme.colors.gray[3]};
+  margin-right: ${({ theme }) => theme.spacing[2]};
+`;
+const BoldText = styled.span`
+  font-size: ${({ theme }) => theme.fontSizes.base};
+  font-weight: ${({ theme }) => theme.fontWeights.bold};
+  color: ${({ theme }) => theme.colors.black1};
+`;
+const CareStatusTag = styled.div`
+  margin: ${({ theme }) => theme.spacing[2]};
+  display: inline;
+  justify-content: center;
+  border-radius: 20px;
+  background-color: ${({ theme }) => theme.colors.third};
+  width: fit-content;
+  font-size: ${({ theme }) => theme.fontSizes.base};
+  font-weight: ${({ theme }) => theme.fontWeights.bold};
+  color: ${({ theme }) => theme.colors.gray[3]};
+  padding: ${({ theme }) => theme.spacing[1]} ${({ theme }) => theme.spacing[5]};
+`;
+
 const AccuontText = styled.span`
   strong {
     font-size: ${({ theme }) => theme.fontSizes.base}; /* 작은 화면 시급 강조 */
@@ -814,10 +845,6 @@ const AccuontText = styled.span`
   `}
 `;
 
-const BoldAccount = styled.span`
-  font-weight: ${({ theme }) => theme.fontWeights.bold};
-`;
-
 const AccommodationInfo = styled.span`
   font-size: ${({ theme }) => theme.fontSizes.md}; /* 작은 화면 폰트 크기 */
   font-weight: ${({ theme }) => theme.fontWeights.semibold};
@@ -825,7 +852,7 @@ const AccommodationInfo = styled.span`
   white-space: nowrap;
 
   ${media.sm`
-    font-size: ${({ theme }) => theme.fontSizes.xl}; /* sm 이상 폰트 크기 */
+    font-size: ${({ theme }) => theme.fontSizes.base}; /* sm 이상 폰트 크기 */
   `}
 `;
 

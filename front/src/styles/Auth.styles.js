@@ -19,6 +19,13 @@ export const Title = styled.h1`
   padding: ${({ theme }) => theme.spacing[3]};
 `;
 
+export const TipP = styled.p`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+`;
+
 export const Form = styled.form`
   display: flex;
 
