@@ -20,7 +20,7 @@ import {
   PageTop,
 } from './style/Community.styles';
 import { useForm } from 'react-hook-form';
-
+import profileImage from '../../assets/images/cargiver.png'; // 프로필 이미지 경로
 const CommunityDetail = () => {
   const userNo = useUserStore((state) => state.user?.userNo);
 
@@ -161,6 +161,15 @@ const CommunityDetail = () => {
       toast.error(errorMessage);
     }
   };
+
+  const CLOUDFRONT_URL = 'https://d20jnum8mfke0j.cloudfront.net/';
+  //이미지 경로 갖고오고 없다면 기본이미지
+  const getProfileImageUrl = (path) => {
+    if (!path) return profileImage; // 기본 이미지
+    const cleanPath = path.replace(/^\//, ''); // 앞에 / 있으면 제거
+    return `${CLOUDFRONT_URL}${cleanPath}`;
+  };
+
   return (
     <Page>
       <PageInfo>
@@ -215,13 +224,11 @@ const CommunityDetail = () => {
               <InputFile>
                 {communityDetail.files?.map((file, index) => (
                   <ImgBox key={index}>
-                    <a href={file.filePath} target="_blank" rel="noopener noreferrer">
-                      <img
-                        src={file.filePath}
-                        alt={file.originName || '첨부 이미지'}
-                        style={{ width: '100%', aspectRatio: '4 / 3', borderRadius: '4px' }}
-                      />
-                    </a>
+                    <img
+                      src={getProfileImageUrl(file?.fileName)}
+                      alt="첨부 이미지"
+                      style={{ width: '100%', aspectRatio: '4 / 3', borderRadius: '4px' }}
+                    />
                   </ImgBox>
                 ))}
               </InputFile>

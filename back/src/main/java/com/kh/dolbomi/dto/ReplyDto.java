@@ -21,6 +21,7 @@ public class ReplyDto {
         private String replyContent;
         private LocalDateTime createDate;
         private LocalDateTime updateDate;
+        private String profile_image;
     }
 
     @Getter
