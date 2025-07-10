@@ -52,7 +52,6 @@ const QuestionDetail = () => {
   }, [communityDetail]);
 
   useEffect(() => {
-    console.log('?:' + userRole);
     const loadCommunity = async () => {
       try {
         const community = await commuService.getCommunityDetail(boardNo);
@@ -115,6 +114,48 @@ const QuestionDetail = () => {
       setSubmitting(false);
     }
   };
+
+  const handleUpdateReply = async () => {
+    if (submitting) return;
+
+    console.log('작성 버튼 클릭');
+
+    try {
+      setSubmitting(true);
+      const replyData = {
+        reply_no: communityDetail.reply[0].replyNo,
+        reply_content: editedContent,
+      };
+
+      await commuService.updateReply(replyData); // API 호출
+
+      const updatedCommunity = await commuService.getCommunityDetail(boardNo); // 데이터만 다시 요청
+      setCommunityDetail(updatedCommunity); // 상태 갱신
+      setReplyMode('none'); // 작성 모드 종료
+      setEditedContent(''); // 작성 내용 초기화
+    } catch (error) {
+      toast.error(error.message);
+      const errorMessage = '등록에 실패했습니다. 다시 시도해주세요.';
+      setError(errorMessage);
+      toast.error(errorMessage);
+    } finally {
+      setSubmitting(false);
+    }
+  };
+  const handleDeleteBoard = async () => {
+    try {
+      const deleteBoard = await commuService.deleteBoard(boardNo); // API 호출
+      toast.success(deleteBoard);
+      navigate(-1);
+      // 데이터만 다시 요청
+    } catch (error) {
+      toast.error(error.message);
+      const errorMessage = '삭제 실패했습니다. 다시 시도해주세요.';
+      setError(errorMessage);
+      toast.error(errorMessage);
+    }
+  };
+
   return (
     <Page>
       <PageInfo>
@@ -139,19 +180,9 @@ const QuestionDetail = () => {
               <Icons src="/src/assets/icons/icon_작성일자.png" alt="" />
               <div style={{ paddingRight: '10px' }}>{communityDetail?.createDate}</div>
               {communityDetail.userNo === userNo ? (
-                <MenuBox>
-                  <img src="/src/assets/icons/icon_설정메뉴.png" alt="" />
-                  <ul>
-                    <li>
-                      <img src="/src/assets/icons/icon_수정.png" alt="" />
-                      <LinkLi to={`/community/update/${communityDetail.boardNo}`}>수정</LinkLi>
-                    </li>
-                    <li>
-                      <img src="/src/assets/icons/icon_삭제.png" alt="" />
-                      <LinkLi> 삭제</LinkLi>
-                    </li>
-                  </ul>
-                </MenuBox>
+                <button style={{ padding: '0', color: 'gray' }} type="button" onClick={handleDeleteBoard}>
+                  삭제
+                </button>
               ) : null}
             </Right>
           </BodyTop>
@@ -188,7 +219,7 @@ const QuestionDetail = () => {
               </div>
             </div>
             {userRole === 'ADMIN' && replyMode === 'none' && (
-              <div style={{ marginLeft: 'auto' }}>
+              <div>
                 {communityDetail.questionStatus === 'Y' ? (
                   <Btn type="button" onClick={handleUpdateClick}>
                     수정
@@ -198,9 +229,6 @@ const QuestionDetail = () => {
                     작성
                   </Btn>
                 )}
-                <Btn type="button" style={{ margin: '0 10PX' }}>
-                  삭제
-                </Btn>
               </div>
             )}
           </div>
@@ -213,7 +241,9 @@ const QuestionDetail = () => {
                     <div>{reply.userName}</div>
                     <div>{reply.updateDate}</div>
                     <div style={{ marginLeft: 'auto' }}>
-                      <Btn type="button">수정</Btn>
+                      <Btn type="button" onClick={handleUpdateReply}>
+                        수정
+                      </Btn>
                       <Btn type="button" style={{ margin: '0 10PX' }} onClick={handleUpdateClick}>
                         취소
                       </Btn>
@@ -251,7 +281,7 @@ const QuestionDetail = () => {
                   <div>{reply.userName}</div>
                   <div>{reply.updateDate}</div>
                 </div>
-                <div style={{ padding: '5px 10px 0' }}>{reply.replyContent}</div>
+                <div style={{ textAlign: 'left', padding: '5px 10px 0' }}>{reply.replyContent}</div>
               </CommentSelect>
             ))}
         </CommentSelectBox>

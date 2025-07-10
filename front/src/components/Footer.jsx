@@ -11,8 +11,10 @@ const Footer = () => {
         <FooterWrapper>
           <FooterSection>
             <Logo to="/">
-              <img src="/public/logo.png" />
-              {SITE_CONFIG.name}
+            <div>
+            <img src="/public/logo.png" />
+            <p>{SITE_CONFIG.name}</p>
+            </div>
             </Logo>
           </FooterSection>
 
@@ -91,7 +93,7 @@ const FooterSection = styled.div`
 `;
 
 const FooterTitle = styled.h3`
-  padding: ${({ theme }) => theme.spacing[8]};
+  padding: ${({ theme }) => theme.spacing[5]};
   font-size: ${({ theme }) => theme.fontSizes.lg};
   font-weight: ${({ theme }) => theme.fontWeights.bold};
   color: ${({ theme }) => theme.colors.gray[900]};
@@ -114,18 +116,34 @@ const FooterContent = styled.div`
   `}
 `;
 const Logo = styled(Link)`
-  display: none;
-  font-size: ${({ theme }) => theme.fontSizes.xl};
+ 
+
+  div{
+    display: none;
+  font-size: ${({ theme }) => theme.fontSizes.lg};
   font-weight: ${({ theme }) => theme.fontWeights.bold};
   color: ${({ theme }) => theme.colors.primary};
-
-  img {
-    margin-right: ${({ theme }) => theme.spacing[8]};
   }
 
   ${media.md`
-  display: block;
-   font-size: ${({ theme }) => theme.fontSizes['2xl']}; 
+
+  div{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-right: ${({ theme }) => theme.spacing[8]};
+  }
+  
+  p{
+    display: block;
+    font-size: ${({ theme }) => theme.fontSizes['xl']}; 
+  }
+   
+   img {
+    display: block;
+    
+  }
   `}
 `;
 

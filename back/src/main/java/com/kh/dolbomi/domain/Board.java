@@ -71,6 +71,10 @@ public class Board {
 
     @OneToMany(mappedBy = "board", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Reply> replyList = new ArrayList<>();
+    
+    @Builder.Default
+    @OneToMany(mappedBy = "board", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<File> fileList = new ArrayList<>();
 
     private int count;
 
@@ -88,6 +92,10 @@ public class Board {
     public void update(BoardDto.Update dto) {
         this.boardTitle = dto.getBoard_title();
         this.boardContent = dto.getBoard_content();
+    }
+
+    public void delete() {
+        this.status = StatusEnum.Status.N;
     }
 
     @PrePersist
@@ -108,6 +116,7 @@ public class Board {
 
     public void setQuestionStatus() {
         this.questionStatus = StatusEnum.QuestionStatus.Y;
-        System.out.println("questionStatus 업데이트 호출됨");
     }
+
+
 }

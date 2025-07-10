@@ -24,8 +24,9 @@ public interface UserService {
     void deleteUser(Long userNo);
 
     UserDto.Response getUserInfoByEmail(String email);
-    
+
     //간병사, 보호자 카운트
     UserCountsDto getUserCounts();
 
+    void changePassword(Long userNo, String currentPassword, String newPassword);
 }

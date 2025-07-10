@@ -12,7 +12,6 @@ import Paging from '../components/Paging';
 import ReviewModal from '../components/ReviewModal';
 import { CiCircleInfo } from 'react-icons/ci';
 
-
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import '../styles/DatePiker.css';
@@ -480,10 +479,8 @@ const Tab = styled.div`
 `;
 
 const MatchSection = styled(Section)`
-  height: auto;
   display: flex;
   flex-direction: column;
-
   align-items: center; /* 카드 쌍 전체를 가로 중앙으로 정렬 */
   padding: ${({ theme }) => theme.spacing[8]} 0; /* 상하 패딩 추가 */
 `;

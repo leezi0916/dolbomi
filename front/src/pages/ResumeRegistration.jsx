@@ -13,6 +13,7 @@ import useUserStore from '../store/userStore';
 import { toast } from 'react-toastify';
 import { jobSeekingService } from '../api/jobSeeking';
 import { useNavigate } from 'react-router-dom';
+import {extractRegionFromEnd} from '../utils/formatData';
 
 const ResumeRegistration = () => {
   const { user } = useUserStore();
@@ -113,7 +114,7 @@ const ResumeRegistration = () => {
               </InputGroup> */}
               <InputGroup>
                 <Label>주소</Label>
-                <Input type="text" value={careGiver?.address?.split(" ").slice(0, 2).join(" ") || ''} readOnly />
+                <Input type="text" value={extractRegionFromEnd(careGiver?.address)} readOnly />
               </InputGroup>
             </Divider>
           </ContentWrapper>

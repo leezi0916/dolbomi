@@ -69,7 +69,7 @@ export const matchingService = {
   },
 
   //  간병인 기준 종료된 매칭 환자 페이징 조회
-  findMatchedPatients: async (caregiverNo, status, page = 0, size = 3) => {
+  findMatchedPatients: async (caregiverNo, status, page = 0, size = 4) => {
     try {
       const { data } = await api.get(API_ENDPOINTS.MATCHING.PAT_ENDLIST(caregiverNo, status), {
         params: {

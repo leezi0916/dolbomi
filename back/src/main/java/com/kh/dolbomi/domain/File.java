@@ -2,18 +2,19 @@ package com.kh.dolbomi.domain;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-import java.sql.Timestamp;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.CreationTimestamp;
 
-@Table(name = "files")
+@Table(name = "file")
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
@@ -23,16 +24,13 @@ public class File {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Column(name = "FILE_NO")
+    private Long fileNo;
 
-    @Column(nullable = false)
-    private String originName;
+    @Column(name = "FILE_NAME", nullable = false, unique = true)
+    private String fileName;
 
-    @Column(nullable = false, unique = true)
-    private String changeName;
-
-    private String contentType;
-
-    @CreationTimestamp
-    private Timestamp createdAt;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "BOARD_NO", nullable = false)
+    private Board board;
 }

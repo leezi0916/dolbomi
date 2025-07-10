@@ -13,6 +13,7 @@ import { jobSeekingService } from '../api/jobSeeking';
 import { useState, useEffect } from 'react';
 import { toast } from 'react-toastify';
 import useUserStore from '../store/userStore';
+import {extractRegionFromEnd} from '../utils/formatData';
 
 const MyResume = () => {
   const { user } = useUserStore();
@@ -56,7 +57,7 @@ const MyResume = () => {
 
     const confirmDelete = window.confirm('정말로 이력서를 삭제하시겠습니까?');
     if (!confirmDelete) return;
-
+    console.log(resumeNo);
     try {
       await jobSeekingService.deleteResume(resumeNo);
       alert('이력서가 삭제되었습니다.');
@@ -142,7 +143,7 @@ const MyResume = () => {
             </InputGroup>
             <InputGroup>
               <Label>주소</Label>
-              <Input type="text" value={careGiverResum?.address.split(" ").slice(0, 2).join(" ") || ''} readOnly />
+              <Input type="text" value={extractRegionFromEnd(careGiverResum?.address)} readOnly />
             </InputGroup>
           </Divider>
         </ContentWrapper>

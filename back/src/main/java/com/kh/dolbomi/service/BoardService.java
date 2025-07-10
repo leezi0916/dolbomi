@@ -30,4 +30,11 @@ public interface BoardService {
     Long createReplyQuestion(ReplyDto.Create replyCreate);
 
     Long updateBoard(BoardDto.Update boardUpdate);
+
+    Long updateReply(ReplyDto.Update replyUpdate);
+
+
+    String deleteBoard(Long boardNo);
+
+    String deleteReply(Long replyNo);
 }

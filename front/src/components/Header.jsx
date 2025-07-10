@@ -89,7 +89,6 @@ const Header = () => {
     const fetchUnread = async () => {
       try {
         const count = await notificationService.getUnreadCount(user.userNo);
-        console.log('알림 들어옴 !', count);
         setUnreadCount(count);
       } catch (error) {
         console.error('알림 갱신 실패:', error);

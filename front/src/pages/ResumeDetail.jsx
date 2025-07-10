@@ -28,7 +28,7 @@ import { reviewService } from '../api/reviews';
 import useUserStore from '../store/userStore';
 import { toast } from 'react-toastify';
 import { proposerService } from '../api/propose';
-
+import {extractRegionFromEnd} from '../utils/formatData'
 function ResumeDetail() {
   const { user } = useUserStore();
   const [activeTab, setActiveTab] = useState('info');
@@ -164,11 +164,11 @@ function ResumeDetail() {
             <InputRow>
               <InputGroup>
                 <Label>이름</Label>
-                <Input type="text" value={resumeData?.userName || ''} readOnly />
+                <ResumeInput type="text" value={resumeData?.userName || ''} readOnly />
               </InputGroup>
               <InputGroup>
                 <Label>나이</Label>
-                <Input type="text" value={resumeData?.age || ''} readOnly />
+                <ResumeInput type="text" value={resumeData?.age || ''} readOnly />
               </InputGroup>
             </InputRow>
             <RadioGroup>
@@ -188,7 +188,8 @@ function ResumeDetail() {
             </InputGroup> */}
             <InputGroup>
               <Label>주소</Label>
-              <Input type="text" value={resumeData?.address.split(" ").slice(0, 2).join(" ") || ''} readOnly />
+              <Input type="text" value={extractRegionFromEnd(resumeData?.address)} readOnly />
+
             </InputGroup>
           </Divider>
         </ContentWrapper>
@@ -227,7 +228,7 @@ function ResumeDetail() {
           <ContentWrapper1>
             <HireContent>
               <Label>제목</Label>
-              <Input value={resumeData?.resumeTitle || ''} readOnly />
+              <ResumeInput value={resumeData?.resumeTitle || ''} readOnly />
 
               <Label>내용</Label>
               <Content value={resumeData?.resumeContent || ''} readOnly />
@@ -246,7 +247,7 @@ function ResumeDetail() {
                 <AccountGroup>
                   <InputGroup>
                     <Label>희망 시급</Label>
-                    <Input value={resumeData?.resumeAccount || ''} readOnly />
+                    <ResumeInput value={resumeData?.resumeAccount || ''} readOnly />
                   </InputGroup>
                 </AccountGroup>
               </RadioGroup>
@@ -264,7 +265,7 @@ function ResumeDetail() {
                   reviews.receivedReview?.content?.map((review) => (
                     <Card key={review.reviewNo}>
                       <CardTopContent>
-                        <CardImage src={review?.profileImage || profileImage} alt="프로필" />
+                        <CardImage src={getProfileImageUrl(review?.profileImage)} alt="프로필" />
                         <CardTextGroup>
                           <CardTitle>{review.reviewWriterName} 님</CardTitle>
                           <CardText>
@@ -398,6 +399,11 @@ const Label = styled.label`
   text-align: left;
 `;
 
+const ResumeInput = styled(Input)`
+  pointer-events: none; /* 클릭/포커스 불가 */
+  cursor: default; /* 마우스 커서를 기본 화살표로 변경 */
+`;
+
 const RadioGroup = styled.div`
   display: flex;
   gap: ${({ theme }) => theme.spacing[5]};
@@ -425,6 +431,8 @@ const RadioWrapper = styled.div`
     background-color: white;
     // RadioWrapper에서 전달받은 checked prop 사용
     border: 1px solid ${({ theme, checked }) => (checked ? theme.colors.primary : theme.colors.gray[4])};
+    pointer-events: none; /* 클릭/포커스 불가 */
+    cursor: default; /* 마우스 커서를 기본 화살표로 변경 */
   }
 
   input[type='radio']::before {
@@ -448,7 +456,8 @@ const RadioWrapper = styled.div`
   label {
     font-size: ${({ theme }) => theme.fontSizes.base};
     color: ${({ theme }) => theme.colors.gray[1]};
-    cursor: pointer;
+    pointer-events: none; /* 클릭/포커스 불가 */
+    cursor: default; /* 마우스 커서를 기본 화살표로 변경 */
   }
 `;
 
@@ -500,6 +509,8 @@ const Content = styled.textarea`
   resize: none;
   overflow: hidden; /* 스크롤 숨김 */
   margin-bottom: ${({ theme }) => theme.spacing[3]};
+  pointer-events: none; /* 클릭/포커스 불가 */
+  cursor: default; /* 마우스 커서를 기본 화살표로 변경 */
 `;
 
 const ButtonGroup = styled.div`
