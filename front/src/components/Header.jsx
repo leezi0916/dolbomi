@@ -343,8 +343,10 @@ const Header = () => {
           <img
             src="/src/assets/icons/icon_채팅알림.png"
             alt="채팅 알림"
+            onClick={() => navigate('/chat/home')}
             style={{
               visibility: user ? 'visible' : 'hidden',
+              cursor: 'pointer',
             }}
           />
 
