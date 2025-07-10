@@ -2,7 +2,7 @@ import React from 'react';
 import { useState, useEffect } from 'react';
 import useUserStore from '../store/userStore.js';
 import { GridContainer } from '../styles/common/Container.js';
-import caregiverImage from '../assets/profileImg/img_간병인.png'; //간병인 기본 이미지
+import profileImage from '../assets/profileImg/img_간병인.png'; //간병인 기본 이미지
 import {
   CardText,
   CardButton,
@@ -72,6 +72,14 @@ const SupportBoard = () => {
     return name;
   };
 
+  const CLOUDFRONT_URL = 'https://d20jnum8mfke0j.cloudfront.net/';
+  //이미지 경로 갖고오고 없다면 기본이미지
+  const getProfileImageUrl = (path) => {
+    if (!path) return profileImage; // 기본 이미지
+    const cleanPath = path.replace(/^\//, ''); // 앞에 / 있으면 제거
+    return `${CLOUDFRONT_URL}${cleanPath}`;
+  };
+
   return (
     <>
       {/* 보호자ver => 간병사 지원목록 */}
@@ -91,10 +99,7 @@ const SupportBoard = () => {
                 {proposerList.map((resume) => (
                   <HiringCard key={resume.proposerNo}>
                     <HiringCardTopContent>
-                      <HiringCardImage
-                        src={resume.profileImage ? resume.profileImage : caregiverImage}
-                        alt="프로필 이미지"
-                      />
+                      <HiringCardImage src={getProfileImageUrl(resume.profileImage)} alt="프로필" />
                       <HiringCardTextGroup>
                         <HiringCardTitle>
                           {maskName(resume.caregiverName)} <span>간병사 </span>

@@ -90,6 +90,10 @@ public class Board {
         this.boardContent = dto.getBoard_content();
     }
 
+    public void delete() {
+        this.status = StatusEnum.Status.N;
+    }
+
     @PrePersist
     public void prePersist() {
         this.createDate = LocalDateTime.now();
@@ -108,6 +112,7 @@ public class Board {
 
     public void setQuestionStatus() {
         this.questionStatus = StatusEnum.QuestionStatus.Y;
-        System.out.println("questionStatus 업데이트 호출됨");
     }
+
+
 }

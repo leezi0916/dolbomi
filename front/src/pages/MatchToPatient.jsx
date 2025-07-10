@@ -8,7 +8,6 @@ import { patientService } from '../api/patient';
 import useUserStore from '../store/userStore';
 import { matchingService } from '../api/matching';
 import Paging from '../components/Paging';
-import { media } from '../styles/MediaQueries';
 import {
   CardWrap,
   CardInnerWrap,
@@ -20,6 +19,9 @@ import {
   ReportBtn,
   EndBtn,
 } from '../styles/MatchingCard';
+import { media } from '../styles/MediaQueries';
+
+
 const MatchToPatient = () => {
   const [activeTab, setActiveTab] = useState('matching');
   const { user } = useUserStore();
@@ -169,12 +171,12 @@ const MatchToPatient = () => {
                         </TextWrap>
                         <TextWrap>
                           <img src="/src/assets/icons/icon_age.png" />
-                          <p>70 세</p>
+                          <p>{pat.patAge} 세</p>
                         </TextWrap>
                         <TextWrap>
                           <img src="/src/assets/icons/icon_gender.png" />
                           <p>
-                            {pat.patAge}세({pat.patGender === 'F' ? '여성' : '남성'})
+                          {pat.patGender === 'F' ? '여성' : '남성'}
                           </p>
                         </TextWrap>
                       </InfoSection>
@@ -210,12 +212,12 @@ const MatchToPatient = () => {
                         </TextWrap>
                         <TextWrap>
                           <img src="/src/assets/icons/icon_age.png" />
-                          <p>70 세</p>
+                          <p>{pat.patAge}세</p>
                         </TextWrap>
                         <TextWrap>
                           <img src="/src/assets/icons/icon_gender.png" />
                           <p>
-                            {pat.patAge}세({pat.patGender === 'F' ? '여성' : '남성'})
+                            {pat.patGender === 'F' ? '여성' : '남성'}
                           </p>
                         </TextWrap>
                         <TextWrap>
@@ -226,7 +228,6 @@ const MatchToPatient = () => {
                         </TextWrap>
                       </InfoSection>
                     </ProfileSection>
-
                     <BtnSection>
                       <InfoButton onClick={() => navigate(`/report/${pat.patNo}`)}>간병일지 보기</InfoButton>
                     </BtnSection>
@@ -245,11 +246,11 @@ const MatchToPatient = () => {
 };
 
 const HeadSection = styled(Section)`
+
   display: flex;
   height: auto;
   justify-content: space-between;
-  padding: ${({ theme }) => theme.spacing[4]} ${({ theme }) => theme.spacing[4]} ${({ theme }) => theme.spacing[2]}
-    ${({ theme }) => theme.spacing[4]}; /* 모바일 기본 패딩 */
+  padding: ${({ theme }) => theme.spacing[4]} ${({ theme }) => theme.spacing[4]} ${({ theme }) => theme.spacing[2]} ${({ theme }) => theme.spacing[4]}; /* 모바일 기본 패딩 */
   align-items: flex-start; /* 모바일 기본: 왼쪽 정렬 */
   ${media.md` /* 768px 이상 (태블릿/데스크톱) */
     padding: 40px 16px 10px 16px;
@@ -282,6 +283,7 @@ const Title = styled.h1`
 
   ${media.md` /* 768px 이상 */
     font-size: ${({ theme }) => theme.fontSizes['2xl']};
+
     padding: ${({ theme }) => theme.spacing[3]};
     text-align: center; /* 데스크톱에서 중앙 정렬 (원래 위치) */
   `}
@@ -303,6 +305,7 @@ const SubTitle = styled.h1`
     text-align: center; /* 데스크톱에서 중앙 정렬 (원래 위치) */
   `}
 `;
+
 const Tab = styled.div`
   display: flex;
   align-items: flex-start; /* 모바일 기본: 왼쪽 정렬 */
@@ -317,6 +320,7 @@ const Tab = styled.div`
     }
   `}
 `;
+
 const MatchSection = styled(Section)`
   width: 100%;
   display: flex;

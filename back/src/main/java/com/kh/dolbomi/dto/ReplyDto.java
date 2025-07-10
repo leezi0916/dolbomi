@@ -39,4 +39,13 @@ public class ReplyDto {
 
         }
     }
+
+    @Getter
+    @AllArgsConstructor
+    public static class Update {
+
+        private Long reply_no;
+        @NotBlank(message = "댓글 내용은 필수입니다.")
+        private String reply_content;
+    }
 }

@@ -180,6 +180,20 @@ public class UserServiceImpl implements UserService {
         return new UserCountsDto(guardianCount, caregiverCount);
     }
 
+    @Override
+    public void changePassword(Long userNo, String currentPassword, String newPassword) {
+        User user = userRepositoryV2.findById(userNo).orElseThrow(() -> new UserNotFoundException("회원 정보를 찾을 수 없습니다."));
+
+        //현재 비밀번호 검증
+        if (!passwordEncoder.matches(currentPassword, user.getUserPwd())) {
+            throw new IllegalArgumentException("현재 비밀번호가 일치하지 않습니다.");
+        }
+
+        //새 비밀번호 암호화 후 저장
+        String encodedNewPassword = passwordEncoder.encode(newPassword);
+        user.changePassword(encodedNewPassword);
+    }
+
 }
 
 

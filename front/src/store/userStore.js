@@ -22,6 +22,9 @@ const useUserStore = create(
           isAuthenticated: false,
         });
       },
+
+      //회원 정보 수정시 바로 반영 (헤더에있는 이름)
+      setUser: (userData) => set({ user: userData }),
     }),
     {
       name: 'user-storage',

@@ -43,7 +43,6 @@ const NotificationDropdown = ({ userNo, onClose }) => {
         // 알림 리스트 받아오기
         const notifications = await notificationService.getNotifications(userNo);
         setNotifications(notifications);
-
       } catch (error) {
         console.error('알림 불러오기 또는 읽음 처리 실패:', error);
       }
@@ -63,6 +62,14 @@ const NotificationDropdown = ({ userNo, onClose }) => {
     return () => document.removeEventListener('click', handleClickOutside);
   }, [onClose]);
 
+  const CLOUDFRONT_URL = 'https://d20jnum8mfke0j.cloudfront.net/';
+  //이미지 경로 갖고오고 없다면 기본이미지
+  const getProfileImageUrl = (path) => {
+    if (!path) return defaultProfile; // 기본 이미지
+    const cleanPath = path.replace(/^\//, ''); // 앞에 / 있으면 제거
+    return `${CLOUDFRONT_URL}${cleanPath}`;
+  };
+
   return (
     <Container ref={dropdownRef}>
       <TitleWrap>
@@ -80,7 +87,7 @@ const NotificationDropdown = ({ userNo, onClose }) => {
             style={{ cursor: 'pointer' }}
           >
             <Left>
-              <img src={noti.senderProfileImage || defaultProfile} alt="profile" />
+              <img src={getProfileImageUrl(noti?.senderProfileImage)} alt="프로필" />
             </Left>
             <Center>
               <Message>{noti.notificationMessage}</Message>

@@ -170,5 +170,16 @@ public class UserDto {
         }
     }
 
+    @Getter
+    @Setter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    @Builder
+    public static class ChangePasswordDto {
+        private String current_password;
+        private String new_password;
+
+    }
+
 
 }

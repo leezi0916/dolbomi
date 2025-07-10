@@ -3,6 +3,7 @@ package com.kh.dolbomi.service;
 import com.kh.dolbomi.domain.Resume;
 import com.kh.dolbomi.domain.User;
 import com.kh.dolbomi.dto.ResumeDto;
+import com.kh.dolbomi.dto.SearchDataDto;
 import com.kh.dolbomi.enums.StatusEnum;
 import com.kh.dolbomi.exception.ResumeNotFoundException;
 import com.kh.dolbomi.exception.UserNotFoundException;
@@ -42,8 +43,10 @@ public class ResumeServiceImpl implements ResumeService {
     //간병사 모집 리스트 페이징
     @Override
     @Transactional(readOnly = true)
-    public Page<ResumeDto.Response> getResumePage(Pageable pageable) {
-        Page<Resume> resumePage = resumeRepository.findByStatus(StatusEnum.Status.Y, pageable);
+    public Page<ResumeDto.Response> getResumePage(Pageable pageable, SearchDataDto.ResumeSearch searchData) {
+
+        Page<Resume> resumePage = resumeRepository.findByStatus(StatusEnum.Status.Y, pageable, searchData);
+
         return resumePage.map(resume -> {
             Long caregiverNo = resume.getUser().getUserNo();
             Double avgScore = reviewRepositoryV2.findAverageScoreByCaregiverNo(caregiverNo);
