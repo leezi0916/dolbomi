@@ -99,7 +99,7 @@ const GuardianCommunity = () => {
             <Left>총 0건</Left>
             <Form onSubmit={handleSubmit}>
               <Drop value={sortOption} onChange={(e) => setSortOption(e.target.value)}>
-                <option value="createDate">작성일</option>
+                <option value="">작성일</option>
                 <option value="count">조회순</option>
               </Drop>
               <Input
@@ -142,7 +142,7 @@ const GuardianCommunity = () => {
           <Left>총 {totalCount}건</Left>
           <Right>
             <Drop value={sortOption} onChange={(e) => setSortOption(e.target.value)}>
-              <option value="createDate">작성일</option>
+              <option value="">작성일</option>
               <option value="count">조회순</option>
             </Drop>
             <Input type="text" />

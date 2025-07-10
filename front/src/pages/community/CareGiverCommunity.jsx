@@ -99,7 +99,7 @@ const CareGiverCommunity = () => {
             <Left>총 0건</Left>
             <Right>
               <Drop value={sortOption} onChange={(e) => setSortOption(e.target.value)}>
-                <option value="createDate">작성일</option>
+                <option value="">작성일</option>
                 <option value="count">조회순</option>
               </Drop>
               <Input type="text" />
@@ -137,7 +137,7 @@ const CareGiverCommunity = () => {
           <Left>총 {totalCount}건</Left>
           <Right onSubmit={handleSubmit}>
             <Drop value={sortOption} onChange={(e) => setSortOption(e.target.value)}>
-              <option value="createDate">작성일</option>
+              <option value="">작성일</option>
               <option value="count">조회순</option>
             </Drop>
             <Input type="text" placeholder="검색어 입력" value={keyword} onChange={(e) => setKeyword(e.target.value)} />

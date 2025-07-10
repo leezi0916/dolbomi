@@ -107,8 +107,8 @@ const QuestionFull = () => {
             <BoardTopLeft>총 0건</BoardTopLeft>
             <BoardTopRight>
               <Drop value={sortOption} onChange={(e) => setSortOption(e.target.value)}>
-                <option value="date">날짜순</option>
-                <option value="views">조회순</option>
+                <option value="">작성일</option>
+                <option value="count">조회순</option>
               </Drop>
               <Input
                 type="text"
@@ -159,8 +159,8 @@ const QuestionFull = () => {
 
           <BoardTopRight onSubmit={handleSubmit}>
             <Drop value={sortOption} onChange={(e) => setSortOption(e.target.value)}>
-              <option value="date">날짜순</option>
-              <option value="views">조회순</option>
+              <option value="">작성일</option>
+              <option value="count">조회순</option>
             </Drop>
             <Input type="text" />
             <SearchBtn>검색</SearchBtn>

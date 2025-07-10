@@ -34,7 +34,7 @@ public class BoardRepositoryImpl implements BoardRepository {
         }
 
         // 정렬 조건 추가
-        if ("createDate".equals(option.trim())) {
+        if ("".equals(option.trim())) {
             baseQuery += " ORDER BY b.createDate DESC";
         } else if ("count".equals(option.trim())) {
             baseQuery += " ORDER BY b.count DESC";
