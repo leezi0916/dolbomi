@@ -4,7 +4,7 @@ import { toast } from 'react-toastify';
 import { ClipLoader } from 'react-spinners';
 import useUserStore from '../../store/userStore';
 import Paging from '../../components/Paging';
-import { Btn, Input, Page } from '../../styles/common/Board';
+import { Btn, Input, LinkBtn, Page } from '../../styles/common/Board';
 import {
   BoardItem,
   BoardItemTop,
@@ -28,6 +28,8 @@ const QuestionHistory = () => {
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
 
+  const [keyword, setKeyword] = useState('');
+
   const [currentPage, setCurrentPage] = useState(1);
   const [data, setData] = useState([]);
   const [totalPage, setTotalPage] = useState(0);
@@ -46,7 +48,13 @@ const QuestionHistory = () => {
   useEffect(() => {
     const loadQuestion = async () => {
       try {
-        const myHistory = await commuService.getQuestionHistory(userNo, currentPage - 1, ITEMS_PER_PAGE);
+        const myHistory = await commuService.getQuestionHistory(
+          sortOption,
+          keyword,
+          userNo,
+          currentPage - 1,
+          ITEMS_PER_PAGE
+        );
         console.log(myHistory);
 
         setData(myHistory.content); // 게시글 목록 등
@@ -63,7 +71,7 @@ const QuestionHistory = () => {
     };
 
     loadQuestion();
-  }, [userNo, currentPage]);
+  }, [userNo, currentPage, keyword, sortOption]);
 
   if (loading) {
     return (
@@ -76,6 +84,17 @@ const QuestionHistory = () => {
   if (error) {
     return null;
   }
+  const handleSubmit = async () => {
+    try {
+      const data = await commuService.getQuestionHistory(sortOption, keyword, userNo, currentPage - 1, ITEMS_PER_PAGE);
+
+      setData(data.content); // 게시글 목록 등
+      setTotalPage(data.totalPage); // 총 페이지 수
+      setTotalCount(data.totalCount);
+    } catch (error) {
+      console.error('검색 실패:', error);
+    }
+  };
   if (!data || totalCount === 0) {
     return (
       <Page>
@@ -113,9 +132,9 @@ const QuestionHistory = () => {
           <Null>
             <div style={{ marginBottom: '10px' }}>게시글이 없습니다.</div>
             {userNo && (
-              <Btn style={{ margin: 'auto' }} to="/question/create">
+              <LinkBtn style={{ margin: 'auto' }} to="/question/create">
                 글쓰기
-              </Btn>
+              </LinkBtn>
             )}
           </Null>
 
@@ -145,8 +164,10 @@ const QuestionHistory = () => {
               <option value="">작성일</option>
               <option value="count">조회순</option>
             </Drop>
-            <Input type="text" />
-            <SearchBtn>검색</SearchBtn>
+            <Input type="text" placeholder="검색어 입력" value={keyword} onChange={(e) => setKeyword(e.target.value)} />
+            <SearchBtn type="button" onClick={handleSubmit}>
+              검색
+            </SearchBtn>
           </BoardTopRight>
         </BoardTop>
         <BoardItemTop>

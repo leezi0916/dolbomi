@@ -71,6 +71,10 @@ public class Board {
 
     @OneToMany(mappedBy = "board", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Reply> replyList = new ArrayList<>();
+    
+    @Builder.Default
+    @OneToMany(mappedBy = "board", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<File> fileList = new ArrayList<>();
 
     private int count;
 

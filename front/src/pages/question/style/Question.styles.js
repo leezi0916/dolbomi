@@ -19,6 +19,7 @@ export const alignRight = styled.div`
 
 export const PageInfo = styled.div`
   width: 74%;
+  padding-bottom: 100px;
 `;
 
 export const PageTop = styled.div`

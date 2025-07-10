@@ -21,9 +21,9 @@ export const commuService = {
       throw new Error('서버 통신 불량');
     }
   },
-  getQuestionHistory: async (userNo, page, size) => {
+  getQuestionHistory: async (option, keyword, userNo, page, size) => {
     try {
-      const { data } = await api.get(API_ENDPOINTS.COMMUNITY.QUESTION_HISTORY(userNo, page, size));
+      const { data } = await api.get(API_ENDPOINTS.COMMUNITY.QUESTION_HISTORY(option, keyword, userNo, page, size));
       return snakeToCamel(data);
     } catch (error) {
       console.log(`질문 상세(${userNo})를 가져오지 못함: `, error.response?.data?.message || '실패');

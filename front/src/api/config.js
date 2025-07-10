@@ -29,7 +29,8 @@ export const API_ENDPOINTS = {
     REPLY_QUESTION: `/community/v1/reply/question`,
     QUESTION: (option, keyword, page, size) =>
       `/community/v1/question?option=${option}&keyword=${keyword}&page=${page}&size=${size}`,
-    QUESTION_HISTORY: (userNo, page, size) => `/community/v1/question?user_no=${userNo}&page=${page}&size=${size}`,
+    QUESTION_HISTORY: (option, keyword, userNo, page, size) =>
+      `/community/v1/question?option=${option}&keyword=${keyword}&user_no=${userNo}&page=${page}&size=${size}`,
     CREATE_QUESTION: '/community/v1/question/create',
     DELETE: (boardNo) => `/community/v1/delete?boardNo=${boardNo}`,
     DELETE_REPLY: (replyNo) => `/community/v1/reply_delete?replyNo=${replyNo}`,

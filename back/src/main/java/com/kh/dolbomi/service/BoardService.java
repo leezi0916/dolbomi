@@ -18,7 +18,7 @@ public interface BoardService {
 
     Page<BoardDto.Response> getQuestionList(String option, String keyword, Pageable pageable);
 
-    Page<BoardDto.Response> getQuestionHistory(Long userNo, Pageable pageable);
+    Page<BoardDto.Response> getQuestionHistory(String option, String keyword, Long userNo, Pageable pageable);
 
     BoardDto.Response getCommunityDetail(Long boardNo, HttpServletRequest request,
                                          HttpServletResponse response);

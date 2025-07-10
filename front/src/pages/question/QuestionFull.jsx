@@ -4,13 +4,14 @@ import { toast } from 'react-toastify';
 import { ClipLoader } from 'react-spinners';
 import useUserStore from '../../store/userStore';
 import Paging from '../../components/Paging';
-import { Btn, Input, Page } from '../../styles/common/Board';
+import { Btn, Input, LinkBtn, Page } from '../../styles/common/Board';
 import {
   BoardItem,
   BoardItemTop,
   BoardMenu,
   BoardTop,
   BoardTopLeft,
+  BoardTopRight,
   Drop,
   MenuDiv,
   MenuLink,
@@ -20,7 +21,6 @@ import {
   PageTop,
   SearchBtn,
 } from './style/Question.styles';
-import styled from 'styled-components';
 
 const QuestionFull = () => {
   const userNo = useUserStore((state) => state.user?.userNo);
@@ -79,7 +79,7 @@ const QuestionFull = () => {
   }
   const handleSubmit = async () => {
     try {
-      const data = await commuService.getCaregiver(sortOption, keyword, currentPage - 1, ITEMS_PER_PAGE);
+      const data = await commuService.getQuestion(sortOption, keyword, currentPage - 1, ITEMS_PER_PAGE);
 
       setData(data.content); // 게시글 목록 등
       setTotalPage(data.totalPage); // 총 페이지 수
@@ -105,7 +105,7 @@ const QuestionFull = () => {
 
           <BoardTop>
             <BoardTopLeft>총 0건</BoardTopLeft>
-            <BoardTopRight>
+            <BoardTopRight style={{ flex: '7' }}>
               <Drop value={sortOption} onChange={(e) => setSortOption(e.target.value)}>
                 <option value="">작성일</option>
                 <option value="count">조회순</option>
@@ -129,9 +129,9 @@ const QuestionFull = () => {
           <Null>
             <div style={{ marginBottom: '10px' }}>게시글이 없습니다.</div>
             {userNo && (
-              <Btn style={{ margin: 'auto' }} to="/question/create">
+              <LinkBtn style={{ margin: 'auto' }} to="/question/create">
                 글쓰기
-              </Btn>
+              </LinkBtn>
             )}
           </Null>
 
@@ -157,13 +157,15 @@ const QuestionFull = () => {
         <BoardTop>
           <BoardTopLeft>총 {totalCount}건</BoardTopLeft>
 
-          <BoardTopRight onSubmit={handleSubmit}>
+          <BoardTopRight style={{ flex: '7' }}>
             <Drop value={sortOption} onChange={(e) => setSortOption(e.target.value)}>
               <option value="">작성일</option>
               <option value="count">조회순</option>
             </Drop>
-            <Input type="text" />
-            <SearchBtn>검색</SearchBtn>
+            <Input type="text" placeholder="검색어 입력" value={keyword} onChange={(e) => setKeyword(e.target.value)} />
+            <SearchBtn type="button" onClick={handleSubmit}>
+              검색
+            </SearchBtn>
           </BoardTopRight>
         </BoardTop>
         <BoardItemTop>
@@ -198,11 +200,4 @@ const QuestionFull = () => {
   );
 };
 
-export const BoardTopRight = styled.form`
-  display: flex;
-  justify-content: flex-end;
-  flex: 7;
-  padding-right: 10px;
-  gap: 6px;
-`;
 export default QuestionFull;

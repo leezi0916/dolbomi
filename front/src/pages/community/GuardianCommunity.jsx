@@ -79,7 +79,7 @@ const GuardianCommunity = () => {
   }
   const handleSubmit = async () => {
     try {
-      const data = await commuService.getCaregiver(sortOption, keyword, currentPage - 1, ITEMS_PER_PAGE);
+      const data = await commuService.getGuardian(sortOption, keyword, currentPage - 1, ITEMS_PER_PAGE);
 
       setData(data.content); // 게시글 목록 등
       setTotalPage(data.totalPage); // 총 페이지 수
@@ -97,19 +97,14 @@ const GuardianCommunity = () => {
           </BoardMenu>
           <BoardTop>
             <Left>총 0건</Left>
-            <Form onSubmit={handleSubmit}>
+            <Right>
               <Drop value={sortOption} onChange={(e) => setSortOption(e.target.value)}>
                 <option value="">작성일</option>
                 <option value="count">조회순</option>
               </Drop>
-              <Input
-                type="text"
-                placeholder="검색어 입력"
-                value={keyword}
-                onChange={(e) => setKeyword(e.target.value)}
-              />
+              <Input type="text" placeholder="검색어 입력" />
               <SearchBtn>검색</SearchBtn>
-            </Form>
+            </Right>
           </BoardTop>
           <BoardItemTop>
             <div>No</div>
@@ -145,8 +140,10 @@ const GuardianCommunity = () => {
               <option value="">작성일</option>
               <option value="count">조회순</option>
             </Drop>
-            <Input type="text" />
-            <SearchBtn>검색</SearchBtn>
+            <Input type="text" placeholder="검색어 입력" value={keyword} onChange={(e) => setKeyword(e.target.value)} />
+            <SearchBtn type="submit" onClick={handleSubmit}>
+              검색
+            </SearchBtn>
             {userNo && <LinkBtn to="/community/create/G">글쓰기</LinkBtn>}
           </Right>
         </BoardTop>

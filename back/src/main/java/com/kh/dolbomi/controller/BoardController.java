@@ -53,7 +53,7 @@ public class BoardController {
 
     @PostMapping("/reply/question")
     public ResponseEntity<Long> createReplyQuestion(@RequestBody ReplyDto.Create replyCreate
-    ) throws IOException {
+    ) {
         return ResponseEntity.ok(boardService.createReplyQuestion(replyCreate));
     }
 
@@ -86,7 +86,8 @@ public class BoardController {
             @RequestParam(value = "keyword") String keyword,
             @RequestParam(value = "user_no", required = false) Long userNo, Pageable pageable) {
         if (userNo != null) {
-            return ResponseEntity.ok(new PageResponse<>(boardService.getQuestionHistory(userNo, pageable)));
+            return ResponseEntity.ok(
+                    new PageResponse<>(boardService.getQuestionHistory(option, keyword, userNo, pageable)));
         }
         return ResponseEntity.ok(new PageResponse<>(boardService.getQuestionList(option, keyword, pageable)));
     }

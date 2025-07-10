@@ -135,7 +135,7 @@ const CareGiverCommunity = () => {
         </BoardMenu>
         <BoardTop>
           <Left>총 {totalCount}건</Left>
-          <Right onSubmit={handleSubmit}>
+          <Right>
             <Drop value={sortOption} onChange={(e) => setSortOption(e.target.value)}>
               <option value="">작성일</option>
               <option value="count">조회순</option>
