@@ -203,11 +203,11 @@ const HireDetail = () => {
               <InputRow>
                 <InputGroup>
                   <Label>이름</Label>
-                  <Input type="text" id="patName" value={jobOpening?.patName} readOnly />
+                  <HireInput type="text" id="patName" value={jobOpening?.patName} readOnly />
                 </InputGroup>
                 <InputGroup>
                   <Label>나이</Label>
-                  <Input type="text" id="age" value={jobOpening?.patAge} readOnly />
+                  <HireInput type="text" id="age" value={jobOpening?.patAge} readOnly />
                 </InputGroup>
               </InputRow>
               <RadioGroup>
@@ -227,16 +227,16 @@ const HireDetail = () => {
               </InputGroup> */}
               <InputGroup>
                 <Label>주소</Label>
-                <Input type="text" id="patAddress" value={jobOpening?.patAddress} readOnly />
+                <HireInput type="text" id="patAddress" value={jobOpening?.patAddress} readOnly />
               </InputGroup>
               <InputRow>
                 <InputGroup>
                   <Label>키</Label>
-                  <Input type="text" value={jobOpening?.patHeight} readOnly />
+                  <HireInput type="text" value={jobOpening?.patHeight} readOnly />
                 </InputGroup>
                 <InputGroup>
                   <Label>몸무게</Label>
-                  <Input type="text" value={jobOpening?.patWeight} readOnly />
+                  <HireInput type="text" value={jobOpening?.patWeight} readOnly />
                 </InputGroup>
               </InputRow>
             </Divider>
@@ -259,27 +259,27 @@ const HireDetail = () => {
           <ContentWrapper1>
             <HireContent>
               <Label>제목</Label>
-              <Input type="text" id="hiring_title" {...register('hiringTitle')} readOnly />
+              <HireInput type="text" id="hiring_title" {...register('hiringTitle')} readOnly />
 
               <InputRow>
                 <InputGrouping>
                   <Label>지급 금액 (시급)</Label>
-                  <Input type="text" id="account" {...register('account')} readOnly />
+                  <HireInput type="text" id="account" {...register('account')} readOnly />
                 </InputGrouping>
 
                 <InputGrouping>
                   <Label>시작일</Label>
-                  <Input type="date" id="startDate" {...register('startDate')} readOnly />
+                  <HireInput type="date" id="startDate" {...register('startDate')} readOnly />
                 </InputGrouping>
 
                 <InputGrouping>
                   <Label>종료일</Label>
-                  <Input type="date" id="endDate" {...register('endDate')} readOnly />
+                  <HireInput type="date" id="endDate" {...register('endDate')} readOnly />
                 </InputGrouping>
 
                 <InputGrouping>
                   <Label>모집 인원수 설정</Label>
-                  <Input type="number" id="maxApplicants" {...register('maxApplicants')} readOnly />
+                  <HireInput type="number" id="maxApplicants" {...register('maxApplicants')} readOnly />
                 </InputGrouping>
               </InputRow>
 
@@ -467,6 +467,11 @@ const Label = styled.label`
   text-align: left;
 `;
 
+const HireInput = styled(Input)`
+  pointer-events: none; /* 클릭/포커스 불가 */
+  cursor: default; /* 마우스 커서를 기본 화살표로 변경 */
+`;
+
 const RadioGroup = styled.div`
   display: flex;
   gap: ${({ theme }) => theme.spacing[6]};
@@ -498,6 +503,8 @@ const RadioWrapper = styled.div`
     position: relative;
     transition: all 0.2s ease-in-out;
     background-color: white;
+    pointer-events: none; /* 클릭/포커스 불가 */
+    cursor: default; /* 마우스 커서를 기본 화살표로 변경 */
     // RadioWrapper에서 전달받은 checked prop 사용
     border: 1px solid ${({ theme, checked }) => (checked ? theme.colors.primary : theme.colors.gray[4])};
   }
@@ -523,7 +530,8 @@ const RadioWrapper = styled.div`
   label {
     font-size: ${({ theme }) => theme.fontSizes.base};
     color: ${({ theme }) => theme.colors.gray[1]};
-    cursor: pointer;
+    pointer-events: none; /* 클릭/포커스 불가 */
+    cursor: default; /* 마우스 커서를 기본 화살표로 변경 */
   }
 `;
 
@@ -604,6 +612,8 @@ const Content = styled.textarea`
   resize: none;
   overflow: hidden; /* 스크롤 숨김 */
   margin-bottom: ${({ theme }) => theme.spacing[3]};
+  pointer-events: none; /* 클릭/포커스 불가 */
+  cursor: default; /* 마우스 커서를 기본 화살표로 변경 */
 `;
 
 const RoomImage = styled.div`

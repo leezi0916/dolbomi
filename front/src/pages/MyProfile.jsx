@@ -23,12 +23,12 @@ import { AuthContainer, Label, Input, InputGroup } from '../styles/Auth.styles';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import PostcodeSearch from '../components/PostcodeSearch';
+import PasswordChange from '../components/PasswordChange';
 const MyProfile = () => {
   // const profileImageUrl = profile?.profileImage ? CLOUDFRONT_URL + profile.profileImage : null;
   const CLOUDFRONT_URL = 'https://d20jnum8mfke0j.cloudfront.net/';
   const userNo = useUserStore((state) => state.user?.userNo);
   const [profile, setProfile] = useState(null);
-  console.log('profile.profileImage:', profile?.profileImage);
   const [licenseList, setLicenseList] = useState([]);
   const [selectedFile, setSelectedFile] = useState(null); // 추가
   const [formData, setFormData] = useState({
@@ -71,12 +71,10 @@ const MyProfile = () => {
       if (!userNo) {
         setLoading(false);
         setError('사용자 ID를 사용할 수 없습니다.');
-        toast.error('사용자 ID를 사용할 수 없습니다.');
         return;
       }
       try {
         const info = await userService.getUserProfile(userNo);
-        console.log('profile data:', info);
 
         // info가 배열인지 객체인지에 따라 처리
         const userProfileData = Array.isArray(info) ? info[0] : info;
@@ -118,12 +116,6 @@ const MyProfile = () => {
     };
     loadProfile();
   }, [userNo]);
-
-  useEffect(() => {
-    if (profile) {
-      console.log('📸 profile.profileImage:', profile.profileImage);
-    }
-  }, [profile]);
 
   const { validateAndSubmit, updating } = useUserUpdateForm({ profile });
 
@@ -228,6 +220,32 @@ const MyProfile = () => {
     }
   };
 
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const handleOpenModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+  };
+
+  const logout = useUserStore((state) => state.logout);
+  const handlePasswordChangeSuccess = () => {
+    // 모달 닫기
+    setIsModalOpen(false);
+    // 로그아웃 처리
+    logout();
+    sessionStorage.removeItem('token');
+    localStorage.removeItem('user-storage');
+    localStorage.removeItem('status-storage');
+
+    alert('비밀번호가 변경되어 로그아웃됩니다. 다시 로그인해주세요.');
+
+    // 로그인 페이지로 이동
+    navigate('/login');
+  };
+
   const getProfileImageUrl = () => {
     if (previewUrl) return previewUrl;
     if (profile?.profileImage) {
@@ -253,7 +271,6 @@ const MyProfile = () => {
       </AuthContainer>
     );
   }
-  console.log(' 최종 이미지 URL:', getProfileImageUrl());
   return (
     <AuthContainer>
       <FromWrap>
@@ -373,7 +390,7 @@ const MyProfile = () => {
             <Button type="button" onClick={() => handleDeleteUser(userNo)}>
               회원탈퇴
             </Button>
-            <Button type="button" onClick={() => toast.info('비밀번호 변경 기능은 아직 구현되지 않았습니다.')}>
+            <Button type="button" onClick={handleOpenModal}>
               비밀번호 변경
             </Button>
 
@@ -383,6 +400,9 @@ const MyProfile = () => {
             </Button>
           </ButtonGroup>
         </Form>
+        {isModalOpen && (
+          <PasswordChange userNo={userNo} onClose={handleCloseModal} onSuccess={handlePasswordChangeSuccess} />
+        )}
       </FromWrap>
     </AuthContainer>
   );
