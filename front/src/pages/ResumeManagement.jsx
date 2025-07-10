@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Title, AuthContainer } from '../styles/Auth.styles';
+import { Title, AuthContainer,TipP } from '../styles/Auth.styles';
 import { SubmitButton, ButtonText } from '../styles/common/Button';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
@@ -161,12 +161,6 @@ const Head = styled.div`
   align-items: center;
 `;
 
-const TipP = styled.p`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 10px;
-`;
 
 const RegistrationButton = styled(SubmitButton)`
   height: fit-content;

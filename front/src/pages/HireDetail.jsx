@@ -15,6 +15,7 @@ import { useParams } from 'react-router-dom';
 import { guardianHiringForm } from '../hooks/guardianHiringForm';
 import ResumeSelectModal from '../components/ResumeSelectModal';
 import { proposerService } from '../api/propose';
+import { extractRegionFromEnd } from '../utils/formatData';
 
 const HireDetail = () => {
   const navigate = useNavigate();
@@ -227,13 +228,7 @@ const HireDetail = () => {
               </InputGroup> */}
               <InputGroup>
                 <Label>주소</Label>
-
-                <Input
-                  type="text"
-                  id="patAddress"
-                  value={jobOpening?.patAddress.split(' ').slice(0, 2).join(' ')}
-                  readOnly
-                />
+                <Input type="text" id="patAddress" value={extractRegionFromEnd(jobOpening?.patAddress)} readOnly />
               </InputGroup>
               <InputRow>
                 <InputGroup>
