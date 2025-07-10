@@ -32,8 +32,13 @@ public class BoardController {
     }
 
     @PostMapping("/update")
-    public ResponseEntity<Long> updateBoard(@RequestBody BoardDto.Update boardUpdate) throws IOException {
+    public ResponseEntity<Long> updateBoard(@RequestBody BoardDto.Update boardUpdate) {
         return ResponseEntity.ok(boardService.updateBoard(boardUpdate));
+    }
+
+    @PostMapping("/update_reply")
+    public ResponseEntity<Long> updateReply(@RequestBody ReplyDto.Update replyUpdate) {
+        return ResponseEntity.ok(boardService.updateReply(replyUpdate));
     }
 
     @PostMapping("/question/create")
@@ -77,6 +82,18 @@ public class BoardController {
             return ResponseEntity.ok(new PageResponse<>(boardService.getQuestionHistory(userNo, pageable)));
         }
         return ResponseEntity.ok(new PageResponse<>(boardService.getQuestionList(pageable)));
+    }
+
+    @GetMapping("/delete")
+    public ResponseEntity<String> deleteBoard(
+            @RequestParam("boardNo") Long boardNo) {
+        return ResponseEntity.ok(boardService.deleteBoard(boardNo));
+    }
+
+    @GetMapping("/reply_delete")
+    public ResponseEntity<String> deleteReply(
+            @RequestParam("replyNo") Long replyNo) {
+        return ResponseEntity.ok(boardService.deleteReply(replyNo));
     }
 
 

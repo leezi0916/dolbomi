@@ -19,6 +19,7 @@ export const API_ENDPOINTS = {
   COMMUNITY: {
     BASE: '/community/v1',
     UPDATE: '/community/v1/update',
+    UPDATE_REPLY: '/community/v1/update_reply',
     CAREGIVER: (page, size) => `/community/v1/caregiver?page=${page}&size=${size}`,
     GUARDIAN: (page, size) => `/community/v1/guardian?page=${page}&size=${size}`,
     DETAIL: (boardNo) => `/community/v1/detail?board_no=${boardNo}`, // 특정 게시글
@@ -27,6 +28,8 @@ export const API_ENDPOINTS = {
     QUESTION: (page, size) => `/community/v1/question?page=${page}&size=${size}`,
     QUESTION_HISTORY: (userNo, page, size) => `/community/v1/question?user_no=${userNo}&page=${page}&size=${size}`,
     CREATE_QUESTION: '/community/v1/question/create',
+    DELETE: (boardNo) => `/community/v1/delete?boardNo=${boardNo}`,
+    DELETE_REPLY: (replyNo) => `/community/v1/reply_delete?replyNo=${replyNo}`,
   },
 
   USERS: {
@@ -64,7 +67,7 @@ export const API_ENDPOINTS = {
     SIMPLE_LIST: '/resume/v1/simple-list',
     LIST: '/resume/v1/list',
     DETAIL: (resumeNo) => `/resume/v1/detail/${resumeNo}`,
-    MYRESUME: (userNo) => `/resume/v1/user/${userNo}`,
+    MYRESUME: (currentPage, userNo) => `/resume/v1/user?page=${currentPage - 1}&userNo=${userNo}`,
     UPDATE: (resumeNo) => `/resume/v1/${resumeNo}`,
   },
 

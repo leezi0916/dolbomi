@@ -8,6 +8,8 @@ export const AuthContainer = styled.div`
   margin: 0 auto;
 `;
 
+
+
 export const Title = styled.h1`
   font-size: ${({ theme }) => theme.fontSizes['2xl']};
   font-weight: ${({ theme }) => theme.fontWeights.bold};

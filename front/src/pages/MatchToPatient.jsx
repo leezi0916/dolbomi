@@ -124,15 +124,13 @@ const MatchToPatient = () => {
             <SubTitle onClick={() => handleTabChange('matched')} $active={activeTab === 'matched'}>
               종료된 매칭
             </SubTitle>
-            <TipP>
-              <CiCircleInfo color="#EF7A46" size={'20px'}></CiCircleInfo> 환자에 마우스를 올려 종료된 매칭 목록을
-              확인하세요.
-            </TipP>
           </Tab>
         </TitleDiv>
       </HeadSection>
 
-      {activeTab === 'matched' ? (
+      {/* {activeTab === 'matched' ? (
+
+ 
         <SearchDivWrap>
           <SearchInput placeholder="찾으시는 돌봄대상자를 검색하세요"></SearchInput>
           <SearchBtn>
@@ -143,7 +141,7 @@ const MatchToPatient = () => {
         </SearchDivWrap>
       ) : (
         <></>
-      )}
+      )} */}
 
       {/*진행중 매칭 */}
       <MatchSection>
@@ -171,7 +169,7 @@ const MatchToPatient = () => {
                 </ProfileCardPair>
               ))
             ) : (
-              <InfoP> 매칭된 환자가 없습니다. </InfoP>
+              <EmptyMessage> 매칭된 환자가 없습니다. </EmptyMessage>
             )}
           </>
         )}
@@ -208,7 +206,7 @@ const MatchToPatient = () => {
                 </ProfileCardPair>
               ))
             ) : (
-              <InfoP> 종료된 매칭 환자가 없습니다. </InfoP>
+              <EmptyMessage> 종료된 매칭 환자가 없습니다. </EmptyMessage>
             )}
 
             <Paging currentPage={endedCurrentPage} totalPage={endedTotalPage} chagneCurrentPage={chagneCurrentPage} />
@@ -558,5 +556,13 @@ const InfoP = styled.p`
 
 const Date = styled.div`
   width: 30%;
+`;
+
+const EmptyMessage = styled.p`
+  width: 100%;
+  text-align: center;
+  color: ${({ theme }) => theme.colors.gray[3]};
+  font-size: ${({ theme }) => theme.fontSizes.base};
+  padding: ${({ theme }) => theme.spacing[8]} 0;
 `;
 export default MatchToPatient;

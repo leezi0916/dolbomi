@@ -2,19 +2,24 @@ package com.kh.dolbomi.controller;
 
 import com.kh.dolbomi.dto.PageResponse;
 import com.kh.dolbomi.dto.ResumeDto;
+import com.kh.dolbomi.dto.SearchDataDto;
 import com.kh.dolbomi.service.ResumeService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -32,9 +37,12 @@ public class ResumeController {
     }
 
     //내가 작성한 이력서 불러오기
-    @GetMapping("/user/{userNo}")
-    public ResponseEntity<List<ResumeDto.Response>> getResumeList(@PathVariable Long userNo) {
-        return ResponseEntity.ok(resumeService.getResumList(userNo));
+    @GetMapping("/user")
+    public ResponseEntity<PageResponse<ResumeDto.Response>> getResumeList(
+            @RequestParam("userNo") Long userNo,
+            @PageableDefault(size = 12) Pageable pageable
+    ) {
+        return ResponseEntity.ok(new PageResponse<>(resumeService.getResumList(userNo, pageable)));
     }
 
     //이력서 상세보기
@@ -46,8 +54,15 @@ public class ResumeController {
 
     //간병사 모집 리스트 불러오기
     @GetMapping("/list")
-    public ResponseEntity<PageResponse<ResumeDto.Response>> getPagedResumeList(Pageable pageable) {
-        Page<ResumeDto.Response> resumePage = resumeService.getResumePage(pageable);
+    public ResponseEntity<PageResponse<ResumeDto.Response>> getPagedResumeList(
+            @RequestParam Integer page,
+            @RequestParam Integer size,
+            @ModelAttribute SearchDataDto.ResumeSearch searchData
+    ) {
+
+        Pageable pageable = PageRequest.of(page, size);
+
+        Page<ResumeDto.Response> resumePage = resumeService.getResumePage(pageable, searchData);
         PageResponse<ResumeDto.Response> response = new PageResponse<>(resumePage);
 
         return ResponseEntity.ok(response);

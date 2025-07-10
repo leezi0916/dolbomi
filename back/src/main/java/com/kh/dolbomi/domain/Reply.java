@@ -1,5 +1,6 @@
 package com.kh.dolbomi.domain;
 
+import com.kh.dolbomi.dto.ReplyDto;
 import com.kh.dolbomi.enums.StatusEnum;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -54,6 +55,14 @@ public class Reply {
     @Enumerated(EnumType.STRING)
     private StatusEnum.Status status;
 
+    public void update(ReplyDto.Update dto) {
+        this.replyContent = dto.getReply_content();
+    }
+
+    public void delete() {
+        this.status = StatusEnum.Status.N;
+    }
+
     public void changeUser(User user) {
         this.user = user;
         if (!user.getReplyList().contains(this)) {
@@ -81,4 +90,6 @@ public class Reply {
     public void preUpdate() {
         this.updateDate = LocalDateTime.now();
     }
+
+
 }

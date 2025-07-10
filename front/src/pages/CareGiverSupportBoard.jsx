@@ -19,10 +19,12 @@ import {
   CardWrap,
   NewCantainer,
   NewTitle,
+  BackBtn,
 } from '../styles/Card.styles.js';
-
+import styled from 'styled-components';
 import { proposerService } from '../api/propose.js';
 import { useNavigate, useParams } from 'react-router-dom';
+import { RiArrowGoBackLine } from 'react-icons/ri';
 const SupportBoard = () => {
   const { user } = useUserStore();
   const { hiringNo } = useParams(); // URL에서 hiringNo 받기
@@ -83,7 +85,14 @@ const SupportBoard = () => {
       {/* 보호자ver => 간병사 지원목록 */}
       <>
         <NewCantainer>
-          <NewTitle>간병사 지원목록</NewTitle>
+          <HeadDiv>
+            <NewTitle>간병사 지원목록</NewTitle>
+            <BackBtn type="button" onClick={() => navigate(-1)}>
+              <p>이전으로</p>
+              <RiArrowGoBackLine size={30}></RiArrowGoBackLine>
+            </BackBtn>
+          </HeadDiv>
+
           <CardWrap>
             <JobSeekingCardSection>
               <GridContainer>
@@ -126,3 +135,8 @@ const SupportBoard = () => {
 };
 
 export default SupportBoard;
+
+export const HeadDiv = styled.div`
+  display: flex;
+  justify-content: space-between;
+`;

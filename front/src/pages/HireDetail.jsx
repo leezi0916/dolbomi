@@ -227,7 +227,13 @@ const HireDetail = () => {
               </InputGroup> */}
               <InputGroup>
                 <Label>주소</Label>
-                <HireInput type="text" id="patAddress" value={jobOpening?.patAddress} readOnly />
+
+                <Input
+                  type="text"
+                  id="patAddress"
+                  value={jobOpening?.patAddress.split(' ').slice(0, 2).join(' ')}
+                  readOnly
+                />
               </InputGroup>
               <InputRow>
                 <InputGroup>

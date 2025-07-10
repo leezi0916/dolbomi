@@ -1,6 +1,7 @@
 package com.kh.dolbomi.controller;
 
 import com.kh.dolbomi.domain.File;
+import com.kh.dolbomi.dto.file.CompleteUploadRequestDto;
 import com.kh.dolbomi.dto.file.DownloadUrlResponseDto;
 import com.kh.dolbomi.dto.file.UploadUrlResponseDto;
 import com.kh.dolbomi.service.FileService;
@@ -13,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -56,10 +58,17 @@ public class FileController {
     }
 
 
+    @PostMapping("/complete")
+    public ResponseEntity<File> completeUpload(@RequestBody CompleteUploadRequestDto request) {
+        File file = fileService.saveFileInfo(request.getOriginal_name(), request.getChange_name(),
+                request.getContent_type());
+        return ResponseEntity.ok(file);
+    }
+
     @GetMapping
     public ResponseEntity<List<File>> getAllFiles() {
         return ResponseEntity.ok(fileService.getAllFiles());
     }
 
-    
+
 }
