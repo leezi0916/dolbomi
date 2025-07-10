@@ -4,15 +4,15 @@ import { toast } from 'react-toastify';
 import { ClipLoader } from 'react-spinners';
 import useUserStore from '../../store/userStore';
 import Paging from '../../components/Paging';
-import { Btn, Input, Page } from '../../styles/common/Board';
+import { Input, LinkBtn, Page } from '../../styles/common/Board';
 import {
   BoardItem,
   BoardItemTop,
   BoardMenu,
   BoardTop,
   BoardTopLeft,
-  BoardTopRight,
   Drop,
+  Form,
   MenuDiv,
   MenuLink,
   Null,
@@ -23,10 +23,15 @@ import {
 } from './style/Question.styles';
 
 const QuestionFull = () => {
-  const userId = useUserStore((state) => state.user?.userId);
+  const userNo = useUserStore((state) => state.user?.userNo);
 
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
+
+  const [sortOption, setSortOption] = useState('');
+  const [tempSortOption, setTempSortOption] = useState('');
+  const [keyword, setKeyword] = useState('');
+  const [tempkeyword, setTempKeyword] = useState('');
 
   const [currentPage, setCurrentPage] = useState(1);
   const [data, setData] = useState([]);
@@ -37,7 +42,6 @@ const QuestionFull = () => {
   const chagneCurrentPage = (value) => {
     setCurrentPage(value);
   };
-  const [sortOption, setSortOption] = useState('');
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -46,7 +50,7 @@ const QuestionFull = () => {
   useEffect(() => {
     const loadCommunity = async () => {
       try {
-        const community = await commuService.getQuestion(currentPage - 1, ITEMS_PER_PAGE);
+        const community = await commuService.getQuestion(sortOption, keyword, currentPage - 1, ITEMS_PER_PAGE);
         console.log(community);
         setData(community.content); // 게시글 목록 등
         setTotalPage(community.totalPage); // 총 페이지 수
@@ -62,7 +66,7 @@ const QuestionFull = () => {
     };
 
     loadCommunity();
-  }, [userId]);
+  }, [keyword, sortOption, currentPage]);
 
   if (loading) {
     return (
@@ -75,13 +79,18 @@ const QuestionFull = () => {
   if (error) {
     return null;
   }
+  const handleSubmit = async (e) => {
+    setSortOption(tempSortOption);
+    setKeyword(tempkeyword);
+    e.preventDefault();
+  };
   if (!data || totalCount === 0) {
     return (
       <Page>
         <PageInfo>
           <PageTop>
             <PageTitle> 1:1 문의사항 </PageTitle>
-            {userId && (
+            {userNo && (
               <BoardMenu>
                 <MenuDiv>전체</MenuDiv>
                 <MenuLink to="/question/history">문의내역</MenuLink>
@@ -92,14 +101,19 @@ const QuestionFull = () => {
 
           <BoardTop>
             <BoardTopLeft>총 0건</BoardTopLeft>
-            <BoardTopRight style={{ flex: '7' }}>
-              <Drop value={sortOption} onChange={(e) => setSortOption(e.target.value)}>
-                <option value="date">날짜순</option>
-                <option value="views">조회순</option>
+            <Form onSubmit={handleSubmit}>
+              <Drop value={tempSortOption} onChange={(e) => setSortOption(e.target.value)}>
+                <option value="">작성일</option>
+                <option value="count">조회순</option>
               </Drop>
-              <Input type="text" />
-              <SearchBtn>검색</SearchBtn>
-            </BoardTopRight>
+              <Input
+                type="text"
+                placeholder="검색어 입력"
+                value={tempkeyword}
+                onChange={(e) => setTempKeyword(e.target.value)}
+              />
+              <SearchBtn type="submit">검색</SearchBtn>
+            </Form>
           </BoardTop>
           <BoardItemTop>
             <div>No</div>
@@ -110,10 +124,10 @@ const QuestionFull = () => {
           </BoardItemTop>
           <Null>
             <div style={{ marginBottom: '10px' }}>게시글이 없습니다.</div>
-            {userId && (
-              <Btn style={{ margin: 'auto' }} to="/question/create">
+            {userNo && (
+              <LinkBtn style={{ margin: 'auto' }} to="/question/create">
                 글쓰기
-              </Btn>
+              </LinkBtn>
             )}
           </Null>
 
@@ -127,7 +141,7 @@ const QuestionFull = () => {
       <PageInfo>
         <PageTop>
           <PageTitle> 1:1 문의사항 </PageTitle>
-          {userId && (
+          {userNo && (
             <BoardMenu>
               <MenuDiv>전체</MenuDiv>
               <MenuLink to="/question/history">문의내역</MenuLink>
@@ -138,14 +152,19 @@ const QuestionFull = () => {
 
         <BoardTop>
           <BoardTopLeft>총 {totalCount}건</BoardTopLeft>
-          <BoardTopRight style={{ flex: '7' }}>
-            <Drop value={sortOption} onChange={(e) => setSortOption(e.target.value)}>
-              <option value="date">날짜순</option>
-              <option value="views">조회순</option>
+          <Form onSubmit={handleSubmit}>
+            <Drop value={tempSortOption} onChange={(e) => setTempSortOption(e.target.value)}>
+              <option value="">작성일</option>
+              <option value="count">조회순</option>
             </Drop>
-            <Input type="text" />
-            <SearchBtn>검색</SearchBtn>
-          </BoardTopRight>
+            <Input
+              type="text"
+              placeholder="검색어 입력"
+              value={tempkeyword}
+              onChange={(e) => setTempKeyword(e.target.value)}
+            />
+            <SearchBtn type="submit">검색</SearchBtn>
+          </Form>
         </BoardTop>
         <BoardItemTop>
           <div>No</div>

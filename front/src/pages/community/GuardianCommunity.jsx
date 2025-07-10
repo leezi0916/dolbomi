@@ -11,6 +11,7 @@ import {
   BoardTop,
   BorderDiv,
   Drop,
+  Form,
   Input,
   Left,
   NowBoard,
@@ -26,6 +27,11 @@ const GuardianCommunity = () => {
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
 
+  const [sortOption, setSortOption] = useState('');
+  const [tempSortOption, setTempSortOption] = useState('');
+  const [keyword, setKeyword] = useState('');
+  const [tempkeyword, setTempKeyword] = useState('');
+
   const [currentPage, setCurrentPage] = useState(1);
   const [data, setData] = useState([]);
   const [totalPage, setTotalPage] = useState(0);
@@ -36,8 +42,6 @@ const GuardianCommunity = () => {
     setCurrentPage(value);
   };
 
-  const [sortOption, setSortOption] = useState('');
-
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }, [currentPage]);
@@ -45,7 +49,7 @@ const GuardianCommunity = () => {
   useEffect(() => {
     const loadCommunity = async () => {
       try {
-        const community = await commuService.getGuardian(currentPage - 1, ITEMS_PER_PAGE);
+        const community = await commuService.getGuardian(sortOption, keyword, currentPage - 1, ITEMS_PER_PAGE);
         console.log(community);
 
         setData(community.content); // 게시글 목록 등
@@ -62,7 +66,7 @@ const GuardianCommunity = () => {
     };
 
     loadCommunity();
-  }, [currentPage]);
+  }, [currentPage, sortOption, keyword]);
 
   if (loading) {
     return (
@@ -75,8 +79,12 @@ const GuardianCommunity = () => {
   if (error) {
     return null;
   }
-
-  if (!data || totalCount === 0) {
+  const handleSubmit = async (e) => {
+    setSortOption(tempSortOption);
+    setKeyword(tempkeyword);
+    e.preventDefault();
+  };
+  if (totalCount == 0) {
     return (
       <Page>
         <PageInfo>
@@ -85,17 +93,19 @@ const GuardianCommunity = () => {
           </BoardMenu>
           <BoardTop>
             <Left>총 0건</Left>
-            <Right>
-              <Drop value={sortOption} onChange={(e) => setSortOption(e.target.value)}>
-                <option value="" disabled hidden>
-                  -- 작성일순/조회순 --
-                </option>
-                <option value="date">작성일</option>
-                <option value="views">조회순</option>
+            <Form onSubmit={handleSubmit}>
+              <Drop value={tempSortOption} onChange={(e) => setSortOption(e.target.value)}>
+                <option value="">작성일</option>
+                <option value="count">조회순</option>
               </Drop>
-              <Input type="text" />
-              <SearchBtn>검색</SearchBtn>
-            </Right>
+              <Input
+                type="text"
+                placeholder="검색어 입력"
+                value={tempkeyword}
+                onChange={(e) => setTempKeyword(e.target.value)}
+              />
+              <SearchBtn type="submit">검색</SearchBtn>
+            </Form>
           </BoardTop>
           <BoardItemTop>
             <div>No</div>
@@ -126,18 +136,20 @@ const GuardianCommunity = () => {
         </BoardMenu>
         <BoardTop>
           <Left>총 {totalCount}건</Left>
-          <Right>
-            <Drop value={sortOption} onChange={(e) => setSortOption(e.target.value)}>
-              <option value="" disabled hidden>
-                -- 작성일순/조회순 --
-              </option>
-              <option value="date">작성일</option>
-              <option value="views">조회순</option>
+          <Form onSubmit={handleSubmit}>
+            <Drop value={tempSortOption} onChange={(e) => setTempSortOption(e.target.value)}>
+              <option value="">작성일</option>
+              <option value="count">조회순</option>
             </Drop>
-            <Input type="text" />
-            <SearchBtn>검색</SearchBtn>
+            <Input
+              type="text"
+              placeholder="검색어 입력"
+              value={tempkeyword}
+              onChange={(e) => setTempKeyword(e.target.value)}
+            />
+            <SearchBtn type="submit">검색</SearchBtn>
             {userNo && <LinkBtn to="/community/create/G">글쓰기</LinkBtn>}
-          </Right>
+          </Form>
         </BoardTop>
         <BoardItemTop>
           <div>No</div>

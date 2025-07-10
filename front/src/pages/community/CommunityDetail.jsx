@@ -224,11 +224,13 @@ const CommunityDetail = () => {
               <InputFile>
                 {communityDetail.files?.map((file, index) => (
                   <ImgBox key={index}>
-                    <img
-                      src={getProfileImageUrl(file?.fileName)}
-                      alt="첨부 이미지"
-                      style={{ width: '100%', aspectRatio: '4 / 3', borderRadius: '4px' }}
-                    />
+                    <a href={getProfileImageUrl(file?.fileName)} target="_blank" rel="noopener noreferrer">
+                      <img
+                        src={getProfileImageUrl(file?.fileName)}
+                        alt="첨부 이미지"
+                        style={{ width: '100%', aspectRatio: '4 / 3', borderRadius: '4px' }}
+                      />
+                    </a>
                   </ImgBox>
                 ))}
               </InputFile>

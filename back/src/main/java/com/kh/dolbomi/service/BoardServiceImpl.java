@@ -65,26 +65,26 @@ public class BoardServiceImpl implements BoardService {
     }
 
     @Override
-    public Page<Response> getGuardianList(Pageable pageable) {
-        return boardRepository.findByStatus(StatusEnum.Status.Y, StatusEnum.Role.G, pageable)
+    public Page<Response> getGuardianList(String option, String keyword, Pageable pageable) {
+        return boardRepository.findByStatus(StatusEnum.Status.Y, StatusEnum.Role.G, option, keyword, pageable)
                 .map(BoardDto.Response::toSimpleDto);
     }
 
     @Override
-    public Page<Response> getCaregiverList(Pageable pageable) {
-        return boardRepository.findByStatus(StatusEnum.Status.Y, StatusEnum.Role.C, pageable)
+    public Page<Response> getCaregiverList(String option, String keyword, Pageable pageable) {
+        return boardRepository.findByStatus(StatusEnum.Status.Y, StatusEnum.Role.C, option, keyword, pageable)
                 .map(BoardDto.Response::toSimpleDto);
     }
 
     @Override
-    public Page<Response> getQuestionList(Pageable pageable) {
-        return boardRepository.findByStatus(StatusEnum.Status.Y, StatusEnum.Role.Q, pageable)
+    public Page<Response> getQuestionList(String option, String keyword, Pageable pageable) {
+        return boardRepository.findByStatus(StatusEnum.Status.Y, StatusEnum.Role.Q, option, keyword, pageable)
                 .map(BoardDto.Response::toSimpleDto);
     }
 
     @Override
-    public Page<Response> getQuestionHistory(Long userNo, Pageable pageable) {
-        return boardRepository.findByUserNo(StatusEnum.Status.Y, StatusEnum.Role.Q, userNo, pageable)
+    public Page<Response> getQuestionHistory(String option, String keyword, Long userNo, Pageable pageable) {
+        return boardRepository.findByUserNo(StatusEnum.Status.Y, StatusEnum.Role.Q, option, keyword, userNo, pageable)
                 .map(BoardDto.Response::toSimpleDto);
     }
 
