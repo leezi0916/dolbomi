@@ -44,37 +44,11 @@ public class FileService {
         return presignedRequest.url().toString();
     }
 
-    // 파일 메타데이터 저장
-    @Transactional
-    public File saveFileInfo(String originalName, String changeName, String contentType) {
-        File files = File.builder()
-                .originName(originalName)
-                .changeName(changeName)
-                .contentType(contentType)
-                .build();
-
-        return fileRepository.save(files);
-    }
 
     // 파일 목록 조회
     public List<File> getAllFiles() {
         return fileRepository.findAll();
     }
 
-    // 파일 단건 조회
-    public File getFile(Long id) {
-        return fileRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("File not found with id: " + id));
-    }
-
-    // 파일 다운로드용 presigned URL 발급
-    public String generatePresignedDownloadUrl(String fileName) {
-        return s3Presigner.presignGetObject(r -> r.getObjectRequest(get -> get
-                                .bucket(bucket)
-                                .key(fileName))
-                        .signatureDuration(Duration.ofMinutes(5)))
-                .url()
-                .toString();
-    }
 }
 
