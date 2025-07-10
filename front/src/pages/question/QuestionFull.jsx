@@ -11,7 +11,6 @@ import {
   BoardMenu,
   BoardTop,
   BoardTopLeft,
-  BoardTopRight,
   Drop,
   MenuDiv,
   MenuLink,
@@ -21,12 +20,15 @@ import {
   PageTop,
   SearchBtn,
 } from './style/Question.styles';
+import styled from 'styled-components';
 
 const QuestionFull = () => {
-  const userId = useUserStore((state) => state.user?.userId);
+  const userNo = useUserStore((state) => state.user?.userNo);
 
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
+
+  const [keyword, setKeyword] = useState('');
 
   const [currentPage, setCurrentPage] = useState(1);
   const [data, setData] = useState([]);
@@ -46,7 +48,7 @@ const QuestionFull = () => {
   useEffect(() => {
     const loadCommunity = async () => {
       try {
-        const community = await commuService.getQuestion(currentPage - 1, ITEMS_PER_PAGE);
+        const community = await commuService.getQuestion(sortOption, keyword, currentPage - 1, ITEMS_PER_PAGE);
         console.log(community);
         setData(community.content); // 게시글 목록 등
         setTotalPage(community.totalPage); // 총 페이지 수
@@ -62,7 +64,7 @@ const QuestionFull = () => {
     };
 
     loadCommunity();
-  }, [userId]);
+  }, [keyword, sortOption, currentPage]);
 
   if (loading) {
     return (
@@ -75,13 +77,24 @@ const QuestionFull = () => {
   if (error) {
     return null;
   }
+  const handleSubmit = async () => {
+    try {
+      const data = await commuService.getCaregiver(sortOption, keyword, currentPage - 1, ITEMS_PER_PAGE);
+
+      setData(data.content); // 게시글 목록 등
+      setTotalPage(data.totalPage); // 총 페이지 수
+      setTotalCount(data.totalCount);
+    } catch (error) {
+      console.error('검색 실패:', error);
+    }
+  };
   if (!data || totalCount === 0) {
     return (
       <Page>
         <PageInfo>
           <PageTop>
             <PageTitle> 1:1 문의사항 </PageTitle>
-            {userId && (
+            {userNo && (
               <BoardMenu>
                 <MenuDiv>전체</MenuDiv>
                 <MenuLink to="/question/history">문의내역</MenuLink>
@@ -92,12 +105,17 @@ const QuestionFull = () => {
 
           <BoardTop>
             <BoardTopLeft>총 0건</BoardTopLeft>
-            <BoardTopRight style={{ flex: '7' }}>
+            <BoardTopRight>
               <Drop value={sortOption} onChange={(e) => setSortOption(e.target.value)}>
                 <option value="date">날짜순</option>
                 <option value="views">조회순</option>
               </Drop>
-              <Input type="text" />
+              <Input
+                type="text"
+                placeholder="검색어 입력"
+                value={keyword}
+                onChange={(e) => setKeyword(e.target.value)}
+              />
               <SearchBtn>검색</SearchBtn>
             </BoardTopRight>
           </BoardTop>
@@ -110,7 +128,7 @@ const QuestionFull = () => {
           </BoardItemTop>
           <Null>
             <div style={{ marginBottom: '10px' }}>게시글이 없습니다.</div>
-            {userId && (
+            {userNo && (
               <Btn style={{ margin: 'auto' }} to="/question/create">
                 글쓰기
               </Btn>
@@ -127,7 +145,7 @@ const QuestionFull = () => {
       <PageInfo>
         <PageTop>
           <PageTitle> 1:1 문의사항 </PageTitle>
-          {userId && (
+          {userNo && (
             <BoardMenu>
               <MenuDiv>전체</MenuDiv>
               <MenuLink to="/question/history">문의내역</MenuLink>
@@ -138,7 +156,8 @@ const QuestionFull = () => {
 
         <BoardTop>
           <BoardTopLeft>총 {totalCount}건</BoardTopLeft>
-          <BoardTopRight style={{ flex: '7' }}>
+
+          <BoardTopRight onSubmit={handleSubmit}>
             <Drop value={sortOption} onChange={(e) => setSortOption(e.target.value)}>
               <option value="date">날짜순</option>
               <option value="views">조회순</option>
@@ -179,4 +198,11 @@ const QuestionFull = () => {
   );
 };
 
+export const BoardTopRight = styled.form`
+  display: flex;
+  justify-content: flex-end;
+  flex: 7;
+  padding-right: 10px;
+  gap: 6px;
+`;
 export default QuestionFull;

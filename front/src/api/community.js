@@ -3,18 +3,18 @@ import { API_ENDPOINTS } from './config';
 import { snakeToCamel } from '../utils/formatData';
 
 export const commuService = {
-  getCaregiver: async (page, size) => {
+  getCaregiver: async (option, keyword, page, size) => {
     try {
-      const { data } = await api.get(API_ENDPOINTS.COMMUNITY.CAREGIVER(page, size));
+      const { data } = await api.get(API_ENDPOINTS.COMMUNITY.CAREGIVER(option, keyword, page, size));
       return snakeToCamel(data);
     } catch (error) {
       console.log('게시판정보를 가져오지 못함 : ', error.response?.data?.message || '게시판목록 불러오기 실패');
       throw new Error('서버 통신 불량');
     }
   },
-  getQuestion: async (page, size) => {
+  getQuestion: async (option, keyword, page, size) => {
     try {
-      const { data } = await api.get(API_ENDPOINTS.COMMUNITY.QUESTION(page, size));
+      const { data } = await api.get(API_ENDPOINTS.COMMUNITY.QUESTION(option, keyword, page, size));
       return snakeToCamel(data);
     } catch (error) {
       console.log('게시판정보를 가져오지 못함 : ', error.response?.data?.message || '게시판목록 불러오기 실패');
@@ -30,9 +30,9 @@ export const commuService = {
       throw new Error('서버 통신 불량');
     }
   },
-  getGuardian: async (page, size) => {
+  getGuardian: async (option, keyword, page, size) => {
     try {
-      const { data } = await api.get(API_ENDPOINTS.COMMUNITY.GUARDIAN(page, size));
+      const { data } = await api.get(API_ENDPOINTS.COMMUNITY.GUARDIAN(option, keyword, page, size));
       return snakeToCamel(data);
     } catch (error) {
       console.log('게시판정보를 가져오지 못함 : ', error.response?.data?.message || '게시판목록 불러오기 실패');

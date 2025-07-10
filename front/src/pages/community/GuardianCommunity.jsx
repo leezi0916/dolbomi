@@ -26,6 +26,8 @@ const GuardianCommunity = () => {
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
 
+  const [keyword, setKeyword] = useState('');
+
   const [currentPage, setCurrentPage] = useState(1);
   const [data, setData] = useState([]);
   const [totalPage, setTotalPage] = useState(0);
@@ -45,7 +47,7 @@ const GuardianCommunity = () => {
   useEffect(() => {
     const loadCommunity = async () => {
       try {
-        const community = await commuService.getGuardian(currentPage - 1, ITEMS_PER_PAGE);
+        const community = await commuService.getGuardian(sortOption, keyword, currentPage - 1, ITEMS_PER_PAGE);
         console.log(community);
 
         setData(community.content); // 게시글 목록 등
@@ -62,7 +64,7 @@ const GuardianCommunity = () => {
     };
 
     loadCommunity();
-  }, [currentPage]);
+  }, [currentPage, sortOption, keyword]);
 
   if (loading) {
     return (
@@ -75,7 +77,17 @@ const GuardianCommunity = () => {
   if (error) {
     return null;
   }
+  const handleSubmit = async () => {
+    try {
+      const data = await commuService.getCaregiver(sortOption, keyword, currentPage - 1, ITEMS_PER_PAGE);
 
+      setData(data.content); // 게시글 목록 등
+      setTotalPage(data.totalPage); // 총 페이지 수
+      setTotalCount(data.totalCount);
+    } catch (error) {
+      console.error('검색 실패:', error);
+    }
+  };
   if (!data || totalCount === 0) {
     return (
       <Page>
@@ -85,17 +97,19 @@ const GuardianCommunity = () => {
           </BoardMenu>
           <BoardTop>
             <Left>총 0건</Left>
-            <Right>
+            <Form onSubmit={handleSubmit}>
               <Drop value={sortOption} onChange={(e) => setSortOption(e.target.value)}>
-                <option value="" disabled hidden>
-                  -- 작성일순/조회순 --
-                </option>
-                <option value="date">작성일</option>
-                <option value="views">조회순</option>
+                <option value="createDate">작성일</option>
+                <option value="count">조회순</option>
               </Drop>
-              <Input type="text" />
+              <Input
+                type="text"
+                placeholder="검색어 입력"
+                value={keyword}
+                onChange={(e) => setKeyword(e.target.value)}
+              />
               <SearchBtn>검색</SearchBtn>
-            </Right>
+            </Form>
           </BoardTop>
           <BoardItemTop>
             <div>No</div>
@@ -128,11 +142,8 @@ const GuardianCommunity = () => {
           <Left>총 {totalCount}건</Left>
           <Right>
             <Drop value={sortOption} onChange={(e) => setSortOption(e.target.value)}>
-              <option value="" disabled hidden>
-                -- 작성일순/조회순 --
-              </option>
-              <option value="date">작성일</option>
-              <option value="views">조회순</option>
+              <option value="createDate">작성일</option>
+              <option value="count">조회순</option>
             </Drop>
             <Input type="text" />
             <SearchBtn>검색</SearchBtn>

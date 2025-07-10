@@ -59,13 +59,18 @@ public class BoardController {
 
 
     @GetMapping("/caregiver")
-    public ResponseEntity<PageResponse<Response>> getCaregiverList(Pageable pageable) {
-        return ResponseEntity.ok(new PageResponse<>(boardService.getCaregiverList(pageable)));
+    public ResponseEntity<PageResponse<Response>> getCaregiverList(@RequestParam(value = "option") String option,
+                                                                   @RequestParam(value = "keyword") String keyword,
+                                                                   Pageable pageable) {
+        return ResponseEntity.ok(new PageResponse<>(boardService.getCaregiverList(option, keyword, pageable)));
     }
 
     @GetMapping("/guardian")
-    public ResponseEntity<PageResponse<BoardDto.Response>> getGuardianList(Pageable pageable) {
-        return ResponseEntity.ok(new PageResponse<>(boardService.getGuardianList(pageable)));
+    public ResponseEntity<PageResponse<BoardDto.Response>> getGuardianList(
+            @RequestParam(value = "option") String option,
+            @RequestParam(value = "keyword") String keyword,
+            Pageable pageable) {
+        return ResponseEntity.ok(new PageResponse<>(boardService.getGuardianList(option, keyword, pageable)));
     }
 
     @GetMapping("/detail")
@@ -77,11 +82,13 @@ public class BoardController {
 
     @GetMapping("/question")
     public ResponseEntity<PageResponse<BoardDto.Response>> getQuestionList(
+            @RequestParam(value = "option") String option,
+            @RequestParam(value = "keyword") String keyword,
             @RequestParam(value = "user_no", required = false) Long userNo, Pageable pageable) {
         if (userNo != null) {
             return ResponseEntity.ok(new PageResponse<>(boardService.getQuestionHistory(userNo, pageable)));
         }
-        return ResponseEntity.ok(new PageResponse<>(boardService.getQuestionList(pageable)));
+        return ResponseEntity.ok(new PageResponse<>(boardService.getQuestionList(option, keyword, pageable)));
     }
 
     @GetMapping("/delete")

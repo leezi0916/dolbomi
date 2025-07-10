@@ -20,12 +20,15 @@ export const API_ENDPOINTS = {
     BASE: '/community/v1',
     UPDATE: '/community/v1/update',
     UPDATE_REPLY: '/community/v1/update_reply',
-    CAREGIVER: (page, size) => `/community/v1/caregiver?page=${page}&size=${size}`,
-    GUARDIAN: (page, size) => `/community/v1/guardian?page=${page}&size=${size}`,
+    CAREGIVER: (option, keyword, page, size) =>
+      `/community/v1/caregiver?option=${option}&keyword=${keyword}&page=${page}&size=${size}`,
+    GUARDIAN: (option, keyword, page, size) =>
+      `/community/v1/guardian?option=${option}&keyword=${keyword}&page=${page}&size=${size}`,
     DETAIL: (boardNo) => `/community/v1/detail?board_no=${boardNo}`, // 특정 게시글
     REPLY: `/community/v1/reply`,
     REPLY_QUESTION: `/community/v1/reply/question`,
-    QUESTION: (page, size) => `/community/v1/question?page=${page}&size=${size}`,
+    QUESTION: (option, keyword, page, size) =>
+      `/community/v1/question?option=${option}&keyword=${keyword}&page=${page}&size=${size}`,
     QUESTION_HISTORY: (userNo, page, size) => `/community/v1/question?user_no=${userNo}&page=${page}&size=${size}`,
     CREATE_QUESTION: '/community/v1/question/create',
     DELETE: (boardNo) => `/community/v1/delete?boardNo=${boardNo}`,

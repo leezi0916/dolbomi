@@ -7,7 +7,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 public interface BoardRepository {
-    Page<Board> findByStatus(StatusEnum.Status status, StatusEnum.Role role, Pageable pageable);
+    Page<Board> findByStatus(StatusEnum.Status status, StatusEnum.Role role, String option, String keyword,
+                             Pageable pageable);
 
     Page<Board> findByUserNo(StatusEnum.Status status, StatusEnum.Role role, Long userNo, Pageable pageable);
 
