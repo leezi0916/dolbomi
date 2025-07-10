@@ -11,6 +11,7 @@ import {
   BoardTop,
   BorderDiv,
   Drop,
+  Form,
   Input,
   Left,
   NowBoard,
@@ -26,7 +27,10 @@ const GuardianCommunity = () => {
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
 
+  const [sortOption, setSortOption] = useState('');
+  const [tempSortOption, setTempSortOption] = useState('');
   const [keyword, setKeyword] = useState('');
+  const [tempkeyword, setTempKeyword] = useState('');
 
   const [currentPage, setCurrentPage] = useState(1);
   const [data, setData] = useState([]);
@@ -37,8 +41,6 @@ const GuardianCommunity = () => {
   const chagneCurrentPage = (value) => {
     setCurrentPage(value);
   };
-
-  const [sortOption, setSortOption] = useState('');
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -77,18 +79,12 @@ const GuardianCommunity = () => {
   if (error) {
     return null;
   }
-  const handleSubmit = async () => {
-    try {
-      const data = await commuService.getGuardian(sortOption, keyword, currentPage - 1, ITEMS_PER_PAGE);
-
-      setData(data.content); // 게시글 목록 등
-      setTotalPage(data.totalPage); // 총 페이지 수
-      setTotalCount(data.totalCount);
-    } catch (error) {
-      console.error('검색 실패:', error);
-    }
+  const handleSubmit = async (e) => {
+    setSortOption(tempSortOption);
+    setKeyword(tempkeyword);
+    e.preventDefault();
   };
-  if (!data || totalCount === 0) {
+  if (totalCount == 0) {
     return (
       <Page>
         <PageInfo>
@@ -97,14 +93,19 @@ const GuardianCommunity = () => {
           </BoardMenu>
           <BoardTop>
             <Left>총 0건</Left>
-            <Right>
-              <Drop value={sortOption} onChange={(e) => setSortOption(e.target.value)}>
+            <Form onSubmit={handleSubmit}>
+              <Drop value={tempSortOption} onChange={(e) => setSortOption(e.target.value)}>
                 <option value="">작성일</option>
                 <option value="count">조회순</option>
               </Drop>
-              <Input type="text" placeholder="검색어 입력" />
-              <SearchBtn>검색</SearchBtn>
-            </Right>
+              <Input
+                type="text"
+                placeholder="검색어 입력"
+                value={tempkeyword}
+                onChange={(e) => setTempKeyword(e.target.value)}
+              />
+              <SearchBtn type="submit">검색</SearchBtn>
+            </Form>
           </BoardTop>
           <BoardItemTop>
             <div>No</div>
@@ -135,17 +136,20 @@ const GuardianCommunity = () => {
         </BoardMenu>
         <BoardTop>
           <Left>총 {totalCount}건</Left>
-          <Right>
-            <Drop value={sortOption} onChange={(e) => setSortOption(e.target.value)}>
+          <Form onSubmit={handleSubmit}>
+            <Drop value={tempSortOption} onChange={(e) => setTempSortOption(e.target.value)}>
               <option value="">작성일</option>
               <option value="count">조회순</option>
             </Drop>
-            <Input type="text" placeholder="검색어 입력" value={keyword} onChange={(e) => setKeyword(e.target.value)} />
-            <SearchBtn type="submit" onClick={handleSubmit}>
-              검색
-            </SearchBtn>
+            <Input
+              type="text"
+              placeholder="검색어 입력"
+              value={tempkeyword}
+              onChange={(e) => setTempKeyword(e.target.value)}
+            />
+            <SearchBtn type="submit">검색</SearchBtn>
             {userNo && <LinkBtn to="/community/create/G">글쓰기</LinkBtn>}
-          </Right>
+          </Form>
         </BoardTop>
         <BoardItemTop>
           <div>No</div>

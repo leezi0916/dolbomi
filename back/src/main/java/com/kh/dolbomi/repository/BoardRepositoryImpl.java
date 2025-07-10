@@ -54,7 +54,7 @@ public class BoardRepositoryImpl implements BoardRepository {
 
         // keyword가 있을 경우, 패턴으로 LIKE 조건 바인딩
         if (keyword != null && !keyword.trim().isEmpty()) {
-            String pattern = "%" + keyword + "%";
+            String pattern = "%" + keyword.trim() + "%";
             query.setParameter("keyword", pattern);
             count.setParameter("keyword", pattern);
         }

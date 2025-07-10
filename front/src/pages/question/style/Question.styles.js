@@ -68,8 +68,10 @@ export const BoardTopLeft = styled.div`
   align-content: center;
   flex: 1;
 `;
-export const BoardTopRight = styled(alignRight)`
-  flex: 6;
+export const Form = styled.form`
+  display: flex;
+  justify-content: flex-end;
+  flex: 7;
   padding-right: 10px;
   gap: 6px;
 `;
