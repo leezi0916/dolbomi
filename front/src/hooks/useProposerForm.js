@@ -12,9 +12,10 @@ export const useProposerForm = (hiringNo, onSuccess) => {
   useEffect(() => {
     const fetchMyResumes = async () => {
       try {
-        const res = await jobSeekingService.getMyResumeList(user.userNo);
-        console.log(res);
-        setResumeList(res.content);
+        const resumes = await jobSeekingService.getMyResumeLists(user.userNo);
+        console.log(resumes);
+        setResumeList(resumes);
+
       } catch (err) {
         alert('이력서를 불러오는 데 실패했습니다.');
         console.error(err);
