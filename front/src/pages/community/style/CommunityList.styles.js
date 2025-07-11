@@ -84,6 +84,9 @@ export const BoardItem = styled(Link)`
   border-bottom: 1px solid ${({ theme }) => theme.colors.gray[5]};
   > div {
     flex: 1;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 `;
 export const BorderDiv = styled.div`

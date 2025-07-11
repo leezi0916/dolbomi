@@ -28,8 +28,8 @@ const ResumeManagement = () => {
       }
 
       try {
-        const getResumeLists = await jobSeekingService.getMyResumeList(currentPage, user.userNo);
         console.log(user.userNo);
+        const getResumeLists = await jobSeekingService.getMyResumeList(currentPage, user.userNo);
         setResumeLists(getResumeLists.content);
         console.log(getResumeLists);
       } catch (err) {

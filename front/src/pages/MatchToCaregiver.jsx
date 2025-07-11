@@ -16,7 +16,28 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import '../styles/DatePiker.css';
 import { searchForm } from '../hooks/searchForm';
-
+import { media } from '../styles/MediaQueries';
+import {
+  ProfileCardPair,
+  ProfileImage,
+  ProfileInfo,
+  UserAge,
+  UserName,
+  InfoButton,
+  RightLineDiv,
+  CaregiverImg,
+  CaregiverDiv,
+  CaregiverTextDiv,
+  ProfileTextGray,
+  ProfileTextStrong,
+  CargiverButtonDiv,
+  ReportButton,
+  CareLogButton,
+  PageWrapper,
+  BtnSection,
+} from '../styles/MatchingCard';
+import PatientCardGroup from '../components/PatientCardGroup';
+import MatchCareGiverCard from '../components/MatchCareGiverCard'
 const MatchToCaregiver = () => {
   const CustomDateButton = React.forwardRef(({ value, onClick }, ref) => (
     <button className="custom-datepicker-button" onClick={onClick} ref={ref}>
@@ -43,7 +64,9 @@ const MatchToCaregiver = () => {
   const [showReviewModal, setShowReviewModal] = useState(false);
   const [selectedCaregiver, setSelectedCaregiver] = useState(null);
 
-  //간병인 정보
+
+
+  //카드색상변경
 
   // 날짜검색
   const [startDate, setStartDate] = useState(new Date());
@@ -101,6 +124,7 @@ const MatchToCaregiver = () => {
 
   // 현재 매칭정보 : 특정 환자의 간병인 목록 가져오기
   const getCareGiver = (patNo) => {
+    setCareGiverList([]);
     const getList = async () => {
       try {
         const careGiverList = await matchingService.getMatchginCargiver(patNo, 'Y');
@@ -111,6 +135,32 @@ const MatchToCaregiver = () => {
     };
     getList();
   };
+
+  // 반응형 브레이크 포인트 잡기
+  const [isOpen, setIsOpen] = useState(false);
+  const BREAKPOINT = 576;
+ 
+  useEffect(() => {
+    if (window.innerWidth >= BREAKPOINT) {
+      setIsOpen(false); // 페이지 진입 시 큰 화면이면 상세 보기 닫기
+    }
+  }, []);
+
+  const [isMobile, setIsMobile] = useState(window.innerWidth < BREAKPOINT);
+
+  useEffect(() => {
+    const handleResize = () => {
+      const mobile = window.innerWidth < BREAKPOINT;
+      setIsMobile(mobile);
+
+      if (!mobile) {
+        setIsOpen(false); // 데스크탑 전환 시 상세 보기 닫기
+      }
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   // 종료된 매칭정보
   const getEndedMatchingList = async (patNo, page = 1) => {
@@ -131,11 +181,16 @@ const MatchToCaregiver = () => {
 
   const handleTabChange = (tab) => {
     setActiveTab(tab);
+  };
 
-    // if (tab === 'matched' && userPatients.length > 0) {
-    //   // 기본 첫 환자 종료된 매칭 호출
-    //   getEndedMatchingList(userPatients[0].patNo, 1);
-    // }
+  const handleClick = (patNo) => {
+    setSelectedPatNo(patNo);
+    setIsOpen(true);
+    getCareGiver(patNo);
+  };
+  const handleClose = (patNo) => {
+    setSelectedPatNo(patNo);
+    setIsOpen(false);
   };
 
   // 종료된 매칭 페이지 변경 핸들러
@@ -165,8 +220,8 @@ const MatchToCaregiver = () => {
   return (
     <>
       <HeadSection>
+        <Title>매칭된 간병보기</Title>
         <TitleDiv>
-          <Title>매칭된 간병보기</Title>
           <Tab>
             <SubTitle onClick={() => handleTabChange('matching')} $active={activeTab === 'matching'}>
               진행중
@@ -175,11 +230,12 @@ const MatchToCaregiver = () => {
             <SubTitle onClick={() => handleTabChange('matched')} $active={activeTab === 'matched'}>
               종료된 매칭
             </SubTitle>
-            <TipP>
-              <CiCircleInfo color="#EF7A46" size={'20px'}></CiCircleInfo> 환자에 마우스를 올려 종료된 매칭 목록을
-              확인하세요.
-            </TipP>
           </Tab>
+
+          <TipDiv>
+            <CiCircleInfo color="#EF7A46" size="20px" style={{ margin: 'auto', width: 'fit-content' }} />
+            <p> 돌봄대상자를 클릭하여 종료된 매칭 간병인을 확인하세요.</p>
+          </TipDiv>
         </TitleDiv>
       </HeadSection>
 
@@ -190,55 +246,75 @@ const MatchToCaregiver = () => {
             <ProfileCardPair>
               <RightLineDiv>
                 {userPatients && userPatients.length > 0 ? (
-                  userPatients?.map((pat) => (
-                    <ProfileCard key={pat.patNo} type="patient" onMouseEnter={() => getCareGiver(pat.patNo)}>
-                      <ProfileImage
-                        src={getProfileImageUrl(pat.profileImage, 'patient')}
-                        alt="환자"
-                        onError={(e) => {
-                          e.target.onerror = null;
-                          e.target.src = pat_profileImage;
-                        }}
-                      />
-                      <ProfileInfo>
-                        <UserName>{pat.patName} 님</UserName>
-                        <UserAge>
-                          나이 {pat.patAge}세({pat.patGender === 'M' ? '남' : '여'})
-                        </UserAge>
-                        <InfoButton onClick={() => navigate(`/report/${pat.patNo}`)}> 간병일지 보기</InfoButton>
-                      </ProfileInfo>
-                    </ProfileCard>
-                  ))
+                  isOpen && isMobile ? (
+                    // 상세 보기일 때만 보여줄 컴포넌트
+                    <PatientCardGroup
+                      patient={userPatients.find((p) => p.patNo === selectedPatNo)}
+                      caregiverList={caregiverList}
+                      onClose={() => handleClose}
+                    />
+                  ) : (
+                    // 환자 전체 리스트 (상세보기 아닐 때만)
+                    userPatients.map((pat) => (
+                      <div key={pat.patNo}>
+                        <ProfileCard type="patient" onClick={() => getCareGiver(pat.patNo)}>
+                          <ProfileImage
+                            src={getProfileImageUrl(pat.profileImage, 'patient')}
+                            alt="환자"
+                            onError={(e) => {
+                              e.target.onerror = null;
+                              e.target.src = pat_profileImage;
+                            }}
+                          />
+                          <ProfileInfo>
+                            <UserName>{pat.patName} 님</UserName>
+                            <UserAge>
+                              나이 {pat.patAge}세({pat.patGender === 'M' ? '남' : '여'})
+                            </UserAge>
+                            <BtnSection>
+                              <InfoButton onClick={() => navigate(`/report/${pat.patNo}`)}>간병일지 보기</InfoButton>
+                              <TestBtn onClick={() => handleClick(pat.patNo)}>간병인 보기</TestBtn>
+                            </BtnSection>
+                          </ProfileInfo>
+                        </ProfileCard>
+                      </div>
+                    ))
+                  )
                 ) : (
-                  <EmptyMessage>등록된 환자가 없습니다. </EmptyMessage>
+                  <EmptyMessage>등록된 환자가 없습니다.</EmptyMessage>
                 )}
               </RightLineDiv>
-              <div>
-                {caregiverList && caregiverList.length > 0 ? (
-                  caregiverList?.map((care) => (
-                    <>
-                      <CargiverWrap key={care.caregiverNo}>
-                        <CaregiverImg
-                          src={getProfileImageUrl(care.caregiverProfileImage, 'caregiver')}
-                          alt="간병인"
-                          onError={(e) => {
-                            e.target.onerror = null;
-                            e.target.src = care_profileImage;
-                          }}
-                        />
-                        <CaregiverTextDiv>
-                          <ProfileTextGray>
-                            <ProfileTextStrong>{care.userName}</ProfileTextStrong> 님
-                          </ProfileTextGray>
 
-                          <ProfileTextGray>
-                            나이
-                            <ProfileTextStrong>
-                              {care.age} 세 (
-                              {care.gender === 'M' ? '남' : care.gender === 'F' ? '여' : '성별 정보 없음'})
-                            </ProfileTextStrong>
-                          </ProfileTextGray>
-                        </CaregiverTextDiv>
+              <div>
+                {!isMobile ? (
+                  caregiverList && caregiverList.length > 0 ? (
+                    caregiverList.map((care) => (
+
+                      // <MatchCareGiverCard caregiverList={care}></MatchCareGiverCard>
+                      <CargiverWrap key={care.caregiverNo}>
+                        <CaregiverDiv>
+                          <CaregiverImg
+                            src={getProfileImageUrl(care.caregiverProfileImage, 'caregiver')}
+                            alt="간병인"
+                            onError={(e) => {
+                              e.target.onerror = null;
+                              e.target.src = care_profileImage;
+                            }}
+                          />
+                          <CaregiverTextDiv>
+                            <ProfileTextGray>
+                              <ProfileTextStrong>{care.userName}</ProfileTextStrong> 님
+                            </ProfileTextGray>
+                            <ProfileTextGray>
+                              나이
+                              <ProfileTextStrong>
+                                {care.age} 세 (
+                                {care.gender === 'M' ? '남' : care.gender === 'F' ? '여' : '성별 정보 없음'})
+                              </ProfileTextStrong>
+                            </ProfileTextGray>
+                          </CaregiverTextDiv>
+                        </CaregiverDiv>
+
                         <CargiverButtonDiv>
                           <CareLogButton
                             onClick={() =>
@@ -251,11 +327,11 @@ const MatchToCaregiver = () => {
                           </CareLogButton>
                         </CargiverButtonDiv>
                       </CargiverWrap>
-                    </>
-                  ))
-                ) : (
-                  <EmptyMessage> 매칭된 간병이 없습니다. </EmptyMessage>
-                )}
+                    ))
+                  ) : (
+                    <EmptyMessage>매칭된 간병이 없습니다.</EmptyMessage>
+                  )
+                ) : null}
               </div>
             </ProfileCardPair>
           </>
@@ -374,29 +450,72 @@ const MatchToCaregiver = () => {
   );
 };
 
-const DatePickerWrap = styled.div`
-  display: flex;
-  gap: 10px;
-`;
-
 const HeadSection = styled(Section)`
-  height: 200px;
   display: flex;
+  height: auto;
   justify-content: space-between;
-  padding: 40px 16px 10px 16px;
+  flex-direction: column;
+  padding: ${({ theme }) => theme.spacing[4]} ${({ theme }) => theme.spacing[4]} ${({ theme }) => theme.spacing[2]}
+    ${({ theme }) => theme.spacing[4]};
+  align-items: flex-start;
+
+  ${media.md` /* 768px 이상 (태블릿/데스크톱) */
+    padding: 40px 16px 10px 16px;
+  `}
 `;
 
 const TitleDiv = styled.div`
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  width: 100%;
+  margin-bottom: ${({ theme }) => theme.spacing[4]};
+
+  ${media.md` /* 768px 이상 (태블릿/데스크톱) */
+    flex-direction: row;
+  `}
 `;
 
-const TipP = styled.p`
+const Title = styled.h1`
+  font-size: ${({ theme }) => theme.fontSizes['2xl']};
+  font-weight: ${({ theme }) => theme.fontWeights.bold};
+  text-align: center;
+
+  color: ${({ theme }) => theme.colors.black1};
+  padding: ${({ theme }) => theme.spacing[3]};
   display: flex;
-  justify-content: center;
-  align-items: center;
+  justify-content: flex-start;
+`;
+
+export const TipDiv = styled.div`
+  display: flex;
   gap: 10px;
+  padding: ${({ theme }) => theme.spacing[3]};
+
+  p {
+    width: 95%;
+    text-align: left;
+  }
+
+  ${media.md`  // 예: 768px 이하일 때
+    align-items: flex-start; // 왼쪽 정렬로 자연스럽게
+  `}
+`;
+
+const Tab = styled.div`
+  display: flex;
+`;
+
+const SubTitle = styled.h1`
+  font-size: ${({ theme }) => theme.fontSizes['xl']};
+  font-weight: ${({ theme }) => theme.fontWeights.bold};
+  text-align: center;
+
+  color: ${({ theme }) => theme.colors.gray[5]};
+  padding: ${({ theme }) => theme.spacing[3]};
+  display: flex;
+  justify-content: flex-start;
+  color: ${({ $active, theme }) => ($active ? theme.colors.black1 : theme.colors.gray[3])};
+  cursor: pointer;
 `;
 
 const SearchDivWrap = styled.div`
@@ -412,20 +531,6 @@ const SearchDateWrap = styled.div`
   justify-content: space-between;
   align-items: center;
   gap: ${({ theme }) => theme.spacing[5]};
-`;
-
-const SearchInput = styled.input`
-  border: 1px solid ${({ theme }) => theme.colors.gray[5]};
-  border-radius: ${({ theme }) => theme.borderRadius.md};
-  width: 80%;
-  padding: ${({ theme }) => theme.spacing[2]};
-  outline: none; /* 포커스 시 아웃라인 제거 */
-  font-size: 16px; /* 폰트 크기 */
-  color: #333; /* 텍스트 색상 */
-
-  &::placeholder {
-    color: #999; /* 플레이스홀더 텍스트 색상 */
-  }
 `;
 
 const SearchBtn = styled.button`
@@ -446,43 +551,12 @@ const SearchBtn = styled.button`
   }
 `;
 
-const SearchIcon = styled.span`
-  font-size: 18px; /* 아이콘 크기 */
-`;
-
-const Title = styled.h1`
-  font-size: ${({ theme }) => theme.fontSizes['2xl']};
-  font-weight: ${({ theme }) => theme.fontWeights.bold};
-  text-align: center;
-
-  color: ${({ theme }) => theme.colors.black1};
-  padding: ${({ theme }) => theme.spacing[3]};
-  display: flex;
-  justify-content: flex-start;
-`;
-
-const SubTitle = styled.h1`
-  font-size: ${({ theme }) => theme.fontSizes['xl']};
-  font-weight: ${({ theme }) => theme.fontWeights.bold};
-  text-align: center;
-
-  color: ${({ theme }) => theme.colors.gray[5]};
-  padding: ${({ theme }) => theme.spacing[3]};
-  display: flex;
-  justify-content: flex-start;
-  color: ${({ $active, theme }) => ($active ? theme.colors.black1 : theme.colors.gray[3])};
-  cursor: pointer;
-`;
-const Tab = styled.div`
-  display: flex;
-  align-items: center;
-`;
-
 const MatchSection = styled(Section)`
   display: flex;
   flex-direction: column;
-  align-items: center; /* 카드 쌍 전체를 가로 중앙으로 정렬 */
-  padding: ${({ theme }) => theme.spacing[8]} 0; /* 상하 패딩 추가 */
+  align-items: center;
+  padding: ${({ theme }) => theme.spacing[8]} ${({ theme }) => theme.spacing[2]};
+  border: 1px solid ${({ theme }) => theme.colors.gray[5]};
 `;
 
 const EmptyMessage = styled.p`
@@ -497,149 +571,52 @@ const Div = styled.div`
   position: relative;
 `;
 
-// 환자정보랑 간병인 정보 분리
-const ProfileCardPair = styled.div`
-  display: grid;
-  grid-template-columns: 1fr 2fr;
-  border: 1px solid ${({ theme }) => theme.colors.gray[5]};
-  box-shadow: ${({ theme }) => theme.shadows.md};
-  width: 100%; /* 부모 컨테이너의 너비 전체 사용 */
-  max-width: 1200px; /* 전체 카드 쌍의 최대 너비 (조절 가능) */
-  margin-bottom: ${({ theme }) => theme.spacing[8]}; /* 각 카드 쌍 아래쪽 간격 */
+const TestBtn = styled(InfoButton)`
+  margin: auto 5px;
+  cursor: pointer;
+
+  ${media.md`
+        display: none;
+    `}
 `;
 
-/*====== 환자 스타일 =====*/
 const ProfileCard = styled.div`
-  display: flex;
+  display: ${({ isOpen }) => (isOpen ? 'none' : 'flex')};
 
   align-items: center;
   padding: ${({ theme }) => theme.spacing[6]};
-  background-color: ${({ theme }) => theme.colors.white};
   border-bottom: 1px solid ${({ theme }) => theme.colors.gray[5]};
 
   gap: ${({ theme }) => theme.spacing[8]};
-  width: 100%; /* ProfileCardPair 내에서 각 카드의 너비 (gap을 고려하여 50%보다 약간 작게) */
-  box-sizing: border-box; /* 패딩과 보더가 너비에 포함되도록 */
+  width: 100%;
+  box-sizing: border-box;
 
   &:hover {
-    background-color: #fcfaf0;
-    box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+    background-color: ${({ $isSelected }) => ($isSelected ? '#fbe2d4' : '#f5f5f5')};
   }
-`;
-
-// 프로필 이미지 스타일
-const ProfileImage = styled.img`
-  width: 140px;
-  height: 140px;
-  border-radius: 50%;
-  object-fit: cover;
-  /* ProfileCard의 type prop에 따라 배경색이 변경됩니다. */
-`;
-
-const ProfileInfo = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  flex-grow: 1; /* 남은 공간을 채우도록 */
-  gap: ${({ theme }) => theme.spacing[2]};
-`;
-
-const UserName = styled.div`
-  display: flex;
-  font-size: ${({ theme }) => theme.fontSizes.lg};
-  font-weight: ${({ theme }) => theme.fontWeights.bold};
-  margin-top: ${({ theme }) => theme.spacing[3]};
-`;
-
-const UserAge = styled.div`
-  display: flex;
-  font-size: ${({ theme }) => theme.fontSizes.base};
-  margin-bottom: ${({ theme }) => theme.spacing[3]};
-  color: ${({ theme }) => theme.colors.gray[3]}; /* 어두운 회색으로 변경 */
-`;
-
-const InfoButton = styled.button`
-  background-color: ${({ theme }) => theme.colors.secondary}; /* 주황색 */
-  color: ${({ theme }) => theme.colors.white};
-  border: none;
-  padding: ${({ theme }) => `${theme.spacing[2]} ${theme.spacing[8]}`};
-  margin: ${({ theme }) => theme.spacing[3]} 0;
-  border-radius: ${({ theme }) => theme.borderRadius.md};
-  cursor: pointer;
-  font-weight: ${({ theme }) => theme.fontWeights.bold};
-  white-space: nowrap; /* 버튼 텍스트가 줄바꿈되지 않도록 */
-`;
-
-const RightLineDiv = styled.div`
-  min-height: 800px;
-  border-right: 1px solid ${({ theme }) => theme.colors.gray[5]};
 `;
 
 /*====== 간병인 스타일 =====*/
 const CargiverWrap = styled.div`
-  display: flex;
-  justify-content: space-around;
-  gap: ${({ theme }) => theme.spacing[12]};
+  display: ${({ isOpen }) => (isOpen ? 'none' : 'flex')};
+  justify-content: center;
+  flex-direction: column;
+  gap: ${({ theme }) => theme.spacing[5]};
   height: fit-content;
   align-items: center;
   margin: ${({ theme }) => theme.spacing[4]} 0;
   padding: ${({ theme }) => theme.spacing[2]};
-`;
+  justify-content: space-around;
 
-const CaregiverImg = styled.img`
-  width: 100px;
-  height: 100px;
-  border-radius: 50%;
-  object-fit: cover;
-`;
+  ${media.md`  // 예: 768px 이하일 때
+   
+ `}
 
-const CaregiverTextDiv = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: ${({ theme }) => theme.spacing[4]};
-  align-items: start;
+  ${media.lg`  // 예: 768px 이하일 때
+    justify-content: space-around;
+    flex-direction : row;
+    gap: ${({ theme }) => theme.spacing[12]};
+   
+ `}
 `;
-
-const ProfileTextGray = styled.p`
-  color: ${({ theme }) => theme.colors.gray[3]};
-`;
-
-const ProfileTextStrong = styled.strong`
-  color: ${({ theme }) => theme.colors.black1};
-  font-weight: ${({ theme }) => theme.fontWeights.semibold};
-`;
-
-const CargiverButtonDiv = styled.div`
-  display: flex;
-  gap: ${({ theme }) => theme.spacing[4]};
-`;
-const ReportButton = styled.button`
-  background-color: ${({ theme }) => theme.colors.danger}; /* 빨간색 */
-  color: ${({ theme }) => theme.colors.white};
-  border: none;
-  border-radius: ${({ theme }) => theme.borderRadius.md};
-  cursor: pointer;
-  font-weight: ${({ theme }) => theme.fontWeights.bold};
-  white-space: nowrap;
-`;
-
-const CareLogButton = styled.button`
-  width: 200px;
-  background-color: ${({ theme }) => theme.colors.secondary};
-  color: ${({ theme }) => theme.colors.white};
-  border: none;
-  border-radius: ${({ theme }) => theme.borderRadius.md};
-  cursor: pointer;
-  font-weight: ${({ theme }) => theme.fontWeights.bold};
-  white-space: nowrap;
-`;
-
-const PageWrapper = styled.div`
-  position: absolute;
-  width: inherit;
-  bottom: 0;
-  width: 100%;
-  padding: ${({ theme }) => theme.spacing[5]};
-`;
-
 export default MatchToCaregiver;

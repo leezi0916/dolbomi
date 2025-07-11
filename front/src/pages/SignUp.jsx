@@ -14,7 +14,7 @@ import {
 import styled from 'styled-components';
 import { IoCheckmarkOutline } from 'react-icons/io5'; // 체크마크 아이콘 import
 import { useSignUpForm } from '../hooks/useSignUpForm';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import PostcodeSearch from '../components/PostcodeSearch';
 // import { userService } from '../api/users';
 // import { toast } from 'react-toastify';
@@ -26,7 +26,7 @@ const SignUp = () => {
   const email = searchParams.get('email');
   const name = searchParams.get('name');
   const socialType = searchParams.get('socialType');
-  const emailVerified = searchParams.get('verified');
+  // const emailVerified = searchParams.get('verified');
   const socialId = searchParams.get('openId');
 
   // watch 함수를 useSignUpForm 훅에서 가져옵니다.
@@ -40,6 +40,7 @@ const SignUp = () => {
     idCheckMessage,
     setValue,
     // isIdChecked,
+
     formatPhoneNumber,
     onSubmit,
   } = useSignUpForm(socialType, socialId);
@@ -59,6 +60,8 @@ const SignUp = () => {
     const baseAddress = `${addressData.address}${addressData.extraAddress}`.trim();
     setValue('address', baseAddress);
   }, [addressData, setValue]);
+
+  const navigate = useNavigate();
 
   return (
     <AuthContainer>
@@ -208,20 +211,17 @@ const SignUp = () => {
                 ) : (
                   <Inputs id="email" type="email" {...register('email')} value={email} disabled />
                 )}
-
-                {emailVerified === null ? (
-                  <CheckDuplicateButton type="button" onClick={checkUserId}>
-                    인증하기
-                  </CheckDuplicateButton>
-                ) : (
-                  ''
-                )}
               </Row>
               {errors.email && <ErrorMessage>{errors.email.message}</ErrorMessage>}
             </InputGroup>
-            <SignUpButton type="submit" disabled={isSubmitting}>
-              {isSubmitting ? '처리중...' : '가입하기'}
-            </SignUpButton>
+            <div style={{ display: 'flex', gap: '20px' }}>
+              <SignUpButton type="button" onClick={() => navigate(-1)}>
+                뒤로가기
+              </SignUpButton>
+              <SignUpButton type="submit" disabled={isSubmitting}>
+                {isSubmitting ? '처리중...' : '가입하기'}
+              </SignUpButton>
+            </div>
           </InputContainer1>
         </Center>
       </Form>

@@ -12,6 +12,7 @@ import {
   BoardTop,
   BoardTopLeft,
   Drop,
+  Form,
   MenuDiv,
   MenuLink,
   Null,
@@ -19,7 +20,6 @@ import {
   PageTitle,
   PageTop,
   SearchBtn,
-  Form,
 } from './style/Question.styles';
 
 const QuestionHistory = () => {
@@ -160,7 +160,7 @@ const QuestionHistory = () => {
 
         <BoardTop>
           <BoardTopLeft>총 {totalCount}건</BoardTopLeft>
-          <Form onSubmit={handleSubmit}>
+          <Form onSubmit={handleSubmit} style={{ flex: '10' }}>
             <Drop value={tempSortOption} onChange={(e) => setTempSortOption(e.target.value)}>
               <option value="">작성일</option>
               <option value="count">조회순</option>
@@ -177,16 +177,16 @@ const QuestionHistory = () => {
         </BoardTop>
         <BoardItemTop>
           <div>No</div>
-          <div>유형</div>
-          <div style={{ flex: '2' }}>제목</div>
+          <div style={{ flex: '2' }}>유형</div>
+          <div style={{ flex: '3' }}>제목</div>
           <div>작성자</div>
           <div style={{ flex: '2' }}>작성 일자</div>
-          <div>처리 현황</div>
+          <div style={{ flex: '2' }}>처리 현황</div>
         </BoardItemTop>
         {data.map((info) => (
           <BoardItem key={info.boardNo} to={`/question/detail/${info.boardNo}`}>
             <div>{info.boardNo}</div>
-            <div>
+            <div style={{ flex: '2' }}>
               {info.questionCategory === 'T'
                 ? '기술적 문제'
                 : info.questionCategory === 'S'
@@ -195,10 +195,10 @@ const QuestionHistory = () => {
                     ? '기타'
                     : '알 수 없음'}
             </div>
-            <div style={{ flex: '2' }}>{info.boardTitle}</div>
+            <div style={{ flex: '3' }}>{info.boardTitle}</div>
             <div>{info.userName}</div>
-            <div style={{ flex: '2' }}>{info.createDate}</div>
-            {info.questionStatus == 'Y' ? <div>완료</div> : <div>대기</div>}
+            <div style={{ flex: '2' }}>{info.createDate.slice(0, 10)}</div>
+            <div style={{ flex: '2' }}>{info.questionStatus == 'Y' ? '완료' : '대기'}</div>
           </BoardItem>
         ))}
 

@@ -47,6 +47,7 @@ export const API_ENDPOINTS = {
     CAREPROFILE: (userNo) => `/users/v1?user_no=${userNo}`,
     DELETE: (userNo) => `/users/v1/${userNo}/delete`,
     COUNT: '/users/v1/user-counts',
+    RESET_PASSWORD: '/users/v1/reset_password',
     CHANGE_PASS: (userNo) => `/users/v1/${userNo}/change-password`,
   },
   REVIEWS: {
@@ -73,6 +74,7 @@ export const API_ENDPOINTS = {
     DETAIL: (resumeNo) => `/resume/v1/detail/${resumeNo}`,
     MYRESUME: (currentPage, userNo) => `/resume/v1/user?page=${currentPage - 1}&userNo=${userNo}`,
     UPDATE: (resumeNo) => `/resume/v1/${resumeNo}`,
+    MYRESUMMODAL : (userNo) => `/resume/v1/user/all?userNo=${userNo}`,
   },
 
   PATIENT: {
@@ -127,5 +129,11 @@ export const API_ENDPOINTS = {
     REGION: (cd) => {
       return cd != null ? `/api/address/region?cd=${cd}` : `/api/address/region`;
     },
+  },
+
+  EMAIL: {
+    BASE: '/auth/email',
+    SEND_EMAIL_CODE: '/auth/email/send',
+    VERIFY_EMAIL_CODE: '/auth/email/verify',
   },
 };
