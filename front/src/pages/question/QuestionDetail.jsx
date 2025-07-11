@@ -19,7 +19,7 @@ import {
   PageTop,
 } from '../community/style/Community.styles';
 import { PageInfo, Textarea } from './style/Question.styles';
-
+import { getDownloadUrl } from '../../api/fileApi';
 const QuestionDetail = () => {
   const userRole = useUserStore((state) => state.user?.userRole);
   const userNo = useUserStore((state) => state.user?.userNo);
@@ -156,6 +156,25 @@ const QuestionDetail = () => {
     }
   };
 
+  const handleDownload = async (fileNo, fileName) => {
+    try {
+      const { presignedUrl } = await getDownloadUrl(fileNo);
+      const response = await fetch(presignedUrl);
+      const blob = await response.blob();
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = fileName;
+      document.body.appendChild(a);
+      a.click();
+      window.URL.revokeObjectURL(url);
+      document.body.removeChild(a);
+    } catch (error) {
+      console.error('파일 다운로드 실패:', error);
+      alert('파일 다운로드에 실패했습니다.');
+    }
+  };
+
   return (
     <Page>
       <PageInfo>
@@ -190,23 +209,25 @@ const QuestionDetail = () => {
           <BodyText>{communityDetail.boardContent}</BodyText>
           {communityDetail.files && communityDetail.files.length > 0 && (
             <FileBox>
-              <FileTitle>
-                <Icons src="/src/assets/icons/icon_사진.png" alt="" />
-                <div>사진</div>
-              </FileTitle>
-              <InputFile>
-                {communityDetail.files?.map((file, index) => (
-                  <ImgBox key={index}>
-                    <a href={file.filePath} target="_blank" rel="noopener noreferrer">
-                      <img
-                        src={file.filePath}
-                        alt={file.originName || '첨부 이미지'}
-                        style={{ width: '100%', aspectRatio: '4 / 3', borderRadius: '4px' }}
-                      />
-                    </a>
-                  </ImgBox>
-                ))}
-              </InputFile>
+              {/* 파일 목록 */}
+              <FileListSection>
+                <FileListTitle>파일 목록</FileListTitle>
+
+                {communityDetail.files && communityDetail.files.length > 0 ? (
+                  communityDetail.files.map((file) => (
+                    <FileItem key={file.fileNo}>
+                      <FileName>{file.fileName.split('/').pop()}</FileName> {/* 경로 제외한 파일명만 표시 */}
+                      <ButtonWrapper>
+                        <DownloadButton onClick={() => handleDownload(file.fileNo, file.fileName.split('/').pop())}>
+                          다운로드
+                        </DownloadButton>
+                      </ButtonWrapper>
+                    </FileItem>
+                  ))
+                ) : (
+                  <EmptyMessage>첨부된 파일이 없습니다.</EmptyMessage>
+                )}
+              </FileListSection>
             </FileBox>
           )}
         </PageBody>
@@ -375,5 +396,65 @@ const CommentSelect = styled.div`
   > div {
     align-items: center;
   }
+`;
+
+const FileListSection = styled.div`
+  margin-top: 2rem;
+`;
+
+const FileListTitle = styled.h3`
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  color: #333;
+  text-align: left;
+  padding: 5px 15px;
+`;
+
+const FileItem = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem;
+  background: #f8f9fa;
+  border-radius: 6px;
+  margin-bottom: 0.5rem;
+  border: 1px solid #e9ecef;
+`;
+
+const FileName = styled.span`
+  font-size: 0.875rem;
+  color: #495057;
+  flex: 1;
+`;
+
+const DownloadButton = styled.button`
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+  color: ${({ theme }) => theme.colors.primary};
+  background: transparent;
+  border: 1px solid ${({ theme }) => theme.colors.primary};
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s;
+
+  &:hover {
+    background: ${({ theme }) => theme.colors.primary};
+    color: white;
+  }
+`;
+
+const EmptyMessage = styled.p`
+  text-align: center;
+  font-size: 0.875rem;
+  color: #6c757d;
+  padding: 2rem;
+  background: #f8f9fa;
+  border-radius: 6px;
+`;
+
+const ButtonWrapper = styled.div`
+  display: flex;
+  gap: 0.5rem;
 `;
 export default QuestionDetail;

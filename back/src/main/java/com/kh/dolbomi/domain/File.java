@@ -27,7 +27,7 @@ public class File {
     @Column(name = "FILE_NO")
     private Long fileNo;
 
-    @Column(name = "FILE_NAME", nullable = false, unique = true)
+    @Column(name = "FILE_NAME", nullable = false)
     private String fileName;
 
     @ManyToOne(fetch = FetchType.LAZY)
