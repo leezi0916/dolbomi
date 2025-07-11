@@ -66,6 +66,7 @@ export const commuService = {
   createQuestion: async (questionData) => {
     try {
       const { data } = await api.post(API_ENDPOINTS.COMMUNITY.CREATE_QUESTION, questionData);
+      console.log(data);
       return snakeToCamel(data);
     } catch (error) {
       if (error.response) {

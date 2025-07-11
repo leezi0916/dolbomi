@@ -228,7 +228,7 @@ const HireDetail = () => {
               </InputGroup> */}
               <InputGroup>
                 <Label>주소</Label>
-                <Input type="text" id="patAddress" value={extractRegionFromEnd(jobOpening?.patAddress)} readOnly />
+                <HireInput type="text" id="patAddress" value={extractRegionFromEnd(jobOpening?.patAddress)} readOnly />
               </InputGroup>
               <InputRow>
                 <InputGroup>

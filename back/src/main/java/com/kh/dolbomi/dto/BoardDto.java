@@ -1,5 +1,6 @@
 package com.kh.dolbomi.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.kh.dolbomi.domain.Board;
 import com.kh.dolbomi.enums.StatusEnum;
 import jakarta.validation.constraints.NotBlank;
@@ -58,11 +59,13 @@ public class BoardDto {
         private String board_title;
         @NotBlank(message = "내용을 적어주세요.")
         private String board_content;
-
         private Long user_no;
         private StatusEnum.Role role;
         private StatusEnum.QuestionStatus question_status;
         private StatusEnum.QuestionCategory question_category;
+
+        @JsonProperty("file_names")
+        private List<String> file_names;
 
         public Board toEntity() {
             return Board.builder()
@@ -71,6 +74,7 @@ public class BoardDto {
                     .role(this.role)
                     .questionStatus(this.question_status)
                     .questionCategory(this.question_category)
+                    .fileList(new ArrayList<>())
                     .build();
 
         }
