@@ -1,16 +1,24 @@
 import { useProposerForm } from '../hooks/useProposerForm';
-import profileImg from '../assets/profileImg/img_간병인.png';
+import profileImage from '../assets/profileImg/img_간병인.png';
 import { SITE_CONFIG } from '../config/site';
 import React from 'react';
 import styled from 'styled-components';
 import closeIcon from '../assets/icons/icon_닫기.png';
 import logo from '../assets/mainImg/logo.png';
 
-
 const ResumeSelectModal = ({ onClose, hiringNo, onSuccess }) => {
   const { resumeList, selectedResumeNo, handleChange, submitApplication } = useProposerForm(hiringNo, onSuccess);
 
+  // 선택된 이력서 정보 가져오기
+  const selectedResume = resumeList.find((resume) => String(resume.resumeNo) === String(selectedResumeNo));
 
+  const CLOUDFRONT_URL = 'https://d20jnum8mfke0j.cloudfront.net/';
+  //이미지 경로 갖고오고 없다면 기본이미지
+  const getProfileImageUrl = (path) => {
+    if (!path) return profileImage; // 기본 이미지
+    const cleanPath = path.replace(/^\//, ''); // 앞에 / 있으면 제거
+    return `${CLOUDFRONT_URL}${cleanPath}`;
+  };
 
   return (
     <ModalOverlay>
@@ -27,9 +35,9 @@ const ResumeSelectModal = ({ onClose, hiringNo, onSuccess }) => {
         <Title>이력서를 선택해주세요</Title>
 
         <Card>
-          <ProfileImage src={profileImg} alt="프로필" />
+          <ProfileImage src={getProfileImageUrl(selectedResume?.profileImage)} alt="프로필" />
           <Info>
-            <Name>지원합니다!</Name>
+            <Name>{selectedResume ? selectedResume?.resumeTitle : '지원합니다!'}</Name>
           </Info>
         </Card>
 

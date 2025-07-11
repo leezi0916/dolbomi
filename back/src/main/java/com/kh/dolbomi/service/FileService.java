@@ -44,17 +44,6 @@ public class FileService {
         return presignedRequest.url().toString();
     }
 
-    // 파일 메타데이터 저장
-    @Transactional
-    public File saveFileInfo(String originalName, String changeName, String contentType) {
-        File files = File.builder()
-                .originName(originalName)
-                .changeName(changeName)
-                .contentType(contentType)
-                .build();
-
-        return fileRepository.save(files);
-    }
 
     // 파일 목록 조회
     public List<File> getAllFiles() {
@@ -62,9 +51,9 @@ public class FileService {
     }
 
     // 파일 단건 조회
-    public File getFile(Long id) {
-        return fileRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("File not found with id: " + id));
+    public File getFile(Long fileNo) {
+        return fileRepository.findById(fileNo)
+                .orElseThrow(() -> new IllegalArgumentException("File not found with id: " + fileNo));
     }
 
     // 파일 다운로드용 presigned URL 발급
@@ -76,5 +65,6 @@ public class FileService {
                 .url()
                 .toString();
     }
+
 }
 

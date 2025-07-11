@@ -100,8 +100,13 @@ public class UserController {
         return ResponseEntity.ok("회원탈퇴가 완료되었습니다.");
     }
 
+    
     //비밀번호 변경
-
+    @PatchMapping("/{userNo}/change-password")
+    public ResponseEntity<?> changePassword(@PathVariable Long userNo, @RequestBody UserDto.ChangePasswordDto passDto) {
+        userService.changePassword(userNo, passDto.getCurrent_password(), passDto.getNew_password());
+        return ResponseEntity.ok("비밀번호 변경 성공");
+    }
 
     //메인 페이지 간병사, 보호자 카운트
     @GetMapping("/user-counts")

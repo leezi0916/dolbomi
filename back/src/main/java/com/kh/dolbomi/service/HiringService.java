@@ -16,7 +16,7 @@ public interface HiringService {
     List<HiringDto.Response> getMainCareHiringList();
 
     // 구인글 페이징 리스트 조회 (상태 Y)
-    Page<HiringDto.Response> getHiringPage(Pageable pageable, SearchDataDto searchData);
+    Page<HiringDto.Response> getHiringPage(Pageable pageable, SearchDataDto.HiringSearch searchData);
 
     // 구인글 등록
     Long createHiring(Long patNo, HiringDto.Create createDto);

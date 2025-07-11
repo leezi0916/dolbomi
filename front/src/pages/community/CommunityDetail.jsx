@@ -4,7 +4,7 @@ import { Link, useNavigate, useParams } from 'react-router-dom';
 import { commuService } from '../../api/community';
 import { toast } from 'react-toastify';
 import { ClipLoader } from 'react-spinners';
-import { Page } from '../../styles/common/Board';
+import { Btn, Page } from '../../styles/common/Board';
 import { PageInfo } from './style/CommunityList.styles';
 import theme from '../../styles/theme';
 import styled from 'styled-components';
@@ -20,7 +20,7 @@ import {
   PageTop,
 } from './style/Community.styles';
 import { useForm } from 'react-hook-form';
-
+import profileImage from '../../assets/images/cargiver.png'; // 프로필 이미지 경로
 const CommunityDetail = () => {
   const userNo = useUserStore((state) => state.user?.userNo);
 
@@ -32,6 +32,18 @@ const CommunityDetail = () => {
   const navigate = useNavigate();
   const { register, handleSubmit, reset } = useForm();
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const [editingReplyNo, setEditingReplyNo] = useState(null);
+  const [editedContent, setEditedContent] = useState('');
+  const handleUpdateClick = (replyNo, replyContent) => {
+    setEditedContent(replyContent);
+    setEditingReplyNo(replyNo);
+  };
+
+  const handleCancelEdit = () => {
+    setEditingReplyNo(null);
+    setEditedContent('');
+  };
 
   useEffect(() => {
     const loadCommunity = async () => {
@@ -84,9 +96,10 @@ const CommunityDetail = () => {
         reply_content: data.replyContent,
       };
 
-      const response = await commuService.createReply(replyData);
-      console.log(response);
-      navigate(0);
+      await commuService.createReply(replyData);
+
+      const community = await commuService.getCommunityDetail(boardNo);
+      setCommunityDetail(community);
     } catch (error) {
       console.error(error);
       const errorMessage = '등록에 실패했습니다. 다시 시도해주세요.';
@@ -97,6 +110,66 @@ const CommunityDetail = () => {
       reset();
     }
   };
+  const handleUpdateReply = async (data) => {
+    console.log('작성 버튼 클릭');
+
+    try {
+      const replyData = {
+        reply_no: data,
+        reply_content: editedContent,
+      };
+
+      await commuService.updateReply(replyData); // API 호출
+
+      const updatedCommunity = await commuService.getCommunityDetail(boardNo); // 데이터만 다시 요청
+      setCommunityDetail(updatedCommunity); // 상태 갱신
+      setEditedContent(''); // 작성 내용 초기화
+      setEditingReplyNo(null);
+    } catch (error) {
+      toast.error(error.message);
+      const errorMessage = '등록에 실패했습니다. 다시 시도해주세요.';
+      setError(errorMessage);
+      toast.error(errorMessage);
+    }
+  };
+  const handleDeleteBoard = async () => {
+    try {
+      const deleteBoard = await commuService.deleteBoard(boardNo); // API 호출
+      toast.success(deleteBoard);
+      navigate(-1);
+      // 데이터만 다시 요청
+    } catch (error) {
+      toast.error(error.message);
+      const errorMessage = '삭제 실패했습니다. 다시 시도해주세요.';
+      setError(errorMessage);
+      toast.error(errorMessage);
+    }
+  };
+
+  const handleDeleteReply = async (replyNo) => {
+    try {
+      const deleteReply = await commuService.deleteReply(replyNo); // API 호출
+      toast.success(deleteReply);
+      const updatedCommunity = await commuService.getCommunityDetail(boardNo); // 데이터만 다시 요청
+      setCommunityDetail(updatedCommunity); // 상태 갱신
+      setEditedContent(''); // 작성 내용 초기화
+      setEditingReplyNo(null);
+    } catch (error) {
+      toast.error(error.message);
+      const errorMessage = '삭제 실패했습니다. 다시 시도해주세요.';
+      setError(errorMessage);
+      toast.error(errorMessage);
+    }
+  };
+
+  const CLOUDFRONT_URL = 'https://d20jnum8mfke0j.cloudfront.net/';
+  //이미지 경로 갖고오고 없다면 기본이미지
+  const getProfileImageUrl = (path) => {
+    if (!path) return profileImage; // 기본 이미지
+    const cleanPath = path.replace(/^\//, ''); // 앞에 / 있으면 제거
+    return `${CLOUDFRONT_URL}${cleanPath}`;
+  };
+
   return (
     <Page>
       <PageInfo>
@@ -130,11 +203,11 @@ const CommunityDetail = () => {
                   <ul>
                     <li>
                       <img src="/src/assets/icons/icon_수정.png" alt="" />
-                      <LinkLi to={`/community/update/${communityDetail?.no}`}>수정</LinkLi>
+                      <LinkLi to={`/community/update/${communityDetail.boardNo}`}>수정</LinkLi>
                     </li>
                     <li>
                       <img src="/src/assets/icons/icon_삭제.png" alt="" />
-                      <LinkLi> 삭제</LinkLi>
+                      <button onClick={handleDeleteBoard}> 삭제</button>
                     </li>
                   </ul>
                 </MenuBox>
@@ -151,10 +224,10 @@ const CommunityDetail = () => {
               <InputFile>
                 {communityDetail.files?.map((file, index) => (
                   <ImgBox key={index}>
-                    <a href={file.filePath} target="_blank" rel="noopener noreferrer">
+                    <a href={getProfileImageUrl(file?.fileName)} target="_blank" rel="noopener noreferrer">
                       <img
-                        src={file.filePath}
-                        alt={file.originName || '첨부 이미지'}
+                        src={getProfileImageUrl(file?.fileName)}
+                        alt="첨부 이미지"
                         style={{ width: '100%', aspectRatio: '4 / 3', borderRadius: '4px' }}
                       />
                     </a>
@@ -171,9 +244,7 @@ const CommunityDetail = () => {
                 {...register('replyContent')}
                 disabled={isSubmitting}
               />
-              <CommentButton type="submit" onClick={handleSubmit}>
-                댓글 작성
-              </CommentButton>
+              <CommentButton type="submit">댓글 작성</CommentButton>
             </CommentBox>
           </form>
           <CommentEx>
@@ -204,19 +275,37 @@ const CommunityDetail = () => {
                       {reply.userNo === userNo ? (
                         <li>
                           <img src="/src/assets/icons/icon_수정.png" alt="" />
-                          <LinkLi>수정</LinkLi>
+                          <button type="button" onClick={() => handleUpdateClick(reply.replyNo, reply.replyContent)}>
+                            수정
+                          </button>
                         </li>
                       ) : null}
                       <li>
                         <img src="/src/assets/icons/icon_삭제.png" alt="" />
-                        <LinkLi> 삭제</LinkLi>
+                        <button type="button" onClick={() => handleDeleteReply(reply.replyNo)}>
+                          {' '}
+                          삭제
+                        </button>
                       </li>
                     </ul>
                   </MenuBox>
                 ) : null}
               </div>
-
-              <div style={{ padding: '5px 10px 0' }}>{reply.replyContent}</div>
+              {editingReplyNo === reply.replyNo ? (
+                <CommentUpdate style={{ display: 'flex', flexDirection: 'column', margin: '10px 10px 0' }}>
+                  <input value={editedContent} onChange={(e) => setEditedContent(e.target.value)} />
+                  <div>
+                    <Btn type="button" onClick={() => handleUpdateReply(reply.replyNo)}>
+                      수정
+                    </Btn>
+                    <Btn type="button" onClick={handleCancelEdit}>
+                      취소
+                    </Btn>
+                  </div>
+                </CommentUpdate>
+              ) : (
+                <div style={{ padding: '5px 10px 0' }}>{reply.replyContent}</div>
+              )}
             </CommentSelect>
           ))}
         </CommentSelectBox>
@@ -252,7 +341,6 @@ const BodyText = styled.div`
 const MenuBox = styled.div`
   display: flex;
   justify-content: flex-end;
-  flex-direction: column;
   position: relative;
   > ul {
     display: none;
@@ -265,11 +353,20 @@ const MenuBox = styled.div`
     border-radius: ${({ theme }) => theme.borderRadius.base};
     z-index: 1;
     > li {
+      display: flex; /* 이 줄 추가 */
+      align-items: center;
       min-width: 70px;
       cursor: pointer;
       margin-bottom: 10px;
       > img {
         margin-right: 5px;
+      }
+      > button {
+        padding: 0;
+        font-weight: ${({ theme }) => theme.fontWeights.medium};
+        &:hover {
+          color: ${({ theme }) => theme.colors.primary};
+        }
       }
     }
   }
@@ -301,7 +398,23 @@ const CommentInput = styled.input`
   border: 1px solid ${({ theme }) => theme.colors.gray[4]};
   border-top-left-radius: 4px;
   border-bottom-left-radius: 4px;
-  padding: 2px 4px;
+  padding: 4px;
+`;
+
+const CommentUpdate = styled.div`
+  > input {
+    width: 100%;
+    border: 1px solid ${({ theme }) => theme.colors.gray[4]};
+    border-radius: 4px;
+    padding: 4px;
+  }
+  > div {
+    margin-right: auto;
+    > button {
+      margin-top: 6px;
+      margin-right: 6px;
+    }
+  }
 `;
 const CommentButton = styled.button`
   width: 100px;

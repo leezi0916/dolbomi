@@ -15,6 +15,7 @@ import { useParams } from 'react-router-dom';
 import { guardianHiringForm } from '../hooks/guardianHiringForm';
 import ResumeSelectModal from '../components/ResumeSelectModal';
 import { proposerService } from '../api/propose';
+import { extractRegionFromEnd } from '../utils/formatData';
 
 const HireDetail = () => {
   const navigate = useNavigate();
@@ -155,6 +156,14 @@ const HireDetail = () => {
   const isMyJobOpening = user?.userNo === jobOpening?.userNo;
   // 모집 마감 상태 확인 (DTO에 hire_status 필드가 있다고 가정)
 
+  const CLOUDFRONT_URL = 'https://d20jnum8mfke0j.cloudfront.net/';
+  //이미지 경로 갖고오고 없다면 기본이미지
+  const getProfileImageUrl = (path) => {
+    if (!path) return profileImage; // 기본 이미지
+    const cleanPath = path.replace(/^\//, ''); // 앞에 / 있으면 제거
+    return `${CLOUDFRONT_URL}${cleanPath}`;
+  };
+
   return (
     <HireRegistSection>
       {isMyJobOpening ? (
@@ -163,7 +172,7 @@ const HireDetail = () => {
             {proposerList.slice(0, 3).map((list, index) => (
               <ProfileImg
                 key={index}
-                src={list.profileImage ? list.profileImage : caregiverImage} // 기본 이미지로 대체
+                src={getProfileImageUrl(list.profileImage)} // 기본 이미지로 대체
                 style={{ left: `${index * 20}px`, zIndex: proposerList.length - index }}
               />
             ))}
@@ -185,7 +194,7 @@ const HireDetail = () => {
           <ContentWrapper>
             <div>
               <ProfilImageWrapper>
-                <img src={jobOpening.profileImage ? jobOpening.profileImage : profileImage} alt="프로필" />
+                <img src={getProfileImageUrl(jobOpening.profileImage)} alt="프로필" />
               </ProfilImageWrapper>
               <ChatButton>
                 <img src={chatImage} alt="프로필 이미지" />1 : 1 채팅하기
@@ -195,11 +204,11 @@ const HireDetail = () => {
               <InputRow>
                 <InputGroup>
                   <Label>이름</Label>
-                  <Input type="text" id="patName" value={jobOpening?.patName} readOnly />
+                  <HireInput type="text" id="patName" value={jobOpening?.patName} readOnly />
                 </InputGroup>
                 <InputGroup>
                   <Label>나이</Label>
-                  <Input type="text" id="age" value={jobOpening?.patAge} readOnly />
+                  <HireInput type="text" id="age" value={jobOpening?.patAge} readOnly />
                 </InputGroup>
               </InputRow>
               <RadioGroup>
@@ -219,16 +228,16 @@ const HireDetail = () => {
               </InputGroup> */}
               <InputGroup>
                 <Label>주소</Label>
-                <Input type="text" id="patAddress" value={jobOpening?.patAddress} readOnly />
+                <HireInput type="text" id="patAddress" value={extractRegionFromEnd(jobOpening?.patAddress)} readOnly />
               </InputGroup>
               <InputRow>
                 <InputGroup>
                   <Label>키</Label>
-                  <Input type="text" value={jobOpening?.patHeight} readOnly />
+                  <HireInput type="text" value={jobOpening?.patHeight} readOnly />
                 </InputGroup>
                 <InputGroup>
                   <Label>몸무게</Label>
-                  <Input type="text" value={jobOpening?.patWeight} readOnly />
+                  <HireInput type="text" value={jobOpening?.patWeight} readOnly />
                 </InputGroup>
               </InputRow>
             </Divider>
@@ -251,27 +260,27 @@ const HireDetail = () => {
           <ContentWrapper1>
             <HireContent>
               <Label>제목</Label>
-              <Input type="text" id="hiring_title" {...register('hiringTitle')} readOnly />
+              <HireInput type="text" id="hiring_title" {...register('hiringTitle')} readOnly />
 
               <InputRow>
                 <InputGrouping>
                   <Label>지급 금액 (시급)</Label>
-                  <Input type="text" id="account" {...register('account')} readOnly />
+                  <HireInput type="text" id="account" {...register('account')} readOnly />
                 </InputGrouping>
 
                 <InputGrouping>
                   <Label>시작일</Label>
-                  <Input type="date" id="startDate" {...register('startDate')} readOnly />
+                  <HireInput type="date" id="startDate" {...register('startDate')} readOnly />
                 </InputGrouping>
 
                 <InputGrouping>
                   <Label>종료일</Label>
-                  <Input type="date" id="endDate" {...register('endDate')} readOnly />
+                  <HireInput type="date" id="endDate" {...register('endDate')} readOnly />
                 </InputGrouping>
 
                 <InputGrouping>
                   <Label>모집 인원수 설정</Label>
-                  <Input type="number" id="maxApplicants" {...register('maxApplicants')} readOnly />
+                  <HireInput type="number" id="maxApplicants" {...register('maxApplicants')} readOnly />
                 </InputGrouping>
               </InputRow>
 
@@ -288,14 +297,23 @@ const HireDetail = () => {
                   <label>불가능</label>
                 </RadioWrapper>
               </RadioGroup>
-              <InputGroup>
-                <Label>숙소 정보</Label>
-                {/* 클릭 가능한 div */}
-                <RoomImage>
-                  <Plus />
-                </RoomImage>
-                <input type="file" style={{ display: 'none' }} readOnly />
-              </InputGroup>
+              {jobOpening?.careStatus === 'Y' && (
+                <InputGroup>
+                  <Label>숙소 정보</Label>
+                  <RoomImage>
+                    {jobOpening.roomImage ? (
+                      <img
+                        src={getProfileImageUrl(jobOpening.roomImage)}
+                        alt="숙소 사진"
+                        style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '4px' }}
+                      />
+                    ) : (
+                      <Plus />
+                    )}
+                  </RoomImage>
+                  <input type="file" style={{ display: 'none' }} readOnly />
+                </InputGroup>
+              )}
             </HireContent>
           </ContentWrapper1>
         </form>
@@ -450,6 +468,11 @@ const Label = styled.label`
   text-align: left;
 `;
 
+const HireInput = styled(Input)`
+  pointer-events: none; /* 클릭/포커스 불가 */
+  cursor: default; /* 마우스 커서를 기본 화살표로 변경 */
+`;
+
 const RadioGroup = styled.div`
   display: flex;
   gap: ${({ theme }) => theme.spacing[6]};
@@ -481,6 +504,8 @@ const RadioWrapper = styled.div`
     position: relative;
     transition: all 0.2s ease-in-out;
     background-color: white;
+    pointer-events: none; /* 클릭/포커스 불가 */
+    cursor: default; /* 마우스 커서를 기본 화살표로 변경 */
     // RadioWrapper에서 전달받은 checked prop 사용
     border: 1px solid ${({ theme, checked }) => (checked ? theme.colors.primary : theme.colors.gray[4])};
   }
@@ -506,7 +531,8 @@ const RadioWrapper = styled.div`
   label {
     font-size: ${({ theme }) => theme.fontSizes.base};
     color: ${({ theme }) => theme.colors.gray[1]};
-    cursor: pointer;
+    pointer-events: none; /* 클릭/포커스 불가 */
+    cursor: default; /* 마우스 커서를 기본 화살표로 변경 */
   }
 `;
 
@@ -587,10 +613,11 @@ const Content = styled.textarea`
   resize: none;
   overflow: hidden; /* 스크롤 숨김 */
   margin-bottom: ${({ theme }) => theme.spacing[3]};
+  pointer-events: none; /* 클릭/포커스 불가 */
+  cursor: default; /* 마우스 커서를 기본 화살표로 변경 */
 `;
 
 const RoomImage = styled.div`
-  padding: ${({ theme }) => theme.spacing[3]};
   width: 50%;
   height: 200px;
   background-color: ${({ theme }) => theme.colors.gray[5]};

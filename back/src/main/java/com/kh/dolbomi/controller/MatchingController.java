@@ -67,7 +67,7 @@ public class MatchingController {
     public ResponseEntity<PageResponse<MatchingDto.ResponsePat>> getMatchedPatientsByCaregiver(
             @RequestParam("caregiver_no") Long caregiverNo,
             @RequestParam("status") StatusEnum.Status status,
-            @PageableDefault(size = 3) Pageable pageable
+            @PageableDefault(size = 4) Pageable pageable
     ) {
         return ResponseEntity.ok(
                 new PageResponse<>(matchingService.getMatchedPatientsByCaregiver(caregiverNo, status, pageable))
@@ -96,6 +96,7 @@ public class MatchingController {
     ) {
         Status status = Status.valueOf("N");
 
+        System.out.println("test" + startDate + "-" + endDate);
         return ResponseEntity.ok(
                 new PageResponse<>(
                         matchingService.getMatchedListBySearch(patNo, startDate, endDate, status, pageable)));

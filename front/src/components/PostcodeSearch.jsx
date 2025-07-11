@@ -1,6 +1,7 @@
 import React, { useRef, useEffect } from 'react';
 import styled from 'styled-components';
 import { Button } from '../styles/Auth.styles';
+import { yellow } from '@mui/material/colors';
 
 const PostcodeSearch = ({ onAddressSelected }) => {
   const layerRef = useRef(null);
@@ -55,9 +56,11 @@ const PostcodeSearch = ({ onAddressSelected }) => {
         document.body.scrollTop = currentScroll;
         document.documentElement.scrollTop = currentScroll;
       },
+      //여기서 속성추가 가능
       width: '100%',
       height: '100%',
       maxSuggestItems: 5,
+      shorthand: false,
     }).embed(layerRef.current);
 
     if (layerRef.current) {
@@ -70,9 +73,9 @@ const PostcodeSearch = ({ onAddressSelected }) => {
   const centerLayer = () => {
     if (!layerRef.current) return;
 
-    const width = 300;
-    const height = 400;
-    const borderWidth = 5;
+    const width = 500;
+    const height = 500;
+    const borderWidth = 1;
 
     layerRef.current.style.width = `${width}px`;
     layerRef.current.style.height = `${height}px`;

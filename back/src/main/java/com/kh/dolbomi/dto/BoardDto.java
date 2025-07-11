@@ -1,9 +1,11 @@
 package com.kh.dolbomi.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.kh.dolbomi.domain.Board;
 import com.kh.dolbomi.enums.StatusEnum;
 import jakarta.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -19,6 +21,7 @@ public class BoardDto {
         @NotBlank(message = "제목은 필수입니다.")
         private String board_title;
         private String board_content;
+        private List<String> image_names;
         private Long user_no;
         private StatusEnum.Role role;
 
@@ -26,10 +29,26 @@ public class BoardDto {
             return Board.builder()
                     .boardTitle(this.board_title)
                     .boardContent(this.board_content)
+                    .fileList(new ArrayList<>())
                     .role(this.role)
                     .build();
 
         }
+    }
+
+    @Getter
+    @AllArgsConstructor
+    public static class Update {
+
+        @NotBlank(message = "제목은 필수입니다.")
+        private String board_title;
+        private String board_content;
+        private Long board_no;
+
+        //추가된 사진들
+        private List<String> image_names;
+        // 삭제할 기존 이미지 번호들
+        private List<Long> deleted_file_nos;
     }
 
     @Getter
@@ -40,11 +59,13 @@ public class BoardDto {
         private String board_title;
         @NotBlank(message = "내용을 적어주세요.")
         private String board_content;
-
         private Long user_no;
         private StatusEnum.Role role;
         private StatusEnum.QuestionStatus question_status;
         private StatusEnum.QuestionCategory question_category;
+
+        @JsonProperty("file_names")
+        private List<String> file_names;
 
         public Board toEntity() {
             return Board.builder()
@@ -53,6 +74,7 @@ public class BoardDto {
                     .role(this.role)
                     .questionStatus(this.question_status)
                     .questionCategory(this.question_category)
+                    .fileList(new ArrayList<>())
                     .build();
 
         }
@@ -73,8 +95,8 @@ public class BoardDto {
         private StatusEnum.Role role;
         private StatusEnum.QuestionStatus question_status;
         private StatusEnum.QuestionCategory question_category;
-        private List<FileDto.Response> files;
         private List<ReplyDto.Response> reply;
+        private List<FileDto> files;
 
         public static Response toDto(Board board) {
             return Response.builder()
@@ -90,6 +112,7 @@ public class BoardDto {
                     .question_category(board.getQuestionCategory())
                     .reply(
                             board.getReplyList().stream()
+                                    .filter(reply -> reply.getStatus() == StatusEnum.Status.Y)
                                     .map(reply -> ReplyDto.Response.builder()
                                             .replyNo(reply.getReplyNo())
                                             .user_no(reply.getUser().getUserNo())
@@ -97,8 +120,19 @@ public class BoardDto {
                                             .replyContent(reply.getReplyContent())
                                             .createDate(reply.getCreateDate())
                                             .updateDate(reply.getUpdateDate())
+                                            .profile_image(reply.getUser().getProfileImage())
                                             .build())
                                     .toList()
+                    )
+                    .files(
+                            board.getFileList() != null ?
+                                    board.getFileList().stream()
+                                            .map(file -> FileDto.builder()
+                                                    .file_no(file.getFileNo())
+                                                    .file_name(file.getFileName())
+                                                    .build())
+                                            .toList()
+                                    : new ArrayList<>()
                     )
                     .build();
         }

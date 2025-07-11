@@ -8,6 +8,8 @@ export const AuthContainer = styled.div`
   margin: 0 auto;
 `;
 
+
+
 export const Title = styled.h1`
   font-size: ${({ theme }) => theme.fontSizes['2xl']};
   font-weight: ${({ theme }) => theme.fontWeights.bold};
@@ -15,6 +17,13 @@ export const Title = styled.h1`
   margin-bottom: ${({ theme }) => theme.spacing[5]};
   color: ${({ theme }) => theme.colors.gray[800]};
   padding: ${({ theme }) => theme.spacing[3]};
+`;
+
+export const TipP = styled.p`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
 `;
 
 export const Form = styled.form`

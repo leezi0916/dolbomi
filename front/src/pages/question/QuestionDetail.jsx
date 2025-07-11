@@ -19,8 +19,9 @@ import {
   PageTop,
 } from '../community/style/Community.styles';
 import { PageInfo, Textarea } from './style/Question.styles';
-
+import { getDownloadUrl } from '../../api/fileApi';
 const QuestionDetail = () => {
+  const userRole = useUserStore((state) => state.user?.userRole);
   const userNo = useUserStore((state) => state.user?.userNo);
   const userName = useUserStore((state) => state.user?.userName);
   const { boardNo } = useParams();
@@ -30,6 +31,7 @@ const QuestionDetail = () => {
   const [loading, setLoading] = useState(true);
 
   const [communityDetail, setCommunityDetail] = useState(null);
+  const [submitting, setSubmitting] = useState(false);
 
   const [replyMode, setReplyMode] = useState('none');
   const handleCreateClick = () => {
@@ -67,7 +69,7 @@ const QuestionDetail = () => {
     };
 
     loadCommunity();
-  }, [boardNo]);
+  }, [boardNo, userRole]);
 
   if (loading) {
     return (
@@ -85,7 +87,12 @@ const QuestionDetail = () => {
     return <Page>게시글을 찾을 수 없습니다.</Page>;
   }
   const handleSaveReply = async () => {
+    if (submitting) return;
+
+    console.log('작성 버튼 클릭');
+
     try {
+      setSubmitting(true);
       const replyData = {
         board_no: boardNo,
         user_no: userNo,
@@ -93,14 +100,81 @@ const QuestionDetail = () => {
       };
 
       await commuService.createReplyQusetion(replyData); // API 호출
-      navigate(0);
+
+      const updatedCommunity = await commuService.getCommunityDetail(boardNo); // 데이터만 다시 요청
+      setCommunityDetail(updatedCommunity); // 상태 갱신
+      setReplyMode('none'); // 작성 모드 종료
+      setEditedContent(''); // 작성 내용 초기화
     } catch (error) {
       toast.error(error.message);
       const errorMessage = '등록에 실패했습니다. 다시 시도해주세요.';
       setError(errorMessage);
       toast.error(errorMessage);
+    } finally {
+      setSubmitting(false);
     }
   };
+
+  const handleUpdateReply = async () => {
+    if (submitting) return;
+
+    console.log('작성 버튼 클릭');
+
+    try {
+      setSubmitting(true);
+      const replyData = {
+        reply_no: communityDetail.reply[0].replyNo,
+        reply_content: editedContent,
+      };
+
+      await commuService.updateReply(replyData); // API 호출
+
+      const updatedCommunity = await commuService.getCommunityDetail(boardNo); // 데이터만 다시 요청
+      setCommunityDetail(updatedCommunity); // 상태 갱신
+      setReplyMode('none'); // 작성 모드 종료
+      setEditedContent(''); // 작성 내용 초기화
+    } catch (error) {
+      toast.error(error.message);
+      const errorMessage = '등록에 실패했습니다. 다시 시도해주세요.';
+      setError(errorMessage);
+      toast.error(errorMessage);
+    } finally {
+      setSubmitting(false);
+    }
+  };
+  const handleDeleteBoard = async () => {
+    try {
+      const deleteBoard = await commuService.deleteBoard(boardNo); // API 호출
+      toast.success(deleteBoard);
+      navigate(-1);
+      // 데이터만 다시 요청
+    } catch (error) {
+      toast.error(error.message);
+      const errorMessage = '삭제 실패했습니다. 다시 시도해주세요.';
+      setError(errorMessage);
+      toast.error(errorMessage);
+    }
+  };
+
+  const handleDownload = async (fileNo, fileName) => {
+    try {
+      const { presignedUrl } = await getDownloadUrl(fileNo);
+      const response = await fetch(presignedUrl);
+      const blob = await response.blob();
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = fileName;
+      document.body.appendChild(a);
+      a.click();
+      window.URL.revokeObjectURL(url);
+      document.body.removeChild(a);
+    } catch (error) {
+      console.error('파일 다운로드 실패:', error);
+      alert('파일 다운로드에 실패했습니다.');
+    }
+  };
+
   return (
     <Page>
       <PageInfo>
@@ -125,19 +199,9 @@ const QuestionDetail = () => {
               <Icons src="/src/assets/icons/icon_작성일자.png" alt="" />
               <div style={{ paddingRight: '10px' }}>{communityDetail?.createDate}</div>
               {communityDetail.userNo === userNo ? (
-                <MenuBox>
-                  <img src="/src/assets/icons/icon_설정메뉴.png" alt="" />
-                  <ul>
-                    <li>
-                      <img src="/src/assets/icons/icon_수정.png" alt="" />
-                      <LinkLi to={`/community/update/${communityDetail?.no}`}>수정</LinkLi>
-                    </li>
-                    <li>
-                      <img src="/src/assets/icons/icon_삭제.png" alt="" />
-                      <LinkLi> 삭제</LinkLi>
-                    </li>
-                  </ul>
-                </MenuBox>
+                <button style={{ padding: '0', color: 'gray' }} type="button" onClick={handleDeleteBoard}>
+                  삭제
+                </button>
               ) : null}
             </Right>
           </BodyTop>
@@ -145,23 +209,25 @@ const QuestionDetail = () => {
           <BodyText>{communityDetail.boardContent}</BodyText>
           {communityDetail.files && communityDetail.files.length > 0 && (
             <FileBox>
-              <FileTitle>
-                <Icons src="/src/assets/icons/icon_사진.png" alt="" />
-                <div>사진</div>
-              </FileTitle>
-              <InputFile>
-                {communityDetail.files?.map((file, index) => (
-                  <ImgBox key={index}>
-                    <a href={file.filePath} target="_blank" rel="noopener noreferrer">
-                      <img
-                        src={file.filePath}
-                        alt={file.originName || '첨부 이미지'}
-                        style={{ width: '100%', aspectRatio: '4 / 3', borderRadius: '4px' }}
-                      />
-                    </a>
-                  </ImgBox>
-                ))}
-              </InputFile>
+              {/* 파일 목록 */}
+              <FileListSection>
+                <FileListTitle>파일 목록</FileListTitle>
+
+                {communityDetail.files && communityDetail.files.length > 0 ? (
+                  communityDetail.files.map((file) => (
+                    <FileItem key={file.fileNo}>
+                      <FileName>{file.fileName.split('/').pop()}</FileName> {/* 경로 제외한 파일명만 표시 */}
+                      <ButtonWrapper>
+                        <DownloadButton onClick={() => handleDownload(file.fileNo, file.fileName.split('/').pop())}>
+                          다운로드
+                        </DownloadButton>
+                      </ButtonWrapper>
+                    </FileItem>
+                  ))
+                ) : (
+                  <EmptyMessage>첨부된 파일이 없습니다.</EmptyMessage>
+                )}
+              </FileListSection>
             </FileBox>
           )}
         </PageBody>
@@ -173,14 +239,17 @@ const QuestionDetail = () => {
                 {communityDetail.questionStatus === 'Y' ? '완료' : '대기'}
               </div>
             </div>
-            {userNo == '1' && replyMode === 'none' && (
-              <div style={{ marginLeft: 'auto' }}>
+            {userRole === 'ADMIN' && replyMode === 'none' && (
+              <div>
                 {communityDetail.questionStatus === 'Y' ? (
-                  <Btn onClick={handleUpdateClick}>수정</Btn>
+                  <Btn type="button" onClick={handleUpdateClick}>
+                    수정
+                  </Btn>
                 ) : (
-                  <Btn onClick={handleCreateClick}>작성</Btn>
+                  <Btn type="button" onClick={handleCreateClick}>
+                    작성
+                  </Btn>
                 )}
-                <Btn style={{ margin: '0 10PX' }}>삭제</Btn>
               </div>
             )}
           </div>
@@ -193,8 +262,10 @@ const QuestionDetail = () => {
                     <div>{reply.userName}</div>
                     <div>{reply.updateDate}</div>
                     <div style={{ marginLeft: 'auto' }}>
-                      <Btn>수정</Btn>
-                      <Btn style={{ margin: '0 10PX' }} onClick={handleUpdateClick}>
+                      <Btn type="button" onClick={handleUpdateReply}>
+                        수정
+                      </Btn>
+                      <Btn type="button" style={{ margin: '0 10PX' }} onClick={handleUpdateClick}>
                         취소
                       </Btn>
                     </div>
@@ -205,8 +276,10 @@ const QuestionDetail = () => {
                   <Icons src="/src/assets/icons/icon_작성자.png" alt="" />
                   <div>{userName}</div>
                   <div style={{ marginLeft: 'auto' }}>
-                    <Btn onClick={handleSaveReply}>작성</Btn>
-                    <Btn style={{ margin: '0 10PX' }} onClick={handleCreateClick}>
+                    <Btn type="button" onClick={handleSaveReply}>
+                      작성
+                    </Btn>
+                    <Btn type="button" style={{ margin: '0 10PX' }} onClick={handleCreateClick}>
                       취소
                     </Btn>
                   </div>
@@ -229,7 +302,7 @@ const QuestionDetail = () => {
                   <div>{reply.userName}</div>
                   <div>{reply.updateDate}</div>
                 </div>
-                <div style={{ padding: '5px 10px 0' }}>{reply.replyContent}</div>
+                <div style={{ textAlign: 'left', padding: '5px 10px 0' }}>{reply.replyContent}</div>
               </CommentSelect>
             ))}
         </CommentSelectBox>
@@ -323,5 +396,65 @@ const CommentSelect = styled.div`
   > div {
     align-items: center;
   }
+`;
+
+const FileListSection = styled.div`
+  margin-top: 2rem;
+`;
+
+const FileListTitle = styled.h3`
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  color: #333;
+  text-align: left;
+  padding: 5px 15px;
+`;
+
+const FileItem = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem;
+  background: #f8f9fa;
+  border-radius: 6px;
+  margin-bottom: 0.5rem;
+  border: 1px solid #e9ecef;
+`;
+
+const FileName = styled.span`
+  font-size: 0.875rem;
+  color: #495057;
+  flex: 1;
+`;
+
+const DownloadButton = styled.button`
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+  color: ${({ theme }) => theme.colors.primary};
+  background: transparent;
+  border: 1px solid ${({ theme }) => theme.colors.primary};
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s;
+
+  &:hover {
+    background: ${({ theme }) => theme.colors.primary};
+    color: white;
+  }
+`;
+
+const EmptyMessage = styled.p`
+  text-align: center;
+  font-size: 0.875rem;
+  color: #6c757d;
+  padding: 2rem;
+  background: #f8f9fa;
+  border-radius: 6px;
+`;
+
+const ButtonWrapper = styled.div`
+  display: flex;
+  gap: 0.5rem;
 `;
 export default QuestionDetail;

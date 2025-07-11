@@ -13,6 +13,7 @@ import useUserStore from '../store/userStore';
 import { toast } from 'react-toastify';
 import { jobSeekingService } from '../api/jobSeeking';
 import { useNavigate } from 'react-router-dom';
+import {extractRegionFromEnd} from '../utils/formatData';
 
 const ResumeRegistration = () => {
   const { user } = useUserStore();
@@ -56,6 +57,14 @@ const ResumeRegistration = () => {
     }
   };
 
+  const CLOUDFRONT_URL = 'https://d20jnum8mfke0j.cloudfront.net/';
+  //이미지 경로 갖고오고 없다면 기본이미지
+  const getProfileImageUrl = (path) => {
+    if (!path) return profileImage; // 기본 이미지
+    const cleanPath = path.replace(/^\//, ''); // 앞에 / 있으면 제거
+    return `${CLOUDFRONT_URL}${cleanPath}`;
+  };
+
   return (
     <HireRegistSection>
       <HireContainer>
@@ -67,7 +76,7 @@ const ResumeRegistration = () => {
           <ContentWrapper>
             <div>
               <ProfilImageWrapper>
-                <img src={profileImage} alt="프로필 이미지" />
+                <img src={getProfileImageUrl(careGiver?.profileImage)} alt="프로필" />
               </ProfilImageWrapper>
             </div>
             <Divider>
@@ -99,13 +108,13 @@ const ResumeRegistration = () => {
                   <label htmlFor="female">여성</label>
                 </RadioWrapper>
               </RadioGroup>
-              <InputGroup>
+              {/* <InputGroup>
                 <Label>전화번호</Label>
                 <Input type="text" value={careGiver?.phone || ''} readOnly />
-              </InputGroup>
+              </InputGroup> */}
               <InputGroup>
                 <Label>주소</Label>
-                <Input type="text" value={careGiver?.address || ''} readOnly />
+                <Input type="text" value={extractRegionFromEnd(careGiver?.address)} readOnly />
               </InputGroup>
             </Divider>
           </ContentWrapper>

@@ -5,7 +5,6 @@ import styled from 'styled-components';
 //달력 라이브러리 및 한글화
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
-import { ko } from 'date-fns/locale';
 
 // import { toast } from 'react-toastify';
 import profileImage from '../assets/images/pat.png'; // 프로필 이미지 경로
@@ -17,7 +16,7 @@ import { Link } from 'react-router-dom';
 import { hiringService } from '../api/hiring';
 import Paging from '../components/Paging';
 import { addressService } from '../api/address';
-
+import { extractRegionFromEnd } from '../utils/formatData';
 const HireList = () => {
   const [hireLists, setHireLists] = useState([]);
   const [loading, setLoading] = useState(false); // 초기 false
@@ -73,9 +72,9 @@ const HireList = () => {
   // 이름 첫글자 O 처리하기
   const maskName = (name) => {
     if (name.length === 2) {
-      return name[0] + '○';
+      return name[0] + ' ○ ';
     } else if (name.length >= 3) {
-      return name[0] + '○' + name.slice(2);
+      return name[0] + ' ○ ' + name.slice(2);
     }
 
     return name;
@@ -95,7 +94,7 @@ const HireList = () => {
     const finalForm = {
       ...data,
       keyword: keyword,
-      region: finalRegionValue.fullAddr,
+      region: finalRegionValue?.fullAddr,
     }; // 최신 상태 생성
 
     setUpdateData(finalForm); // 상태 업데이트
@@ -145,12 +144,13 @@ const HireList = () => {
     const today = new Date(); //오늘날짜
     today.setHours(0, 0, 0, 0); //시간초기화
 
+    let koDate = date.getTime() + 9 * 60 * 60 * 1000;
     let isValid = true;
     let errMsg = '';
 
     //시작일유효성
     if (name === 'startDate') {
-      const newStartDate = date; // 새로 입력된 시작일
+      const newStartDate = new Date(koDate); // 새로 입력된 시작일
 
       if (newStartDate && newStartDate.getTime() < today.getTime()) {
         errMsg = '시작일은 오늘 이후로 설정해야 합니다.';
@@ -169,11 +169,15 @@ const HireList = () => {
       }
       setInternalStartDate(newStartDate);
       // data 객체에도 문자열 형태로 반영
-      setData((data) => ({ ...data, startDate: newStartDate ? newStartDate.toISOString().split('T')[0] : '' }));
+      // setData((data) => ({ ...data, startDate: newStartDate ? newStartDate.toISOString().split('T')[0] : '' }));
+      setData((data) => ({
+        ...data,
+        startDate: newStartDate ? new Date(newStartDate).toISOString().slice(0, 10) : '',
+      }));
     }
     //종료일 유효성
     else if (name === 'endDate') {
-      const newEndDate = date; // 새로 입력된 종료일
+      const newEndDate = new Date(koDate); // 새로 입력된 종료일
 
       if (newEndDate && newEndDate.getTime() < today.getTime()) {
         errMsg = '종료일은 오늘 이후로 설정해야 합니다.';
@@ -191,7 +195,7 @@ const HireList = () => {
       }
       setInternalEndDate(newEndDate);
       // data 객체에도 문자열 형태로 반영 (필요하다면)
-      setData((data) => ({ ...data, endDate: newEndDate ? newEndDate.toISOString().split('T')[0] : '' }));
+      setData((data) => ({ ...data, endDate: newEndDate ? newEndDate.toISOString().slice(0, 10) : '' }));
     }
   };
 
@@ -234,6 +238,14 @@ const HireList = () => {
     } catch (error) {
       console.error('시군구 조회 실패:', error);
     }
+  };
+
+  const CLOUDFRONT_URL = 'https://d20jnum8mfke0j.cloudfront.net/';
+  //이미지 경로 갖고오고 없다면 기본이미지
+  const getProfileImageUrl = (path) => {
+    if (!path) return profileImage; // 기본 이미지
+    const cleanPath = path.replace(/^\//, ''); // 앞에 / 있으면 제거
+    return `${CLOUDFRONT_URL}${cleanPath}`;
   };
 
   return (
@@ -295,7 +307,6 @@ const HireList = () => {
                   <DateContentBox>
                     <SearchTitle> 시작일: </SearchTitle>
                     <DateInput
-                      locale={ko}
                       selected={internalStartDate}
                       onChange={(date) => handledateChange(date, 'startDate')}
                       dateFormat="yyyy-MM-dd"
@@ -307,7 +318,6 @@ const HireList = () => {
                   <DateContentBox>
                     <SearchTitle> 종료일: </SearchTitle>
                     <DateInput
-                      locale={ko}
                       selected={internalEndDate} // Date 객체를 받음
                       onChange={(date) => handledateChange(date, 'endDate')} // 날짜와 필드명 전달
                       dateFormat="yyyy-MM-dd"
@@ -328,7 +338,7 @@ const HireList = () => {
                     </SelectBox>
                   </Item>
                   <Item>
-                    <SearchTitle>시급: </SearchTitle>
+                    <SearchTitle>최소 시급: </SearchTitle>
                     <ACCOUNT
                       name="account"
                       type="number"
@@ -395,19 +405,20 @@ const HireList = () => {
           {hireLists.map((hire) => (
             <HireListCard key={hire.hiringNo} to={`/hireDetail/${hire.hiringNo}`}>
               <CardHeader>
-                <ProfileImage src={hire.profileImage || profileImage} alt="프로필" />
+                <ProfileImage src={getProfileImageUrl(hire.profileImage)} alt="프로필" />
+
                 <HeaderContent>
-                  <Divder>
-                    <UserInfo>
-                      <UserName>{maskName(hire.patName)}</UserName>
-                      <UserAge>
-                        나이 {hire.patAge}세(
-                        {hire.patGender === 'M' ? '남' : hire.patGender === 'F' ? '여' : ''})
-                      </UserAge>
-                    </UserInfo>
-                    <CareContent>{hire.hiringTitle}</CareContent>
-                    <div></div>
-                  </Divder>
+                  <UserInfo>
+                    <UserName>
+                      {maskName(hire.patName)}
+                      <GrayText> 님</GrayText>
+                    </UserName>
+                    <UserAge>
+                      나이 {hire.patAge}세(
+                      {hire.patGender === 'M' ? '남' : hire.patGender === 'F' ? '여' : ''})
+                    </UserAge>
+                  </UserInfo>
+                  <CareContent>{hire.hiringTitle}</CareContent>
                   <DateInfo>
                     {hire.startDate?.substring(0, 10)} ~ {hire.endDate?.substring(0, 10)}
                   </DateInfo>
@@ -416,14 +427,19 @@ const HireList = () => {
               <CardFooter>
                 <LocationWage>
                   <LocationText>
-                    <GrayText>시급</GrayText> <BoldAccount>{hire.account}원</BoldAccount>
+                    <GrayText>시급</GrayText>
+                    <BoldText>{hire.account}원</BoldText>
                   </LocationText>
                   <AccuontText>
                     <GrayText>지역 </GrayText>
-                    {hire.patAddress}
+                    <BoldText>{extractRegionFromEnd(hire.patAddress)}</BoldText>
                   </AccuontText>
                 </LocationWage>
-                {hire.careStatus === 'Y' && <AccommodationInfo>숙식 제공 가능</AccommodationInfo>}
+                <AccommodationInfo>
+                  {' '}
+                  근무유형
+                  {hire.careStatus ? <CareStatusTag>입주형 </CareStatusTag> : <CareStatusTag>출퇴근형</CareStatusTag>}
+                </AccommodationInfo>
               </CardFooter>
             </HireListCard>
           ))}
@@ -439,10 +455,34 @@ const Title = styled.h1`
   font-weight: ${({ theme }) => theme.fontWeights.bold};
   text-align: center;
   margin-bottom: ${({ theme }) => theme.spacing[5]};
-  color: ${({ theme }) => theme.colors.gray[800]};
+  color: ${({ theme }) => theme.colors.gray[1]};
   padding: ${({ theme }) => theme.spacing[3]};
   display: flex;
   justify-content: flex-start;
+`;
+
+const SearchContainer2 = styled(Container)`
+  padding: 20px;
+  width: 100%;
+  background-color: ${({ theme }) => theme.colors.gray[5]};
+  border-radius: 4px;
+`;
+
+const Search = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
+const DetailBtn = styled.p`
+  width: 100px;
+  padding-left: 16px;
+  color: ${({ theme }) => theme.colors.gray[3]};
+  cursor: pointer;
+  user-select: none;
+  &:hover {
+    color: ${({ theme }) => theme.colors.gray[2]};
+  }
 `;
 
 const Detail = styled.div`
@@ -451,6 +491,24 @@ const Detail = styled.div`
   display: ${({ $visible }) => ($visible ? 'flex' : 'none')};
   flex-direction: column;
   gap: 10px;
+`;
+
+const Item = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
+const RegionDiv = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+`;
+
+const RegionLabel = styled.label`
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+  gap: 10px;
+  padding-left: 10px;
 `;
 
 const RegionBtn = styled.button`
@@ -465,26 +523,25 @@ const RegionBtn = styled.button`
   }
 `;
 
-const SearchContainer2 = styled(Container)`
-  padding: 20px;
+const SearchSelect = styled.div`
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-auto-rows: min-content;
+  row-gap: 20px;
+`;
+
+const DateBox = styled.div`
+  margin-top: 20px;
+  display: flex;
+  grid-column: span 4;
   width: 100%;
-  background-color: ${({ theme }) => theme.colors.gray[5]};
-  border-radius: 4px;
+  gap: 20px;
 `;
 
-const DetailBtn = styled.p`
-  width: 100px;
-  padding-left: 16px;
-  color: ${({ theme }) => theme.colors.gray[3]};
-  cursor: pointer;
-  user-select: none;
-  &:hover {
-    color: ${({ theme }) => theme.colors.gray[2]};
-  }
-`;
-
-const SearchSection = styled(Section)`
-  padding-bottom: 0;
+const DateContentBox = styled.div`
+  display: flex;
+  align-items: center;
+  width: 100%;
 `;
 
 const SearchTitle = styled.span`
@@ -495,6 +552,46 @@ const SearchTitle = styled.span`
   color: ${({ theme }) => theme.colors.gray[1]};
 `;
 
+const DateInput = styled(DatePicker)`
+  width: 100%;
+  height: 30px;
+  text-align: center;
+  border-radius: ${({ theme }) => theme.borderRadius.base};
+  font-size: ${({ theme }) => theme.spacing[4]};
+  caret-color: transparent;
+  cursor: pointer;
+`;
+
+const Items = styled.div`
+  display: flex;
+  align-items: center;
+  grid-column: span 1;
+`;
+
+const SelectBox = styled.select`
+  width: 120px;
+  height: 30px;
+  text-align: center;
+  padding: 0 ${({ theme }) => theme.spacing[5]};
+  border: none;
+  border-radius: ${({ theme }) => theme.borderRadius.base};
+  font-size: ${({ theme }) => theme.spacing[4]};
+
+  &:option {
+    text-align: center;
+  }
+`;
+
+const ACCOUNT = styled.input`
+  width: 150px;
+  height: 30px;
+  text-align: center;
+  padding: 0 ${({ theme }) => theme.spacing[5]};
+  border: none;
+  border-radius: ${({ theme }) => theme.borderRadius.base};
+  font-size: ${({ theme }) => theme.spacing[4]};
+`;
+
 const RadioGroup2 = styled.div`
   display: flex;
   grid-column: span 1;
@@ -502,28 +599,6 @@ const RadioGroup2 = styled.div`
   gap: ${({ theme }) => theme.spacing[4]};
 `;
 
-const Label = styled.label`
-  padding-left: 10px;
-  width: 40px;
-  text-align: center;
-`;
-
-const Label2 = styled.label`
-  width: 70px;
-  text-align: center;
-`;
-const RegionDiv = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-`;
-
-const RegionLabel = styled.label`
-  display: flex;
-  align-items: center;
-  margin-bottom: 10px;
-  gap: 10px;
-  padding-left: 10px;
-`;
 const RadioWrapper = styled.div`
   display: flex;
   gap: 0;
@@ -571,89 +646,31 @@ const RadioWrapper = styled.div`
   }
 `;
 
-const Item = styled.div`
-  display: flex;
-  align-items: center;
-`;
-const Items = styled.div`
-  display: flex;
-  align-items: center;
-  grid-column: span 1;
-`;
-const Search = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-`;
-
-const SearchSelect = styled.div`
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  grid-auto-rows: min-content;
-  row-gap: 20px;
-`;
-
-const DateBox = styled.div`
-  margin-top: 20px;
-  display: flex;
-  grid-column: span 4;
-  width: 100%;
-  gap: 20px;
-`;
-const DateContentBox = styled.div`
-  display: flex;
-  align-items: center;
-  width: 100%;
-`;
-const DateInput = styled(DatePicker)`
-  width: 100%;
-  height: 30px;
+const Label = styled.label`
+  padding-left: 10px;
+  width: 40px;
   text-align: center;
-  border-radius: ${({ theme }) => theme.borderRadius.base};
-  font-size: ${({ theme }) => theme.spacing[4]};
-  caret-color: transparent;
-  cursor: pointer;
 `;
 
-const SelectBox = styled.select`
-  width: 120px;
-  height: 30px;
+const Label2 = styled.label`
+  width: 70px;
   text-align: center;
-  padding: 0 ${({ theme }) => theme.spacing[5]};
-  border: none;
-  border-radius: ${({ theme }) => theme.borderRadius.base};
-  font-size: ${({ theme }) => theme.spacing[4]};
-
-  &:option {
-    text-align: center;
-  }
 `;
 
-const ACCOUNT = styled.input`
-  width: 150px;
-  height: 30px;
-  text-align: center;
-  padding: 0 ${({ theme }) => theme.spacing[5]};
-  border: none;
-  border-radius: ${({ theme }) => theme.borderRadius.base};
-  font-size: ${({ theme }) => theme.spacing[4]};
+//-----------------------------------------------------
+
+const SearchSection = styled(Section)`
+  padding-bottom: 0;
 `;
+
 const DateInfo = styled.span`
-  grid-column: 1 / span 2; //작은 화면에서는 1줄 전체 사용
-  grid-row: auto;
-  font-size: ${({ theme }) => theme.fontSizes.xs}; /* 작은 화면 폰트 크기 */
-  color: ${({ theme }) => theme.colors.gray[500]};
-  white-space: nowrap;
-  align-self: center;
-  text-align: center; /* 작은 화면에서 중앙 정렬 */
-
-  ${media.sm`
-    grid-column: 2; /* sm 이상에서 원래 컬럼 */
-    grid-row: 1 / span 2; /* sm 이상에서 원래 행 */
-    font-size: ${({ theme }) => theme.fontSizes.sm}; /* sm 이상 폰트 크기 */
-    text-align: right; /* sm 이상에서 오른쪽 정렬 */
+  color: ${({ theme }) => theme.colors.gray[3]};
+  font-size: ${({ theme }) => theme.fontSizes.sm};
+  ${media.sm` 
+    font-size: ${({ theme }) => theme.fontSizes.base};
   `}
 `;
+
 /*돌봄 대상자 리스트 관련 */
 const HireListSection = styled(Section)`
   height: auto;
@@ -674,7 +691,7 @@ const HireListCard = styled(Link)`
 // --- 상단 영역 스타일 ---
 const CardHeader = styled.div`
   display: flex;
-  flex-direction: column; /* 작은 화면에서 세로로 쌓이도록 */
+
   padding: ${({ theme }) => theme.spacing[4]}; /* 작은 화면용 패딩 */
   align-items: center; /* 세로 중앙 정렬 */
   border-bottom: 1px solid ${({ theme }) => theme.colors.gray[200]};
@@ -702,23 +719,27 @@ const ProfileImage = styled.img`
 `;
 
 const HeaderContent = styled.div`
-  flex-grow: 1; /* 남은 공간을 차지하도록 */
-  display: grid; /* 그리드 레이아웃으로 배치 */
-  grid-template-columns: 1fr auto; /* 왼쪽(이름,내용)은 1프랙션, 오른쪽(날짜)은 자동 너비 */
-  grid-template-rows: auto auto; /* 2개의 행 */
-  gap: ${({ theme }) => theme.spacing[1]} ${({ theme }) => theme.spacing[4]}; /* 행/열 간격 */
-  align-items: center; /* 세로 중앙 정렬 */
+  display: flex;
+  align-items: center;
+  text-align: center;
+  justify-content: space-between;
+  width: 100%; /* 부모 너비 채움 */
+
+  ${media.sm`
+    /* sm 이상에서는 그리드 레이아웃의 자식으로 적절히 동작 */
+  `}
 `;
 
 const UserInfo = styled.div`
   display: flex;
   flex-direction: column;
-  align-items: center; /* 작은 화면에서 중앙 정렬 */
-  grid-column: 1;
+  align-items: flex-start;
   gap: ${({ theme }) => theme.spacing[2]};
 
-  ${media.sm`
+  ${media.md`
     align-items: baseline; /* sm 이상에서 원래대로 */
+    align-items: center; /* 작은 화면에서 중앙 정렬 */
+    width: 120px;
   `}
 `;
 
@@ -733,34 +754,36 @@ const UserName = styled.span`
 
 const UserAge = styled.span`
   font-size: ${({ theme }) => theme.fontSizes.sm}; /* 작은 화면 폰트 크기 */
-  color: ${({ theme }) => theme.colors.gray[600]};
+  color: ${({ theme }) => theme.colors.gray[3]};
   ${media.sm`
-    font-size: ${({ theme }) => theme.fontSizes.md}; /* sm 이상 폰트 크기 */
+    font-size: ${({ theme }) => theme.fontSizes.base}; /* sm 이상 폰트 크기 */
   `};
 `;
 
 const CareContent = styled.span`
-  grid-column: 1;
-  font-size: ${({ theme }) => theme.fontSizes.sm}; /* 작은 화면 폰트 크기 */
-  color: ${({ theme }) => theme.colors.gray[800]};
   text-align: center; /* 작은 화면에서 중앙 정렬 */
+  display: none;
 
-  ${media.sm`
-    font-size: ${({ theme }) => theme.fontSizes.md}; /* sm 이상 폰트 크기 */
+  ${media.md`
+  display: block;
+  color: ${({ theme }) => theme.colors.black1}; */
+    font-size: ${({ theme }) => theme.fontSizes.lg}; /* sm 이상 폰트 크기 */
     text-align: left; /* sm 이상에서 왼쪽 정렬 */
+    
   `}
+  @media (max-width: 900px) {
+    width: 250px;
+  }
 `;
 
 // --- 하단 영역 스타일 ---
 const CardFooter = styled.div`
   display: flex;
-  flex-direction: column; /* 작은 화면에서 세로로 쌓이도록 */
   justify-content: space-between;
-  align-items: center; /* 작은 화면에서 중앙 정렬 */
   padding: ${({ theme }) => theme.spacing[3]} ${({ theme }) => theme.spacing[4]}; /* 작은 화면 패딩 */
   gap: ${({ theme }) => theme.spacing[2]}; /* 작은 화면 간격 */
 
-  ${media.sm`
+  ${media.md`
     flex-direction: row; /* sm 이상에서는 가로로 나열 */
     padding: ${({ theme }) => theme.spacing[4]} ${({ theme }) => theme.spacing[6]}; /* sm 이상 패딩 */
     gap: ${({ theme }) => theme.spacing[4]}; /* sm 이상 간격 */
@@ -769,16 +792,55 @@ const CardFooter = styled.div`
 
 const LocationWage = styled.div`
   display: flex;
-  gap: ${({ theme }) => theme.spacing[4]}; /* 지역과 시급 사이 간격 */
-  font-size: ${({ theme }) => theme.fontSizes.md};
-  color: ${({ theme }) => theme.colors.gray[700]};
+  align-items: flex-start;
+  gap: ${({ theme }) => theme.spacing[2]}; /* 지역과 시급 사이 간격 */
+  color: ${({ theme }) => theme.colors.gray[3]};
+  flex-direction: column;
+
+  ${media.md`
+    flex-direction: row;
+    gap: ${({ theme }) => theme.spacing[6]}; /* 지역과 시급 사이 간격 */
+  `}
 `;
 
 const LocationText = styled.span``;
+
 const GrayText = styled.span`
+  font-size: ${({ theme }) => theme.fontSizes.sm};
   font-weight: ${({ theme }) => theme.fontWeights.medium};
-  color: ${({ theme }) => theme.colors.gray[4]};
+  color: ${({ theme }) => theme.colors.gray[3]};
+  margin-right: ${({ theme }) => theme.spacing[2]};
+  ${media.md`
+    font-size: ${({ theme }) => theme.fontSizes.base};
+  `}
 `;
+
+const BoldText = styled.span`
+  font-size: ${({ theme }) => theme.fontSizes.sm};
+  font-weight: ${({ theme }) => theme.fontWeights.bold};
+  color: ${({ theme }) => theme.colors.black1};
+  ${media.md`
+    font-size: ${({ theme }) => theme.fontSizes.base};
+  `}
+`;
+
+const CareStatusTag = styled.div`
+  margin: ${({ theme }) => theme.spacing[2]};
+  display: inline;
+  justify-content: center;
+  border-radius: 20px;
+  background-color: ${({ theme }) => theme.colors.third};
+  width: fit-content;
+  font-size: ${({ theme }) => theme.fontSizes.sm};
+  font-weight: ${({ theme }) => theme.fontWeights.bold};
+  color: ${({ theme }) => theme.colors.gray[3]};
+  padding: ${({ theme }) => theme.spacing[1]} ${({ theme }) => theme.spacing[5]};
+
+  ${media.sm`
+      font-size: ${({ theme }) => theme.fontSizes.base}; 
+  `}
+`;
+
 const AccuontText = styled.span`
   strong {
     font-size: ${({ theme }) => theme.fontSizes.base}; /* 작은 화면 시급 강조 */
@@ -793,30 +855,14 @@ const AccuontText = styled.span`
   `}
 `;
 
-const BoldAccount = styled.span`
-  font-weight: ${({ theme }) => theme.fontWeights.bold};
-`;
-
 const AccommodationInfo = styled.span`
   font-size: ${({ theme }) => theme.fontSizes.md}; /* 작은 화면 폰트 크기 */
   font-weight: ${({ theme }) => theme.fontWeights.semibold};
   color: ${({ theme }) => theme.colors.gray[3]};
   white-space: nowrap;
 
-  ${media.sm`
-    font-size: ${({ theme }) => theme.fontSizes.xl}; /* sm 이상 폰트 크기 */
-  `}
-`;
-
-const Divder = styled.div`
-  display: flex;
-  align-items: center;
-  text-align: center;
-  justify-content: space-between;
-  width: 100%; /* 부모 너비 채움 */
-
-  ${media.sm`
-    /* sm 이상에서는 그리드 레이아웃의 자식으로 적절히 동작 */
+  ${media.md`
+    font-size: ${({ theme }) => theme.fontSizes.base}; /* sm 이상 폰트 크기 */
   `}
 `;
 

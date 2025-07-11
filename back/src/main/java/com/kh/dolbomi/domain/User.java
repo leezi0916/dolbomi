@@ -145,6 +145,7 @@ public class User {
         }
     }
 
+
     // 비밀번호 암호화 변경 메서드
     public void changePassword(String encodedPassword) {
         this.userPwd = encodedPassword;

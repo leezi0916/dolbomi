@@ -14,11 +14,11 @@ import {
 import styled from 'styled-components';
 import { IoCheckmarkOutline } from 'react-icons/io5'; // 체크마크 아이콘 import
 import { useSignUpForm } from '../hooks/useSignUpForm';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import PostcodeSearch from '../components/PostcodeSearch';
-import { userService } from '../api/users';
-import { toast } from 'react-toastify';
-import { useNavigate } from 'react-router-dom';
+// import { userService } from '../api/users';
+// import { toast } from 'react-toastify';
+// import { useNavigate } from 'react-router-dom';
 
 const SignUp = () => {
   const location = useLocation();
@@ -39,11 +39,13 @@ const SignUp = () => {
     checkUserId,
     idCheckMessage,
     setValue,
+    // isIdChecked,
+
     formatPhoneNumber,
     onSubmit,
   } = useSignUpForm(socialType, socialId);
 
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
   const currentGender = watch('gender');
 
@@ -58,6 +60,8 @@ const SignUp = () => {
     const baseAddress = `${addressData.address}${addressData.extraAddress}`.trim();
     setValue('address', baseAddress);
   }, [addressData, setValue]);
+
+  const navigate = useNavigate();
 
   return (
     <AuthContainer>

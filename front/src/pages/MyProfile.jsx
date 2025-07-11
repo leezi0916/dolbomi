@@ -18,17 +18,17 @@ import {
   NewTitle,
   BackBtn,
 } from '../styles/PatientRegistration';
-
+import { HiMiniPencilSquare } from 'react-icons/hi2';
 import { AuthContainer, Label, Input, InputGroup } from '../styles/Auth.styles';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import PostcodeSearch from '../components/PostcodeSearch';
+import PasswordChange from '../components/PasswordChange';
 const MyProfile = () => {
   // const profileImageUrl = profile?.profileImage ? CLOUDFRONT_URL + profile.profileImage : null;
   const CLOUDFRONT_URL = 'https://d20jnum8mfke0j.cloudfront.net/';
   const userNo = useUserStore((state) => state.user?.userNo);
   const [profile, setProfile] = useState(null);
-  console.log('profile.profileImage:', profile?.profileImage);
   const [licenseList, setLicenseList] = useState([]);
   const [selectedFile, setSelectedFile] = useState(null); // 추가
   const [formData, setFormData] = useState({
@@ -71,12 +71,10 @@ const MyProfile = () => {
       if (!userNo) {
         setLoading(false);
         setError('사용자 ID를 사용할 수 없습니다.');
-        toast.error('사용자 ID를 사용할 수 없습니다.');
         return;
       }
       try {
         const info = await userService.getUserProfile(userNo);
-        console.log('profile data:', info);
 
         // info가 배열인지 객체인지에 따라 처리
         const userProfileData = Array.isArray(info) ? info[0] : info;
@@ -118,12 +116,6 @@ const MyProfile = () => {
     };
     loadProfile();
   }, [userNo]);
-
-  useEffect(() => {
-    if (profile) {
-      console.log('📸 profile.profileImage:', profile.profileImage);
-    }
-  }, [profile]);
 
   const { validateAndSubmit, updating } = useUserUpdateForm({ profile });
 
@@ -227,6 +219,33 @@ const MyProfile = () => {
       toast.error('회원탈퇴 처리 중 오류가 발생했습니다.');
     }
   };
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const handleOpenModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+  };
+
+  const logout = useUserStore((state) => state.logout);
+  const handlePasswordChangeSuccess = () => {
+    // 모달 닫기
+    setIsModalOpen(false);
+    // 로그아웃 처리
+    logout();
+    sessionStorage.removeItem('token');
+    localStorage.removeItem('user-storage');
+    localStorage.removeItem('status-storage');
+
+    alert('비밀번호가 변경되어 로그아웃됩니다. 다시 로그인해주세요.');
+
+    // 로그인 페이지로 이동
+    navigate('/login');
+  };
+
   const getProfileImageUrl = () => {
     if (previewUrl) return previewUrl;
     if (profile?.profileImage) {
@@ -252,24 +271,27 @@ const MyProfile = () => {
       </AuthContainer>
     );
   }
-
   return (
     <AuthContainer>
       <FromWrap>
         <NewTitle>회원정보 수정 / 탈퇴</NewTitle>
         <Form onSubmit={handleSubmit}>
-          <ProfileImage onClick={handleDivClick}>
-            <img
-              src={getProfileImageUrl()}
-              alt="프로필 이미지"
-              style={{
-                width: '100%',
-                height: '100%',
-                objectFit: 'cover',
-                borderRadius: '50%',
-              }}
-            />
-          </ProfileImage>
+          <ProfileImageWrapper>
+            <ProfileImage>
+              <img
+                src={getProfileImageUrl()}
+                alt="프로필 이미지"
+                style={{
+                  width: '100%',
+                  height: '100%',
+                  objectFit: 'cover',
+                }}
+              />
+            </ProfileImage>
+            <EditIcon onClick={handleDivClick}>
+              <HiMiniPencilSquare size={30} />
+            </EditIcon>
+          </ProfileImageWrapper>
 
           <input type="file" accept="image/*" ref={inputRef} onChange={handleFileChange} style={{ display: 'none' }} />
           <InputGroup>
@@ -313,7 +335,13 @@ const MyProfile = () => {
           </InputGroup>
           <InputGroup>
             <Label htmlFor="email">이메일</Label>
-            <Input type="email" id="email" value={formData.email} onChange={handleChange} />
+            <Input
+              type="email"
+              id="email"
+              value={formData.email}
+              onChange={handleChange}
+              disabled={!!profile?.socialType}
+            />
           </InputGroup>
           <InputGroup>
             <Label htmlFor="address">주소</Label>
@@ -366,7 +394,7 @@ const MyProfile = () => {
             <Button type="button" onClick={() => handleDeleteUser(userNo)}>
               회원탈퇴
             </Button>
-            <Button type="button" onClick={() => toast.info('비밀번호 변경 기능은 아직 구현되지 않았습니다.')}>
+            <Button type="button" onClick={handleOpenModal}>
               비밀번호 변경
             </Button>
 
@@ -376,6 +404,9 @@ const MyProfile = () => {
             </Button>
           </ButtonGroup>
         </Form>
+        {isModalOpen && (
+          <PasswordChange userNo={userNo} onClose={handleCloseModal} onSuccess={handlePasswordChangeSuccess} />
+        )}
       </FromWrap>
     </AuthContainer>
   );
@@ -418,19 +449,38 @@ const LicenseGroup = styled(InputGroup)`
   justify-content: center;
 `;
 
-const ProfileImage = styled.div`
-  width: 200px;
+const ProfileImageWrapper = styled.div`
+  position: relative;
+  width: 200px; /* 원하는 크기로 조절 */
   height: 200px;
-  background-color: ${({ theme }) => theme.colors.gray[5]};
-  border-radius: ${({ theme }) => theme.borderRadius.md};
-  cursor: pointer;
   display: flex;
   justify-content: center;
   align-items: center;
   margin: 0 auto;
-  border-radius: 50%;
 `;
 
+const ProfileImage = styled.div`
+  width: 200px;
+  height: 200px;
+  background-color: ${({ theme }) => theme.colors.gray[5]};
+  border-radius: 50%;
+
+  overflow: hidden;
+  cursor: pointer;
+`;
+
+const EditIcon = styled.div`
+  position: absolute;
+  bottom: 5px;
+  right: 1px;
+  background: white;
+  border-radius: 50%;
+  padding: 5px;
+  display: flex;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+  padding: 10px;
+  cursor: pointer;
+`;
 const Plus = styled(FaPlus)`
   width: 30px;
   height: 30px;

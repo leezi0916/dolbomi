@@ -13,6 +13,7 @@ import { jobSeekingService } from '../api/jobSeeking';
 import { useState, useEffect } from 'react';
 import { toast } from 'react-toastify';
 import useUserStore from '../store/userStore';
+import {extractRegionFromEnd} from '../utils/formatData';
 
 const MyResume = () => {
   const { user } = useUserStore();
@@ -56,7 +57,7 @@ const MyResume = () => {
 
     const confirmDelete = window.confirm('정말로 이력서를 삭제하시겠습니까?');
     if (!confirmDelete) return;
-
+    console.log(resumeNo);
     try {
       await jobSeekingService.deleteResume(resumeNo);
       alert('이력서가 삭제되었습니다.');
@@ -79,6 +80,14 @@ const MyResume = () => {
     }
   };
 
+  const CLOUDFRONT_URL = 'https://d20jnum8mfke0j.cloudfront.net/';
+  //이미지 경로 갖고오고 없다면 기본이미지
+  const getProfileImageUrl = (path) => {
+    if (!path) return profileImage; // 기본 이미지
+    const cleanPath = path.replace(/^\//, ''); // 앞에 / 있으면 제거
+    return `${CLOUDFRONT_URL}${cleanPath}`;
+  };
+
   return (
     <HireContainer>
       <HireHead>
@@ -89,7 +98,7 @@ const MyResume = () => {
         <ContentWrapper>
           <div>
             <ProfilImageWrapper>
-              <img src={profileImage} alt="프로필 이미지" />
+              <img src={getProfileImageUrl(careGiverResum?.profileImage)} alt="프로필" />
             </ProfilImageWrapper>
           </div>
           <Divider>
@@ -134,7 +143,7 @@ const MyResume = () => {
             </InputGroup>
             <InputGroup>
               <Label>주소</Label>
-              <Input type="text" value={careGiverResum?.address || ''} readOnly />
+              <Input type="text" value={extractRegionFromEnd(careGiverResum?.address)} readOnly />
             </InputGroup>
           </Divider>
         </ContentWrapper>

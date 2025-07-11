@@ -11,6 +11,7 @@ import NotificationDropdown from './NotificationDropdown';
 import Cookies from 'js-cookie';
 import { userService } from '../api/users';
 import { notificationService } from '../api/notification';
+import { toast } from 'react-toastify';
 const Header = () => {
   const { login } = useUserStore();
 
@@ -31,6 +32,7 @@ const Header = () => {
     sessionStorage.removeItem('token');
     localStorage.removeItem('user-storage'); // persist 저장소 삭제
     localStorage.removeItem('status-storage'); // persist 저장소 삭제
+    localStorage.removeItem('GoogleLoginToast'); // 로그아웃기 구글 로그인 토스트 삭제
 
     alert('로그아웃 되었습니다.');
     setUserStatus(true);
@@ -53,10 +55,18 @@ const Header = () => {
         userNo: user.userNo,
         userId: user.userId,
         userName: user.userName,
+        userRole: user.role,
       });
 
       //  상태 기본 저장
       setUserStatus(userStatus);
+
+      // 최초 로그인시에만 토스트 띄우기 -> 일반 로그인과 다르게 리다이렉트를 받기때문에 이렇게 설계
+      const GoogleLoginToast = localStorage.getItem('GoogleLoginToast');
+      if (!GoogleLoginToast) {
+        toast.success('로그인 성공!');
+        localStorage.setItem('GoogleLoginToast', 'true');
+      }
     } catch (error) {
       console.error('사용자 정보 조회 실패:', error);
     }
@@ -88,7 +98,6 @@ const Header = () => {
     const fetchUnread = async () => {
       try {
         const count = await notificationService.getUnreadCount(user.userNo);
-        console.log('알림 들어옴 !', count);
         setUnreadCount(count);
       } catch (error) {
         console.error('알림 갱신 실패:', error);
@@ -289,7 +298,12 @@ const Header = () => {
             </ToggleItem>
           </ToggleWrap>
 
-          <div style={{ position: 'relative' }}>
+          <div
+            style={{
+              position: 'relative',
+              visibility: user ? 'visible' : 'hidden',
+            }}
+          >
             <img
               src="/src/assets/icons/icon_알림.png"
               alt="알림"
@@ -297,14 +311,12 @@ const Header = () => {
                 e.stopPropagation();
                 if (!isNotiOpen && user?.userNo) {
                   try {
-                    // 읽지 않은 알림 모두 읽음 처리
                     await notificationService.markAllAsRead(user.userNo);
                     setUnreadCount(0);
                   } catch (error) {
                     console.error('읽음 처리 실패:', error);
                   }
                 }
-
                 setIsNotiOpen((prev) => !prev);
               }}
               style={{ cursor: 'pointer' }}
@@ -314,18 +326,35 @@ const Header = () => {
               <span
                 style={{
                   position: 'absolute',
-                  top: 0,
-                  right: 0,
-                  width: '10px',
-                  height: '10px',
+                  top: '-5px',
+                  right: '-5px',
+                  minWidth: '18px',
+                  height: '18px',
                   backgroundColor: 'red',
+                  color: 'white',
                   borderRadius: '50%',
+                  fontSize: '12px',
+                  fontWeight: 'bold',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  padding: '2px 5px',
                 }}
-              ></span>
+              >
+                {unreadCount > 99 ? '99+' : unreadCount}
+              </span>
             )}
+
             {isNotiOpen && <NotificationDropdown userNo={user?.userNo} onClose={handleNotificationClose} />}
           </div>
-          <img src="/src/assets/icons/icon_채팅알림.png" alt="" />
+
+          <img
+            src="/src/assets/icons/icon_채팅알림.png"
+            alt="채팅 알림"
+            style={{
+              visibility: user ? 'visible' : 'hidden',
+            }}
+          />
 
           {isAuthenticated ? (
             <NavItem onMouseEnter={() => setIsHovering(true)} style={{ cursor: 'pointer', padding: '5px' }}>

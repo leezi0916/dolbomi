@@ -29,6 +29,9 @@ public interface UserService {
     //간병사, 보호자 카운트
     UserCountsDto getUserCounts();
 
+
     // 비밀번호 찾기 - 비밀번호 재설정
     void resetPassWord(ResetPwdDto resetPwdDto);
+
+    void changePassword(Long userNo, String currentPassword, String newPassword);
 }

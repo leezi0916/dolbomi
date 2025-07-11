@@ -9,5 +9,5 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class DownloadUrlResponseDto {
     private String presigned_url;
-    private String original_url;
+    private String file_name;
 }

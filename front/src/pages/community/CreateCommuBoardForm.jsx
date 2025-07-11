@@ -9,6 +9,7 @@ import { BodyTop, FileBox, FileTitle, Icons, Left, PageBody, PageTitle, PageTop 
 import { commuService } from '../../api/community';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
+import { getUploadUrl, uploadFileToS3 } from '../../api/fileApi';
 
 const CreateCommuBoardForm = () => {
   const userNo = useUserStore((state) => state.user?.userNo);
@@ -17,7 +18,7 @@ const CreateCommuBoardForm = () => {
 
   const [error, setError] = useState(null);
   const navigate = useNavigate();
-  const { register, handleSubmit, reset } = useForm();
+  const { register, handleSubmit } = useForm();
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const onSubmit = async (data) => {
@@ -28,32 +29,42 @@ const CreateCommuBoardForm = () => {
     console.log(userNo);
     try {
       setIsSubmitting(true);
+
+      const uploadedImageNames = [];
+      for (const img of images) {
+        const file = img.file;
+        try {
+          // 1. Presigned URL 요청
+          const { presignedUrl, changeName } = await getUploadUrl(
+            file.name,
+            file.type,
+            'image/' // 저장 경로는 커뮤니티 게시판용
+          );
+
+          // 2. 파일 S3 업로드
+          await uploadFileToS3(presignedUrl, file);
+
+          // 3. 업로드 완료된 파일 이름 저장
+          uploadedImageNames.push(changeName);
+        } catch (uploadError) {
+          console.error('이미지 업로드 실패:', uploadError);
+          toast.error('이미지 업로드에 실패했습니다.');
+          // continue하지 말고 중단
+          setIsSubmitting(false);
+          return;
+        }
+      }
       const boardData = {
         board_title: data.boardTitle,
         board_content: data.boardContent,
+        image_names: uploadedImageNames,
         user_no: userNo,
         role: role,
       };
-
+      console.log('보내는 데이터 : ', boardData);
       const response = await commuService.createCommunity(boardData);
       console.log(response);
 
-      // 이미지 업로드 별도 처리 (샘플용)
-      // if (images.length > 0) {
-      //   const imagePromises = images.map((img) =>
-      //     fetch('http://localhost:3001/images', {
-      //       method: 'POST',
-      //       headers: {
-      //         'Content-Type': 'application/json',
-      //       },
-      //       body: JSON.stringify({
-      //         questionId: response.id,
-      //         fileName: img.file.name,
-      //       }),
-      //     })
-      //   );
-      //   await Promise.all(imagePromises);
-      // }
       toast.success('등록되었습니다');
       if (role === 'C') navigate('/community/caregiver');
       else navigate('/community/guardian');
@@ -64,7 +75,6 @@ const CreateCommuBoardForm = () => {
       toast.error(errorMessage);
     } finally {
       setIsSubmitting(false);
-      reset();
     }
   };
   //
@@ -117,13 +127,16 @@ const CreateCommuBoardForm = () => {
               <Icons src="/src/assets/icons/icon_작성자.png" alt="" />
               <Left style={{ fontSize: theme.fontSizes.sm }}>{userName}</Left>
             </Top>
-            <TextInput
-              as="textarea"
-              placeholder="내용을 입력하세요"
-              rows={10}
-              {...register('boardContent')}
-              disabled={isSubmitting}
-            />
+            <div style={{ padding: '10px' }}>
+              <TextInput
+                as="textarea"
+                placeholder="내용을 입력하세요"
+                rows={10}
+                {...register('boardContent')}
+                disabled={isSubmitting}
+              />
+            </div>
+
             <FileBox>
               <FileTitle>
                 <Icons src="/src/assets/icons/icon_사진.png" alt="" />
@@ -149,7 +162,9 @@ const CreateCommuBoardForm = () => {
                     style={{ display: 'none' }}
                     onChange={handleFilesChange}
                   />
-                  <FileButton onClick={handleClick}>+</FileButton>
+                  <FileButton type="button" onClick={handleClick}>
+                    +
+                  </FileButton>
                 </div>
               </InputFile>
             </FileBox>
@@ -157,9 +172,7 @@ const CreateCommuBoardForm = () => {
               <button type="button" onClick={() => navigate(-1)}>
                 이전으로
               </button>
-              <button type="submit" onClick={handleSubmit}>
-                등록하기
-              </button>
+              <button type="submit">등록하기</button>
             </BtnBox>
           </PageBody>
         </form>
@@ -192,7 +205,7 @@ const TitleInput = styled.input`
 const TextInput = styled.input`
   width: 100%;
   min-height: 200px;
-  margin: 10px;
+  resize: none;
 `;
 
 const InputFile = styled.div`

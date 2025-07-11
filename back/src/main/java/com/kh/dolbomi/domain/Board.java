@@ -1,5 +1,6 @@
 package com.kh.dolbomi.domain;
 
+import com.kh.dolbomi.dto.BoardDto;
 import com.kh.dolbomi.enums.StatusEnum;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -70,14 +71,31 @@ public class Board {
 
     @OneToMany(mappedBy = "board", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Reply> replyList = new ArrayList<>();
+    
+    @Builder.Default
+    @OneToMany(mappedBy = "board", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<File> fileList = new ArrayList<>();
 
     private int count;
+
+    public void increaseViews() {
+        this.count += 1;
+    }
 
     public void changeUser(User user) {
         this.user = user;
         if (!user.getBoards().contains(this)) {
             user.getBoards().add(this);
         }
+    }
+
+    public void update(BoardDto.Update dto) {
+        this.boardTitle = dto.getBoard_title();
+        this.boardContent = dto.getBoard_content();
+    }
+
+    public void delete() {
+        this.status = StatusEnum.Status.N;
     }
 
     @PrePersist
@@ -98,6 +116,7 @@ public class Board {
 
     public void setQuestionStatus() {
         this.questionStatus = StatusEnum.QuestionStatus.Y;
-        System.out.println("questionStatus 업데이트 호출됨");
     }
+
+
 }

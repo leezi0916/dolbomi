@@ -59,7 +59,13 @@ export const Right = styled.div`
   padding-right: 10px;
   gap: 6px;
 `;
-
+export const Form = styled.form`
+  display: flex;
+  justify-content: flex-end;
+  flex: 7;
+  padding-right: 10px;
+  gap: 6px;
+`;
 export const BoardItemTop = styled.div`
   width: 100%;
   display: flex;

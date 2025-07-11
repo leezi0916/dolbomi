@@ -21,6 +21,7 @@ public class ReplyDto {
         private String replyContent;
         private LocalDateTime createDate;
         private LocalDateTime updateDate;
+        private String profile_image;
     }
 
     @Getter
@@ -38,5 +39,14 @@ public class ReplyDto {
                     .build();
 
         }
+    }
+
+    @Getter
+    @AllArgsConstructor
+    public static class Update {
+
+        private Long reply_no;
+        @NotBlank(message = "댓글 내용은 필수입니다.")
+        private String reply_content;
     }
 }

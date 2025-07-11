@@ -12,4 +12,6 @@ public interface PatientService {
 
 
     PatientDto.Response updatePatient(Long patNo, PatientDto.Update updatePatDto);
+
+
 }

@@ -1,19 +1,21 @@
 import React, { useState } from 'react';
-import { Title, AuthContainer } from '../styles/Auth.styles';
+import { Title, AuthContainer,TipP } from '../styles/Auth.styles';
 import { SubmitButton, ButtonText } from '../styles/common/Button';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import useUserStore from '../store/userStore';
 import { useEffect } from 'react';
-import { ProfileImg } from '../styles/common/Profile';
+import { CiCircleInfo } from 'react-icons/ci';
 import { IoCheckmarkOutline } from 'react-icons/io5';
 import { jobSeekingService } from '../api/jobSeeking';
 import { toast } from 'react-toastify';
+import { pageing } from '../hooks/pageing';
+import Paging from '../components/Paging';
 
 const ResumeManagement = () => {
   const { user } = useUserStore();
   const [resumeLists, setResumeLists] = useState([]);
-
+  const { currentPage, chagneCurrentPage } = pageing();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -25,10 +27,8 @@ const ResumeManagement = () => {
       }
 
       try {
-        const getResumeLists = await jobSeekingService.getMyResumeList(user.userNo);
-        console.log('목록 :', getResumeLists);
-
-        setResumeLists(getResumeLists);
+        const getResumeLists = await jobSeekingService.getMyResumeList(currentPage, user.userNo);
+        setResumeLists(getResumeLists.content);
       } catch (err) {
         console.error(err);
       }
@@ -67,50 +67,92 @@ const ResumeManagement = () => {
     <>
       <AuthContainer>
         <Head>
-          <Title>이력서 목록</Title>
-          <Text>체크 클릭시 이력서가 간병사로 신청됩니다!</Text>
+          <TitleSection>
+            <NewTitle>이력서 목록</NewTitle>
+            <TipP>
+              <CiCircleInfo color="#EF7A46" size={'20px'}></CiCircleInfo> 체크표시된 이력서는 구인글로 게시됩니다.
+              확인하세요.
+            </TipP>
+          </TitleSection>
+
           <RegistrationButton>
             <ButtonText onClick={() => navigate('/caregiver/resumeregistration')}>이력서 등록</ButtonText>
           </RegistrationButton>
         </Head>
 
         <CardWrap>
-          {resumeLists?.map((resume) => (
-            <Card key={resume.resumeNo}>
-              <ProfileDiv>
-                <ProfileTextGray>
-                  NO <ProfileTextStrong>{resume.resumeNo}</ProfileTextStrong>
-                </ProfileTextGray>
-                <StyledCheckbox checked={resume.status === 'Y'}>
-                  <HiddenCheckbox
-                    checked={resume.status === 'Y'}
-                    onChange={() => handleStatusToggle(resume.resumeNo, resume.status)}
-                  />
-                  {resume.status === 'Y' && <IoCheckmarkOutline size="20px" color="white" />}
-                </StyledCheckbox>
-              </ProfileDiv>
+          <ContentSection>
+            {resumeLists?.map((resume, index) => (
+              <Card key={resume.resumeNo}>
+                <ProfileDiv>
+                  <ProfileTextGray>
+                    NO <ProfileTextStrong>{index + 1}</ProfileTextStrong>
+                  </ProfileTextGray>
+                  <StyledCheckbox checked={resume.status === 'Y'}>
+                    <HiddenCheckbox
+                      checked={resume.status === 'Y'}
+                      onChange={() => handleStatusToggle(resume.resumeNo, resume.status)}
+                    />
+                    {resume.status === 'Y' && <IoCheckmarkOutline size="20px" color="white" />}
+                  </StyledCheckbox>
+                </ProfileDiv>
 
-              <ButtonDiv>
-                <SubmitButton1 onClick={() => navigate(`/caregiver/myresume/${resume.resumeNo}`)}>
-                  <ButtonText>이력서 상세</ButtonText>
-                </SubmitButton1>
-              </ButtonDiv>
-            </Card>
-          ))}
+                <ButtonDiv>
+                  <SubmitButton1 onClick={() => navigate(`/caregiver/myresume/${resume.resumeNo}`)}>
+                    <ButtonText>이력서 상세</ButtonText>
+                  </SubmitButton1>
+                </ButtonDiv>
+              </Card>
+            ))}
+          </ContentSection>
+
+          <PagingSection>
+            <Paging currentPage={currentPage} totalPage={resumeLists.totalPage} chagneCurrentPage={chagneCurrentPage} />
+          </PagingSection>
         </CardWrap>
       </AuthContainer>
     </>
   );
 };
+
+export const TitleSection = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: ${({ theme }) => theme.spacing[5]};
+`;
+
+export const NewTitle = styled(Title)`
+  font-size: ${({ theme }) => theme.fontSizes['2xl']};
+  font-weight: ${({ theme }) => theme.fontWeights.bold};
+  text-align: center;
+  margin :0px;
+  color: ${({ theme }) => theme.colors.gray[800]};
+
+`;
+
 const CardWrap = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 100%;
+  padding: ${({ theme }) => theme.spacing[8]};
+  background-color: white;
+  box-shadow: ${({ theme }) => theme.shadows.base};
+  min-height: 700px;
+`;
+
+const ContentSection = styled.div`
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
   align-content: start;
   gap: ${({ theme }) => theme.spacing[5]}; /* 카드 간 간격 */
-  padding: ${({ theme }) => theme.spacing[8]};
-  background-color: white;
-  box-shadow: ${({ theme }) => theme.shadows.base};
-  min-height: 850px;
+`;
+const PagingSection = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 5px;
 `;
 
 const Head = styled.div`
@@ -118,6 +160,7 @@ const Head = styled.div`
   justify-content: space-between;
   align-items: center;
 `;
+
 
 const RegistrationButton = styled(SubmitButton)`
   height: fit-content;

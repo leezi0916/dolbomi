@@ -8,8 +8,19 @@ import { patientService } from '../api/patient';
 import useUserStore from '../store/userStore';
 import { matchingService } from '../api/matching';
 import Paging from '../components/Paging';
-import { CiCircleInfo } from 'react-icons/ci';
-import { IoSearchOutline } from 'react-icons/io5';
+import {
+  CardWrap,
+  CardInnerWrap,
+  ProfileSection,
+  ProFileImges,
+  TextWrap,
+  InfoSection,
+  BtnSection,
+  ReportBtn,
+  EndBtn,
+} from '../styles/MatchingCard';
+import { media } from '../styles/MediaQueries';
+
 
 const MatchToPatient = () => {
   const [activeTab, setActiveTab] = useState('matching');
@@ -50,7 +61,6 @@ const MatchToPatient = () => {
     fetchAll();
   }, [user]);
 
-
   const fetchAll = async () => {
     if (!user) {
       alert('로그인 후 이용해주세요');
@@ -81,7 +91,6 @@ const MatchToPatient = () => {
     }
   };
 
-
   useEffect(() => {
     const fetchEndedMatching = async () => {
       if (!user || activeTab !== 'matched') return;
@@ -104,6 +113,14 @@ const MatchToPatient = () => {
     setEndedCurrentPage(value);
   };
 
+  const CLOUDFRONT_URL = 'https://d20jnum8mfke0j.cloudfront.net/';
+  //이미지 경로 갖고오고 없다면 기본이미지
+  const getProfileImageUrl = (path) => {
+    if (!path) return profileImage; // 기본 이미지
+    const cleanPath = path.replace(/^\//, ''); // 앞에 / 있으면 제거
+    return `${CLOUDFRONT_URL}${cleanPath}`;
+  };
+
   return (
     <>
       <HeadSection>
@@ -117,98 +134,136 @@ const MatchToPatient = () => {
             <SubTitle onClick={() => handleTabChange('matched')} $active={activeTab === 'matched'}>
               종료된 매칭
             </SubTitle>
-            <TipP>
-              <CiCircleInfo color="#EF7A46" size={'20px'}></CiCircleInfo> 환자에 마우스를 올려 종료된 매칭 목록을
-              확인하세요.
-            </TipP>
           </Tab>
         </TitleDiv>
       </HeadSection>
 
-        {activeTab === 'matched' ? (
-          <SearchDivWrap>
-            <SearchInput placeholder="찾으시는 돌봄대상자를 검색하세요"></SearchInput>
-            <SearchBtn>
-              <SearchIcon>
-                <IoSearchOutline />
-              </SearchIcon>
-            </SearchBtn>
-          </SearchDivWrap>
-        ) : (
-          <></>
-        )}
-   
+      {/* {activeTab === 'matched' ? (
+
+ 
+        <SearchDivWrap>
+          <SearchInput placeholder="찾으시는 돌봄대상자를 검색하세요"></SearchInput>
+          <SearchBtn>
+            <SearchIcon>
+              <IoSearchOutline />
+            </SearchIcon>
+          </SearchBtn>
+        </SearchDivWrap>
+      ) : (
+        <></>
+      )} */}
+
       {/*진행중 매칭 */}
       <MatchSection>
-        {activeTab === 'matching' && (
-          <>
-            {patientList && patientList.length > 0 ? (
-              patientList.map((pat) => (
-                <ProfileCardPair key={pat.matNo}>
-                  <ProfileCard type="patient">
-                    <ProfileImage src={profileImage} alt="환자" />
-                    <ProfileInfo>
-                      <UserName>{pat.patName} 님</UserName>
-                      <UserAge>
-                        나이 {pat.patAge}세({pat.patGender === 'F' ? '여' : '남'})
-                      </UserAge>
-                    </ProfileInfo>
-                    <ButtonRow>
-                      <InfoButton onClick={() => navigate(`/report/${pat.patNo}`)}>간병일지보기</InfoButton>
-                      <ReportButton type="button" onClick={() => handleEndMatching(pat.matNo)}>
+        <CardWrap list={activeTab === 'matching' ? patientList : endedPatientList}
+  > 
+          {activeTab === 'matching' && (
+            <>
+              {patientList && patientList.length > 0 ? (
+                patientList.map((pat) => (
+                  <CardInnerWrap key={pat.matNo}>
+                    <ProfileSection>
+                      <ProFileImges src={getProfileImageUrl(pat?.profileImage)} alt="프로필" />
+                      <InfoSection>
+                        <TextWrap>
+                          <img src="/src/assets/icons/icon_Group.png" />
+                          <p>{pat.patName} 님</p>
+                        </TextWrap>
+                        <TextWrap>
+                          <img src="/src/assets/icons/icon_age.png" />
+                          <p>{pat.patAge} 세</p>
+                        </TextWrap>
+                        <TextWrap>
+                          <img src="/src/assets/icons/icon_gender.png" />
+                          <p>
+                          {pat.patGender === 'F' ? '여성' : '남성'}
+                          </p>
+                        </TextWrap>
+                      </InfoSection>
+                    </ProfileSection>
+
+                    <BtnSection>
+                      <ReportBtn onClick={() => navigate(`/report/${pat.patNo}`)}>간병일지 보기</ReportBtn>
+                      <EndBtn type="button" onClick={() => handleEndMatching(pat.matNo)}>
                         간병 종료
-                      </ReportButton>
-                    </ButtonRow>
-                  </ProfileCard>
-                </ProfileCardPair>
-              ))
-            ) : (
-              <InfoP> 매칭된 환자가 없습니다. </InfoP>
-            )}
-          </>
-        )}
+                      </EndBtn>
+                    </BtnSection>
+                  </CardInnerWrap>
+                ))
+              ) : (
+                <>
+                  <EmptyMessage> 매칭된 환자가 없습니다. </EmptyMessage>
+                </>
+              )}
+            </>
+          )}
 
-        {activeTab === 'matched' && (
-          <>
-            {endedPatientList && endedPatientList.length > 0 ? (
-              endedPatientList.map((pat) => (
-                <ProfileCardPair key={pat.matNo}>
-                  <ProfileCard type="patient">
-                    <ProfileImage src={profileImage} alt="환자" />
-                    <ProfileInfo>
-                      <UserName>{pat.patName} 님</UserName>
-                      <UserAge>
-                        나이 {pat.patAge}세 ({pat.patGender === 'F' ? '여' : '남'})
-                      </UserAge>
-                    </ProfileInfo>
-                    <ButtonRow>
-                      <InfoButton onClick={() => navigate(`/report/${pat.patNo}`)}>간병일지</InfoButton>
-                    </ButtonRow>
-                  </ProfileCard>
-                </ProfileCardPair>
-              ))
-            ) : (
-              <InfoP> 종료된 매칭 환자가 없습니다. </InfoP>
-            )}
-
-            <Paging currentPage={endedCurrentPage} totalPage={endedTotalPage} chagneCurrentPage={chagneCurrentPage} />
-          </>
-        )}
+          {activeTab === 'matched' && (
+            <>
+              {endedPatientList && endedPatientList.length > 0 ? (
+                endedPatientList.map((pat) => (
+                  <CardInnerWrap key={pat.matNo}>
+                    <ProfileSection>
+                      <ProFileImges src={getProfileImageUrl(pat?.profileImage)} alt="프로필" />
+                      <InfoSection>
+                        <TextWrap>
+                          <img src="/src/assets/icons/icon_Group.png" />
+                          <p>{pat.patName} 님</p>
+                        </TextWrap>
+                        <TextWrap>
+                          <img src="/src/assets/icons/icon_age.png" />
+                          <p>{pat.patAge}세</p>
+                        </TextWrap>
+                        <TextWrap>
+                          <img src="/src/assets/icons/icon_gender.png" />
+                          <p>
+                            {pat.patGender === 'F' ? '여성' : '남성'}
+                          </p>
+                        </TextWrap>
+                        <TextWrap>
+                          <img src="/src/assets/icons/icon_달력.png" />
+                          <p>
+                            {pat.startDate?.slice(0, 10)} ~ {pat.endDate?.slice(0, 10)}
+                          </p>
+                        </TextWrap>
+                      </InfoSection>
+                    </ProfileSection>
+                    <BtnSection>
+                      <InfoButton onClick={() => navigate(`/report/${pat.patNo}`)}>간병일지 보기</InfoButton>
+                    </BtnSection>
+                  </CardInnerWrap>
+                ))
+              ) : (
+                <EmptyMessage> 종료된 매칭 환자가 없습니다. </EmptyMessage>
+              )}
+            </>
+          )}
+        </CardWrap>
+        <Paging currentPage={endedCurrentPage} totalPage={endedTotalPage} chagneCurrentPage={chagneCurrentPage} />
       </MatchSection>
     </>
   );
 };
 
 const HeadSection = styled(Section)`
-  height: 200px;
+
   display: flex;
+  height: auto;
   justify-content: space-between;
+  padding: ${({ theme }) => theme.spacing[4]} ${({ theme }) => theme.spacing[4]} ${({ theme }) => theme.spacing[2]} ${({ theme }) => theme.spacing[4]}; /* 모바일 기본 패딩 */
+  align-items: flex-start; /* 모바일 기본: 왼쪽 정렬 */
+  ${media.md` /* 768px 이상 (태블릿/데스크톱) */
+    padding: 40px 16px 10px 16px;
+   
+  `}
 `;
 
 const TitleDiv = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  width: 100%;
+  margin-bottom: ${({ theme }) => theme.spacing[4]}; /* 모바일 기본 마진 */
 `;
 const CaregiverSearch = styled(SearchBar)``;
 
@@ -218,186 +273,90 @@ const SerachDiv = styled.div`
   width: 30%;
 `;
 const Title = styled.h1`
-  font-size: ${({ theme }) => theme.fontSizes['2xl']};
+  font-size: ${({ theme }) => theme.fontSizes.xl}; /* 모바일 기본 폰트 크기 */
   font-weight: ${({ theme }) => theme.fontWeights.bold};
-  text-align: center;
-
-  color: ${({ theme }) => theme.colors.gray[800]};
-  padding: ${({ theme }) => theme.spacing[3]};
+  text-align: left; /* 모바일 기본: 왼쪽 정렬 */
+  color: ${({ theme }) => theme.colors.black1};
+  padding: ${({ theme }) => theme.spacing[5]} 0; /* 모바일 기본 패딩 */
   display: flex;
   justify-content: flex-start;
+
+  ${media.md` /* 768px 이상 */
+    font-size: ${({ theme }) => theme.fontSizes['2xl']};
+
+    padding: ${({ theme }) => theme.spacing[3]};
+    text-align: center; /* 데스크톱에서 중앙 정렬 (원래 위치) */
+  `}
 `;
 
 const SubTitle = styled.h1`
-  font-size: ${({ theme }) => theme.fontSizes['xl']};
+  font-size: ${({ theme }) => theme.fontSizes.lg}; /* 모바일 기본 폰트 크기 */
   font-weight: ${({ theme }) => theme.fontWeights.bold};
-  text-align: center;
-
-  color: ${({ theme }) => theme.colors.gray[800]};
-  padding: ${({ theme }) => theme.spacing[3]};
+  text-align: left; /* 모바일 기본: 왼쪽 정렬 */
+  color: ${({ $active, theme }) => ($active ? theme.colors.black1 : theme.colors.gray[3])};
+  padding: ${({ theme }) => theme.spacing[1]} 0; /* 모바일 기본 패딩 */
   display: flex;
   justify-content: flex-start;
-  color: ${({ $active, theme }) => ($active ? theme.colors.black1 : theme.colors.gray[3])};
   cursor: pointer;
+
+  ${media.md` /* 768px 이상 */
+    font-size: ${({ theme }) => theme.fontSizes['xl']};
+    padding: ${({ theme }) => theme.spacing[3]};
+    text-align: center; /* 데스크톱에서 중앙 정렬 (원래 위치) */
+  `}
 `;
+
 const Tab = styled.div`
   display: flex;
-  align-items: center;
-`;
-const MatchSection = styled(Section)`
-  height: auto;
-  display: flex;
-  flex-direction: column;
-  align-items: center; /* 카드 쌍 전체를 가로 중앙으로 정렬 */
-  padding: ${({ theme }) => theme.spacing[8]} 0; /* 상하 패딩 추가 */
-`;
-
-const TipP = styled.p`
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 10px;
-`
-
-
-const SearchDivWrap = styled.div`
-  display: flex;
-  justify-content: flex-end;
-  margin-right: 50px;
-`;
-
-const SearchInput = styled.input`
-  border: 1px solid ${({ theme }) => theme.colors.gray[5]};
-  border-radius: ${({ theme }) => theme.borderRadius.md} 0 0 ${({ theme }) => theme.borderRadius.md};
-  width: 250px;
-  padding: ${({ theme }) => theme.spacing[2]};
-  outline: none; /* 포커스 시 아웃라인 제거 */
-  font-size: 16px; /* 폰트 크기 */
-  color: #333; /* 텍스트 색상 */
-
-  &::placeholder {
-    color: #999; /* 플레이스홀더 텍스트 색상 */
-  }
-`;
-
-const SearchBtn = styled.button`
-  background: ${({ theme }) => theme.colors.primary};
-  border-radius: 0 ${({ theme }) => theme.borderRadius.md} ${({ theme }) => theme.borderRadius.md} 0;
-
-  background-color: ${({ theme }) => theme.colors.primary};
-  color: white;
-
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: background-color 0.2s ease; /* 호버 효과 */
-
-  &:hover {
-    background-color: #e07243; /* 호버 시 약간 어두운 오렌지 */
-  }
-`;
-
-const SearchIcon = styled.span`
-  font-size: 18px; /* 아이콘 크기 */
-`;
-
-// 카드를 두 개씩 묶어 가로로 배치하는 컨테이너
-const ProfileCardPair = styled.div`
-  display: flex;
-  justify-content: center; /* 내부 카드들을 중앙으로 정렬 */
-  gap: ${({ theme }) => theme.spacing[8]}; /* 카드 사이의 간격 */
-  width: 100%; /* 부모 컨테이너의 너비 전체 사용 */
-  max-width: 1200px; /* 전체 카드 쌍의 최대 너비 (조절 가능) */
-  margin-bottom: ${({ theme }) => theme.spacing[8]}; /* 각 카드 쌍 아래쪽 간격 */
-`;
-
-// 개별 카드 스타일
-const ProfileCard = styled.div`
-  display: flex;
-  align-items: center;
-  padding: ${({ theme }) => theme.spacing[6]};
-  background-color: ${({ theme }) => theme.colors.white};
-  border-radius: ${({ theme }) => theme.borderRadius.sm};
-  box-shadow: ${({ theme }) => theme.shadows.md};
-  gap: ${({ theme }) => theme.spacing[4]};
-  width: 100%; /* ProfileCardPair 내에서 각 카드의 너비 (gap을 고려하여 50%보다 약간 작게) */
-  box-sizing: border-box; /* 패딩과 보더가 너비에 포함되도록 */
-`;
-
-// 프로필 이미지 스타일
-const ProfileImage = styled.img`
-  width: 200px;
-  height: 200px;
-  border-radius: 50%;
-  object-fit: cover;
-  /* ProfileCard의 type prop에 따라 배경색이 변경됩니다. */
-`;
-
-const ProfileInfo = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  width: 50%;
-  gap: ${({ theme }) => theme.spacing[5]};
-`;
-
-const UserName = styled.div`
-  display: flex;
-  font-size: ${({ theme }) => theme.fontSizes.lg};
-  font-weight: ${({ theme }) => theme.fontWeights.bold};
-`;
-
-const UserAge = styled.div`
-  display: flex;
-  font-size: ${({ theme }) => theme.fontSizes.base};
-  color: ${({ theme }) => theme.colors.gray[600]}; /* 어두운 회색으로 변경 */
-  margin-top: ${({ theme }) => theme.spacing[1]};
-`;
-
-const ButtonRow = styled.div`
-  display: flex;
-
+  align-items: flex-start; /* 모바일 기본: 왼쪽 정렬 */
   gap: ${({ theme }) => theme.spacing[2]};
-  margin-top: ${({ theme }) => theme.spacing[2]};
-  flex-grow: 1;
+
+  ${media.md` /* 768px 이상 */
+    flex-direction: row; /* 가로 정렬 */
+    align-items: center;
+    gap: ${({ theme }) => theme.spacing[2]};
+    ${SubTitle}:nth-child(even) { /* 데스크톱에서 '/' 다시 보이기 */
+      display: flex;
+    }
+  `}
+`;
+
+const MatchSection = styled(Section)`
+  width: 100%;
+  display: flex;
+  margin-bottom: ${({ theme }) => theme.spacing[4]};
+  flex-direction: column; /* 모바일 우선: 카드 쌍들이 세로로 쌓이도록 */
+  align-items: center;
+  padding: ${({ theme }) => theme.spacing[2]}; /* 모바일 기본 패딩 */
+  border: 1px solid ${({ theme }) => theme.colors.gray[5]};
 `;
 
 const InfoButton = styled.button`
-  width: 50%;
-  height: 50px;
-  background-color: ${({ theme }) => theme.colors.secondary}; /* 주황색 */
+  width: 100%;
+  margin: ${({ theme }) => theme.spacing[5]};
+  padding: ${({ theme }) => theme.spacing[5]};
+  border-radius: 4px;
+  background-color: ${({ theme }) => theme.colors.secondary};
   color: ${({ theme }) => theme.colors.white};
-  border-radius: ${({ theme }) => theme.borderRadius.md};
-  padding: ${({ theme }) => `${theme.spacing[2]} ${theme.spacing[4]}`};
-  border-radius: ${({ theme }) => theme.borderRadius.md};
+
   cursor: pointer;
   font-weight: ${({ theme }) => theme.fontWeights.bold};
   white-space: nowrap; /* 버튼 텍스트가 줄바꿈되지 않도록 */
+  font-size: ${({ theme }) => theme.fontSizes.sm};
+
+  ${media.md` /* 576px 이상 */
+    font-size: ${({ theme }) => theme.fontSizes.base};
+  `}
 `;
 
-const ReportButton = styled.button`
-  width: 50%;
-  height: 50px;
-  background-color: ${({ theme }) => theme.colors.danger}; /* 빨간색 */
-  color: ${({ theme }) => theme.colors.white};
-  border: none;
-  padding: ${({ theme }) => `${theme.spacing[2]} ${theme.spacing[3]}`};
-  border-radius: ${({ theme }) => theme.borderRadius.md};
-  cursor: pointer;
-  font-weight: ${({ theme }) => theme.fontWeights.bold};
-  white-space: nowrap;
-`;
-
-const CareLogButton = styled(InfoButton)`
-  /* InfoButton 스타일을 상속받아 '간병일지' 버튼 스타일링 */
-  /* 필요하다면 여기에서 추가 스타일을 정의할 수 있습니다. */
-  margin-top: ${({ theme }) => theme.spacing[2]}; /* 나이 아래 버튼 간격 */
-  align-self: flex-start; /* 왼쪽 정렬 */
-  border-radius: ${({ theme }) => theme.borderRadius.md};
-`;
-
-const InfoP = styled.p`
-  margin: 50px;
+const EmptyMessage = styled.p`
+  width: 100%;
+  height: 700px;
+  text-align: center;
+  font-size: 0.875rem;
+  color: #6c757d;
+  padding: 2rem;
+  background: #f8f9fa;
+  border-radius: 6px;
 `;
 export default MatchToPatient;

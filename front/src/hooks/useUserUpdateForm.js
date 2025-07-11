@@ -2,7 +2,9 @@ import * as yup from 'yup';
 import { userService } from '../api/users';
 import { toast } from 'react-toastify';
 import { useState } from 'react';
-import { getUploadUrl, uploadFileToS3, completeUpload } from '../api/fileApi';
+import { getUploadUrl, uploadFileToS3 } from '../api/fileApi';
+import useUserStore from '../store/userStore';
+
 // 유효성 스키마
 const updateSchema = yup.object().shape({
   userName: yup
@@ -82,17 +84,15 @@ const useUserUpdateForm = ({ profile }) => {
             'profile/' // 업로드 경로
           );
 
-          console.log('Presigned URL 응답:', { presignedUrl, changeName });
-
           // 2. S3 직접 업로드
           await uploadFileToS3(presignedUrl, profileImageFile);
 
           // 3. 파일 업로드 완료 후 메타데이터 저장
-          const fileMeta = await completeUpload(profileImageFile.name, changeName, profileImageFile.type);
-          console.log('completeUpload 응답:', fileMeta); // 👈 이걸 반드시 찍어보세요
+          // const fileMeta = await completeUpload(profileImageFile.name, changeName, profileImageFile.type);
+          // console.log('completeUpload 응답:', fileMeta);
 
           // 4. 유저 프로필에 파일명 저장
-          updatedData.profileImage = fileMeta.changeName;
+          updatedData.profileImage = changeName;
         } catch (uploadError) {
           toast.error('프로필 이미지 업로드에 실패했습니다.');
           setUpdating(false);
@@ -100,6 +100,7 @@ const useUserUpdateForm = ({ profile }) => {
         }
       }
 
+      const { setUser } = useUserStore.getState(); // 밖에서 접근 시 getState()
       // 여기 userNo 사용! (profile.userNo 또는 profile.user_no)
       const userNo = profile.userNo || profile.user_no;
       if (!userNo) {
@@ -107,6 +108,11 @@ const useUserUpdateForm = ({ profile }) => {
       }
 
       await userService.updateUserProfile(userNo, updatedData);
+
+      setUser({
+        ...profile,
+        ...updatedData, // 변경된 필드만 덮어씌움
+      });
 
       toast.success('회원정보가 성공적으로 수정되었습니다.');
     } catch (err) {

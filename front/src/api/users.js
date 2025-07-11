@@ -1,4 +1,3 @@
-import { use } from 'react';
 import { camelToSnake, snakeToCamel } from '../utils/formatData';
 
 import api from './axios';
@@ -9,9 +8,6 @@ export const userService = {
   getUserProfile: async (userNo) => {
     try {
       const { data } = await api.get(API_ENDPOINTS.USERS.PROFILE(userNo));
-
-      console.log('요청 URL:', API_ENDPOINTS.USERS.PROFILE(userNo));
-      console.log('불러온 값: ', data);
       return snakeToCamel(data);
     } catch (error) {
       console.error('프로필 조회 실패:', error.response?.data?.message || error.message);
@@ -39,7 +35,6 @@ export const userService = {
 
   //회원가입
   signUp: async (userData) => {
-    console.log(userData);
     try {
       const { data } = await api.post(API_ENDPOINTS.USERS.BASE, camelToSnake(userData));
       console.log(data);
@@ -138,6 +133,24 @@ export const userService = {
     } catch (error) {
       console.error('비밀번호 변경 실패 :', error.response?.data?.message || error.message);
       throw error;
+    }
+  },
+
+  changePassword: async ({ userNo, currentPassword, newPassword }) => {
+    try {
+      const payload = {
+        user_no: userNo,
+        current_password: currentPassword,
+        new_password: newPassword,
+      };
+
+      const { data } = await api.patch(API_ENDPOINTS.USERS.CHANGE_PASS(userNo), payload);
+      return data;
+    } catch (error) {
+      if (error.response) {
+        const message = error.response?.data?.message || '비밀번호 변경에 실패했습니다1.';
+        throw new Error(message);
+      }
     }
   },
 };
