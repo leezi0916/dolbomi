@@ -11,7 +11,6 @@ import useUserStatusStore from '../store/userStatusStore';
 import { useLocation } from 'react-router-dom';
 import useUserStore from '../store/userStore';
 
-
 const ReportMain = () => {
   const { patNo } = useParams(); // URL의 :patNo 값 가져오기
   const [pat, setpat] = useState({}); //환자들
@@ -62,7 +61,6 @@ const ReportMain = () => {
         toast.error(errorMessage);
       }
     };
-
     const loadReportList = async () => {
       try {
         const reports = await reportService.getReports(patNo);
@@ -86,7 +84,6 @@ const ReportMain = () => {
         toast.error(errorMessage);
       }
     };
-
     patient();
     loadReportList();
   }, [dateFilter, authorFilter]);
@@ -142,7 +139,7 @@ const ReportMain = () => {
                   <ButtonText>목록으로</ButtonText>
                 </SubmitButton>
               </Link>
-              {!(userStatus || status === 'N') && (
+              {!userStatus && status !== 'N' && (
                 <Link to={`/caregiver/reportform/${patNo}`} state={pat.patName}>
                   <SubmitButton>
                     <ButtonText>글쓰기</ButtonText>

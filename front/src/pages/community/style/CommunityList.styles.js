@@ -59,7 +59,13 @@ export const Right = styled.div`
   padding-right: 10px;
   gap: 6px;
 `;
-
+export const Form = styled.form`
+  display: flex;
+  justify-content: flex-end;
+  flex: 7;
+  padding-right: 10px;
+  gap: 6px;
+`;
 export const BoardItemTop = styled.div`
   width: 100%;
   display: flex;
@@ -78,6 +84,9 @@ export const BoardItem = styled(Link)`
   border-bottom: 1px solid ${({ theme }) => theme.colors.gray[5]};
   > div {
     flex: 1;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 `;
 export const BorderDiv = styled.div`

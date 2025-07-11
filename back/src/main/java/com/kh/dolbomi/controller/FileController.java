@@ -1,5 +1,7 @@
 package com.kh.dolbomi.controller;
 
+import com.kh.dolbomi.domain.File;
+import com.kh.dolbomi.dto.file.DownloadUrlResponseDto;
 import com.kh.dolbomi.dto.file.UploadUrlResponseDto;
 import com.kh.dolbomi.service.FileService;
 import com.kh.dolbomi.service.PatientService;
@@ -7,6 +9,8 @@ import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -39,5 +43,13 @@ public class FileController {
 //        log.info("체크용 :{}, {}", changeName, presignedUrl);
 
         return ResponseEntity.ok(new UploadUrlResponseDto(changeName, presignedUrl));
+    }
+
+    @GetMapping("/{fileNo}/download-url")
+    public ResponseEntity<DownloadUrlResponseDto> getDownloadUrl(@PathVariable Long fileNo) {
+        File file = fileService.getFile(fileNo);
+        String presignedUrl = fileService.generatePresignedDownloadUrl(file.getFileName());
+        System.out.println("presignedUrl 발급 : " + presignedUrl);
+        return ResponseEntity.ok(new DownloadUrlResponseDto(presignedUrl, file.getFileName()));
     }
 }

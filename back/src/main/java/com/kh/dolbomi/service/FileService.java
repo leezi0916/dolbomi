@@ -50,5 +50,24 @@ public class FileService {
         return fileRepository.findAll();
     }
 
+    // 파일 단건 조회
+    public File getFile(Long fileNo) {
+        return fileRepository.findById(fileNo)
+                .orElseThrow(() -> new IllegalArgumentException("File not found with id: " + fileNo));
+    }
+
+    // 파일 다운로드용 presigned URL 발급
+    public String generatePresignedDownloadUrl(String fileName) {
+        System.out.println(fileName);
+        String url = s3Presigner.presignGetObject(r -> r.getObjectRequest(get -> get
+                                .bucket(bucket)
+                                .key(fileName))
+                        .signatureDuration(Duration.ofMinutes(5)))
+                .url()
+                .toString();
+
+        return url;
+    }
+
 }
 

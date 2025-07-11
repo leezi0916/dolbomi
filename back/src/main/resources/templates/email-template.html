@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>돌보미 비밀번호 변경 안내</title>
+</head>
+<body style="font-family: 'Apple SD Gothic Neo', sans-serif; background-color: #FEEEE4; padding: 40px; color: #333;">
+<div style="max-width: 650px; margin: 0 auto; background-color: #ffffff; border-radius: 12px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05); overflow: hidden;">
+    <!-- 상단 배너 -->
+    <div style="background-color: #EF7A46; padding: 24px 32px;">
+        <h2 style="margin: 0; color: #ffffff; font-size: 22px;">[돌보미] 비밀번호 변경 안내</h2>
+    </div>
+
+    <!-- 본문 -->
+    <div style="padding: 32px;">
+        <p style="font-size: 16px; line-height: 1.8; margin-bottom: 24px;" th:utext="${body}">
+            비밀번호 변경 내용이 여기에 들어갑니다.
+        </p>
+
+        <!-- 버튼 스타일 링크 -->
+        <div style="text-align: center; margin: 40px 0;">
+
+        </div>
+
+        <p style="font-size: 14px; color: #666;">
+            위 링크의 비밀번호 변경 가능 시간은 3분간 유효합니다. <br/>
+            만약 본인이 요청한 것이 아니라면 이 이메일을 무시하셔도 됩니다.
+        </p>
+    </div>
+
+    <!-- 하단 푸터 -->
+    <div style="background-color: #f5f5f5; padding: 20px 32px; font-size: 13px; color: #888;">
+        본 메일은 돌보미 서비스에서 자동으로 발송된 메일입니다.<br/>
+        문의사항이 있으시면 고객센터(☎ 02-123-4567)로 연락 주세요.<br/>
+        <div style="margin-top: 12px; color: #aaa;">ⓒ 2025 돌보미 | <a href="https://dolbomi.co.kr" style="color: #aaa;">dolbomi.co.kr</a>
+        </div>
+    </div>
+</div>
+</body>
+</html>

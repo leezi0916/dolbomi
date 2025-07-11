@@ -65,26 +65,26 @@ public class BoardServiceImpl implements BoardService {
     }
 
     @Override
-    public Page<Response> getGuardianList(Pageable pageable) {
-        return boardRepository.findByStatus(StatusEnum.Status.Y, StatusEnum.Role.G, pageable)
+    public Page<Response> getGuardianList(String option, String keyword, Pageable pageable) {
+        return boardRepository.findByStatus(StatusEnum.Status.Y, StatusEnum.Role.G, option, keyword, pageable)
                 .map(BoardDto.Response::toSimpleDto);
     }
 
     @Override
-    public Page<Response> getCaregiverList(Pageable pageable) {
-        return boardRepository.findByStatus(StatusEnum.Status.Y, StatusEnum.Role.C, pageable)
+    public Page<Response> getCaregiverList(String option, String keyword, Pageable pageable) {
+        return boardRepository.findByStatus(StatusEnum.Status.Y, StatusEnum.Role.C, option, keyword, pageable)
                 .map(BoardDto.Response::toSimpleDto);
     }
 
     @Override
-    public Page<Response> getQuestionList(Pageable pageable) {
-        return boardRepository.findByStatus(StatusEnum.Status.Y, StatusEnum.Role.Q, pageable)
+    public Page<Response> getQuestionList(String option, String keyword, Pageable pageable) {
+        return boardRepository.findByStatus(StatusEnum.Status.Y, StatusEnum.Role.Q, option, keyword, pageable)
                 .map(BoardDto.Response::toSimpleDto);
     }
 
     @Override
-    public Page<Response> getQuestionHistory(Long userNo, Pageable pageable) {
-        return boardRepository.findByUserNo(StatusEnum.Status.Y, StatusEnum.Role.Q, userNo, pageable)
+    public Page<Response> getQuestionHistory(String option, String keyword, Long userNo, Pageable pageable) {
+        return boardRepository.findByUserNo(StatusEnum.Status.Y, StatusEnum.Role.Q, option, keyword, userNo, pageable)
                 .map(BoardDto.Response::toSimpleDto);
     }
 
@@ -149,12 +149,25 @@ public class BoardServiceImpl implements BoardService {
 
     @Override
     public Long createQuestion(CreateQuestion questionCreate) {
+        System.out.println("파일이름들: " + questionCreate.getFile_names());
         User user = userRepository.findById(questionCreate.getUser_no())
                 .orElseThrow(() -> new EntityNotFoundException("회원을 찾을 수 없습니다."));
 
         Board board = questionCreate.toEntity();
         board.changeUser(user);
 
+        // 이미지 파일 리스트가 있다면 File 엔티티로 매핑
+        if (questionCreate.getFile_names() != null && !questionCreate.getFile_names().isEmpty()) {
+
+            for (String fileName : questionCreate.getFile_names()) {
+                System.out.println("파일명: '" + fileName + "'");
+                File file = File.builder()
+                        .fileName(fileName)
+                        .board(board)
+                        .build();
+                board.getFileList().add(file);
+            }
+        }
         return boardRepositoryV2.save(board).getBoardNo();
     }
 

@@ -130,6 +130,7 @@ public class ProposerServiceImpl implements ProposerService {
         Matching matching = Matching.builder()
                 .caregiver(caregiver)
                 .patient(patient)
+                .hiring(hiring)
                 .status(StatusEnum.Status.Y)
                 .startDate(LocalDateTime.now())
                 .build();

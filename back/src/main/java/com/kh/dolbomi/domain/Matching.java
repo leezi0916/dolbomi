@@ -55,6 +55,10 @@ public class Matching {
     @Column(name = "END_DATE")
     private LocalDateTime endDate;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "HIRING_NO", nullable = false)
+    private Hiring hiring;
+
     @PrePersist
     public void prePersist() {
         this.startDate = LocalDateTime.now();

@@ -4,15 +4,15 @@ import { toast } from 'react-toastify';
 import { ClipLoader } from 'react-spinners';
 import useUserStore from '../../store/userStore';
 import Paging from '../../components/Paging';
-import { Btn, Input, Page } from '../../styles/common/Board';
+import { Btn, Input, LinkBtn, Page } from '../../styles/common/Board';
 import {
   BoardItem,
   BoardItemTop,
   BoardMenu,
   BoardTop,
   BoardTopLeft,
-  BoardTopRight,
   Drop,
+  Form,
   MenuDiv,
   MenuLink,
   Null,
@@ -28,6 +28,11 @@ const QuestionHistory = () => {
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
 
+  const [sortOption, setSortOption] = useState('');
+  const [tempSortOption, setTempSortOption] = useState('');
+  const [keyword, setKeyword] = useState('');
+  const [tempkeyword, setTempKeyword] = useState('');
+
   const [currentPage, setCurrentPage] = useState(1);
   const [data, setData] = useState([]);
   const [totalPage, setTotalPage] = useState(0);
@@ -37,7 +42,6 @@ const QuestionHistory = () => {
   const chagneCurrentPage = (value) => {
     setCurrentPage(value);
   };
-  const [sortOption, setSortOption] = useState('');
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -46,7 +50,13 @@ const QuestionHistory = () => {
   useEffect(() => {
     const loadQuestion = async () => {
       try {
-        const myHistory = await commuService.getQuestionHistory(userNo, currentPage - 1, ITEMS_PER_PAGE);
+        const myHistory = await commuService.getQuestionHistory(
+          sortOption,
+          keyword,
+          userNo,
+          currentPage - 1,
+          ITEMS_PER_PAGE
+        );
         console.log(myHistory);
 
         setData(myHistory.content); // 게시글 목록 등
@@ -63,7 +73,7 @@ const QuestionHistory = () => {
     };
 
     loadQuestion();
-  }, [userNo, currentPage]);
+  }, [userNo, currentPage, keyword, sortOption]);
 
   if (loading) {
     return (
@@ -76,6 +86,11 @@ const QuestionHistory = () => {
   if (error) {
     return null;
   }
+  const handleSubmit = async (e) => {
+    setSortOption(tempSortOption);
+    setKeyword(tempkeyword);
+    e.preventDefault();
+  };
   if (!data || totalCount === 0) {
     return (
       <Page>
@@ -93,14 +108,19 @@ const QuestionHistory = () => {
 
           <BoardTop>
             <BoardTopLeft>총 0건</BoardTopLeft>
-            <BoardTopRight style={{ flex: '7' }}>
-              <Drop value={sortOption} onChange={(e) => setSortOption(e.target.value)}>
-                <option value="date">날짜순</option>
-                <option value="views">조회순</option>
+            <Form onSubmit={handleSubmit}>
+              <Drop value={tempSortOption} onChange={(e) => setSortOption(e.target.value)}>
+                <option value="">작성일</option>
+                <option value="count">조회순</option>
               </Drop>
-              <Input type="text" />
-              <SearchBtn>검색</SearchBtn>
-            </BoardTopRight>
+              <Input
+                type="text"
+                placeholder="검색어 입력"
+                value={tempkeyword}
+                onChange={(e) => setTempKeyword(e.target.value)}
+              />
+              <SearchBtn type="submit">검색</SearchBtn>
+            </Form>
           </BoardTop>
           <BoardItemTop>
             <div>No</div>
@@ -113,9 +133,9 @@ const QuestionHistory = () => {
           <Null>
             <div style={{ marginBottom: '10px' }}>게시글이 없습니다.</div>
             {userNo && (
-              <Btn style={{ margin: 'auto' }} to="/question/create">
+              <LinkBtn style={{ margin: 'auto' }} to="/question/create">
                 글쓰기
-              </Btn>
+              </LinkBtn>
             )}
           </Null>
 
@@ -140,27 +160,33 @@ const QuestionHistory = () => {
 
         <BoardTop>
           <BoardTopLeft>총 {totalCount}건</BoardTopLeft>
-          <BoardTopRight style={{ flex: '7' }}>
-            <Drop value={sortOption} onChange={(e) => setSortOption(e.target.value)}>
-              <option value="date">날짜순</option>
-              <option value="views">조회순</option>
+          <Form onSubmit={handleSubmit} style={{ flex: '10' }}>
+            <Drop value={tempSortOption} onChange={(e) => setTempSortOption(e.target.value)}>
+              <option value="">작성일</option>
+              <option value="count">조회순</option>
             </Drop>
-            <Input type="text" />
-            <SearchBtn>검색</SearchBtn>
-          </BoardTopRight>
+            <Input
+              type="text"
+              placeholder="검색어 입력"
+              value={tempkeyword}
+              onChange={(e) => setTempKeyword(e.target.value)}
+            />
+            <SearchBtn type="submit">검색</SearchBtn>
+            {userNo && <LinkBtn to="/community/create/G">글쓰기</LinkBtn>}
+          </Form>
         </BoardTop>
         <BoardItemTop>
           <div>No</div>
-          <div>유형</div>
-          <div style={{ flex: '2' }}>제목</div>
+          <div style={{ flex: '2' }}>유형</div>
+          <div style={{ flex: '3' }}>제목</div>
           <div>작성자</div>
           <div style={{ flex: '2' }}>작성 일자</div>
-          <div>처리 현황</div>
+          <div style={{ flex: '2' }}>처리 현황</div>
         </BoardItemTop>
         {data.map((info) => (
           <BoardItem key={info.boardNo} to={`/question/detail/${info.boardNo}`}>
             <div>{info.boardNo}</div>
-            <div>
+            <div style={{ flex: '2' }}>
               {info.questionCategory === 'T'
                 ? '기술적 문제'
                 : info.questionCategory === 'S'
@@ -169,10 +195,10 @@ const QuestionHistory = () => {
                     ? '기타'
                     : '알 수 없음'}
             </div>
-            <div style={{ flex: '2' }}>{info.boardTitle}</div>
+            <div style={{ flex: '3' }}>{info.boardTitle}</div>
             <div>{info.userName}</div>
-            <div style={{ flex: '2' }}>{info.createDate}</div>
-            {info.questionStatus == 'Y' ? <div>완료</div> : <div>대기</div>}
+            <div style={{ flex: '2' }}>{info.createDate.slice(0, 10)}</div>
+            <div style={{ flex: '2' }}>{info.questionStatus == 'Y' ? '완료' : '대기'}</div>
           </BoardItem>
         ))}
 
