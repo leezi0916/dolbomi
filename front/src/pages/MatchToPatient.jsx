@@ -37,7 +37,6 @@ const MatchToPatient = () => {
   const [endedTotalPage, setEndedTotalPage] = useState(1);
   // const [selectedPatNo, setSelectedPatNo] = useState(null);
 
-  
   useEffect(() => {
     const fetchAll = async () => {
       if (!user) {
@@ -247,14 +246,9 @@ const HeadSection = styled(Section)`
   display: flex;
   height: auto;
   justify-content: space-between;
-<<<<<<< HEAD
-  padding: ${({ theme }) => theme.spacing[4]} ${({ theme }) => theme.spacing[4]} ${({ theme }) => theme.spacing[2]}; /* 모바일 기본 패딩 */
-  align-items: flex-start; /* 모바일 기본: 왼쪽 정렬 */
-=======
-  padding: ${({ theme }) => theme.spacing[4]} ${({ theme }) => theme.spacing[4]} ${({ theme }) => theme.spacing[2]} ${({ theme }) => theme.spacing[4]}; 
-  align-items: flex-start; 
-
->>>>>>> a88f2300629f9036623f3170f34832d21b4070e9
+  padding: ${({ theme }) => theme.spacing[4]} ${({ theme }) => theme.spacing[4]} ${({ theme }) => theme.spacing[2]}
+    ${({ theme }) => theme.spacing[4]};
+  align-items: flex-start;
   ${media.md` /* 768px 이상 (태블릿/데스크톱) */
     padding: 40px 16px 10px 16px;
   `}
@@ -265,7 +259,7 @@ const TitleDiv = styled.div`
   flex-direction: column;
   justify-content: space-between;
   width: 100%;
-  margin-bottom: ${({ theme }) => theme.spacing[4]}; 
+  margin-bottom: ${({ theme }) => theme.spacing[4]};
 `;
 
 const Title = styled.h1`

@@ -110,6 +110,5 @@ public class ProposerDto {
         private Long hiring_no;
         private Long caregiver_no;
     }
-
-
+    
 }

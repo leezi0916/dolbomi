@@ -35,4 +35,8 @@ public interface MatchingRepositoryV2 extends JpaRepository<Matching, Long> {
                                                  @Param("status") StatusEnum.Status status,
                                                  Pageable pageable);
 
+
+    // 특정 구인글에 대해 매칭중인지
+    boolean existsByHiring_HiringNoAndCaregiver_UserNoAndStatus(Long hiringNo, Long caregiverNo,
+                                                                StatusEnum.Status status);
 }

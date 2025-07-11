@@ -52,7 +52,11 @@ export const useLoginForm = () => {
       setUserStatus(userStatus);
 
       toast.success('로그인 성공!');
-      navigate('/');
+      if (userStatus === false) {
+        navigate('/caregiver');
+      } else {
+        navigate('/');
+      }
     } catch (error) {
       toast.error(error.message || '로그인 중 오류 발생');
       console.error('로그인 에러 : ', error);

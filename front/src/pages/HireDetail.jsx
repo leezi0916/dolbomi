@@ -22,8 +22,10 @@ const HireDetail = () => {
   const { hiringNo } = useParams();
   const { user } = useUserStore(); // 현재 로그인한 사용자 정보
   const [jobOpening, setJobOpening] = useState(null); // 초기값을 null로 설정하여 데이터 로딩 전 렌더링 방지
-  const [alreadyApplied, setAlreadyApplied] = useState(false); // 신청 여부 상태 추가
-
+  const [applicationStatus, setApplicationStatus] = useState({
+    isProposed: false,
+    isMatched: false,
+  });
   // 폼 관련 훅 (여기서는 읽기 전용으로 사용)
   const { register, setValue, watch, errors } = guardianHiringForm();
 
@@ -65,29 +67,36 @@ const HireDetail = () => {
   const handleOpenModal = () => setModalOpen(true);
   const handleCloseModal = () => setModalOpen(false);
 
-  // 신청 성공 시 상태 반영
+  // 신청 성공 시
   const handleApply = () => {
-    setAlreadyApplied(true);
+    setApplicationStatus((prev) => ({
+      ...prev,
+      isProposed: true,
+    }));
   };
 
   //신청된 글인지 확인하는 기능
-  const checkProposer = async () => {
-    try {
-      const checkProposer = await proposerService.getProposerStatus({
-        caregiverNo: Number(user.userNo),
-        hiringNo: Number(hiringNo),
-      });
-      setAlreadyApplied(checkProposer);
-    } catch (error) {
-      console.error(error + ': 신청확인실패 ');
-    }
-  };
-  checkProposer();
+  useEffect(() => {
+    const checkProposer = async () => {
+      try {
+        const result = await proposerService.getProposerStatus({
+          caregiverNo: Number(user.userNo),
+          hiringNo: Number(hiringNo),
+        });
+        console.log(result);
+        setApplicationStatus(result);
+      } catch (error) {
+        console.error(error + ': 신청확인실패 ');
+      }
+    };
+
+    checkProposer();
+  }, [user.userNo, hiringNo]); // 의존성 배열
 
   //지원 현황 관련
   const [proposerList, setproposerList] = useState([]);
 
-  // 신청 취소 핸들러
+  // 신청 취소 시
   const handleCancel = async () => {
     const confirm = window.confirm('신청을 취소하시겠습니까?');
     if (!confirm) return;
@@ -98,7 +107,10 @@ const HireDetail = () => {
         status: null,
       });
       alert('신청이 취소되었습니다.');
-      setAlreadyApplied(false);
+      setApplicationStatus((prev) => ({
+        ...prev,
+        isProposed: false,
+      }));
     } catch (err) {
       alert('신청 취소 실패');
       console.error(err);
@@ -118,7 +130,10 @@ const HireDetail = () => {
         const data = await hiringService.getHirngById(Number(hiringNo), user?.userNo);
         console.log(data);
         setJobOpening(data);
-        setAlreadyApplied(data.applied);
+
+        if (data.applied && typeof data.applied === 'object') {
+          setApplicationStatus(data.applied); // { isMatched: true, isProposed: true }
+        }
 
         setRecruitmentClosed(data.hiringStatus === 'N');
         setValue('hiringStatus', data.hiringStatus);
@@ -344,13 +359,17 @@ const HireDetail = () => {
             <SubmitButton1 type="button" disabled $disabled>
               신청취소(모집마감)
             </SubmitButton1>
-          ) : alreadyApplied ? (
-            // 모집 중이고 내가 신청한 경우 → 신청취소 버튼
-            <SubmitButton1 type="button" onClick={handleCancel}>
-              신청취소
+          ) : applicationStatus.isMatched ? (
+            <SubmitButton1 type="button" disabled $disabled>
+              매칭 완료
             </SubmitButton1>
+          ) : applicationStatus.isProposed ? (
+            <>
+              <SubmitButton1 type="button" onClick={handleCancel}>
+                신청 취소
+              </SubmitButton1>
+            </>
           ) : (
-            // 모집 중이고 내가 신청하지 않은 경우 → 신청하기 버튼
             <SubmitButton1 type="button" onClick={handleOpenModal}>
               신청하기
             </SubmitButton1>
