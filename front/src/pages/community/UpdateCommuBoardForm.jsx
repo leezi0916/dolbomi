@@ -10,7 +10,8 @@ import { commuService } from '../../api/community';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 import { ClipLoader } from 'react-spinners';
-
+import profileImage from '../../assets/images/cargiver.png'; // 프로필 이미지 경로
+import { getUploadUrl, uploadFileToS3 } from '../../api/fileApi';
 const UpdateCommuBoardForm = () => {
   const userNo = useUserStore((state) => state.user?.userNo);
   const userName = useUserStore((state) => state.user?.userName);
@@ -18,12 +19,13 @@ const UpdateCommuBoardForm = () => {
 
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [data, setDate] = useState(null);
+  const [data, setData] = useState(null);
 
   const navigate = useNavigate();
   const { register, handleSubmit, reset } = useForm();
   const [isSubmitting, setIsSubmitting] = useState(false);
-
+  // 삭제한 기존 파일 번호 저장
+  const [deletedFileNos, setDeletedFileNos] = useState([]);
   const [images, setImages] = useState([]);
   const fileInputRef = useRef(null);
 
@@ -32,7 +34,7 @@ const UpdateCommuBoardForm = () => {
       try {
         const community = await commuService.getCommunityDetail(boardNo);
         console.log(community);
-        setDate(community);
+        setData(community);
         reset({
           boardTitle: community.boardTitle,
           boardContent: community.boardContent,
@@ -67,46 +69,46 @@ const UpdateCommuBoardForm = () => {
       alert('제목과 내용을 모두 입력해주세요.');
       return;
     }
-
-    console.log(userNo);
     try {
       setIsSubmitting(true);
+
+      // 1) 새로 올린 이미지가 있다면 S3 업로드 후 이름 받아오기
+      const newImageNames = [];
+      for (const img of images) {
+        const file = img.file;
+        const { presignedUrl, changeName } = await getUploadUrl(file.name, file.type, 'image/');
+        await uploadFileToS3(presignedUrl, file);
+        newImageNames.push(changeName);
+      }
+
+      // 2) 기존 이미지 중 삭제하지 않은 이미지명 배열 준비
+      const existingImageNames = data.files.map((file) => file.fileName);
+      // (삭제 기능 넣으면 삭제된 건 제외하세요)
+
+      // 3) 최종 이미지명 리스트
+      const image_names = [...existingImageNames, ...newImageNames];
+
       const boardData = {
+        board_no: data.boardNo,
         board_title: updateData.boardTitle,
         board_content: updateData.boardContent,
-        board_no: data.boardNo,
+        image_names,
+        deleted_file_nos: deletedFileNos,
       };
-
+      console.log(boardData);
       const response = await commuService.updateCommunity(boardData);
       console.log(response);
 
-      // 이미지 업로드 별도 처리 (샘플용)
-      // if (images.length > 0) {
-      //   const imagePromises = images.map((img) =>
-      //     fetch('http://localhost:3001/images', {
-      //       method: 'POST',
-      //       headers: {
-      //         'Content-Type': 'application/json',
-      //       },
-      //       body: JSON.stringify({
-      //         questionId: response.id,
-      //         fileName: img.file.name,
-      //       }),
-      //     })
-      //   );
-      //   await Promise.all(imagePromises);
-      // }
       toast.success('수정되었습니다');
       navigate(-1);
     } catch (error) {
       console.error(error);
-      const errorMessage = '수정에 실패했습니다. 다시 시도해주세요.';
-      setError(errorMessage);
-      toast.error(errorMessage);
+      toast.error('수정에 실패했습니다. 다시 시도해주세요.');
     } finally {
       setIsSubmitting(false);
     }
   };
+
   //
   //이미지 관련
   const handleClick = () => {
@@ -123,15 +125,35 @@ const UpdateCommuBoardForm = () => {
 
     e.target.value = '';
   };
-  const handleDelete = (id) => {
+
+  // 기존 파일 삭제는 서버에 요청하거나 삭제할 파일 목록 관리 필요
+
+  // 기존 파일 삭제
+  const handleDeleteExistingFile = (fileNo) => {
+    setDeletedFileNos((prev) => [...prev, fileNo]);
+    setData((prevData) => ({
+      ...prevData,
+      files: prevData.files.filter((file) => file.fileNo !== fileNo),
+    }));
+  };
+
+  // 새로 추가한 파일은 상태에서 제거
+  const handleDeleteNewFile = (id) => {
     setImages((prev) => {
-      const filtered = prev.filter((img) => img.id !== id);
       const removed = prev.find((img) => img.id === id);
       if (removed) URL.revokeObjectURL(removed.preview);
-      return filtered;
+      return prev.filter((img) => img.id !== id);
     });
   };
   //여기까지 이미지 관련
+
+  const CLOUDFRONT_URL = 'https://d20jnum8mfke0j.cloudfront.net/';
+  //이미지 경로 갖고오고 없다면 기본이미지
+  const getProfileImageUrl = (path) => {
+    if (!path) return profileImage; // 기본 이미지
+    const cleanPath = path.replace(/^\//, ''); // 앞에 / 있으면 제거
+    return `${CLOUDFRONT_URL}${cleanPath}`;
+  };
 
   if (error) {
     return null;
@@ -171,9 +193,26 @@ const UpdateCommuBoardForm = () => {
                 <FileTitle>사진</FileTitle>
               </FileTitle>
               <InputFile>
+                {/* 기존 업로드된 이미지 */}
+                {data?.files?.map((img) => (
+                  <ImgBox key={img.fileNo}>
+                    <button type="button" onClick={() => handleDeleteExistingFile(img.fileNo)}>
+                      x
+                    </button>
+                    <img
+                      src={getProfileImageUrl(img.fileName)}
+                      alt="preview"
+                      style={{ width: '100%', aspectRatio: '4 / 3', borderRadius: '4px' }}
+                    />
+                  </ImgBox>
+                ))}
+
+                {/* 새로 업로드한 이미지 미리보기 */}
                 {images.map((img) => (
                   <ImgBox key={img.id}>
-                    <button onClick={() => handleDelete(img.id)}>x</button>
+                    <button type="button" onClick={() => handleDeleteNewFile(img.id)}>
+                      x
+                    </button>
                     <img
                       src={img.preview}
                       alt="preview"
@@ -181,6 +220,7 @@ const UpdateCommuBoardForm = () => {
                     />
                   </ImgBox>
                 ))}
+
                 <div style={{ width: 'calc(100% / 4)', aspectRatio: '4 / 3', padding: '0 10px 10px 0px' }}>
                   <input
                     type="file"
@@ -190,7 +230,9 @@ const UpdateCommuBoardForm = () => {
                     style={{ display: 'none' }}
                     onChange={handleFilesChange}
                   />
-                  <FileButton onClick={handleClick}>+</FileButton>
+                  <FileButton onClick={handleClick} type="button">
+                    +
+                  </FileButton>
                 </div>
               </InputFile>
             </FileBox>

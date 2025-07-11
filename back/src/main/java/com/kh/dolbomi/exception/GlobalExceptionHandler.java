@@ -15,7 +15,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(BaseException.class)
     public ResponseEntity<ErrorResponse> handleBaseException(BaseException ex, HttpServletRequest request) {
         log.error("BaseException 발생 : {}", ex.getMessage(), ex);
-        ErrorResponse error = ErrorResponse.of(ex.getErrorCode(), request.getRequestURI());
+        ErrorResponse error = ErrorResponse.of(ex.getErrorCode(), ex.getMessage(), request.getRequestURI());
         return ResponseEntity.status(ex.getErrorCode().getStatus()).body(error);
     }
 

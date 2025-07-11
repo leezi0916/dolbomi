@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -170,6 +171,15 @@ public class UserDto {
         }
     }
 
+
+    @NoArgsConstructor
+    @AllArgsConstructor
+    @Data
+    public static class ResetPwdDto {
+        private String email;
+        private String user_pwd;
+    }
+
     @Getter
     @Setter
     @NoArgsConstructor
@@ -180,6 +190,5 @@ public class UserDto {
         private String new_password;
 
     }
-
 
 }

@@ -114,6 +114,14 @@ public class UserController {
         UserCountsDto result = userService.getUserCounts();
         return ResponseEntity.ok(result);
     }
+
+    // 비밀번호 찾기 - 비밀번호 재설정
+    @PostMapping("/reset_password")
+    public ResponseEntity<?> resetPassWord(@RequestBody UserDto.ResetPwdDto resetPwdDto) {
+        userService.resetPassWord(resetPwdDto);
+        return ResponseEntity.ok("비밀번호가 성공적으로 변경되었습니다.");
+    }
+
 }
 
 

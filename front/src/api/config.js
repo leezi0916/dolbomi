@@ -20,13 +20,17 @@ export const API_ENDPOINTS = {
     BASE: '/community/v1',
     UPDATE: '/community/v1/update',
     UPDATE_REPLY: '/community/v1/update_reply',
-    CAREGIVER: (page, size) => `/community/v1/caregiver?page=${page}&size=${size}`,
-    GUARDIAN: (page, size) => `/community/v1/guardian?page=${page}&size=${size}`,
+    CAREGIVER: (option, keyword, page, size) =>
+      `/community/v1/caregiver?option=${option}&keyword=${keyword}&page=${page}&size=${size}`,
+    GUARDIAN: (option, keyword, page, size) =>
+      `/community/v1/guardian?option=${option}&keyword=${keyword}&page=${page}&size=${size}`,
     DETAIL: (boardNo) => `/community/v1/detail?board_no=${boardNo}`, // 특정 게시글
     REPLY: `/community/v1/reply`,
     REPLY_QUESTION: `/community/v1/reply/question`,
-    QUESTION: (page, size) => `/community/v1/question?page=${page}&size=${size}`,
-    QUESTION_HISTORY: (userNo, page, size) => `/community/v1/question?user_no=${userNo}&page=${page}&size=${size}`,
+    QUESTION: (option, keyword, page, size) =>
+      `/community/v1/question?option=${option}&keyword=${keyword}&page=${page}&size=${size}`,
+    QUESTION_HISTORY: (option, keyword, userNo, page, size) =>
+      `/community/v1/question?option=${option}&keyword=${keyword}&user_no=${userNo}&page=${page}&size=${size}`,
     CREATE_QUESTION: '/community/v1/question/create',
     DELETE: (boardNo) => `/community/v1/delete?boardNo=${boardNo}`,
     DELETE_REPLY: (replyNo) => `/community/v1/reply_delete?replyNo=${replyNo}`,
@@ -43,6 +47,7 @@ export const API_ENDPOINTS = {
     CAREPROFILE: (userNo) => `/users/v1?user_no=${userNo}`,
     DELETE: (userNo) => `/users/v1/${userNo}/delete`,
     COUNT: '/users/v1/user-counts',
+    RESET_PASSWORD: '/users/v1/reset_password',
     CHANGE_PASS: (userNo) => `/users/v1/${userNo}/change-password`,
   },
   REVIEWS: {
@@ -124,5 +129,11 @@ export const API_ENDPOINTS = {
     REGION: (cd) => {
       return cd != null ? `/api/address/region?cd=${cd}` : `/api/address/region`;
     },
+  },
+
+  EMAIL: {
+    BASE: '/auth/email',
+    SEND_EMAIL_CODE: '/auth/email/send',
+    VERIFY_EMAIL_CODE: '/auth/email/verify',
   },
 };
