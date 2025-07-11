@@ -52,6 +52,8 @@ import CommunityDetail from './pages/community/CommunityDetail';
 import CreateCommuBoardForm from './pages/community/CreateCommuBoardForm';
 import QuestionDetail from './pages/question/QuestionDetail';
 import FileUpload from './components/FileUpload';
+import FindPassword from './pages/find_password/FindPassword';
+import ResetPassword from './pages/find_password/ResetPassword';
 import UpdateCommuBoardForm from './pages/community/UpdateCommuBoardForm';
 
 function AppRoutes() {
@@ -109,6 +111,8 @@ function AppRoutes() {
           <Route path="/question/detail/:boardNo" element={<QuestionDetail />} />
 
           <Route path="/login" element={<Login />} />
+          <Route path="/find-password" element={<FindPassword />} />
+          <Route path="/reset-password/code" element={<ResetPassword />} />
           <Route path="/signup" element={<SignUp />} />
           <Route path="/myprofile" element={<MyProfile />} />
           <Route path="/caregiverProfile/:userNo" element={<CareGviverProfile />} />
