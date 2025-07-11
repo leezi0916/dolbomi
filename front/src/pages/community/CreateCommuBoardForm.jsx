@@ -162,7 +162,7 @@ const CreateCommuBoardForm = () => {
                     style={{ display: 'none' }}
                     onChange={handleFilesChange}
                   />
-                  <FileButton onClick={handleClick} type="button">
+                  <FileButton type="button" onClick={handleClick}>
                     +
                   </FileButton>
                 </div>
