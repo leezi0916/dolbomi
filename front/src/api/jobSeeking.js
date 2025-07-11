@@ -65,7 +65,7 @@ export const jobSeekingService = {
     }
   },
 
-  getMyResumeList: async (userNo, currentPage) => {
+  getMyResumeList: async (currentPage, userNo) => {
     try {
       const { data } = await api.get(`${API_ENDPOINTS.RESUME.MYRESUME(currentPage, userNo)}`);
       return snakeToCamel(data);
@@ -74,6 +74,17 @@ export const jobSeekingService = {
       throw new Error(message);
     }
   },
+
+  getMyResumeLists : async ( userNo) => {
+    try {
+      const { data } = await api.get(`${API_ENDPOINTS.RESUME.MYRESUMMODAL(userNo)}`);
+      return snakeToCamel(data);
+    } catch (error) {
+      const message = error.response?.data?.message || '이력서 리스트를 가져오는데에 실패했습니다.';
+      throw new Error(message);
+    }
+  },
+
 
   // 특정 이력서 가져오기
   getResume: async (resumeNo) => {

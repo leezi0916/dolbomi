@@ -53,6 +53,7 @@ import CreateCommuBoardForm from './pages/community/CreateCommuBoardForm';
 import QuestionDetail from './pages/question/QuestionDetail';
 import FileUpload from './components/FileUpload';
 import UpdateCommuBoardForm from './pages/community/UpdateCommuBoardForm';
+import PatientCardGroup from './components/PatientCardGroup';
 
 function AppRoutes() {
   const navigate = useNavigate();
@@ -120,6 +121,7 @@ function AppRoutes() {
           <Route path="/contact" element={<ContactPage />} />
           <Route path="/modal" element={<Modal />} />
           <Route path="/file" element={<FileUpload />} />
+          <Route path="/test" element={<PatientCardGroup />} />
         </Routes>
       </Layout>
     </>

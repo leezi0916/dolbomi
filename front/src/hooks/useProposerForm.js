@@ -12,7 +12,7 @@ export const useProposerForm = (hiringNo, onSuccess) => {
   useEffect(() => {
     const fetchMyResumes = async () => {
       try {
-        const resumes = await jobSeekingService.getMyResumeList(user.userNo);
+        const resumes = await jobSeekingService.getMyResumeLists(user.userNo);
         console.log(resumes);
         setResumeList(resumes);
       } catch (err) {
