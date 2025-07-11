@@ -3,6 +3,7 @@ package com.kh.dolbomi.service;
 import com.kh.dolbomi.domain.Resume;
 import com.kh.dolbomi.domain.User;
 import com.kh.dolbomi.dto.ResumeDto;
+import com.kh.dolbomi.dto.ResumeDto.Response;
 import com.kh.dolbomi.dto.SearchDataDto;
 import com.kh.dolbomi.enums.StatusEnum;
 import com.kh.dolbomi.exception.ResumeNotFoundException;
@@ -96,6 +97,14 @@ public class ResumeServiceImpl implements ResumeService {
                 .orElseThrow(() -> new ResumeNotFoundException("해당 이력서를 찾을 수 없습니다."));
 
         return ResumeDto.Response.ResumeDto(resume);
+    }
+
+    @Override
+    public List<Response> getResumLists(Long userNo) {
+        List<ResumeDto.Response> resumeList = resumeRepositoryV2.findByUser_UserNo(userNo)
+                .stream().map(ResumeDto.Response::ResumeListDto)
+                .collect(Collectors.toList());
+        return resumeList;
     }
 
 

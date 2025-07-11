@@ -55,6 +55,7 @@ import FileUpload from './components/FileUpload';
 import FindPassword from './pages/find_password/FindPassword';
 import ResetPassword from './pages/find_password/ResetPassword';
 import UpdateCommuBoardForm from './pages/community/UpdateCommuBoardForm';
+import PatientCardGroup from './components/PatientCardGroup';
 
 function AppRoutes() {
   const navigate = useNavigate();
@@ -124,6 +125,7 @@ function AppRoutes() {
           <Route path="/contact" element={<ContactPage />} />
           <Route path="/modal" element={<Modal />} />
           <Route path="/file" element={<FileUpload />} />
+          <Route path="/test" element={<PatientCardGroup />} />
         </Routes>
       </Layout>
     </>
