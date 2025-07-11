@@ -65,8 +65,9 @@ export const jobSeekingService = {
     }
   },
 
-  getMyResumeList: async (userNo, currentPage) => {
+  getMyResumeList: async (currentPage, userNo) => {
     try {
+      console.log('유저번호 : ', userNo);
       const { data } = await api.get(`${API_ENDPOINTS.RESUME.MYRESUME(currentPage, userNo)}`);
       return snakeToCamel(data);
     } catch (error) {
@@ -95,7 +96,6 @@ export const jobSeekingService = {
       throw new Error('서버 통신 불량');
     }
   },
-
 
   deleteResume: async (resumeNo) => {
     try {

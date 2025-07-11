@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Title, AuthContainer,TipP } from '../styles/Auth.styles';
+import { Title, AuthContainer, TipP } from '../styles/Auth.styles';
 import { SubmitButton, ButtonText } from '../styles/common/Button';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
@@ -14,6 +14,7 @@ import Paging from '../components/Paging';
 
 const ResumeManagement = () => {
   const { user } = useUserStore();
+  console.log(user);
   const [resumeLists, setResumeLists] = useState([]);
   const { currentPage, chagneCurrentPage } = pageing();
   const navigate = useNavigate();
@@ -28,7 +29,9 @@ const ResumeManagement = () => {
 
       try {
         const getResumeLists = await jobSeekingService.getMyResumeList(currentPage, user.userNo);
+        console.log(user.userNo);
         setResumeLists(getResumeLists.content);
+        console.log(getResumeLists);
       } catch (err) {
         console.error(err);
       }
@@ -126,9 +129,8 @@ export const NewTitle = styled(Title)`
   font-size: ${({ theme }) => theme.fontSizes['2xl']};
   font-weight: ${({ theme }) => theme.fontWeights.bold};
   text-align: center;
-  margin :0px;
+  margin: 0px;
   color: ${({ theme }) => theme.colors.gray[800]};
-
 `;
 
 const CardWrap = styled.div`
@@ -160,7 +162,6 @@ const Head = styled.div`
   justify-content: space-between;
   align-items: center;
 `;
-
 
 const RegistrationButton = styled(SubmitButton)`
   height: fit-content;

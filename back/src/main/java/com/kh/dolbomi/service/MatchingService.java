@@ -30,4 +30,7 @@ public interface MatchingService {
 
     Page<MatchingDto.Response> getMatchedListBySearch(Long patNo, LocalDateTime startDate,
                                                       LocalDateTime endDate, Status status, Pageable pageable);
+
+    //내가 특정 구인글에대해 매칭중인지
+    boolean isMatching(Long hiring_no, Long caregiver_no);
 }

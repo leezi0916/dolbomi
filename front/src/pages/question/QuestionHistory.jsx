@@ -19,6 +19,7 @@ import {
   PageTitle,
   PageTop,
   SearchBtn,
+  Form,
 } from './style/Question.styles';
 
 const QuestionHistory = () => {
