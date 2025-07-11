@@ -68,7 +68,7 @@ const Login = () => {
               <Button type="button" onClick={() => navigate('/signup')}>
                 회원가입
               </Button>
-              <Button type="button" onClick={() => navigate('/change-password')}>
+              <Button type="button" onClick={() => navigate('/find-password')}>
                 비밀번호 찾기
               </Button>
             </LoginButtonGroup>

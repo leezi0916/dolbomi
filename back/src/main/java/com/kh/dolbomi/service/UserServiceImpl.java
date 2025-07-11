@@ -7,6 +7,7 @@ import com.kh.dolbomi.dto.LicenseDto;
 import com.kh.dolbomi.dto.UserCountsDto;
 import com.kh.dolbomi.dto.UserDto;
 import com.kh.dolbomi.dto.UserDto.Login;
+import com.kh.dolbomi.dto.UserDto.ResetPwdDto;
 import com.kh.dolbomi.dto.UserDto.Response;
 import com.kh.dolbomi.enums.StatusEnum;
 import com.kh.dolbomi.exception.LicenseNotFoundException;
@@ -178,6 +179,24 @@ public class UserServiceImpl implements UserService {
         int caregiverCount = resumeRepositoryV2.countDistinctByUserNo();
 
         return new UserCountsDto(guardianCount, caregiverCount);
+    }
+
+    // 비밀번호 찾기 - 비밀번호 재설정
+    @Override
+    public void resetPassWord(ResetPwdDto resetPwdDto) {
+        // 1. 회원정보 가져오기 -> 이메일로 회원 찾기
+        // 2. 비밀번호 암호화 해서 변경하기
+
+        // (1)
+        User user = userRepositoryV2.findByEmail(resetPwdDto.getEmail())
+                .orElseThrow(() -> new UserNotFoundException("회원을 찾을 수 없습니다."));
+
+        // (2)
+        String encodedPwd = passwordEncoder.encode(resetPwdDto.getUser_pwd());
+        //비밀번호 암호화 추가
+        user.changePassword(encodedPwd);
+        userRepository.save(user);
+
     }
 
 }

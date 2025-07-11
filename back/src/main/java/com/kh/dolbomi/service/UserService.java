@@ -3,6 +3,7 @@ package com.kh.dolbomi.service;
 import com.kh.dolbomi.domain.User;
 import com.kh.dolbomi.dto.UserCountsDto;
 import com.kh.dolbomi.dto.UserDto;
+import com.kh.dolbomi.dto.UserDto.ResetPwdDto;
 
 public interface UserService {
     //회원가입
@@ -24,8 +25,10 @@ public interface UserService {
     void deleteUser(Long userNo);
 
     UserDto.Response getUserInfoByEmail(String email);
-    
+
     //간병사, 보호자 카운트
     UserCountsDto getUserCounts();
 
+    // 비밀번호 찾기 - 비밀번호 재설정
+    void resetPassWord(ResetPwdDto resetPwdDto);
 }

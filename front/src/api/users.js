@@ -127,4 +127,17 @@ export const userService = {
       throw error;
     }
   },
+
+  // 비밀번호 찾기 - 비밀번호 재설정
+  resetPassword: async (email, userPwd) => {
+    try {
+      console.log(email, userPwd);
+      const response = await api.post(API_ENDPOINTS.USERS.RESET_PASSWORD, camelToSnake({ email, userPwd }));
+      console.log(response);
+      return response;
+    } catch (error) {
+      console.error('비밀번호 변경 실패 :', error.response?.data?.message || error.message);
+      throw error;
+    }
+  },
 };

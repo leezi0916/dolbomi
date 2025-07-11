@@ -42,6 +42,7 @@ public class SecurityConfig {
                                 "/users/v1",
                                 "/users/v1/login",
                                 "/users/v1/user-counts",
+                                "/users/v1/reset_password",
                                 "/hiring/v1/simple-list",
                                 "/hiring/v1/list",
                                 "/resume/v1/simple-list",
@@ -52,7 +53,8 @@ public class SecurityConfig {
                                 "/community/v1/question",
                                 "/community/v1/detail",
                                 "/api/address/region",
-                                "/mail/send",
+                                "/auth/email/send",
+                                "/auth/email/verify",
                                 "/"
 
                         ).permitAll()

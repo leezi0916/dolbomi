@@ -26,7 +26,7 @@ const SignUp = () => {
   const email = searchParams.get('email');
   const name = searchParams.get('name');
   const socialType = searchParams.get('socialType');
-  const emailVerified = searchParams.get('verified');
+  // const emailVerified = searchParams.get('verified');
   const socialId = searchParams.get('openId');
 
   // watch 함수를 useSignUpForm 훅에서 가져옵니다.
@@ -206,14 +206,6 @@ const SignUp = () => {
                   />
                 ) : (
                   <Inputs id="email" type="email" {...register('email')} value={email} disabled />
-                )}
-
-                {emailVerified === null ? (
-                  <CheckDuplicateButton type="button" onClick={checkUserId}>
-                    인증하기
-                  </CheckDuplicateButton>
-                ) : (
-                  ''
                 )}
               </Row>
               {errors.email && <ErrorMessage>{errors.email.message}</ErrorMessage>}
