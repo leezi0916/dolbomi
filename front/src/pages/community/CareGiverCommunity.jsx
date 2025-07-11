@@ -162,7 +162,7 @@ const CareGiverCommunity = () => {
             <div>{info.boardNo}</div>
             <div style={{ flex: '3' }}>{info.boardTitle}</div>
             <div>{info.userName}</div>
-            <div style={{ flex: '2' }}>{info.createDate}</div>
+            <div style={{ flex: '2' }}>{info.createDate.slice(0, 10)}</div>
             <div>{info.count}</div>
           </BoardItem>
         ))}

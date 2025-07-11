@@ -71,7 +71,6 @@ export const BoardTopLeft = styled.div`
 export const Form = styled.form`
   display: flex;
   justify-content: flex-end;
-  flex: 7;
   padding-right: 10px;
   gap: 6px;
 `;

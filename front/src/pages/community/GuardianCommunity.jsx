@@ -163,7 +163,7 @@ const GuardianCommunity = () => {
             <div>{community.boardNo}</div>
             <div style={{ flex: '3' }}>{community.boardTitle}</div>
             <div>{community.userName}</div>
-            <div style={{ flex: '2' }}>{community.createDate}</div>
+            <div style={{ flex: '2' }}>{community.createDate.slice(0, 10)}</div>
             <div>{community.count}</div>
           </BoardItem>
         ))}
