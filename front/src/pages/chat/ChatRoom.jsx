@@ -3,15 +3,24 @@ import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
 import '@chatscope/chat-ui-kit-styles/dist/default/styles.min.css';
-import { MainContainer, ChatContainer, MessageList, Message, MessageInput, Avatar } from '@chatscope/chat-ui-kit-react';
+import {
+  MainContainer,
+  ChatContainer,
+  MessageList,
+  Message,
+  MessageInput,
+  Avatar,
+  Search,
+} from '@chatscope/chat-ui-kit-react';
+import { leaveGroupChatRoom } from '../../api/chatApi';
 
 const Container = styled.div`
-  max-width: 600px;
+  width: 500px;
   margin: 3rem auto;
   padding: 2rem;
-  background: white;
+  background: #fdfdff;
   border-radius: 10px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
   text-align: center;
 `;
 
@@ -43,19 +52,23 @@ const Close = styled.img`
 
 //메인-----------------------------------------
 const Main = styled.div`
+  display: flex;
+  flex-direction: column;
   position: relative;
   height: 600px;
   width: 100%;
-
+  gap: 10px;
   max-width: 1200px;
   margin: 2rem auto;
-  padding: 0 1rem;
+  padding: 10px 1rem;
 `;
 
 const MessageBox = styled(MainContainer)`
   border: 0;
-
   box-shadow: 0 0 6px rgba(239, 122, 70, 0.6);
+`;
+const OneMessage = styled(Message)`
+  padding: 10px 0;
 `;
 
 //하단------------------------------------------
@@ -86,7 +99,7 @@ const MenuButton = styled.button`
 
 // -----------------------------------------------
 
-const AVATAR_IMAGE = '/public/logo.png';
+const AVATAR_IMAGE = '/src/assets/profileImg/img_환자소.png';
 
 const defaultMessage = [
   {
@@ -120,14 +133,14 @@ const defaultMessage = [
 const getMessageComponent = (data) => {
   return data.map((item, index) => {
     return (
-      <Message key={index} model={item.model}>
+      <OneMessage key={index} model={item.model}>
         {item.avatar ? <Avatar src={item.avatar.src} name={item.avatar.name} /> : null}
-      </Message>
+      </OneMessage>
     );
   });
 };
 
-const ChatMenuPage = () => {
+const ChatRoom = () => {
   const navigate = useNavigate();
   const [messages, setMessages] = useState(defaultMessage);
 
@@ -142,6 +155,17 @@ const ChatMenuPage = () => {
     setMessages([...messages, newMessage]);
   };
 
+  const handleLeaveChatRoom = async (roomId, isGroupChat) => {
+    if (isGroupChat !== 'Y') return;
+    try {
+      await leaveGroupChatRoom(roomId);
+      setChatList(chatList.filter((chat) => chat.roomId !== roomId));
+    } catch (error) {
+      console.error('채팅방 나가기 실패:', error);
+      alert('채팅방 나가기에 실패했습니다.');
+    }
+  };
+
   return (
     <Container>
       <Header>
@@ -151,6 +175,8 @@ const ChatMenuPage = () => {
       </Header>
 
       <Main>
+        <Search />
+
         <MessageBox>
           <ChatContainer>
             <MessageList>{getMessageComponent(messages)}</MessageList>
@@ -158,14 +184,19 @@ const ChatMenuPage = () => {
           </ChatContainer>
         </MessageBox>
       </Main>
-
+      {/* <LeaveButton
+              disabled={chat.isGroupChat !== 'Y'}
+              onClick={() => handleLeaveChatRoom(chat.roomId, chat.isGroupChat)}
+            >
+              나가기
+            </LeaveButton> */}
       <Footer>
         <ButtonGroup>
-          <MenuButton onClick={() => navigate('#')}>채팅방목록</MenuButton>
+          <MenuButton onClick={() => navigate('/chat/home')}>채팅방목록</MenuButton>
         </ButtonGroup>
       </Footer>
     </Container>
   );
 };
 
-export default ChatMenuPage;
+export default ChatRoom;

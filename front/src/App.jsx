@@ -53,9 +53,6 @@ import CreateCommuBoardForm from './pages/community/CreateCommuBoardForm';
 import QuestionDetail from './pages/question/QuestionDetail';
 import FileUpload from './components/FileUpload';
 import UpdateCommuBoardForm from './pages/community/UpdateCommuBoardForm';
-import ChatMenuPage from './pages/chat/ChatMenuPage';
-import Test from './pages/chat/Test';
-import ChatHome from './pages/chat/ChatHome';
 
 function AppRoutes() {
   const navigate = useNavigate();
@@ -125,9 +122,6 @@ function AppRoutes() {
 
           {/* 테스트용 임시 */}
           <Route path="/file" element={<FileUpload />} />
-          <Route path="/chat/patientList" element={<ChatMenuPage />} />
-          <Route path="/test" element={<Test />} />
-          <Route path="/chat/home" element={<ChatHome />} />
         </Routes>
       </Layout>
     </>
