@@ -124,6 +124,8 @@ function AppRoutes() {
           <Route path="/terms-of-service" element={<TermsOfService />} />
           <Route path="/contact" element={<ContactPage />} />
           <Route path="/modal" element={<Modal />} />
+
+          {/* 테스트용 임시 */}
           <Route path="/file" element={<FileUpload />} />
           <Route path="/test" element={<PatientCardGroup />} />
         </Routes>
