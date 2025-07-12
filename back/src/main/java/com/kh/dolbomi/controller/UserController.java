@@ -64,15 +64,15 @@ public class UserController {
     public ResponseEntity<?> getMemberInfo() {
         //jwt토큰에서 아이디 추출
         String identifier = jwtTokenProvider.getUserIdFromToken(); // 이메일 또는 아이디가 올 수 있음 -> 소셜 로그인때문
-        UserDto.Response userInfo;
+        UserDto.Response userInfo = userService.getUserInfoByUserId(identifier);
 
-        if (identifier.contains("@")) {
-            // 이메일 형식이면 이메일로 유저 조회
-            userInfo = userService.getUserInfoByEmail(identifier);
-        } else {
-            // 아니면 일반 userId로 유저 조회
-            userInfo = userService.getUserInfoByUserId(identifier);
-        }
+//        if (identifier.contains("@")) {
+//            // 이메일 형식이면 이메일로 유저 조회
+//            userInfo = userService.getUserInfoByEmail(identifier);
+//        } else {
+//            // 아니면 일반 userId로 유저 조회
+//            userInfo = userService.getUserInfoByUserId(identifier);
+//        }
 
         return new ResponseEntity<>(userInfo, HttpStatus.OK);
     }
@@ -100,7 +100,7 @@ public class UserController {
         return ResponseEntity.ok("회원탈퇴가 완료되었습니다.");
     }
 
-    
+
     //비밀번호 변경
     @PatchMapping("/{userNo}/change-password")
     public ResponseEntity<?> changePassword(@PathVariable Long userNo, @RequestBody UserDto.ChangePasswordDto passDto) {

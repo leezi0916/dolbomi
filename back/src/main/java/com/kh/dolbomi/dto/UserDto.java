@@ -4,7 +4,6 @@ import com.kh.dolbomi.domain.User;
 import com.kh.dolbomi.enums.Role;
 import com.kh.dolbomi.enums.SocialType;
 import com.kh.dolbomi.enums.StatusEnum;
-import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -38,10 +37,6 @@ public class UserDto {
         private String phone;
         private String address;
 
-        @NotBlank(message = "이메일은 필수입니다.")
-        @Email(message = "올바른 이메일 형식이 아닙니다.")
-        private String email;
-
         // 소셜타입, 아이디 추가
         private SocialType social_type;
         private String social_id;
@@ -55,7 +50,6 @@ public class UserDto {
                     .gender(this.gender)
                     .phone(this.phone)
                     .address(this.address)
-                    .email(this.email)
                     .socialType(this.social_type)
                     .socialId(this.social_id)
                     .build();
@@ -86,7 +80,6 @@ public class UserDto {
         private Long user_no;
         private String user_id;
         private String user_name;
-        private String email;
         private StatusEnum.Gender gender;
         private String phone;
         private String address;
@@ -103,7 +96,6 @@ public class UserDto {
                     .gender(user.getGender())
                     .age(user.getAge())
                     .phone(user.getPhone())
-                    .email(user.getEmail())
                     .address(user.getAddress())
                     .status(user.getStatus())
                     .role(user.getRole())
@@ -121,7 +113,6 @@ public class UserDto {
         private Integer age;
         private StatusEnum.Gender gender;
         private String phone;
-        private String email;
         private String address;
         private String profileImage;
 
@@ -142,7 +133,6 @@ public class UserDto {
         private String user_id;
         private String user_name;
         private String phone;
-        private String email;
         private String address;
         private Integer age;
         private StatusEnum.Gender gender;
@@ -156,7 +146,6 @@ public class UserDto {
                     .user_id(user.getUserId())
                     .user_name(user.getUserName())
                     .phone(user.getPhone())
-                    .email(user.getEmail())
                     .address(user.getAddress())
                     .age(user.getAge())
                     .gender(user.getGender())
@@ -176,7 +165,7 @@ public class UserDto {
     @AllArgsConstructor
     @Data
     public static class ResetPwdDto {
-        private String email;
+        private String user_id;
         private String user_pwd;
     }
 

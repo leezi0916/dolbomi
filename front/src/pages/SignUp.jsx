@@ -18,7 +18,6 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import PostcodeSearch from '../components/PostcodeSearch';
 // import { userService } from '../api/users';
 // import { toast } from 'react-toastify';
-// import { useNavigate } from 'react-router-dom';
 
 const SignUp = () => {
   const location = useLocation();
@@ -26,26 +25,12 @@ const SignUp = () => {
   const email = searchParams.get('email');
   const name = searchParams.get('name');
   const socialType = searchParams.get('socialType');
-  // const emailVerified = searchParams.get('verified');
+  const emailVerified = searchParams.get('verified');
   const socialId = searchParams.get('openId');
 
   // watch 함수를 useSignUpForm 훅에서 가져옵니다.
-  const {
-    register,
-    handleSubmit,
-    errors,
-    isSubmitting,
-    watch,
-    checkUserId,
-    idCheckMessage,
-    setValue,
-    // isIdChecked,
-
-    formatPhoneNumber,
-    onSubmit,
-  } = useSignUpForm(socialType, socialId);
-
-  // const navigate = useNavigate();
+  const { register, handleSubmit, errors, isSubmitting, watch, checkUserId, setValue, formatPhoneNumber, onSubmit } =
+    useSignUpForm(socialType, socialId);
 
   const currentGender = watch('gender');
 
@@ -70,20 +55,27 @@ const SignUp = () => {
           <SignUpTitle>회원가입</SignUpTitle>
           <InputContainer1>
             <InputGroup>
-              <Label htmlFor="userId">아이디</Label>
+              <Label htmlFor="email">이메일</Label>
               <Row>
-                <Inputs
-                  id="userId"
-                  placeholder="아이디를 입력해주세요"
-                  {...register('userId')}
-                  $error={errors.userId}
-                />
-                <CheckDuplicateButton type="button" onClick={checkUserId}>
-                  중복확인
-                </CheckDuplicateButton>
+                {email === null ? (
+                  <Inputs
+                    id="userId"
+                    type="userId"
+                    placeholder="이메일을 입력해주세요"
+                    {...register('userId')}
+                    $error={errors.userId}
+                  />
+                ) : (
+                  <Inputs id="userId" type="userId" {...register('userId')} value={email} disabled />
+                )}
+                {emailVerified === 'true' ? (
+                  ''
+                ) : (
+                  // <CheckDuplicateButton type="button" onClick={checkUserId}>
+                  <CheckDuplicateButton type="button">인증하기</CheckDuplicateButton>
+                )}
               </Row>
-              {errors.userId && <ErrorMessage>{errors.userId.message}</ErrorMessage>}
-              {idCheckMessage && !errors.userId && <p style={{ color: 'green', marginTop: 4 }}>{idCheckMessage}</p>}
+              {errors.email && <ErrorMessage>{errors.email.message}</ErrorMessage>}
             </InputGroup>
 
             <InputGroup>
@@ -197,23 +189,6 @@ const SignUp = () => {
               {errors.address && <ErrorMessage>{errors.address.message}</ErrorMessage>}
             </InputGroup>
 
-            <InputGroup>
-              <Label htmlFor="email">이메일</Label>
-              <Row>
-                {email === null ? (
-                  <Inputs
-                    id="email"
-                    type="email"
-                    placeholder="이메일을 입력해주세요"
-                    {...register('email')}
-                    $error={errors.email}
-                  />
-                ) : (
-                  <Inputs id="email" type="email" {...register('email')} value={email} disabled />
-                )}
-              </Row>
-              {errors.email && <ErrorMessage>{errors.email.message}</ErrorMessage>}
-            </InputGroup>
             <div style={{ display: 'flex', gap: '20px' }}>
               <SignUpButton type="button" onClick={() => navigate(-1)}>
                 뒤로가기

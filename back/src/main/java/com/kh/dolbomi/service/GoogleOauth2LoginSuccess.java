@@ -67,9 +67,7 @@ public class GoogleOauth2LoginSuccess extends SimpleUrlAuthenticationSuccessHand
             return;
         }
 
-        String jwtToken = jwtTokenProvider.createToken(user.getEmail(), user.getRole().toString());
-
-        System.out.println("userEmail : " + user.getEmail());
+        String jwtToken = jwtTokenProvider.createToken(user.getUserId(), user.getRole().toString());
 
         Cookie jwtCookie = new Cookie("token", jwtToken);
         jwtCookie.setPath("/"); //모든 경로에서 쿠키 사용가능

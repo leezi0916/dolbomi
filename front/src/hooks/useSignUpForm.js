@@ -5,17 +5,9 @@ import { userService } from '../api/users';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
-
 // 유효성 검사 스키마
 const signUpSchema = yup.object().shape({
-  userId: yup
-    .string()
-    .required('아이디를 입력하세요.')
-    .min(5, '아이디는 최소 5자 이상이어야 합니다.')
-    .matches(
-      /^[가-힣a-zA-Z][^!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?\s]*$/,
-      '아이디에 특수문자가 포함되면 안되고 숫자로 시작하면 안됩니다!'
-    ),
+  userId: yup.string().email('유효한 이메일 주소를 입력하세요.').required('이메일을 입력해주세요.'),
   userName: yup
     .string()
     .required('이름을 입력하세요.')
@@ -52,16 +44,14 @@ const signUpSchema = yup.object().shape({
     .required('주소를 입력해주세요.')
     .min(5, '주소는 최소 5자 이상이어야 합니다.')
     .max(100, '주소는 100자 이하로 입력해주세요.'),
-
-  email: yup.string().email('유효한 이메일 주소를 입력하세요.').required('이메일을 입력해주세요.'),
 });
 
 export const useSignUpForm = (socialType, socialId) => {
   const navigate = useNavigate();
 
   //아이디 중복 검사
-  const [isIdChecked, setIsIdChecked] = useState(false); // 아이디 중복확인 완료 여부
-  const [idCheckMessage, setIdCheckMessage] = useState('');
+  const [isEmailChecked, setIsEmailChecked] = useState(false); // 아이디 중복확인 완료 여부
+  const [emailCheckMessage, setEmailCheckMessage] = useState('');
 
   const {
     register,
@@ -79,34 +69,10 @@ export const useSignUpForm = (socialType, socialId) => {
     },
   });
 
-  const userId = watch('userId');
-
   useEffect(() => {
-    setIsIdChecked(false);
-    setIdCheckMessage('');
-  }, [userId]);
-
-  const checkUserId = async () => {
-    if (!userId || userId.length < 5) {
-      setIdCheckMessage('아이디는 최소 5자 이상 입력해주세요');
-      return;
-    }
-    try {
-      const res = await userService.checkUserId(userId);
-      if (res.available) {
-        setIdCheckMessage('사용 가능한 아이디입니다.');
-        setIsIdChecked(true);
-        clearErrors('userId');
-      } else {
-        setIdCheckMessage('이미 사용 중인 아이디입니다.');
-        setIsIdChecked(false);
-        setError('userId', { message: '이미 사용 중인 아이디입니다.' });
-      }
-    } catch {
-      setIdCheckMessage('중복 확인 중 오류가 발생했습니다.');
-      setIsIdChecked(false);
-    }
-  };
+    setIsEmailChecked(false);
+    setEmailCheckMessage('');
+  }, []);
 
   const formatPhoneNumber = (value) => {
     const numbersOnly = value.replace(/\D/g, '');
@@ -116,10 +82,10 @@ export const useSignUpForm = (socialType, socialId) => {
   };
 
   const onSubmit = async (data) => {
-    if (!isIdChecked) {
-      toast.error('아이디 중복을 확인해주세요.');
-      return;
-    }
+    // if (!isEmailChecked) {
+    //   toast.error('이메일 중복을 확인해주세요.');
+    //   return;
+    // }
 
     // 주소 정리
     const submitData = {
@@ -149,11 +115,10 @@ export const useSignUpForm = (socialType, socialId) => {
     errors,
     isSubmitting,
     watch,
-    checkUserId,
-    idCheckMessage,
+    emailCheckMessage,
     setValue,
     formatPhoneNumber,
-    isIdChecked, // 외부에서 중복 체크 확인 필요
+    isEmailChecked, // 외부에서 이메일 검증 확인 필요
     onSubmit,
   };
 };

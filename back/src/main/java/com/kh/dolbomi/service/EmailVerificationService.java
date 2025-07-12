@@ -64,18 +64,19 @@ public class EmailVerificationService {
     }
 
     public boolean verifyCode(String email, String code) {
-        // 1. 해당 이메일로 가입된 회원이 있는지?
-        if (!userRepositoryV2.findByEmail(email).isPresent()) {
+        // 1. 해당 이메일(아이디)로 가입된 회원이 있는지?
+        if (!userRepositoryV2.findByUserId(email).isPresent()) {
             throw new UserNotFoundException("가입된 회원이 아닙니다.");
         }
 
         // 2. 해당 이메일에 대해 가장 최근에 요청된 인증 객체 조회
-        Optional<EmailVerification> optional = emailVerificationRepository.findTopByEmailOrderByCreatedAtDesc(email);
+        Optional<EmailVerification> optional = emailVerificationRepository.findTopByEmailOrderByCreatedAtDesc(
+                email);
 
         // 3. 없으면 바로 실패
         if (optional.isEmpty()) {
             return false;
-            
+
         }
 
         // 영속성 컨텍스트에 있는 객체 가져오기
