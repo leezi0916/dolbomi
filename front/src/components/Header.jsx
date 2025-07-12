@@ -12,7 +12,8 @@ import Cookies from 'js-cookie';
 import { userService } from '../api/users';
 import { notificationService } from '../api/notification';
 import { toast } from 'react-toastify';
-const Header = () => {
+
+const Header = ({ openChat }) => {
   const { login } = useUserStore();
 
   const { user, isAuthenticated } = useUserStore();
@@ -351,8 +352,10 @@ const Header = () => {
           <img
             src="/src/assets/icons/icon_채팅알림.png"
             alt="채팅 알림"
+            onClick={openChat}
             style={{
               visibility: user ? 'visible' : 'hidden',
+              cursor: 'pointer',
             }}
           />
 
