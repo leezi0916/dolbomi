@@ -5,6 +5,7 @@ import com.kh.dolbomi.auth.JwtTokenProvider;
 import com.kh.dolbomi.domain.User;
 import com.kh.dolbomi.dto.UserCountsDto;
 import com.kh.dolbomi.dto.UserDto;
+import com.kh.dolbomi.service.EmailVerificationService;
 import com.kh.dolbomi.service.UserService;
 import jakarta.validation.Valid;
 import java.util.HashMap;
@@ -29,6 +30,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class UserController {
 
     private final UserService userService;
+    private final EmailVerificationService emailVerificationService;
     private final JwtTokenProvider jwtTokenProvider;
 
     //회원 등록
@@ -118,8 +120,13 @@ public class UserController {
     // 비밀번호 찾기 - 비밀번호 재설정
     @PostMapping("/reset_password")
     public ResponseEntity<?> resetPassWord(@RequestBody UserDto.ResetPwdDto resetPwdDto) {
-        userService.resetPassWord(resetPwdDto);
-        return ResponseEntity.ok("비밀번호가 성공적으로 변경되었습니다.");
+        boolean result = emailVerificationService.verifyCode(resetPwdDto.getUser_id(), resetPwdDto.getCode());
+        if (result) {
+            userService.resetPassWord(resetPwdDto);
+            return ResponseEntity.ok("비밀번호가 성공적으로 변경되었습니다.");
+        } else {
+            return ResponseEntity.badRequest().body("인증코드가 만료되었거나 이미 인증된 인증 코드입니다.");
+        }
     }
 
 }

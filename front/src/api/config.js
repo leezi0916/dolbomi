@@ -132,7 +132,8 @@ export const API_ENDPOINTS = {
 
   EMAIL: {
     BASE: '/auth/email',
-    SEND_EMAIL_CODE: '/auth/email/send',
+    SEND_RESET_LINK: '/auth/email/send-reset-link',
+    SEND_CODE: '/auth/email/send-code',
     VERIFY_EMAIL_CODE: '/auth/email/verify',
   },
 };

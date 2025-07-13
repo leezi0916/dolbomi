@@ -31,11 +31,11 @@ const FindPassword = () => {
 
   const onSubmit = async (data) => {
     try {
-      await emailService.sendEmailCode(data.email);
+      await emailService.sendResetLink(data.email);
 
       toast.success('메일 전송 성공. 이메일을 확인해주세요.');
     } catch (error) {
-      toast.error('이메일 전송하는데 실패했습니다.');
+      toast.error(error.response?.data?.message);
     }
   };
 

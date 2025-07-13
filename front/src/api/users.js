@@ -125,9 +125,9 @@ export const userService = {
 
   // 비밀번호 찾기 - 비밀번호 재설정
   // 이메일이 아이디이기때문에 파라미터 userId로 받음
-  resetPassword: async (userId, userPwd) => {
+  resetPassword: async (userId, userPwd, code) => {
     try {
-      const response = await api.post(API_ENDPOINTS.USERS.RESET_PASSWORD, camelToSnake({ userId, userPwd }));
+      const response = await api.post(API_ENDPOINTS.USERS.RESET_PASSWORD, camelToSnake({ userId, userPwd, code }));
       console.log(response);
       return response;
     } catch (error) {

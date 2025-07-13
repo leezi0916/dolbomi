@@ -16,6 +16,7 @@ import { IoCheckmarkOutline } from 'react-icons/io5'; // 체크마크 아이콘 
 import { useSignUpForm } from '../hooks/useSignUpForm';
 import { useLocation, useNavigate } from 'react-router-dom';
 import PostcodeSearch from '../components/PostcodeSearch';
+import Timer from '../components/Timer';
 // import { userService } from '../api/users';
 // import { toast } from 'react-toastify';
 
@@ -25,14 +26,9 @@ const SignUp = () => {
   const email = searchParams.get('email');
   const name = searchParams.get('name');
   const socialType = searchParams.get('socialType');
-  const emailVerified = searchParams.get('verified');
+  const verifiedFromSocial = searchParams.get('verified') === 'true'; // "true"일때만 true
   const socialId = searchParams.get('openId');
-
-  // watch 함수를 useSignUpForm 훅에서 가져옵니다.
-  const { register, handleSubmit, errors, isSubmitting, watch, checkUserId, setValue, formatPhoneNumber, onSubmit } =
-    useSignUpForm(socialType, socialId);
-
-  const currentGender = watch('gender');
+  const isSocialSignup = !!socialType; // 소셜이면 true
 
   const [addressData, setAddressData] = useState({
     zonecode: '',
@@ -40,13 +36,34 @@ const SignUp = () => {
     extraAddress: '',
   });
 
+  const navigate = useNavigate();
+
+  // watch 함수를 useSignUpForm 훅에서 가져옵니다.
+  const {
+    register,
+    handleSubmit,
+    errors,
+    isSubmitting,
+    watch,
+    setValue,
+    formatPhoneNumber,
+    onSubmit,
+    handleEmailAuth,
+    handleVerifyCode,
+    emailAuthStarted,
+    emailVerified,
+    authCode,
+    setAuthCode,
+    handleTimeout,
+  } = useSignUpForm(socialType, socialId, verifiedFromSocial);
+
+  const currentGender = watch('gender');
+
   // 주소 변화 시 전체 주소 필드 업데이트 (react-hook-form 내)
   useEffect(() => {
     const baseAddress = `${addressData.address}${addressData.extraAddress}`.trim();
     setValue('address', baseAddress);
   }, [addressData, setValue]);
-
-  const navigate = useNavigate();
 
   return (
     <AuthContainer>
@@ -68,14 +85,37 @@ const SignUp = () => {
                 ) : (
                   <Inputs id="userId" type="userId" {...register('userId')} value={email} disabled />
                 )}
-                {emailVerified === 'true' ? (
-                  ''
-                ) : (
-                  // <CheckDuplicateButton type="button" onClick={checkUserId}>
-                  <CheckDuplicateButton type="button">인증하기</CheckDuplicateButton>
+
+                {!emailVerified && !emailAuthStarted && (
+                  <CheckDuplicateButton type="button" onClick={handleEmailAuth}>
+                    이메일 인증
+                  </CheckDuplicateButton>
+                )}
+
+                {!emailVerified && emailAuthStarted && (
+                  <>
+                    <Input
+                      type="text"
+                      placeholder="인증코드 입력"
+                      value={authCode}
+                      onChange={(e) => setAuthCode(e.target.value)}
+                      maxLength={8}
+                      style={{ width: '120px' }}
+                    />
+                    <CheckDuplicateButton type="button" onClick={handleVerifyCode}>
+                      확인
+                    </CheckDuplicateButton>
+                    <Timer seconds={180} isActive={emailAuthStarted} onTimeout={handleTimeout} />
+                  </>
+                )}
+
+                {emailVerified && !isSocialSignup && (
+                  <span style={{ color: '#388e3c', fontWeight: 'bold' }}>
+                    <IoCheckmarkOutline size={20} /> 인증 완료
+                  </span>
                 )}
               </Row>
-              {errors.email && <ErrorMessage>{errors.email.message}</ErrorMessage>}
+              {errors.userId && <ErrorMessage>{errors.userId.message}</ErrorMessage>}
             </InputGroup>
 
             <InputGroup>

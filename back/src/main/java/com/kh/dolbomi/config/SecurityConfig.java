@@ -53,7 +53,8 @@ public class SecurityConfig {
                                 "/community/v1/question",
                                 "/community/v1/detail",
                                 "/api/address/region",
-                                "/auth/email/send",
+                                "/auth/email/send-code",
+                                "/auth/email/send-reset-link",
                                 "/auth/email/verify",
                                 "/"
 

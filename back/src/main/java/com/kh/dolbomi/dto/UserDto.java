@@ -167,6 +167,7 @@ public class UserDto {
     public static class ResetPwdDto {
         private String user_id;
         private String user_pwd;
+        private String code;
     }
 
     @Getter

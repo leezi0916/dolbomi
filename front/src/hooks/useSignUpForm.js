@@ -2,9 +2,10 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { userService } from '../api/users';
-import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import { emailService } from '../api/email';
+import { useState } from 'react';
 // 유효성 검사 스키마
 const signUpSchema = yup.object().shape({
   userId: yup.string().email('유효한 이메일 주소를 입력하세요.').required('이메일을 입력해주세요.'),
@@ -46,18 +47,65 @@ const signUpSchema = yup.object().shape({
     .max(100, '주소는 100자 이하로 입력해주세요.'),
 });
 
-export const useSignUpForm = (socialType, socialId) => {
+export const useSignUpForm = (socialType, socialId, verifiedFromSocial) => {
+  // 이메일 인증 시작 여부
+  const [emailAuthStarted, setEmailAuthStarted] = useState(false);
+  // 인증 여부 상태
+  const [emailVerified, setEmailVerified] = useState(verifiedFromSocial);
+  // 인증 요청 후 변경했는지 추적 (aa@naver.com으로 인증 번호 입력후 bb@naver.com으로 바꿀 수 있기때문)
+  const [emailSentTo, setEmailSentTo] = useState(null);
+  const [authCode, setAuthCode] = useState('');
+
   const navigate = useNavigate();
 
-  //아이디 중복 검사
-  const [isEmailChecked, setIsEmailChecked] = useState(false); // 아이디 중복확인 완료 여부
-  const [emailCheckMessage, setEmailCheckMessage] = useState('');
+  // 타이머 종료
+  const handleTimeout = () => {
+    toast.error('이메일 인증 시간이 초과되었습니다.');
+    setEmailAuthStarted(false);
+    setAuthCode('');
+  };
+
+  // 이메일 인증코드 발송
+  const handleEmailAuth = async () => {
+    const currentEmail = watch('userId'); // 폼 상태에서 이메일 가져오기
+    try {
+      await emailService.sendCode(currentEmail);
+      setEmailSentTo(currentEmail); // 요청 보낼시 입력 이메일 저장 -> 인증시에 같은 이메일인지 확인하기 위해
+      setEmailAuthStarted(true); // 이메일 인증 시작 true
+      toast.success('메일 전송 성공. 이메일을 확인해주세요.');
+    } catch (error) {
+      if (error.response?.data) {
+        toast.error(error.response?.data?.message);
+      } else {
+        toast.error('이메일 전송하는데 실패했습니다.');
+      }
+    }
+  };
+
+  // 인증코드 인증 함수
+  const handleVerifyCode = async () => {
+    const currentEmail = watch('userId');
+    try {
+      if (currentEmail !== emailSentTo) {
+        toast.error('이메일을 인증 후 변경하셨습니다. 다시 인증해주세요.');
+        setEmailVerified(false);
+        return;
+      }
+
+      await emailService.verifyEmailCode(currentEmail, authCode);
+
+      setEmailVerified(true);
+      setEmailAuthStarted(false);
+      toast.success('이메일 인증이 완료되었습니다!');
+    } catch (e) {
+      setEmailVerified(false);
+      toast.error(e.response?.data?.message || '인증코드가 올바르지 않습니다.');
+    }
+  };
 
   const {
     register,
     handleSubmit,
-    setError,
-    clearErrors,
     setValue,
     formState: { errors, isSubmitting },
     watch,
@@ -69,11 +117,6 @@ export const useSignUpForm = (socialType, socialId) => {
     },
   });
 
-  useEffect(() => {
-    setIsEmailChecked(false);
-    setEmailCheckMessage('');
-  }, []);
-
   const formatPhoneNumber = (value) => {
     const numbersOnly = value.replace(/\D/g, '');
     if (numbersOnly.length < 4) return numbersOnly;
@@ -82,10 +125,10 @@ export const useSignUpForm = (socialType, socialId) => {
   };
 
   const onSubmit = async (data) => {
-    // if (!isEmailChecked) {
-    //   toast.error('이메일 중복을 확인해주세요.');
-    //   return;
-    // }
+    if (!emailVerified) {
+      toast.error('이메일 인증을 해주세요.');
+      return;
+    }
 
     // 주소 정리
     const submitData = {
@@ -108,17 +151,21 @@ export const useSignUpForm = (socialType, socialId) => {
   };
 
   //컴포넌트에서 사용할 값들 반환
-
   return {
     register,
     handleSubmit,
     errors,
     isSubmitting,
     watch,
-    emailCheckMessage,
     setValue,
     formatPhoneNumber,
-    isEmailChecked, // 외부에서 이메일 검증 확인 필요
     onSubmit,
+    handleEmailAuth,
+    handleVerifyCode,
+    emailAuthStarted,
+    emailVerified,
+    authCode,
+    setAuthCode,
+    handleTimeout,
   };
 };
