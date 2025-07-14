@@ -46,16 +46,12 @@ spring:
             token-uri: https://oauth2.googleapis.com/token
             user-info-uri: https://openidconnect.googleapis.com/v1/userinfo
             user-name-attribute: sub
+
   mail:
     host: smtp.gmail.com
     port: 587
-<<<<<<< HEAD
-    username: wotejal1234@gmail.com
-    password: "kzro nove gkey sdni"
-=======
-    username: leezi0916@gmail.com
-    password: "fabj dtdp iqko hmwn"
->>>>>>> 0d2df04745543146554237f19bcf07d19f99c8c2
+    username: tmdghks605@gmail.com
+    password: yorx vpgz lbgt fcep
     properties:
       mail:
         smtp:
@@ -83,17 +79,6 @@ sgis:
     key: c99f4eacee1f4cb78217
     secret: 145bbe8179aa42a891c5
 
-<<<<<<< HEAD
-oauth:
-  kakao:
-    client-id: 57b3d384913a76fc8a1a7bdd2b00ac38 #kakao RestAPI 키
-    redirect-uri: http://localhost:3000/oauth/kakao/redirect
-
-=======
-
-
-#돌보미 AWS 계정 및 S3버킷
->>>>>>> 0d2df04745543146554237f19bcf07d19f99c8c2
 aws:
   region: ap-northeast-2
   credentials:
@@ -102,6 +87,7 @@ aws:
 
   s3:
     bucket: project2025-dolbomi
+
 ---
 spring:
   config:

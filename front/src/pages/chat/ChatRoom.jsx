@@ -1,54 +1,9 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
 import '@chatscope/chat-ui-kit-styles/dist/default/styles.min.css';
-import {
-  MainContainer,
-  ChatContainer,
-  MessageList,
-  Message,
-  MessageInput,
-  Avatar,
-  Search,
-} from '@chatscope/chat-ui-kit-react';
+import { MainContainer, ChatContainer, MessageList, Message, MessageInput, Avatar } from '@chatscope/chat-ui-kit-react';
 import { leaveGroupChatRoom } from '../../api/chatApi';
-
-const Container = styled.div`
-  width: 500px;
-  margin: 3rem auto;
-  padding: 2rem;
-  background: #fdfdff;
-  border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
-  text-align: center;
-`;
-
-// 상단---------------------------------------
-const Header = styled.div`
-  display: flex;
-  position: relative;
-  align-items: center;
-  gap: 15px;
-  margin-bottom: 20px;
-`;
-
-const Logo = styled.img`
-  height: 50px;
-`;
-
-const Title = styled.p`
-  font-size: ${({ theme }) => theme.fontSizes['2xl']};
-  font-weight: ${({ theme }) => theme.fontWeights.medium};
-`;
-
-const Close = styled.img`
-  position: absolute;
-  top: 1rem;
-  right: 1rem;
-`;
-
-//검색창---------------------------------------
 
 //메인-----------------------------------------
 const Main = styled.div`
@@ -59,7 +14,6 @@ const Main = styled.div`
   width: 100%;
   gap: 10px;
   max-width: 1200px;
-  margin: 2rem auto;
   padding: 10px 1rem;
 `;
 
@@ -75,6 +29,7 @@ const OneMessage = styled(Message)`
 const Footer = styled.div`
   display: flex;
   justify-content: space-around;
+  padding-bottom: 30px;
 `;
 const ButtonGroup = styled.div`
   display: flex;
@@ -86,7 +41,7 @@ const MenuButton = styled.button`
   color: white;
   border: none;
   border-radius: 6px;
-  padding: 1rem 2.5rem;
+  padding: 0.5rem 2rem;
   font-size: 1.1rem;
   cursor: pointer;
   transition: background 0.2s;
@@ -97,6 +52,24 @@ const MenuButton = styled.button`
   }
 `;
 
+const LeaveButton = styled.button`
+  background: ${({ theme }) => theme.colors.primary};
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 0.5rem 2rem;
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: background 0.2s;
+  &:hover {
+    background: ${({ theme }) => theme.colors.secondary};
+  }
+  &:disabled {
+    background: #e9ecef;
+    color: #6c757d;
+    cursor: not-allowed;
+  }
+`;
 // -----------------------------------------------
 
 const AVATAR_IMAGE = '/src/assets/profileImg/img_환자소.png';
@@ -140,8 +113,7 @@ const getMessageComponent = (data) => {
   });
 };
 
-const ChatRoom = () => {
-  const navigate = useNavigate();
+const ChatRoom = ({ onBack }) => {
   const [messages, setMessages] = useState(defaultMessage);
 
   const handleSend = (input) => {
@@ -167,16 +139,9 @@ const ChatRoom = () => {
   };
 
   return (
-    <Container>
-      <Header>
-        <Logo src="/public/logo.png" alt="로고" />
-        <Title>채팅</Title>
-        <Close src="/public/Union.png" alt="" />
-      </Header>
-
+    <>
       <Main>
-        <Search />
-
+        {/* <Search /> */}
         <MessageBox>
           <ChatContainer>
             <MessageList>{getMessageComponent(messages)}</MessageList>
@@ -190,12 +155,14 @@ const ChatRoom = () => {
             >
               나가기
             </LeaveButton> */}
+
       <Footer>
         <ButtonGroup>
-          <MenuButton onClick={() => navigate('/chat/home')}>채팅방목록</MenuButton>
+          <MenuButton onClick={onBack}>채팅방목록</MenuButton>
+          <LeaveButton>채팅나가기</LeaveButton>
         </ButtonGroup>
       </Footer>
-    </Container>
+    </>
   );
 };
 
