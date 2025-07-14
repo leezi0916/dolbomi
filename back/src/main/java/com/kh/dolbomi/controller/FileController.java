@@ -49,7 +49,7 @@ public class FileController {
     public ResponseEntity<DownloadUrlResponseDto> getDownloadUrl(@PathVariable Long fileNo) {
         File file = fileService.getFile(fileNo);
         String presignedUrl = fileService.generatePresignedDownloadUrl(file.getFileName());
-
+        System.out.println("presignedUrl 발급 : " + presignedUrl);
         return ResponseEntity.ok(new DownloadUrlResponseDto(presignedUrl, file.getFileName()));
     }
 }

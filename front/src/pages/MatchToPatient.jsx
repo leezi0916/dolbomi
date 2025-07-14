@@ -21,7 +21,6 @@ import {
 } from '../styles/MatchingCard';
 import { media } from '../styles/MediaQueries';
 
-
 const MatchToPatient = () => {
   const [activeTab, setActiveTab] = useState('matching');
   const { user } = useUserStore();
@@ -38,7 +37,6 @@ const MatchToPatient = () => {
   const [endedTotalPage, setEndedTotalPage] = useState(1);
   // const [selectedPatNo, setSelectedPatNo] = useState(null);
 
-  
   useEffect(() => {
     const fetchAll = async () => {
       if (!user) {
@@ -127,7 +125,7 @@ const MatchToPatient = () => {
     <>
       <HeadSection>
         <TitleDiv>
-          <Title>매칭된 간병보기</Title>
+          <Title>매칭된 돌봄대상자 보기</Title>
           <Tab>
             <SubTitle onClick={() => handleTabChange('matching')} $active={activeTab === 'matching'}>
               진행중
@@ -157,8 +155,7 @@ const MatchToPatient = () => {
 
       {/*진행중 매칭 */}
       <MatchSection>
-        <CardWrap list={activeTab === 'matching' ? patientList : endedPatientList}
-  > 
+        <CardWrap list={activeTab === 'matching' ? patientList : endedPatientList}>
           {activeTab === 'matching' && (
             <>
               {patientList && patientList.length > 0 ? (
@@ -177,9 +174,7 @@ const MatchToPatient = () => {
                         </TextWrap>
                         <TextWrap>
                           <img src="/src/assets/icons/icon_gender.png" />
-                          <p>
-                          {pat.patGender === 'F' ? '여성' : '남성'}
-                          </p>
+                          <p>{pat.patGender === 'F' ? '여성' : '남성'}</p>
                         </TextWrap>
                       </InfoSection>
                     </ProfileSection>
@@ -218,9 +213,7 @@ const MatchToPatient = () => {
                         </TextWrap>
                         <TextWrap>
                           <img src="/src/assets/icons/icon_gender.png" />
-                          <p>
-                            {pat.patGender === 'F' ? '여성' : '남성'}
-                          </p>
+                          <p>{pat.patGender === 'F' ? '여성' : '남성'}</p>
                         </TextWrap>
                         <TextWrap>
                           <img src="/src/assets/icons/icon_달력.png" />
@@ -231,7 +224,9 @@ const MatchToPatient = () => {
                       </InfoSection>
                     </ProfileSection>
                     <BtnSection>
-                      <InfoButton onClick={() => navigate(`/report/${pat.patNo}`)}>간병일지 보기</InfoButton>
+                      <InfoButton onClick={() => navigate(`/report/${pat.patNo}`, { state: { status: 'N' } })}>
+                        간병일지 보기
+                      </InfoButton>
                     </BtnSection>
                   </CardInnerWrap>
                 ))
@@ -248,16 +243,14 @@ const MatchToPatient = () => {
 };
 
 const HeadSection = styled(Section)`
-
   display: flex;
   height: auto;
   justify-content: space-between;
-  padding: ${({ theme }) => theme.spacing[4]} ${({ theme }) => theme.spacing[4]} ${({ theme }) => theme.spacing[2]} ${({ theme }) => theme.spacing[4]}; 
-  align-items: flex-start; 
-
+  padding: ${({ theme }) => theme.spacing[4]} ${({ theme }) => theme.spacing[4]} ${({ theme }) => theme.spacing[2]}
+    ${({ theme }) => theme.spacing[4]};
+  align-items: flex-start;
   ${media.md` /* 768px 이상 (태블릿/데스크톱) */
     padding: 40px 16px 10px 16px;
-   
   `}
 `;
 
@@ -266,7 +259,7 @@ const TitleDiv = styled.div`
   flex-direction: column;
   justify-content: space-between;
   width: 100%;
-  margin-bottom: ${({ theme }) => theme.spacing[4]}; 
+  margin-bottom: ${({ theme }) => theme.spacing[4]};
 `;
 
 const Title = styled.h1`

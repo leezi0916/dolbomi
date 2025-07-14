@@ -61,7 +61,6 @@ const ReportMain = () => {
         toast.error(errorMessage);
       }
     };
-
     const loadReportList = async () => {
       try {
         const reports = await reportService.getReports(patNo);
@@ -85,7 +84,6 @@ const ReportMain = () => {
         toast.error(errorMessage);
       }
     };
-
     patient();
     loadReportList();
   }, [dateFilter, authorFilter]);

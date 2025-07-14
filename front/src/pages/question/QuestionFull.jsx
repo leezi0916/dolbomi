@@ -101,7 +101,7 @@ const QuestionFull = () => {
 
           <BoardTop>
             <BoardTopLeft>총 0건</BoardTopLeft>
-            <Form onSubmit={handleSubmit}>
+            <Form onSubmit={handleSubmit} style={{ flex: '8' }}>
               <Drop value={tempSortOption} onChange={(e) => setSortOption(e.target.value)}>
                 <option value="">작성일</option>
                 <option value="count">조회순</option>
@@ -117,7 +117,7 @@ const QuestionFull = () => {
           </BoardTop>
           <BoardItemTop>
             <div>No</div>
-            <div>유형</div>
+            <div style={{ flex: '2' }}>유형</div>
             <div style={{ flex: '3' }}>제목</div>
             <div>작성자</div>
             <div style={{ flex: '2' }}>작성 일자</div>
@@ -152,7 +152,7 @@ const QuestionFull = () => {
 
         <BoardTop>
           <BoardTopLeft>총 {totalCount}건</BoardTopLeft>
-          <Form onSubmit={handleSubmit}>
+          <Form onSubmit={handleSubmit} style={{ flex: '8' }}>
             <Drop value={tempSortOption} onChange={(e) => setTempSortOption(e.target.value)}>
               <option value="">작성일</option>
               <option value="count">조회순</option>
@@ -168,7 +168,7 @@ const QuestionFull = () => {
         </BoardTop>
         <BoardItemTop>
           <div>No</div>
-          <div>유형</div>
+          <div style={{ flex: '2' }}>유형</div>
           <div style={{ flex: '3' }}>제목</div>
           <div>작성자</div>
           <div style={{ flex: '2' }}>작성 일자</div>
@@ -176,7 +176,7 @@ const QuestionFull = () => {
         {data.map((info) => (
           <BoardItem key={info.boardNo} to={`/question/detail/${info.boardNo}`}>
             <div>{info.boardNo}</div>
-            <div>
+            <div style={{ flex: '2' }}>
               {' '}
               {info.questionCategory === 'T'
                 ? '기술적 문제'
@@ -188,7 +188,7 @@ const QuestionFull = () => {
             </div>
             <div style={{ flex: '3' }}>{info.boardTitle}</div>
             <div>{info.userName}</div>
-            <div style={{ flex: '2' }}>{info.createDate}</div>
+            <div style={{ flex: '2' }}>{info.createDate.slice(0, 10)}</div>
           </BoardItem>
         ))}
 
