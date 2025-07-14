@@ -4,7 +4,10 @@ package com.kh.dolbomi.controller;
 import com.kh.dolbomi.dto.MatchingDto;
 import com.kh.dolbomi.dto.PageResponse;
 import com.kh.dolbomi.dto.ProposerDto;
+import com.kh.dolbomi.service.MatchingService;
 import com.kh.dolbomi.service.ProposerService;
+import java.util.HashMap;
+import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -27,6 +30,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class ProposerController {
 
     private final ProposerService proposerService;
+    private final MatchingService matchingService;
 
     // 구인상세보기에서 지원현황 부분
     @GetMapping
@@ -37,12 +41,18 @@ public class ProposerController {
     }
 
     @GetMapping("/check")
-    public ResponseEntity<Boolean> getCheckProposer(
+    public ResponseEntity<Map<String, Boolean>> checkProposerAndMatching(
             @RequestParam("hiring_no") Long hiringNo,
             @RequestParam("caregiver_no") Long caregiverNo
     ) {
-        boolean proposerBoolean = proposerService.findProposerNo(hiringNo, caregiverNo);
-        return ResponseEntity.ok(proposerBoolean);
+        boolean isProposed = proposerService.findProposerNo(hiringNo, caregiverNo);
+        boolean isMatching = matchingService.isMatching(hiringNo, caregiverNo);
+
+        Map<String, Boolean> result = new HashMap<>();
+        result.put("isProposed", isProposed);
+        result.put("isMatched", isMatching);
+
+        return ResponseEntity.ok(result);
     }
 
 

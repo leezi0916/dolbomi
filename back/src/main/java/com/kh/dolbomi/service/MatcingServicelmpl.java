@@ -5,9 +5,11 @@ import com.kh.dolbomi.domain.Notification;
 import com.kh.dolbomi.domain.User;
 import com.kh.dolbomi.dto.MatchingDto;
 import com.kh.dolbomi.dto.MatchingDto.Response;
+import com.kh.dolbomi.enums.StatusEnum;
 import com.kh.dolbomi.enums.StatusEnum.Status;
 import com.kh.dolbomi.exception.InvalidMatchingUserException;
 import com.kh.dolbomi.exception.MatchingNotFoundException;
+import com.kh.dolbomi.repository.HiringRepositoryV2;
 import com.kh.dolbomi.repository.MatchingRepository;
 import com.kh.dolbomi.repository.MatchingRepositoryV2;
 import com.kh.dolbomi.repository.NotificationRepositoryV2;
@@ -28,6 +30,7 @@ public class MatcingServicelmpl implements MatchingService {
     private final MatchingRepository matchingRepository;
     private final MatchingRepositoryV2 matchingRepositoryV2;
     private final NotificationRepositoryV2 notificationRepositoryV2;
+    private final HiringRepositoryV2 hiringRepositoryV2;
 
 
     @Override
@@ -75,7 +78,7 @@ public class MatcingServicelmpl implements MatchingService {
                 throw new InvalidMatchingUserException("매칭된 간병인 또는 보호자 정보가 존재하지 않습니다.");
             }
 
-            String notificationMessage = caregiver.getUserName() + " 간병사님과의 매칭이 종료되었습니다.";
+            String notificationMessage = caregiver.getUserName() + " 간병사님과의 매칭이 종료되었습니다. 리뷰를 작성해주세요!";
             String notificationLinkUrl = "/guardian/matchpage";
 
             Notification notification = Notification.builder()
@@ -113,9 +116,17 @@ public class MatcingServicelmpl implements MatchingService {
     @Override
     public Page<Response> getMatchedListBySearch(Long patNo, LocalDateTime startDate, LocalDateTime endDate,
                                                  Status status, Pageable pageable) {
-        
+
         return matchingRepository.findBySearchDateList(patNo, startDate, endDate, status, pageable)
                 .map(MatchingDto.Response::toDto);
+    }
+
+    // Service
+    @Transactional(readOnly = true)
+    public boolean isMatching(Long hiringNo, Long caregiverNo) {
+        return matchingRepositoryV2.existsByHiring_HiringNoAndCaregiver_UserNoAndStatus(
+                hiringNo, caregiverNo, StatusEnum.Status.Y // 매칭 완료 상태
+        );
     }
 
 

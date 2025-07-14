@@ -24,5 +24,7 @@ public interface ResumeService {
 
     ResumeDto.Response getResume(Long resumeNo);
 
+    List<ResumeDto.Response> getResumLists(Long userNo);
+
 
 }

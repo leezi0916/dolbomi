@@ -54,8 +54,11 @@ export const useLoginForm = () => {
       // 일반 로그인시 스토리지 생성
       toast.success('로그인 성공!');
       localStorage.setItem('normalLoginToast', 'normal');
-
-      navigate('/');
+      if (userStatus === false) {
+        navigate('/caregiver');
+      } else {
+        navigate('/');
+      }
     } catch (error) {
       toast.error(error.message || '로그인 중 오류 발생');
       console.error('로그인 에러 : ', error);

@@ -45,6 +45,14 @@ public class ResumeController {
         return ResponseEntity.ok(new PageResponse<>(resumeService.getResumList(userNo, pageable)));
     }
 
+    @GetMapping("/user/all")
+    public ResponseEntity<List<ResumeDto.Response>> getResumeLists(
+            @RequestParam("userNo") Long userNo
+
+    ) {
+        return ResponseEntity.ok(resumeService.getResumLists(userNo));
+    }
+
     //이력서 상세보기
     @GetMapping("/detail/{resumeNo}")
     public ResponseEntity<ResumeDto.Response> getResume(@PathVariable Long resumeNo) {
