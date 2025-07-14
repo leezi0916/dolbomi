@@ -16,9 +16,9 @@ import { IoCheckmarkOutline } from 'react-icons/io5'; // 체크마크 아이콘 
 import { useSignUpForm } from '../hooks/useSignUpForm';
 import { useLocation, useNavigate } from 'react-router-dom';
 import PostcodeSearch from '../components/PostcodeSearch';
+import Timer from '../components/Timer';
 // import { userService } from '../api/users';
 // import { toast } from 'react-toastify';
-// import { useNavigate } from 'react-router-dom';
 
 const SignUp = () => {
   const location = useLocation();
@@ -26,8 +26,17 @@ const SignUp = () => {
   const email = searchParams.get('email');
   const name = searchParams.get('name');
   const socialType = searchParams.get('socialType');
-  // const emailVerified = searchParams.get('verified');
+  const verifiedFromSocial = searchParams.get('verified') === 'true'; // "true"일때만 true
   const socialId = searchParams.get('openId');
+  const isSocialSignup = !!socialType; // 소셜이면 true
+
+  const [addressData, setAddressData] = useState({
+    zonecode: '',
+    address: '',
+    extraAddress: '',
+  });
+
+  const navigate = useNavigate();
 
   // watch 함수를 useSignUpForm 훅에서 가져옵니다.
   const {
@@ -36,32 +45,25 @@ const SignUp = () => {
     errors,
     isSubmitting,
     watch,
-    checkUserId,
-    idCheckMessage,
     setValue,
-    // isIdChecked,
-
     formatPhoneNumber,
     onSubmit,
-  } = useSignUpForm(socialType, socialId);
-
-  // const navigate = useNavigate();
+    handleEmailAuth,
+    handleVerifyCode,
+    emailAuthStarted,
+    emailVerified,
+    authCode,
+    setAuthCode,
+    handleTimeout,
+  } = useSignUpForm(socialType, socialId, verifiedFromSocial);
 
   const currentGender = watch('gender');
-
-  const [addressData, setAddressData] = useState({
-    zonecode: '',
-    address: '',
-    extraAddress: '',
-  });
 
   // 주소 변화 시 전체 주소 필드 업데이트 (react-hook-form 내)
   useEffect(() => {
     const baseAddress = `${addressData.address}${addressData.extraAddress}`.trim();
     setValue('address', baseAddress);
   }, [addressData, setValue]);
-
-  const navigate = useNavigate();
 
   return (
     <AuthContainer>
@@ -70,20 +72,50 @@ const SignUp = () => {
           <SignUpTitle>회원가입</SignUpTitle>
           <InputContainer1>
             <InputGroup>
-              <Label htmlFor="userId">아이디</Label>
+              <Label htmlFor="email">이메일</Label>
               <Row>
-                <Inputs
-                  id="userId"
-                  placeholder="아이디를 입력해주세요"
-                  {...register('userId')}
-                  $error={errors.userId}
-                />
-                <CheckDuplicateButton type="button" onClick={checkUserId}>
-                  중복확인
-                </CheckDuplicateButton>
+                {email === null ? (
+                  <Inputs
+                    id="userId"
+                    type="userId"
+                    placeholder="이메일을 입력해주세요"
+                    {...register('userId')}
+                    $error={errors.userId}
+                  />
+                ) : (
+                  <Inputs id="userId" type="userId" {...register('userId')} value={email} disabled />
+                )}
+
+                {!emailVerified && !emailAuthStarted && (
+                  <CheckDuplicateButton type="button" onClick={handleEmailAuth}>
+                    이메일 인증
+                  </CheckDuplicateButton>
+                )}
+
+                {!emailVerified && emailAuthStarted && (
+                  <>
+                    <Input
+                      type="text"
+                      placeholder="인증코드 입력"
+                      value={authCode}
+                      onChange={(e) => setAuthCode(e.target.value)}
+                      maxLength={8}
+                      style={{ width: '120px' }}
+                    />
+                    <CheckDuplicateButton type="button" onClick={handleVerifyCode}>
+                      확인
+                    </CheckDuplicateButton>
+                    <Timer seconds={180} isActive={emailAuthStarted} onTimeout={handleTimeout} />
+                  </>
+                )}
+
+                {emailVerified && !isSocialSignup && (
+                  <span style={{ color: '#388e3c', fontWeight: 'bold' }}>
+                    <IoCheckmarkOutline size={20} /> 인증 완료
+                  </span>
+                )}
               </Row>
               {errors.userId && <ErrorMessage>{errors.userId.message}</ErrorMessage>}
-              {idCheckMessage && !errors.userId && <p style={{ color: 'green', marginTop: 4 }}>{idCheckMessage}</p>}
             </InputGroup>
 
             <InputGroup>
@@ -197,23 +229,6 @@ const SignUp = () => {
               {errors.address && <ErrorMessage>{errors.address.message}</ErrorMessage>}
             </InputGroup>
 
-            <InputGroup>
-              <Label htmlFor="email">이메일</Label>
-              <Row>
-                {email === null ? (
-                  <Inputs
-                    id="email"
-                    type="email"
-                    placeholder="이메일을 입력해주세요"
-                    {...register('email')}
-                    $error={errors.email}
-                  />
-                ) : (
-                  <Inputs id="email" type="email" {...register('email')} value={email} disabled />
-                )}
-              </Row>
-              {errors.email && <ErrorMessage>{errors.email.message}</ErrorMessage>}
-            </InputGroup>
             <div style={{ display: 'flex', gap: '20px' }}>
               <SignUpButton type="button" onClick={() => navigate(-1)}>
                 뒤로가기

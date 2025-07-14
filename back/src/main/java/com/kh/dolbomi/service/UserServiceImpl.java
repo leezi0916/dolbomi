@@ -8,7 +8,6 @@ import com.kh.dolbomi.dto.UserCountsDto;
 import com.kh.dolbomi.dto.UserDto;
 import com.kh.dolbomi.dto.UserDto.Login;
 import com.kh.dolbomi.dto.UserDto.ResetPwdDto;
-import com.kh.dolbomi.dto.UserDto.Response;
 import com.kh.dolbomi.enums.StatusEnum;
 import com.kh.dolbomi.exception.LicenseNotFoundException;
 import com.kh.dolbomi.exception.UserNotFoundException;
@@ -86,12 +85,12 @@ public class UserServiceImpl implements UserService {
     }
 
     // 이메일로 유저 정보 찾기
-    @Override
-    public Response getUserInfoByEmail(String email) {
-        User user = userRepositoryV2.findByEmail(email)
-                .orElseThrow(() -> new UserNotFoundException("회원정보를 찾을 수 없습니다."));
-        return UserDto.Response.toDto(user);
-    }
+//    @Override
+//    public Response getUserInfoByEmail(String email) {
+//        User user = userRepositoryV2.findByEmail(email)
+//                .orElseThrow(() -> new UserNotFoundException("회원정보를 찾을 수 없습니다."));
+//        return UserDto.Response.toDto(user);
+//    }
 
 
     @Override
@@ -114,7 +113,7 @@ public class UserServiceImpl implements UserService {
                 updateDto.getAge(),
                 updateDto.getGender(),
                 updateDto.getPhone(),
-                updateDto.getEmail(),
+//                updateDto.getEmail(),
                 updateDto.getAddress(),
                 updateDto.getProfile_image()
 
@@ -189,7 +188,7 @@ public class UserServiceImpl implements UserService {
         // 2. 비밀번호 암호화 해서 변경하기
 
         // (1)
-        User user = userRepositoryV2.findByEmail(resetPwdDto.getEmail())
+        User user = userRepositoryV2.findByUserId(resetPwdDto.getUser_id())
                 .orElseThrow(() -> new UserNotFoundException("회원을 찾을 수 없습니다."));
 
         // (2)

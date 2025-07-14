@@ -46,24 +46,18 @@ const ResetPassword = () => {
   } = useForm({ resolver: yupResolver(schema) });
 
   const onSubmit = async (data) => {
-    // 1. 비밀번호 변경을 누르면 이메일과 코드를 우선 확인 -> O
+    // 1. 비밀번호 변경을 누르면 이메일과 코드를 우선 확인
     // 2. 코드와 이메일이 일치하면 비밀번호 변경
     // 3. 변경이 완료되면 로그인 창으로 보내기
-    try {
-      // 1번
-      const res = await emailService.verifyEmailCode(email, code);
-      // 2번
-      if (res.status === 200) {
-        try {
-          const resetResponse = await userService.resetPassword(email, data.userPwd);
 
-          if (resetResponse.status === 200) {
-            toast.success(resetResponse?.data);
-            navigate('/login');
-          }
-        } catch (error) {
-          toast.error('비밀번호 재설정에 실패하였습니다.');
-        }
+    // 수정 -> 위와같이 하면 인증코드 없이 비밀번호 api만 쏴도 비밀번호가 바뀜 -> 로직 분리 x 하나로 합치기
+
+    try {
+      const resetResponse = await userService.resetPassword(email, data.userPwd, code);
+
+      if (resetResponse.status === 200) {
+        toast.success(resetResponse?.data);
+        navigate('/login');
       }
     } catch (error) {
       if (error.status === 400) {
@@ -72,14 +66,16 @@ const ResetPassword = () => {
           toast.info('비밀번호 재설정을 원하시면 다시 인증해주세요.');
           navigate('/login');
         }, 1500);
-      }
-
-      if (error.status === 404) {
+      } else if (error.status === 404) {
         toast.error(error.response?.data?.message);
         setTimeout(() => {
           toast.info('회원가입 페이지로 이동합니다.');
           navigate('/signup');
         }, 1500);
+      } else {
+        // 기타 서버 오류 또는 네트워크 문제
+        toast.error('비밀번호 재설정에 실패하였습니다');
+        console.error('서버 오류 또는 알 수 없는 에러:', error);
       }
     }
   };
