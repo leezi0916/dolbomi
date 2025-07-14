@@ -1,5 +1,7 @@
+
 .react-datepicker-wrapper {
   width: fit-content;
+
 }
 
 .custom-datepicker-button {
@@ -22,3 +24,5 @@
 .custom-datepicker-button span {
   font-size: 14px;
 }
+
+
