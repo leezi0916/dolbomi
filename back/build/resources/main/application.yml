@@ -46,12 +46,11 @@ spring:
             token-uri: https://oauth2.googleapis.com/token
             user-info-uri: https://openidconnect.googleapis.com/v1/userinfo
             user-name-attribute: sub
-
   mail:
     host: smtp.gmail.com
     port: 587
-    username: tmdghks605@gmail.com
-    password: "yorx vpgz lbgt fcep"
+    username: wotejal1234@gmail.com
+    password: "kzro nove gkey sdni"
     properties:
       mail:
         smtp:
@@ -73,10 +72,16 @@ jwt:
   secret: JaOmRTrD8ApXk2p/E5i04AxX6HdV3QCF0HntfC8Xmf3YW76APVb9xgTOffrCOC44Khjjb2/WZB3IxTRshBATbw==
   expiration: 3000
 
+#통계청 Devleoper OpenAPI
 sgis:
   consumer:
     key: c99f4eacee1f4cb78217
     secret: 145bbe8179aa42a891c5
+
+oauth:
+  kakao:
+    client-id: 57b3d384913a76fc8a1a7bdd2b00ac38 #kakao RestAPI 키
+    redirect-uri: http://localhost:3000/oauth/kakao/redirect
 
 aws:
   region: ap-northeast-2
@@ -86,7 +91,6 @@ aws:
 
   s3:
     bucket: project2025-dolbomi
-
 ---
 spring:
   config:

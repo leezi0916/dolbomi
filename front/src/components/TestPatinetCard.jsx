@@ -8,28 +8,32 @@ import {
   UserName,
   InfoButton,
   BtnSection,
-  TestBtn
+  TestBtn,
+  EmptyMessage
 } from '../styles/MatchingCard';
 import { ProfileCard } from '../styles/MatchingCard';
 import { useNavigate } from 'react-router-dom';
+import { MatchForm } from '../hooks/matchFrom';
 
 
-const MatchPatientsCard
- = ({ patient, getCareGiver, handleClick, getEndedMatchingList, activeTab }) => {
-  if (!patient) return <p>선택된 환자 정보가 없습니다.</p>;
+const TestPatientCard
+ = ({ patient, getCareGiver, getEndedMatchingList,  handleClick, activeTab}) => {
+  if (!patient){
+    alert("선택된 환자가 없습니다.")
+  }  
  
-  // tab의 상태에 따라 적용되는 함수가 다름
-  let currentGetList;
-
-  if (activeTab === 'matching') {
-    currentGetList = (patNo) => getCareGiver(patNo);
-  } else if (activeTab === 'matched') {
-    currentGetList = (patNo) => getEndedMatchingList(patNo, 1); // 여기서 두 번째 인자를 고정
-  }
-
-
-
-
+  const handlePatientClick = (patNo) => {
+    console.log(patNo)
+    if (activeTab === 'matching') {
+      getCareGiver(patNo);
+  
+      return
+    }
+    if (activeTab === 'matched') {
+      getEndedMatchingList(patNo);
+      return
+    }
+  };
   const CLOUDFRONT_URL = 'https://d20jnum8mfke0j.cloudfront.net/';
   //이미지 경로 갖고오고 없다면 기본이미지
   const getProfileImageUrl = (path, type = 'caregiver') => {
@@ -40,14 +44,16 @@ const MatchPatientsCard
     return `${CLOUDFRONT_URL}${cleanPath}`;
   };
 
-
   const navigate = useNavigate();
 
   return(
     <div >
-    <ProfileCard type="patient" onClick={() => currentGetList?.(patient.patNo)}>
+    {patient && patient.length > 0 ? (
+       patient.map((pat) => (
+    
+    <ProfileCard type="patient" onClick={() => handlePatientClick(pat.patNo)}>
       <ProfileImage
-        src={getProfileImageUrl(patient.profileImage, 'patient')}
+        src={getProfileImageUrl(pat.profileImage, 'patient')}
         alt="환자"
         onError={(e) => {
           e.target.onerror = null;
@@ -55,19 +61,22 @@ const MatchPatientsCard
         }}
       />
       <ProfileInfo>
-        <UserName>{patient.patName} 님</UserName>
+        <UserName>{pat.patName} 님</UserName>
         <UserAge>
-          나이 {patient.patAge}세({patient.patGender === 'M' ? '남' : '여'})
+          나이 {pat.patAge}세({pat.patGender === 'M' ? '남' : '여'})
         </UserAge>
         <BtnSection>
-          <InfoButton onClick={() => navigate(`/report/${patient.patNo}`)}>간병일지 보기</InfoButton>
-          <TestBtn onClick={() => handleClick(patient.patNo)}>간병인 보기</TestBtn>
+          <InfoButton onClick={() => navigate(`/report/${pat.patNo}`)}>간병일지 보기</InfoButton>
+          <TestBtn type="button" onClick={() => handleClick(pat.patNo)}>간병인 보기</TestBtn>
         </BtnSection>
       </ProfileInfo>
+     
     </ProfileCard>
+     ))):(
+      <EmptyMessage>등록된 환자가 없습니다.</EmptyMessage>
+     )}
   </div>
   );
 };
 
-export default MatchPatientsCard;
-
+export default TestPatientCard;

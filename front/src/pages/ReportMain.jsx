@@ -11,7 +11,6 @@ import useUserStatusStore from '../store/userStatusStore';
 import { useLocation } from 'react-router-dom';
 import useUserStore from '../store/userStore';
 
-
 const ReportMain = () => {
   const { patNo } = useParams(); // URL의 :patNo 값 가져오기
   const [pat, setpat] = useState({}); //환자들
@@ -137,11 +136,10 @@ const ReportMain = () => {
               </Fillter>
             </Filters>
             <Buttons>
-              <Link to={`/guardian/patient`} state={pat.patName}>
-                <SubmitButton>
-                  <ButtonText>목록으로</ButtonText>
-                </SubmitButton>
-              </Link>
+              <SubmitButton onClick={() => navigate(-1)}>
+                <ButtonText>목록으로</ButtonText>
+              </SubmitButton>
+
               {!(userStatus || status === 'N') && (
                 <Link to={`/caregiver/reportform/${patNo}`} state={pat.patName}>
                   <SubmitButton>

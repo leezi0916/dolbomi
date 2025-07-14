@@ -33,7 +33,7 @@ import ResumeManagement from './pages/ResumeManagement';
 import ScrollToTop from './utils/scrollToTop';
 import ReceivedReviews from './pages/ReceivedReviews';
 import WrittenReviews from './pages/WrittenReviews';
-import MatchToCaregiver from './pages/MatchToCaregiver';
+
 import MatchToPatient from './pages/MatchToPatient';
 import MyResume from './pages/MyResume';
 import CareGviverProfile from './pages/CareGiverProfile';
@@ -56,6 +56,7 @@ import FindPassword from './pages/find_password/FindPassword';
 import ResetPassword from './pages/find_password/ResetPassword';
 import UpdateCommuBoardForm from './pages/community/UpdateCommuBoardForm';
 import PatientCardGroup from './components/PatientCardGroup';
+import MatchMainPage from './pages/MatchMainPage';
 
 function AppRoutes() {
   const navigate = useNavigate();
@@ -97,7 +98,7 @@ function AppRoutes() {
           <Route path="/guardian/patientregisteration" element={<PatientRegisteration />} />
           <Route path="/guardian/review" element={<WrittenReviews />} />
           <Route path="/review" element={<ReviewModal />} />
-          <Route path="/guardian/matchpage" element={<MatchToCaregiver />} />
+          <Route path="/guardian/matchpage" element={<MatchMainPage />} />
           <Route path="/guardian/careGiverSupportBorad/:hiringNo" element={<CareGiverSupportBoard />} />
           <Route path="/guardian/jobopening-management" element={<JobOpeningManagement />} />
           {/* 공용 */}
@@ -125,7 +126,6 @@ function AppRoutes() {
           <Route path="/contact" element={<ContactPage />} />
           <Route path="/modal" element={<Modal />} />
           <Route path="/file" element={<FileUpload />} />
-          <Route path="/test" element={<PatientCardGroup />} />
         </Routes>
       </Layout>
     </>

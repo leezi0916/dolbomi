@@ -44,6 +44,7 @@ const CareGiverProfile = () => {
         toast.error('사용자 ID를 사용할 수 없습니다.');
         return;
       }
+
       try {
         const info = await userService.getCareGiverProfile(Number(userNo));
         if (info !== null) {
@@ -219,6 +220,8 @@ const ProfileCard = styled.div`
   gap: ${({ theme }) => theme.spacing[8]};
   justify-content: flex-start;
   align-items: center;
+
+
 `;
 
 const ProfileInfo = styled.div`
