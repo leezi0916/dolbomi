@@ -4,21 +4,9 @@ import { toast } from 'react-toastify';
 import { ClipLoader } from 'react-spinners';
 import useUserStore from '../../store/userStore';
 import Paging from '../../components/Paging';
-import { Btn, Input, LinkBtn, Page, SearchBtn } from '../../styles/common/Board';
-import {
-  BoardItem,
-  BoardItemTop,
-  BoardMenu,
-  BoardTop,
-  BoardTopLeft,
-  Drop,
-  Form,
-  MenuDiv,
-  MenuLink,
-  Null,
-  PageTitle,
-  PageTop,
-} from './style/Question.styles';
+import { Board, LinkBtn, MenuBox, NullBox, Page, SearchBoard, SearchBtn } from '../../styles/common/Board';
+import styled from 'styled-components';
+import { Link } from 'react-router-dom';
 
 const QuestionHistory = () => {
   const userNo = useUserStore((state) => state.user?.userNo);
@@ -92,114 +80,111 @@ const QuestionHistory = () => {
   if (!data || totalCount === 0) {
     return (
       <Page>
-        <PageTop>
-          <PageTitle> 1:1 문의사항 </PageTitle>
+        <MenuBox>
+          <p> 1:1 문의사항 </p>
           {userNo && (
-            <BoardMenu>
-              <MenuLink to="/question/full">전체</MenuLink>
-              <MenuDiv>문의내역</MenuDiv>
-              <MenuLink to="/question/create"> 문의하기</MenuLink>
-            </BoardMenu>
+            <div>
+              <Link to="/question/full">전체</Link>
+              <div>문의내역</div>
+              <Link to="/question/create"> 문의하기</Link>
+            </div>
           )}
-        </PageTop>
-
-        <BoardTop>
-          <BoardTopLeft>총 0건</BoardTopLeft>
-          <Form onSubmit={handleSubmit}>
-            <Drop value={tempSortOption} onChange={(e) => setSortOption(e.target.value)}>
+        </MenuBox>
+        <SearchBoard>
+          <div>총 0건</div>
+          <form onSubmit={handleSubmit}>
+            <select value={tempSortOption} onChange={(e) => setSortOption(e.target.value)}>
               <option value="">작성일</option>
               <option value="count">조회순</option>
-            </Drop>
-            <Input
+            </select>
+            <input
               type="text"
               placeholder="검색어 입력"
               value={tempkeyword}
               onChange={(e) => setTempKeyword(e.target.value)}
             />
-            <SearchBtn type="submit">검색</SearchBtn>
-          </Form>
-        </BoardTop>
-        <BoardItemTop>
+            <button type="submit">검색</button>
+          </form>
+        </SearchBoard>
+        <BoardBox>
           <div>No</div>
           <div>유형</div>
-          <div style={{ flex: '2' }}>제목</div>
+          <div>제목</div>
           <div>작성자</div>
-          <div style={{ flex: '2' }}>작성 일자</div>
+          <div>작성 일자</div>
           <div>처리 현황</div>
-        </BoardItemTop>
-        <Null>
-          <div style={{ marginBottom: '10px' }}>게시글이 없습니다.</div>
-          {userNo && (
-            <LinkBtn style={{ margin: 'auto' }} to="/question/create">
-              글쓰기
-            </LinkBtn>
-          )}
-        </Null>
-
+        </BoardBox>
+        <NullBox>
+          <div>게시글이 없습니다</div>
+          {userNo && <LinkBtn to="/question/create">글쓰기</LinkBtn>}
+        </NullBox>
         <Paging totalPage={totalPage} currentPage={currentPage} chagneCurrentPage={chagneCurrentPage} />
       </Page>
     );
   }
   return (
     <Page>
-      <PageTop>
-        <PageTitle> 1:1 문의사항 </PageTitle>
+      <MenuBox>
+        <p> 1:1 문의사항 </p>
         {userNo && (
-          <BoardMenu>
-            <MenuLink to="/question/full">전체</MenuLink>
-            <MenuDiv>문의내역</MenuDiv>
-            <MenuLink to="/question/create"> 문의하기</MenuLink>
-          </BoardMenu>
+          <div>
+            <Link to="/question/full">전체</Link>
+            <div>문의내역</div>
+            <Link to="/question/create"> 문의하기</Link>
+          </div>
         )}
-      </PageTop>
-
-      <BoardTop>
-        <BoardTopLeft>총 {totalCount}건</BoardTopLeft>
-        <Form onSubmit={handleSubmit} style={{ flex: '10' }}>
-          <Drop value={tempSortOption} onChange={(e) => setTempSortOption(e.target.value)}>
+      </MenuBox>
+      <SearchBoard>
+        <div>총 {totalCount}건</div>
+        <form onSubmit={handleSubmit}>
+          <select value={tempSortOption} onChange={(e) => setTempSortOption(e.target.value)}>
             <option value="">작성일</option>
             <option value="count">조회순</option>
-          </Drop>
-          <Input
+          </select>
+          <input
             type="text"
             placeholder="검색어 입력"
             value={tempkeyword}
             onChange={(e) => setTempKeyword(e.target.value)}
           />
-          <SearchBtn type="submit">검색</SearchBtn>
-          {userNo && <LinkBtn to="/community/create/G">글쓰기</LinkBtn>}
-        </Form>
-      </BoardTop>
-      <BoardItemTop>
-        <div>No</div>
-        <div style={{ flex: '2' }}>유형</div>
-        <div style={{ flex: '3' }}>제목</div>
-        <div>작성자</div>
-        <div style={{ flex: '2' }}>작성 일자</div>
-        <div style={{ flex: '2' }}>처리 현황</div>
-      </BoardItemTop>
-      {data.map((info) => (
-        <BoardItem key={info.boardNo} to={`/question/detail/${info.boardNo}`}>
-          <div>{info.boardNo}</div>
-          <div style={{ flex: '2' }}>
-            {info.questionCategory === 'T'
-              ? '기술적 문제'
-              : info.questionCategory === 'S'
-                ? '서비스 관련'
-                : info.questionCategory === 'E'
-                  ? '기타'
-                  : '알 수 없음'}
-          </div>
-          <div style={{ flex: '3' }}>{info.boardTitle}</div>
-          <div>{info.userName}</div>
-          <div style={{ flex: '2' }}>{info.createDate.slice(0, 10)}</div>
-          <div style={{ flex: '2' }}>{info.questionStatus == 'Y' ? '완료' : '대기'}</div>
-        </BoardItem>
-      ))}
-
+          <button type="submit">검색</button>
+        </form>
+      </SearchBoard>
+      <BoardBox>
+        <div>
+          <div>No</div>
+          <div>유형</div>
+          <div>제목</div>
+          <div>작성자</div>
+          <div>작성 일자</div>
+          <div>처리 현황</div>
+        </div>
+        {data.map((info) => (
+          <Link key={info.boardNo} to={`/question/detail/${info.boardNo}`}>
+            <div>{info.boardNo}</div>
+            <div>
+              {info.questionCategory === 'T'
+                ? '기술적 문제'
+                : info.questionCategory === 'S'
+                  ? '서비스 관련'
+                  : info.questionCategory === 'E'
+                    ? '기타'
+                    : '알 수 없음'}
+            </div>
+            <div>{info.boardTitle}</div>
+            <div>{info.userName}</div>
+            <div>{info.createDate.slice(0, 10)}</div>
+            <div>{info.questionStatus == 'Y' ? '완료' : '대기'}</div>
+          </Link>
+        ))}
+      </BoardBox>
       <Paging totalPage={totalPage} currentPage={currentPage} chagneCurrentPage={chagneCurrentPage} />
     </Page>
   );
 };
-
+const BoardBox = styled(Board)`
+  > * {
+    grid-template-columns: 8% 20% 20% 20% 20% 12%;
+  }
+`;
 export default QuestionHistory;

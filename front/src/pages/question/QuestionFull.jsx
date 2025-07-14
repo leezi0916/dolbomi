@@ -4,21 +4,7 @@ import { toast } from 'react-toastify';
 import { ClipLoader } from 'react-spinners';
 import useUserStore from '../../store/userStore';
 import Paging from '../../components/Paging';
-import { Input, LinkBtn, MenuBox, NullBox, Page, SearchBar, SearchBtn } from '../../styles/common/Board';
-// import {
-//   BoardItemTop,
-//   BoardMenu,
-//   BoardTop,
-//   BoardTopLeft,
-//   Drop,
-//   Form,
-//   MenuDiv,
-//   MenuLink,
-//   Null,
-//   PageTitle,
-//   PageTop,
-//   SearchBtn,
-// } from './style/Question.styles';
+import { Board, LinkBtn, MenuBox, NullBox, Page, SearchBoard } from '../../styles/common/Board';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 
@@ -84,7 +70,7 @@ const QuestionFull = () => {
     setKeyword(tempkeyword);
     e.preventDefault();
   };
-  if (data || totalCount === 0) {
+  if (!data || totalCount === 0) {
     return (
       <Page>
         <MenuBox>
@@ -97,7 +83,7 @@ const QuestionFull = () => {
             </div>
           )}
         </MenuBox>
-        <SearchBar>
+        <SearchBoard>
           <div>총 0건</div>
           <form onSubmit={handleSubmit}>
             <select value={tempSortOption} onChange={(e) => setSortOption(e.target.value)}>
@@ -110,10 +96,10 @@ const QuestionFull = () => {
               value={tempkeyword}
               onChange={(e) => setTempKeyword(e.target.value)}
             />
-            <SearchBtn type="submit">검색</SearchBtn>
+            <button type="submit">검색</button>
           </form>
-        </SearchBar>
-        <Board>
+        </SearchBoard>
+        <BoardBox>
           <div>
             <div>No</div>
             <div>유형</div>
@@ -121,9 +107,9 @@ const QuestionFull = () => {
             <div>작성자</div>
             <div>작성 일자</div>
           </div>
-        </Board>
+        </BoardBox>
         <NullBox>
-          <div style={{ marginBottom: '10px' }}>게시글이 없습니다.</div>
+          <div>게시글이 없습니다</div>
           {userNo && <LinkBtn to="/question/create">글쓰기</LinkBtn>}
         </NullBox>
         <Paging totalPage={totalPage} currentPage={currentPage} chagneCurrentPage={chagneCurrentPage} />
@@ -142,7 +128,7 @@ const QuestionFull = () => {
           </div>
         )}
       </MenuBox>
-      <SearchBar>
+      <SearchBoard>
         <div>총 {totalCount}건</div>
         <form onSubmit={handleSubmit}>
           <select value={tempSortOption} onChange={(e) => setTempSortOption(e.target.value)}>
@@ -155,10 +141,10 @@ const QuestionFull = () => {
             value={tempkeyword}
             onChange={(e) => setTempKeyword(e.target.value)}
           />
-          <SearchBtn type="submit">검색</SearchBtn>
+          <button type="submit">검색</button>
         </form>
-      </SearchBar>
-      <Board>
+      </SearchBoard>
+      <BoardBox>
         <div>
           <div>No</div>
           <div>유형</div>
@@ -183,29 +169,16 @@ const QuestionFull = () => {
             <div>{info.createDate.slice(0, 10)}</div>
           </Link>
         ))}
-      </Board>
+      </BoardBox>
       <Paging totalPage={totalPage} currentPage={currentPage} chagneCurrentPage={chagneCurrentPage} />
     </Page>
   );
 };
 
 //현재페이지
-const Board = styled.div`
+const BoardBox = styled(Board)`
   > * {
-    display: grid;
-    grid-template-columns: 10% 20% 40% 10% 20%;
-    padding: 5px 0;
-  }
-  > div {
-    border-bottom: 1px solid ${({ theme }) => theme.colors.gray[3]};
-  }
-  > a {
-    border-bottom: 1px solid ${({ theme }) => theme.colors.gray[5]};
-    > div {
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
+    grid-template-columns: 10% 25% 30% 15% 20%;
   }
 `;
 

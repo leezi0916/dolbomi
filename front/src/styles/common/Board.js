@@ -6,6 +6,7 @@ import { styled } from 'styled-components';
 // 절대 다른 사람이 만든 컴포넌트 말없이 수정 ㄴㄴ 당신 책임
 export const Page = styled.div`
   width: 70%;
+  min-width: 600px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -23,10 +24,14 @@ export const MenuBox = styled.div`
   > p {
     font-size: ${({ theme }) => theme.fontSizes.xl};
     color: ${({ theme }) => theme.colors.primary};
+    padding-bottom: 10px;
   }
   > div {
-    padding-top: 20px;
+    padding-top: 10px;
     gap: 20px;
+    > div {
+      color: 1px solid ${({ theme }) => theme.colors.gray[5]};
+    }
     a {
       color: ${({ theme }) => theme.colors.gray[5]};
       &:hover {
@@ -36,7 +41,7 @@ export const MenuBox = styled.div`
   }
 `;
 
-export const SearchBar = styled.div`
+export const SearchBoard = styled.div`
   width: 100%;
   height: 100%;
   display: flex;
@@ -44,7 +49,7 @@ export const SearchBar = styled.div`
   justify-content: space-between;
   border-top: 1px solid ${({ theme }) => theme.colors.gray[3]};
   border-bottom: 1px solid ${({ theme }) => theme.colors.gray[3]};
-  padding: 5px 10px;
+  padding: 5px 20px;
   > div {
     align-self: center;
   }
@@ -56,9 +61,43 @@ export const SearchBar = styled.div`
       margin-left: 5px;
     }
     > input {
-      padding: 2px 4px;
+      padding: 4px;
+    }
+    > button {
+      align-content: center;
+      background-color: ${({ theme }) => theme.colors.gray[3]};
+      color: ${({ theme }) => theme.colors.white};
+      padding: 0 5px;
     }
   }
+`;
+export const Board = styled.div`
+  > * {
+    display: grid;
+    padding: 5px 0;
+  }
+  > div:first-of-type {
+    > div {
+      color: ${({ theme }) => theme.colors.gray[1]};
+      font-weight: ${({ theme }) => theme.fontWeights.medium};
+    }
+  }
+  > div {
+    border-bottom: 1px solid ${({ theme }) => theme.colors.gray[3]};
+  }
+  > a {
+    border-bottom: 1px solid ${({ theme }) => theme.colors.gray[5]};
+    > div {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+  }
+`;
+export const Input = styled.input`
+  border: 1px solid ${({ theme }) => theme.colors.gray[3]};
+  border-radius: ${({ theme }) => theme.borderRadius.md};
+  padding: 4px;
 `;
 export const LinkBtn = styled(Link)`
   align-content: center;
@@ -69,38 +108,35 @@ export const LinkBtn = styled(Link)`
 `;
 export const SearchBtn = styled.button`
   align-content: center;
-  background-color: ${({ theme }) => theme.colors.gray[3]};
-  color: ${({ theme }) => theme.colors.white};
+
   border-radius: ${({ theme }) => theme.borderRadius.md};
   padding: 0 5px;
-`;
-export const NullBox = styled.div`
-  padding: 10px 0;
-  border-bottom: 1px solid ${({ theme }) => theme.colors.gray[3]};
-  gap: 5px;
-  > * {
-    width: max-content;
-    margin: 0 auto;
-  }
-`;
-//
-export const Input = styled.input`
-  border: 1px solid ${({ theme }) => theme.colors.gray[5]};
-  border-radius: ${({ theme }) => theme.borderRadius.md};
-  padding: 2px 4px;
-`;
-export const FlexGrow = styled.div`
-  flex-grow: 1;
-  align-self: center;
-  justify-items: center;
 `;
 export const Btn = styled.button`
   align-content: center;
   background-color: ${({ theme }) => theme.colors.primary};
   color: ${({ theme }) => theme.colors.white};
   border-radius: ${({ theme }) => theme.borderRadius.md};
-  padding: 0 10px;
 `;
+export const NullBox = styled.div`
+  padding: 20px 0;
+  border-bottom: 1px solid ${({ theme }) => theme.colors.gray[3]};
+  > * {
+    width: max-content;
+    margin: 0 auto;
+  }
+  > div {
+    margin-bottom: 5px;
+  }
+`;
+//
+
+export const FlexGrow = styled.div`
+  flex-grow: 1;
+  align-self: center;
+  justify-items: center;
+`;
+
 //
 export const CommuBoard = styled.div`
   width: 100%;

@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
-import { Btn, Input, Page } from '../../styles/common/Board';
-import { BoardMenu, MenuDiv, MenuLink, PageTitle, PageTop, Textarea } from './style/Question.styles';
+import { Btn, Input, MenuBox, Page } from '../../styles/common/Board';
 import styled from 'styled-components';
 import { toast } from 'react-toastify';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { commuService } from '../../api/community';
 import useUserStore from '../../store/userStore';
@@ -80,14 +79,14 @@ const QuestionCreate = () => {
 
   return (
     <Page>
-      <PageTop>
-        <PageTitle> 1:1 문의사항 </PageTitle>
-        <BoardMenu>
-          <MenuLink to="/question/full">전체</MenuLink>
-          <MenuLink to="/question/history">문의내역</MenuLink>
-          <MenuDiv>문의하기</MenuDiv>
-        </BoardMenu>
-      </PageTop>
+      <MenuBox>
+        <p> 1:1 문의사항 </p>
+        <div>
+          <Link to="/question/full">전체</Link>
+          <Link to="/question/history">문의내역</Link>
+          <div>문의하기</div>
+        </div>
+      </MenuBox>
       <form onSubmit={handleSubmit(onSubmit)}>
         <PageBody>
           <div>
@@ -98,7 +97,6 @@ const QuestionCreate = () => {
               <option value="E">기타</option>
             </select>
           </div>
-
           <div>
             <div>제목</div>
             <Input type="text" placeholder="제목을 입력하세요" {...register('boardTitle')} disabled={isSubmitting} />
@@ -113,11 +111,9 @@ const QuestionCreate = () => {
           </div>
           <div>
             <div></div>
-            <ul style={{ display: 'flex', flexDirection: 'column' }}>
+            <ul>
               {files.map((file, index) => (
-                <li key={index} style={{ marginRight: 'auto' }}>
-                  {file.name}
-                </li> // 파일 이름 출력
+                <li key={index}>{file.name}</li> // 파일 이름 출력
               ))}
             </ul>
           </div>
@@ -139,15 +135,30 @@ const PageBody = styled.div`
     display: flex;
     flex-direction: row;
     margin-bottom: 10px;
+
     > div {
       min-width: 80px;
       padding-right: 10px;
+      font-weight: ${({ theme }) => theme.fontWeights.semibold};
+    }
+    > select {
+      border-radius: ${({ theme }) => theme.borderRadius.md};
+      padding: 5px;
+    }
+    > ul {
+      display: flex;
+      flex-direction: column;
     }
   }
+`;
+export const Textarea = styled(Input)`
+  width: 100%;
+  min-height: 200px;
+  resize: none;
 `;
 
 const Button = styled(Btn)`
   margin-right: 10px;
-  padding: 10px 20px;
+  padding: 8px 20px;
 `;
 export default QuestionCreate;
