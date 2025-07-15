@@ -4,8 +4,7 @@ import useUserStore from '../../store/userStore';
 import theme from '../../styles/theme';
 import styled from 'styled-components';
 import { Page } from '../../styles/common/Board';
-import { PageInfo } from './style/CommunityList.styles';
-import { BodyTop, FileBox, FileTitle, Icons, Left, PageBody, PageTitle, PageTop } from './style/Community.styles';
+import { BodyTop, FileBox, Icons, Left, PageBody, PageTitle, PageTop } from './style/Community.styles';
 import { commuService } from '../../api/community';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
@@ -161,102 +160,77 @@ const UpdateCommuBoardForm = () => {
 
   return (
     <Page>
-      <PageInfo>
-        <PageTop>
-          {data.role === 'C' ? <PageTitle>간병 게시판 수정</PageTitle> : <PageTitle>보호자 게시판 수정</PageTitle>}
-        </PageTop>
-        <form onSubmit={handleSubmit(onSubmit)}>
-          <PageBody>
-            <TitleInput
-              type="text"
-              placeholder="제목을 입력하세요"
-              {...register('boardTitle')}
+      <PageTop>
+        {data.role === 'C' ? <PageTitle>간병 게시판 수정</PageTitle> : <PageTitle>보호자 게시판 수정</PageTitle>}
+      </PageTop>
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <PageBody>
+          <TitleInput type="text" placeholder="제목을 입력하세요" {...register('boardTitle')} disabled={isSubmitting} />
+          <Top>
+            <Icons src="/src/assets/icons/icon_작성자.png" alt="" />
+            <Left style={{ fontSize: theme.fontSizes.sm }}>{userName}</Left>
+          </Top>
+          <div style={{ padding: '10px' }}>
+            <TextInput
+              as="textarea"
+              placeholder="내용을 입력하세요"
+              rows={10}
+              {...register('boardContent')}
               disabled={isSubmitting}
             />
-            <Top>
-              <Icons src="/src/assets/icons/icon_작성자.png" alt="" />
-              <Left style={{ fontSize: theme.fontSizes.sm }}>{userName}</Left>
-            </Top>
-            <div style={{ padding: '10px' }}>
-              <TextInput
-                as="textarea"
-                placeholder="내용을 입력하세요"
-                rows={10}
-                {...register('boardContent')}
-                disabled={isSubmitting}
-              />
+          </div>
+          <FileBox>
+            <div>
+              <img src="/src/assets/icons/icon_사진.png" alt="" />
+              <p>사진</p>
             </div>
-
-            <FileBox>
-              <FileTitle>
-                <Icons src="/src/assets/icons/icon_사진.png" alt="" />
-                <FileTitle>사진</FileTitle>
-              </FileTitle>
-              <InputFile>
-                {/* 기존 업로드된 이미지 */}
-                {data?.files?.map((img) => (
-                  <ImgBox key={img.fileNo}>
-                    <button type="button" onClick={() => handleDeleteExistingFile(img.fileNo)}>
-                      x
-                    </button>
-                    <img
-                      src={getProfileImageUrl(img.fileName)}
-                      alt="preview"
-                      style={{ width: '100%', aspectRatio: '4 / 3', borderRadius: '4px' }}
-                    />
-                  </ImgBox>
-                ))}
-
-                {/* 새로 업로드한 이미지 미리보기 */}
-                {images.map((img) => (
-                  <ImgBox key={img.id}>
-                    <button type="button" onClick={() => handleDeleteNewFile(img.id)}>
-                      x
-                    </button>
-                    <img
-                      src={img.preview}
-                      alt="preview"
-                      style={{ width: '100%', aspectRatio: '4 / 3', borderRadius: '4px' }}
-                    />
-                  </ImgBox>
-                ))}
-
-                <div style={{ width: 'calc(100% / 4)', aspectRatio: '4 / 3', padding: '0 10px 10px 0px' }}>
-                  <input
-                    type="file"
-                    accept="image/*"
-                    multiple
-                    ref={fileInputRef}
-                    style={{ display: 'none' }}
-                    onChange={handleFilesChange}
-                  />
-                  <FileButton onClick={handleClick} type="button">
-                    +
-                  </FileButton>
+            <div>
+              {/* 기존 업로드된 이미지 */}
+              {data?.files?.map((img) => (
+                <div key={img.fileNo} className="file-card">
+                  <button type="button" onClick={() => handleDeleteExistingFile(img.fileNo)}>
+                    x
+                  </button>
+                  <img src={getProfileImageUrl(img.fileName)} alt="preview" />
                 </div>
-              </InputFile>
-            </FileBox>
-            <BtnBox>
-              <button type="button" onClick={() => navigate(-1)}>
-                이전으로
-              </button>
-              <button type="submit">등록하기</button>
-            </BtnBox>
-          </PageBody>
-        </form>
-        <PageEndBox>
-          <span>
-            • 개인정보를 공유 및 요청하거나, 명예 훼손, 무단 광고, 불법정보 유포 시 이에 대한 민형사상 책임은 작성자에게
-            있습니다
-          </span>
-          <span>
-            • 개인정보가 포함되거나 부적절한 답변은 비노출 또는 해당 서개인정보를 공유 및 요청하거나, 명예 훼손, 무단
-            광고, 불법 정보 유포 시 이에 대한 민형사상 책임은 작성자에게 있습니다.
-          </span>
-          <span>• 개인정보가 포함되거나 부적절한 글은 비노출 또는 서비스 이용 정지 사유가 될 수 있습니다.</span>
-          <span>• 인기 글로 추천될 수 있습니다.비스 이용 불가 처리될 수 있습니다</span>
-        </PageEndBox>
-      </PageInfo>
+              ))}
+              {/* 새로 업로드한 이미지 미리보기 */}
+              {images.map((img) => (
+                <div key={img.id} className="file-card">
+                  <button type="button" onClick={() => handleDeleteNewFile(img.id)}>
+                    x
+                  </button>
+                  <img src={img.preview} alt="preview" />
+                </div>
+              ))}
+              <div className="file-button">
+                <input type="file" accept="image/*" multiple ref={fileInputRef} onChange={handleFilesChange} />
+                <button onClick={handleClick} type="button">
+                  +
+                </button>
+              </div>
+            </div>
+          </FileBox>
+          <BtnBox>
+            <button type="button" onClick={() => navigate(-1)}>
+              이전으로
+            </button>
+            <button type="submit">등록하기</button>
+          </BtnBox>
+        </PageBody>
+      </form>
+      <PageEndBox>
+        <span>
+          • 개인정보를 공유 및 요청하거나, 명예 훼손, 무단 광고, 불법정보 유포 시 이에 대한 민형사상 책임은 작성자에게
+          있습니다
+        </span>
+        <span>
+          • 개인정보가 포함되거나 부적절한 답변은 비노출 또는 해당 서개인정보를 공유 및 요청하거나, 명예 훼손, 무단
+          광고, 불법 정보 유포 시 이에 대한 민형사상 책임은 작성자에게 있습니다.
+        </span>
+        <span>• 개인정보가 포함되거나 부적절한 글은 비노출 또는 서비스 이용 정지 사유가 될 수 있습니다.</span>
+        <span>• 인기 글로 추천될 수 있습니다.비스 이용 불가 처리될 수 있습니다</span>
+      </PageEndBox>
     </Page>
   );
 };

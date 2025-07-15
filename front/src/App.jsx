@@ -61,6 +61,7 @@ import MatchMainPage from './pages/MatchMainPage';
 import usePreventWheelOnNumberInput from './hooks/usePreventWheelOnNumberInput';
 
 
+
 function AppRoutes() {
   const navigate = useNavigate();
   const location = useLocation();
@@ -135,7 +136,6 @@ function AppRoutes() {
           <Route path="/file" element={<FileUpload />} />
 
           <Route path="/test" element={<AiModal />}></Route>
-
         </Routes>
       </Layout>
     </>
