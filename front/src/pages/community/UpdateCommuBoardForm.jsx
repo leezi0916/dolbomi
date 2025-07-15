@@ -4,7 +4,7 @@ import useUserStore from '../../store/userStore';
 import theme from '../../styles/theme';
 import styled from 'styled-components';
 import { Page } from '../../styles/common/Board';
-import { BodyTop, Icons, Left, PageBody, PageTitle, PageTop } from './style/Community.styles';
+import { BodyTop, FileBox, Icons, Left, PageBody, PageTitle, PageTop } from './style/Community.styles';
 import { commuService } from '../../api/community';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
@@ -179,56 +179,38 @@ const UpdateCommuBoardForm = () => {
               disabled={isSubmitting}
             />
           </div>
-
-          <div>
+          <FileBox>
             <div>
-              <Icons src="/src/assets/icons/icon_사진.png" alt="" />
-              <div>사진</div>
+              <img src="/src/assets/icons/icon_사진.png" alt="" />
+              <p>사진</p>
             </div>
-            <InputFile>
+            <div>
               {/* 기존 업로드된 이미지 */}
               {data?.files?.map((img) => (
-                <ImgBox key={img.fileNo}>
+                <div key={img.fileNo} className="file-card">
                   <button type="button" onClick={() => handleDeleteExistingFile(img.fileNo)}>
                     x
                   </button>
-                  <img
-                    src={getProfileImageUrl(img.fileName)}
-                    alt="preview"
-                    style={{ width: '100%', aspectRatio: '4 / 3', borderRadius: '4px' }}
-                  />
-                </ImgBox>
+                  <img src={getProfileImageUrl(img.fileName)} alt="preview" />
+                </div>
               ))}
-
               {/* 새로 업로드한 이미지 미리보기 */}
               {images.map((img) => (
-                <ImgBox key={img.id}>
+                <div key={img.id} className="file-card">
                   <button type="button" onClick={() => handleDeleteNewFile(img.id)}>
                     x
                   </button>
-                  <img
-                    src={img.preview}
-                    alt="preview"
-                    style={{ width: '100%', aspectRatio: '4 / 3', borderRadius: '4px' }}
-                  />
-                </ImgBox>
+                  <img src={img.preview} alt="preview" />
+                </div>
               ))}
-
-              <div style={{ width: 'calc(100% / 4)', aspectRatio: '4 / 3', padding: '0 10px 10px 0px' }}>
-                <input
-                  type="file"
-                  accept="image/*"
-                  multiple
-                  ref={fileInputRef}
-                  style={{ display: 'none' }}
-                  onChange={handleFilesChange}
-                />
-                <FileButton onClick={handleClick} type="button">
+              <div className="file-button">
+                <input type="file" accept="image/*" multiple ref={fileInputRef} onChange={handleFilesChange} />
+                <button onClick={handleClick} type="button">
                   +
-                </FileButton>
+                </button>
               </div>
-            </InputFile>
-          </div>
+            </div>
+          </FileBox>
           <BtnBox>
             <button type="button" onClick={() => navigate(-1)}>
               이전으로

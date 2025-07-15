@@ -1,13 +1,13 @@
 import { useEffect, useState } from 'react';
 import useUserStore from '../../store/userStore';
-import { Link, useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { commuService } from '../../api/community';
 import { toast } from 'react-toastify';
 import { ClipLoader } from 'react-spinners';
-import { Btn, Page } from '../../styles/common/Board';
+import { BodyText, BodyTop, Btn, Page, PageBody, PageTop } from '../../styles/common/Board';
 import theme from '../../styles/theme';
 import styled from 'styled-components';
-import { BodyTop, Icons, Left, PageBody, PageTitle, PageTop } from '../community/style/Community.styles';
+import { Icons } from '../community/style/Community.styles';
 import { Textarea } from './style/Question.styles';
 import { getDownloadUrl } from '../../api/fileApi';
 const QuestionDetail = () => {
@@ -168,31 +168,29 @@ const QuestionDetail = () => {
   return (
     <Page>
       <PageTop>
-        <PageTitle>문의 게시판 상세</PageTitle>
-        <div>
-          <RightBtn type="button" onClick={() => navigate(-1)}>
-            뒤로가기
-          </RightBtn>
-        </div>
+        <p>문의 게시판 상세</p>
+        <button type="button" onClick={() => navigate(-1)}>
+          뒤로가기
+        </button>
       </PageTop>
       <PageBody>
-        <Left style={{ fontSize: theme.fontSizes.lg, fontWeight: theme.fontWeights.medium, padding: '0 10px' }}>
-          {communityDetail.boardTitle}
-        </Left>
+        <p>{communityDetail.boardTitle}</p>
         <BodyTop>
-          <Icons src="/src/assets/icons/icon_작성자.png" alt="" />
-          <Left style={{ fontSize: theme.fontSizes.sm }}>{communityDetail?.userName}</Left>
-          <Right>
-            <Icons src="/src/assets/icons/icon_조회수.png" alt="" />
-            <div style={{ paddingRight: '10px' }}>{communityDetail?.count}</div>
-            <Icons src="/src/assets/icons/icon_작성일자.png" alt="" />
-            <div style={{ paddingRight: '10px' }}>{communityDetail.createDate.split('.')[0].replace('T', ' / ')}</div>
+          <div>
+            <img src="/src/assets/icons/icon_작성자.png" alt="" />
+            <div>{communityDetail?.userName}</div>
+          </div>
+          <div>
+            <img src="/src/assets/icons/icon_조회수.png" alt="" />
+            <div>{communityDetail?.count}</div>
+            <img src="/src/assets/icons/icon_작성일자.png" alt="" />
+            <div>{communityDetail.createDate.split('.')[0].replace('T', ' / ')}</div>
             {communityDetail.userNo === userNo ? (
-              <button style={{ padding: '0', color: 'gray' }} type="button" onClick={handleDeleteBoard}>
+              <button type="button" onClick={handleDeleteBoard}>
                 삭제
               </button>
             ) : null}
-          </Right>
+          </div>
         </BodyTop>
 
         <BodyText>{communityDetail.boardContent}</BodyText>
@@ -290,14 +288,13 @@ const QuestionDetail = () => {
     </Page>
   );
 };
-export const FileBox = styled.div`
-  width: 100%;
-  display: flex;
+
+const FileBox = styled.div`
   flex-direction: column;
   background-color: ${({ theme }) => theme.colors.gray[5]};
   border-radius: ${({ theme }) => theme.borderRadius.base};
   padding: 10px;
-
+  margin-top: 10px;
   * {
     border-radius: ${({ theme }) => theme.borderRadius.base};
   }
@@ -334,76 +331,11 @@ export const FileBox = styled.div`
       }
     }
   }
-
   > span {
     width: 100%;
     color: ${({ theme }) => theme.colors.gray[3]};
     background-color: ${({ theme }) => theme.colors.gray[6]};
     padding: 10px;
-  }
-`;
-const RightBtn = styled.button`
-  width: 100px;
-  border: 1px solid ${({ theme }) => theme.colors.gray[4]};
-  border-radius: 6px;
-`;
-
-const ImgBox = styled.div`
-  width: calc(100% / 4);
-  aspect-ratio: 4 / 3;
-  padding: 0 10px 10px 0px;
-  position: relative;
-  display: inline-block;
-`;
-const Right = styled.div`
-  display: flex;
-`;
-
-const BodyText = styled.div`
-  width: 100%;
-  min-height: 200px;
-  display: flex;
-  justify-content: flex-start;
-  border-top: 1px solid ${({ theme }) => theme.colors.gray[4]};
-  padding: 10px;
-`;
-const MenuBox = styled.div`
-  display: flex;
-  justify-content: flex-end;
-  flex-direction: column;
-  position: relative;
-  > ul {
-    display: none;
-    position: absolute;
-    top: 104%;
-    right: 0;
-    padding: 10px 10px 0px 10px;
-    background-color: white;
-    border: 1px solid ${({ theme }) => theme.colors.primary};
-    border-radius: ${({ theme }) => theme.borderRadius.base};
-    z-index: 1;
-    > li {
-      min-width: 70px;
-      cursor: pointer;
-      margin-bottom: 10px;
-      > img {
-        margin-right: 5px;
-      }
-    }
-  }
-  &:hover ul {
-    display: block;
-  }
-  > img {
-    width: min-content;
-  }
-`;
-
-const LinkLi = styled(Link)`
-  font-weight: ${({ theme }) => theme.fontWeights.medium};
-  text-align: center;
-  &:hover {
-    color: ${({ theme }) => theme.colors.primary};
   }
 `;
 
@@ -418,6 +350,7 @@ const CommentSelectBox = styled(PageBody)`
     }
   }
 `;
+
 const CommentSelect = styled.div`
   display: flex;
   flex-direction: column;
@@ -427,47 +360,6 @@ const CommentSelect = styled.div`
   padding: 10px 10px 0px 10px;
   > div {
     align-items: center;
-  }
-`;
-const FileListTitle = styled.h3`
-  font-size: 1.25rem;
-  font-weight: 600;
-  margin-bottom: 1rem;
-  color: #333;
-  text-align: left;
-  padding: 5px 15px;
-`;
-
-const FileItem = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 1rem;
-  background: #f8f9fa;
-  border-radius: 6px;
-  margin-bottom: 0.5rem;
-  border: 1px solid #e9ecef;
-`;
-
-const FileName = styled.span`
-  font-size: 0.875rem;
-  color: #495057;
-  flex: 1;
-`;
-
-const DownloadButton = styled.button`
-  padding: 0.5rem 1rem;
-  font-size: 0.875rem;
-  color: ${({ theme }) => theme.colors.primary};
-  background: transparent;
-  border: 1px solid ${({ theme }) => theme.colors.primary};
-  border-radius: 4px;
-  cursor: pointer;
-  transition: all 0.2s;
-
-  &:hover {
-    background: ${({ theme }) => theme.colors.primary};
-    color: white;
   }
 `;
 
@@ -480,8 +372,4 @@ const EmptyMessage = styled.p`
   border-radius: 6px;
 `;
 
-const ButtonWrapper = styled.div`
-  display: flex;
-  gap: 0.5rem;
-`;
 export default QuestionDetail;

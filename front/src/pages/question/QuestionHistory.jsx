@@ -4,7 +4,7 @@ import { toast } from 'react-toastify';
 import { ClipLoader } from 'react-spinners';
 import useUserStore from '../../store/userStore';
 import Paging from '../../components/Paging';
-import { Board, LinkBtn, MenuBox, NullBox, Page, SearchBoard, SearchBtn } from '../../styles/common/Board';
+import { Board, LinkBtn, MenuBox, NullBox, Page, SearchBoard } from '../../styles/common/Board';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 

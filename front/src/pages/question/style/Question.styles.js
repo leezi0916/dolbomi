@@ -1,12 +1,6 @@
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import { FlexGrow, LinkBtn, NullBox } from '../../../styles/common/Board';
-
-// export const AlignLeft = styled.div`
-//   flex-grow: 1;
-//   align-self: center;
-//   justify-items: center;
-// `;
+import { NullBox } from '../../../styles/common/Board';
 
 export const Null = styled(NullBox)`
   border-bottom: 1px solid ${({ theme }) => theme.colors.gray[3]};
@@ -16,10 +10,6 @@ export const alignRight = styled.div`
   justify-content: flex-end;
 `;
 //
-
-// export const PageInfo = styled.div`
-//   /* width: 90%; */
-// `;
 
 export const PageTop = styled.div`
   width: 100%;
@@ -79,9 +69,7 @@ export const Drop = styled.select`
   border-radius: 4px;
   padding: 2px 4px;
 `;
-// export const CreateBtn = styled(LinkBtn)`
-//   width: 10%;
-// `;
+
 export const Textarea = styled.input`
   width: 100%;
   min-height: 200px;
