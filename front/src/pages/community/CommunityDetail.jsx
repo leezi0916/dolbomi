@@ -4,10 +4,10 @@ import { Link, useNavigate, useParams } from 'react-router-dom';
 import { commuService } from '../../api/community';
 import { toast } from 'react-toastify';
 import { ClipLoader } from 'react-spinners';
-import { Btn, Page } from '../../styles/common/Board';
+import { BodyText, BodyTop, Btn, Page, PageBody, PageTop } from '../../styles/common/Board';
 import theme from '../../styles/theme';
 import styled from 'styled-components';
-import { BodyTop, FileBox, Icons, Left, PageBody, PageTitle } from './style/Community.styles';
+import { FileBox, Icons } from './style/Community.styles';
 import { useForm } from 'react-hook-form';
 import profileImage from '../../assets/images/cargiver.png'; // 프로필 이미지 경로
 const CommunityDetail = () => {
@@ -162,52 +162,48 @@ const CommunityDetail = () => {
   return (
     <Page>
       <PageTop>
-        {communityDetail.role === 'C' ? (
-          <PageTitle>간병 게시판 상세</PageTitle>
-        ) : (
-          <PageTitle>보호자 게시판 상세</PageTitle>
-        )}
-        <div>
-          <RightBtn type="button" onClick={() => navigate(-1)}>
-            뒤로가기
-          </RightBtn>
-        </div>
+        {communityDetail.role === 'C' ? <p>간병 게시판 상세</p> : <p>보호자 게시판 상세</p>}
+
+        <button type="button" onClick={() => navigate(-1)}>
+          뒤로가기
+        </button>
       </PageTop>
+
       <PageBody>
-        <Left style={{ fontSize: theme.fontSizes.lg, fontWeight: theme.fontWeights.medium, padding: '0 10px' }}>
-          {communityDetail.boardTitle}
-        </Left>
+        <p>{communityDetail.boardTitle}</p>
         <BodyTop>
-          <Icons src="/src/assets/icons/icon_작성자.png" alt="" />
-          <Left style={{ fontSize: theme.fontSizes.sm }}>{communityDetail?.userName}</Left>
-          <Right>
-            <Icons src="/src/assets/icons/icon_조회수.png" alt="" />
-            <div style={{ paddingRight: '10px' }}>{communityDetail?.count}</div>
-            <Icons src="/src/assets/icons/icon_작성일자.png" alt="" />
-            <div style={{ paddingRight: '10px' }}>{communityDetail.createDate.split('.')[0].replace('T', ' / ')}</div>
+          <div>
+            <img src="/src/assets/icons/icon_작성자.png" alt="" />
+            <div>{communityDetail?.userName}</div>
+          </div>
+          <div>
+            <img src="/src/assets/icons/icon_조회수.png" alt="" />
+            <div>{communityDetail?.count}</div>
+            <img src="/src/assets/icons/icon_작성일자.png" alt="" />
+            <div>{communityDetail.createDate.split('.')[0].replace('T', ' / ')}</div>
             {communityDetail.userNo === userNo ? (
               <MenuBox>
-                <Icons src="/src/assets/icons/icon_설정메뉴.png" alt="" />
+                <img src="/src/assets/icons/icon_설정메뉴.png" alt="" />
                 <ul>
                   <li>
-                    <Icons src="/src/assets/icons/icon_수정.png" alt="" />
-                    <LinkLi to={`/community/update/${communityDetail.boardNo}`}>수정</LinkLi>
+                    <img src="/src/assets/icons/icon_수정.png" alt="" />
+                    <Link to={`/community/update/${communityDetail.boardNo}`}>수정</Link>
                   </li>
                   <li>
-                    <Icons src="/src/assets/icons/icon_삭제.png" alt="" />
+                    <img src="/src/assets/icons/icon_삭제.png" alt="" />
                     <button onClick={handleDeleteBoard}> 삭제</button>
                   </li>
                 </ul>
               </MenuBox>
             ) : null}
-          </Right>
+          </div>
         </BodyTop>
         <BodyText>{communityDetail.boardContent}</BodyText>
         {communityDetail.files && communityDetail.files.length > 0 && (
           <FileBox>
             <div>
               <img src="/src/assets/icons/icon_사진.png" alt="" />
-              <div>사진</div>
+              <p>사진</p>
             </div>
             <div>
               {communityDetail.files?.map((file, index) => (
@@ -267,7 +263,6 @@ const CommunityDetail = () => {
                     <li>
                       <img src="/src/assets/icons/icon_삭제.png" alt="" />
                       <button type="button" onClick={() => handleDeleteReply(reply.replyNo)}>
-                        {' '}
                         삭제
                       </button>
                     </li>
@@ -297,30 +292,6 @@ const CommunityDetail = () => {
   );
 };
 
-const PageTop = styled.div`
-  display: flex;
-  > div {
-    padding: 10px;
-  }
-`;
-const RightBtn = styled.button`
-  width: 100px;
-  border: 1px solid ${({ theme }) => theme.colors.gray[4]};
-  border-radius: 6px;
-`;
-
-const Right = styled.div`
-  display: flex;
-`;
-
-const BodyText = styled.div`
-  width: 100%;
-  min-height: 200px;
-  display: flex;
-  justify-content: flex-start;
-  border-top: 1px solid ${({ theme }) => theme.colors.gray[4]};
-  padding: 10px;
-`;
 const MenuBox = styled.div`
   display: flex;
   justify-content: flex-end;
@@ -344,8 +315,10 @@ const MenuBox = styled.div`
       > img {
         margin-right: 5px;
       }
-      > button {
+      > a,
+      button {
         padding: 0;
+        color: black;
         font-weight: ${({ theme }) => theme.fontWeights.medium};
         &:hover {
           color: ${({ theme }) => theme.colors.primary};
@@ -414,6 +387,7 @@ const CommentEx = styled.ul`
   display: flex;
   flex-direction: column;
   background-color: ${({ theme }) => theme.colors.gray[5]};
+  border-radius: ${({ theme }) => theme.borderRadius.base};
   margin: 0 10px;
   padding: 10px;
   > span {

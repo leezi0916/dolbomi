@@ -10,9 +10,11 @@ export const BoardBox = styled(Board)`
 `;
 //
 export const FileBox = styled.div`
+  flex-direction: column;
   background-color: ${({ theme }) => theme.colors.gray[5]};
-  padding: 4px 14px;
-  margin-bottom: 10px;
+  padding: 4px 10px 4px 16px;
+  margin: 0 10px 10px;
+  border-radius: ${({ theme }) => theme.borderRadius.base};
   > div {
     display: flex;
     flex-wrap: wrap;
@@ -37,6 +39,7 @@ export const FileBox = styled.div`
     img {
       width: 100%;
       aspect-ratio: 4 / 3;
+      border-radius: ${({ theme }) => theme.borderRadius.base};
     }
     > div {
       width: calc(100% / 4);
@@ -57,6 +60,7 @@ export const FileBox = styled.div`
     .file-button {
       > button {
         background: ${({ theme }) => theme.colors.gray[4]};
+        border-radius: ${({ theme }) => theme.borderRadius.base};
       }
     }
   }
@@ -92,9 +96,6 @@ export const PageBody = styled.div`
   border-radius: ${({ theme }) => theme.borderRadius.base};
   padding: 12px;
   margin-bottom: 10px;
-  * {
-    border-radius: ${({ theme }) => theme.borderRadius.base};
-  }
 `;
 
 export const BodyTop = styled.div`

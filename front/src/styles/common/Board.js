@@ -13,6 +13,66 @@ export const Page = styled.div`
   margin: 60px auto;
 `;
 
+export const PageTop = styled.div`
+  display: flex;
+  justify-content: space-between;
+  padding-bottom: 6px;
+  > p {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    font-size: ${({ theme }) => theme.fontSizes.lg};
+    font-weight: ${({ theme }) => theme.fontWeights.semibold};
+  }
+  > button {
+    border: 1px solid ${({ theme }) => theme.colors.gray[4]};
+    border-radius: ${({ theme }) => theme.borderRadius.md};
+  }
+`;
+
+export const PageBody = styled.div`
+  display: flex;
+  flex-direction: column;
+  border: 1px solid ${({ theme }) => theme.colors.gray[4]};
+  border-radius: ${({ theme }) => theme.borderRadius.base};
+  padding: 12px;
+  margin-bottom: 6px;
+  > * {
+    display: flex;
+  }
+  > p {
+    font-size: ${({ theme }) => theme.fontSizes.lg};
+    padding: 0 10px 10px;
+  }
+`;
+
+export const BodyTop = styled.div`
+  justify-content: space-between;
+  font-size: ${({ theme }) => theme.fontSizes.sm};
+  padding: 6px;
+  img {
+    width: 22px;
+    height: 22px;
+  }
+  button {
+    padding: 0;
+    color: ${({ theme }) => theme.colors.gray[3]};
+  }
+  > div {
+    display: flex;
+    align-items: center;
+    > div {
+      padding: 0 14px 0 4px;
+    }
+  }
+`;
+export const BodyText = styled.div`
+  min-height: 200px;
+  border-top: 1px solid ${({ theme }) => theme.colors.gray[4]};
+  padding: 10px 10px 0;
+`;
+
+//list
 export const MenuBox = styled.div`
   display: flex;
   flex-direction: column;
@@ -99,6 +159,7 @@ export const Board = styled.div`
     }
   }
 `;
+//
 export const Input = styled.input`
   border: 1px solid ${({ theme }) => theme.colors.gray[3]};
   border-radius: ${({ theme }) => theme.borderRadius.md};
@@ -111,14 +172,7 @@ export const LinkBtn = styled(Link)`
   border-radius: ${({ theme }) => theme.borderRadius.md};
   padding: 0 5px;
 `;
-export const SearchBtn = styled.button`
-  align-content: center;
-
-  border-radius: ${({ theme }) => theme.borderRadius.md};
-  padding: 0 5px;
-`;
 export const Btn = styled.button`
-  align-content: center;
   background-color: ${({ theme }) => theme.colors.primary};
   color: ${({ theme }) => theme.colors.white};
   border-radius: ${({ theme }) => theme.borderRadius.md};
