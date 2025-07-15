@@ -3,6 +3,7 @@ package com.kh.dolbomi.service;
 import com.kh.dolbomi.dto.ProposerDto;
 import com.kh.dolbomi.dto.ProposerDto.Create;
 import com.kh.dolbomi.dto.ProposerDto.Response;
+import java.util.Map;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -30,5 +31,5 @@ public interface ProposerService {
     Long deleteProposerHistory(Long proposerNo);
 
     //구인글의 작성자인지 권한체크
-    Long getHiringOwnerUserNo(Long hiringNo);
+    Map<String, Object> getHiringOwnerInfo(Long hiringNo);
 }

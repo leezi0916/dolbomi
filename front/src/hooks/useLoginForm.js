@@ -51,7 +51,9 @@ export const useLoginForm = () => {
       // 4. 상태 기본 저장
       setUserStatus(userStatus);
 
+      // 일반 로그인시 스토리지 생성
       toast.success('로그인 성공!');
+      localStorage.setItem('normalLoginToast', 'normal');
       if (userStatus === false) {
         navigate('/caregiver');
       } else {

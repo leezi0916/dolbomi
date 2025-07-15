@@ -22,8 +22,15 @@
 
         </div>
 
-        <p style="font-size: 14px; color: #666;">
+        <p style="font-size: 14px; color: #666;"
+           th:if="${type == 'reset'}">
             위 링크의 비밀번호 변경 가능 시간은 3분간 유효합니다. <br/>
+            만약 본인이 요청한 것이 아니라면 이 이메일을 무시하셔도 됩니다.
+        </p>
+
+        <p style="font-size: 14px; color: #666;"
+           th:if="${type == 'code'}">
+            인증코드는 3분간 유효합니다. <br/>
             만약 본인이 요청한 것이 아니라면 이 이메일을 무시하셔도 됩니다.
         </p>
     </div>

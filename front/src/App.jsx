@@ -56,6 +56,7 @@ import FindPassword from './pages/find_password/FindPassword';
 import ResetPassword from './pages/find_password/ResetPassword';
 import UpdateCommuBoardForm from './pages/community/UpdateCommuBoardForm';
 import PatientCardGroup from './components/PatientCardGroup';
+import AiModal from './components/AiModal';
 import MatchMainPage from './pages/MatchMainPage';
 
 function AppRoutes() {
@@ -128,6 +129,8 @@ function AppRoutes() {
 
           {/* 테스트용 임시 */}
           <Route path="/file" element={<FileUpload />} />
+
+          <Route path="/test" element={<AiModal />}></Route>
         </Routes>
       </Layout>
     </>
