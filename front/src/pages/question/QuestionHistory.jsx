@@ -107,12 +107,14 @@ const QuestionHistory = () => {
           </form>
         </SearchBoard>
         <BoardBox>
-          <div>No</div>
-          <div>유형</div>
-          <div>제목</div>
-          <div>작성자</div>
-          <div>작성 일자</div>
-          <div>처리 현황</div>
+          <div>
+            <div>No</div>
+            <div>유형</div>
+            <div>제목</div>
+            <div>작성자</div>
+            <div>작성 일자</div>
+            <div>처리 현황</div>
+          </div>
         </BoardBox>
         <NullBox>
           <div>게시글이 없습니다</div>

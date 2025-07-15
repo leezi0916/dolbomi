@@ -21,6 +21,10 @@ export const MenuBox = styled.div`
     display: flex;
     font-weight: ${({ theme }) => theme.fontWeights.bold};
   }
+  > span {
+    font-size: ${({ theme }) => theme.fontSizes.xl};
+    padding-bottom: 10px;
+  }
   > p {
     font-size: ${({ theme }) => theme.fontSizes.xl};
     color: ${({ theme }) => theme.colors.primary};
@@ -69,6 +73,9 @@ export const SearchBoard = styled.div`
       color: ${({ theme }) => theme.colors.white};
       padding: 0 5px;
     }
+    > a {
+      border: none;
+    }
   }
 `;
 export const Board = styled.div`
@@ -76,14 +83,12 @@ export const Board = styled.div`
     display: grid;
     padding: 5px 0;
   }
-  > div:first-of-type {
+  > div {
+    border-bottom: 1px solid ${({ theme }) => theme.colors.gray[3]};
     > div {
       color: ${({ theme }) => theme.colors.gray[1]};
       font-weight: ${({ theme }) => theme.fontWeights.medium};
     }
-  }
-  > div {
-    border-bottom: 1px solid ${({ theme }) => theme.colors.gray[3]};
   }
   > a {
     border-bottom: 1px solid ${({ theme }) => theme.colors.gray[5]};

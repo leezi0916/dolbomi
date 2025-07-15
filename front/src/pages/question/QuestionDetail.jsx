@@ -7,16 +7,7 @@ import { ClipLoader } from 'react-spinners';
 import { Btn, Page } from '../../styles/common/Board';
 import theme from '../../styles/theme';
 import styled from 'styled-components';
-import {
-  BodyTop,
-  FileTitle,
-  Icons,
-  InputFile,
-  Left,
-  PageBody,
-  PageTitle,
-  PageTop,
-} from '../community/style/Community.styles';
+import { BodyTop, Icons, Left, PageBody, PageTitle, PageTop } from '../community/style/Community.styles';
 import { Textarea } from './style/Question.styles';
 import { getDownloadUrl } from '../../api/fileApi';
 const QuestionDetail = () => {
@@ -195,7 +186,7 @@ const QuestionDetail = () => {
             <Icons src="/src/assets/icons/icon_조회수.png" alt="" />
             <div style={{ paddingRight: '10px' }}>{communityDetail?.count}</div>
             <Icons src="/src/assets/icons/icon_작성일자.png" alt="" />
-            <div style={{ paddingRight: '10px' }}>{communityDetail?.createDate}</div>
+            <div style={{ paddingRight: '10px' }}>{communityDetail.createDate.split('.')[0].replace('T', ' / ')}</div>
             {communityDetail.userNo === userNo ? (
               <button style={{ padding: '0', color: 'gray' }} type="button" onClick={handleDeleteBoard}>
                 삭제
