@@ -134,12 +134,11 @@ const ReportMain = () => {
               </Fillter>
             </Filters>
             <Buttons>
-              <Link to={`/guardian/patient`} state={pat.patName}>
-                <SubmitButton>
-                  <ButtonText>목록으로</ButtonText>
-                </SubmitButton>
-              </Link>
-              {!userStatus && status !== 'N' && (
+              <SubmitButton onClick={() => navigate(-1)}>
+                <ButtonText>목록으로</ButtonText>
+              </SubmitButton>
+
+              {!(userStatus || status === 'N') && (
                 <Link to={`/caregiver/reportform/${patNo}`} state={pat.patName}>
                   <SubmitButton>
                     <ButtonText>글쓰기</ButtonText>
