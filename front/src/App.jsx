@@ -58,11 +58,16 @@ import UpdateCommuBoardForm from './pages/community/UpdateCommuBoardForm';
 import PatientCardGroup from './components/PatientCardGroup';
 import AiModal from './components/AiModal';
 import MatchMainPage from './pages/MatchMainPage';
+import usePreventWheelOnNumberInput from './hooks/usePreventWheelOnNumberInput';
+
+
 
 function AppRoutes() {
   const navigate = useNavigate();
   const location = useLocation();
 
+  //input type = number인 기본이벤트인 onWheel를 막는 훅입니다.
+  usePreventWheelOnNumberInput();
   // useEffect(() => {
   //   if (location.pathname === '/') {
   //     navigate('/guardian');
