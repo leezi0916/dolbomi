@@ -63,9 +63,6 @@ public class User {
     @Column(name = "ADDRESS", nullable = false, length = 50)
     private String address;
 
-    @Column(name = "EMAIL", nullable = false, length = 50)
-    private String email;
-
     @Column(name = "STATUS", nullable = false, length = 1)
     @Enumerated(EnumType.STRING)
     private StatusEnum.Status status;
@@ -101,7 +98,7 @@ public class User {
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private List<Reply> replyList = new ArrayList<>();
 
-    public void updateUserInfo(String userName, Integer age, StatusEnum.Gender gender, String phone, String email,
+    public void updateUserInfo(String userName, Integer age, StatusEnum.Gender gender, String phone,
                                String address,
                                String profileImage) {
 
@@ -119,10 +116,6 @@ public class User {
 
         if (phone != null && !phone.trim().isEmpty()) {
             this.phone = phone.trim();
-        }
-
-        if (email != null && !email.trim().isEmpty()) {
-            this.email = email.trim();
         }
 
         if (address != null && !address.trim().isEmpty()) {

@@ -12,7 +12,8 @@ import Cookies from 'js-cookie';
 import { userService } from '../api/users';
 import { notificationService } from '../api/notification';
 import { toast } from 'react-toastify';
-const Header = () => {
+
+const Header = ({ openChat }) => {
   const { login } = useUserStore();
 
   const { user, isAuthenticated } = useUserStore();
@@ -28,6 +29,7 @@ const Header = () => {
   const navigate = useNavigate();
 
   const handleLogout = () => {
+    navigate('/'); // 홈으로 이동
     logout(); // Zustand에서 사용자 상태 초기화
     sessionStorage.removeItem('token');
     localStorage.removeItem('user-storage'); // persist 저장소 삭제
@@ -37,7 +39,7 @@ const Header = () => {
 
     alert('로그아웃 되었습니다.');
     setUserStatus(true);
-    navigate('/'); // 홈으로 이동
+
     setIsMenuOpen(false);
   };
 
@@ -63,7 +65,10 @@ const Header = () => {
       setUserStatus(userStatus);
 
       // 최초 로그인시에만 토스트 띄우기 -> 일반 로그인과 다르게 리다이렉트를 받기때문에 이렇게 설계
+<<<<<<< HEAD
       // 최초 로그인시에만 토스트 띄우기 -> 일반 로그인과 다르게 리다이렉트를 받기때문에 이렇게 설계
+=======
+>>>>>>> f4b85b54495617ccfd2bae2ab20c8a81f7760af2
       const socialLoginToast = localStorage.getItem('socialLoginToast');
       const normalLoginToast = localStorage.getItem('normalLoginToast');
 
@@ -355,8 +360,10 @@ const Header = () => {
           <img
             src="/src/assets/icons/icon_채팅알림.png"
             alt="채팅 알림"
+            onClick={openChat}
             style={{
               visibility: user ? 'visible' : 'hidden',
+              cursor: 'pointer',
             }}
           />
 

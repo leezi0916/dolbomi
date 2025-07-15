@@ -12,6 +12,5 @@ public interface UserRepositoryV2 extends JpaRepository<User, Long> {
 
     // 소셜 로그인 -> 우리 DB에서 값 가져오기
     Optional<User> findBySocialIdAndSocialType(String socialId, SocialType socialType);
-
-    Optional<User> findByEmail(String email);
+    
 }

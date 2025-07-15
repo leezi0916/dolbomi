@@ -182,13 +182,21 @@ export const InfoButton = styled.button`
 `;
 
 export const RightLineDiv = styled.div`
-  min-height: 800px;
   border-right: 1px solid ${({ theme }) => theme.colors.gray[5]};
+`;
+
+export const TestBtn = styled(InfoButton)`
+margin: auto 5px;
+cursor: pointer;
+
+${media.md`
+      display: none;
+  `}
 `;
 
 /*====== 간병인 스타일 =====*/
 export const CargiverWrap = styled.div`
-  display: ${({ isOpen }) => (isOpen ? 'none' : 'flex')};
+  display: none;
   justify-content: center;
   flex-direction : column;
   gap: ${({ theme }) => theme.spacing[5]};
@@ -199,10 +207,15 @@ export const CargiverWrap = styled.div`
   justify-content: space-around;
 
   ${media.md`  // 예: 768px 이하일 때
+    display: flex;
+    justify-content: space-around;
+    flex-direction : column;
+    gap: ${({ theme }) => theme.spacing[12]};
    
  `}
 
   ${media.lg`  // 예: 768px 이하일 때
+    display: flex;
     justify-content: space-around;
     flex-direction : row;
     gap: ${({ theme }) => theme.spacing[12]};
@@ -282,4 +295,12 @@ export const PageWrapper = styled.div`
   bottom: 0;
   width: 100%;
   padding: ${({ theme }) => theme.spacing[5]};
+`;
+
+export const EmptyMessage = styled.p`
+  width: 100%;
+  text-align: center;
+  color: ${({ theme }) => theme.colors.gray[3]};
+  font-size: ${({ theme }) => theme.fontSizes.base};
+  padding: ${({ theme }) => theme.spacing[8]} 0;
 `;
