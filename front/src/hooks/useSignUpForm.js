@@ -68,6 +68,13 @@ export const useSignUpForm = (socialType, socialId, verifiedFromSocial) => {
   // 이메일 인증코드 발송
   const handleEmailAuth = async () => {
     const currentEmail = watch('userId'); // 폼 상태에서 이메일 가져오기
+
+    // 빈 값 체크
+    if (!currentEmail || currentEmail.trim() === '') {
+      toast.error('이메일을 입력해주세요.');
+      return;
+    }
+
     try {
       await emailService.sendCode(currentEmail);
       setEmailSentTo(currentEmail); // 요청 보낼시 입력 이메일 저장 -> 인증시에 같은 이메일인지 확인하기 위해
