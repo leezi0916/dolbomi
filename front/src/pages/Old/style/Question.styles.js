@@ -17,9 +17,10 @@ export const alignRight = styled.div`
 `;
 //
 
-// export const PageInfo = styled.div`
-//   /* width: 90%; */
-// `;
+export const PageInfo = styled.div`
+  width: 74%;
+  padding-bottom: 100px;
+`;
 
 export const PageTop = styled.div`
   width: 100%;
@@ -78,6 +79,14 @@ export const Drop = styled.select`
   border: 1px solid ${({ theme }) => theme.colors.gray[5]};
   border-radius: 4px;
   padding: 2px 4px;
+`;
+export const SearchBtn = styled.button`
+  align-content: center;
+  width: 50px;
+  background-color: ${({ theme }) => theme.colors.gray[3]};
+  color: ${({ theme }) => theme.colors.white};
+  border-radius: 6px;
+  padding: 0;
 `;
 // export const CreateBtn = styled(LinkBtn)`
 //   width: 10%;

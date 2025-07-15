@@ -18,6 +18,7 @@ const theme = {
       3: '#828282',
       4: '#BDBDBD',
       5: '#E0E0E0',
+      6: '#f3f3f3',
     },
   },
   fontSizes: {

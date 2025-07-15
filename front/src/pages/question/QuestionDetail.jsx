@@ -7,18 +7,8 @@ import { ClipLoader } from 'react-spinners';
 import { Btn, Page } from '../../styles/common/Board';
 import theme from '../../styles/theme';
 import styled from 'styled-components';
-import {
-  BodyTop,
-  FileBox,
-  FileTitle,
-  Icons,
-  InputFile,
-  Left,
-  PageBody,
-  PageTitle,
-  PageTop,
-} from '../community/style/Community.styles';
-import { PageInfo, Textarea } from './style/Question.styles';
+import { BodyTop, Icons, Left, PageBody, PageTitle, PageTop } from '../community/style/Community.styles';
+import { Textarea } from './style/Question.styles';
 import { getDownloadUrl } from '../../api/fileApi';
 const QuestionDetail = () => {
   const userRole = useUserStore((state) => state.user?.userRole);
@@ -177,139 +167,181 @@ const QuestionDetail = () => {
 
   return (
     <Page>
-      <PageInfo>
-        <PageTop>
-          <PageTitle>문의 게시판 상세</PageTitle>
-          <div>
-            <RightBtn type="button" onClick={() => navigate(-1)}>
-              뒤로가기
-            </RightBtn>
-          </div>
-        </PageTop>
-        <PageBody>
-          <Left style={{ fontSize: theme.fontSizes.lg, fontWeight: theme.fontWeights.medium, padding: '0 10px' }}>
-            {communityDetail.boardTitle}
-          </Left>
-          <BodyTop>
-            <Icons src="/src/assets/icons/icon_작성자.png" alt="" />
-            <Left style={{ fontSize: theme.fontSizes.sm }}>{communityDetail?.userName}</Left>
-            <Right>
-              <Icons src="/src/assets/icons/icon_조회수.png" alt="" />
-              <div style={{ paddingRight: '10px' }}>{communityDetail?.count}</div>
-              <Icons src="/src/assets/icons/icon_작성일자.png" alt="" />
-              <div style={{ paddingRight: '10px' }}>{communityDetail?.createDate.slice(0, 10)}</div>
-              {communityDetail.userNo === userNo ? (
-                <button style={{ padding: '0', color: 'gray' }} type="button" onClick={handleDeleteBoard}>
-                  삭제
-                </button>
-              ) : null}
-            </Right>
-          </BodyTop>
+      <PageTop>
+        <PageTitle>문의 게시판 상세</PageTitle>
+        <div>
+          <RightBtn type="button" onClick={() => navigate(-1)}>
+            뒤로가기
+          </RightBtn>
+        </div>
+      </PageTop>
+      <PageBody>
+        <Left style={{ fontSize: theme.fontSizes.lg, fontWeight: theme.fontWeights.medium, padding: '0 10px' }}>
+          {communityDetail.boardTitle}
+        </Left>
+        <BodyTop>
+          <Icons src="/src/assets/icons/icon_작성자.png" alt="" />
+          <Left style={{ fontSize: theme.fontSizes.sm }}>{communityDetail?.userName}</Left>
+          <Right>
+            <Icons src="/src/assets/icons/icon_조회수.png" alt="" />
+            <div style={{ paddingRight: '10px' }}>{communityDetail?.count}</div>
+            <Icons src="/src/assets/icons/icon_작성일자.png" alt="" />
+            <div style={{ paddingRight: '10px' }}>{communityDetail.createDate.split('.')[0].replace('T', ' / ')}</div>
+            {communityDetail.userNo === userNo ? (
+              <button style={{ padding: '0', color: 'gray' }} type="button" onClick={handleDeleteBoard}>
+                삭제
+              </button>
+            ) : null}
+          </Right>
+        </BodyTop>
 
-          <BodyText>{communityDetail.boardContent}</BodyText>
-          {communityDetail.files && communityDetail.files.length > 0 && (
-            <FileBox>
-              {/* 파일 목록 */}
-              <FileListSection>
-                <FileListTitle>파일 목록</FileListTitle>
-
-                {communityDetail.files && communityDetail.files.length > 0 ? (
-                  communityDetail.files.map((file) => (
-                    <FileItem key={file.fileNo}>
-                      <FileName>{file.fileName.split('/').pop()}</FileName> {/* 경로 제외한 파일명만 표시 */}
-                      <ButtonWrapper>
-                        <DownloadButton onClick={() => handleDownload(file.fileNo, file.fileName.split('/').pop())}>
-                          다운로드
-                        </DownloadButton>
-                      </ButtonWrapper>
-                    </FileItem>
-                  ))
-                ) : (
-                  <EmptyMessage>첨부된 파일이 없습니다.</EmptyMessage>
-                )}
-              </FileListSection>
-            </FileBox>
-          )}
-        </PageBody>
-        <CommentSelectBox>
-          <div style={{ gap: '6px', paddingLeft: '10px' }}>
-            <div>
-              <div style={{ fontWeight: theme.fontWeights.bold }}>답변</div>
-              <div style={{ color: theme.colors.primary, fontWeight: theme.fontWeights.bold }}>
-                {communityDetail.questionStatus === 'Y' ? '완료' : '대기'}
-              </div>
-            </div>
-            {userRole === 'ADMIN' && replyMode === 'none' && (
-              <div>
-                {communityDetail.questionStatus === 'Y' ? (
-                  <Btn type="button" onClick={handleUpdateClick}>
-                    수정
-                  </Btn>
-                ) : (
-                  <Btn type="button" onClick={handleCreateClick}>
-                    작성
-                  </Btn>
-                )}
-              </div>
+        <BodyText>{communityDetail.boardContent}</BodyText>
+        {communityDetail.files && communityDetail.files.length > 0 && (
+          <FileBox>
+            <p>파일 목록</p>
+            {communityDetail.files && communityDetail.files.length > 0 ? (
+              communityDetail.files.map((file) => (
+                <div key={file.fileNo}>
+                  <span>{file.fileName.split('/').pop()}</span> {/* 경로 제외한 파일명만 표시 */}
+                  <button onClick={() => handleDownload(file.fileNo, file.fileName.split('/').pop())}>다운로드</button>
+                </div>
+              ))
+            ) : (
+              <EmptyMessage>첨부된 파일이 없습니다</EmptyMessage>
             )}
+          </FileBox>
+        )}
+      </PageBody>
+      <CommentSelectBox>
+        <div style={{ gap: '6px', paddingLeft: '10px' }}>
+          <div>
+            <div style={{ fontWeight: theme.fontWeights.bold }}>답변</div>
+            <div style={{ color: theme.colors.primary, fontWeight: theme.fontWeights.bold }}>
+              {communityDetail.questionStatus === 'Y' ? '완료' : '대기'}
+            </div>
           </div>
-          {replyMode !== 'none' && (
-            <CommentSelect style={{ padding: '10px' }}>
-              {replyMode === 'update' &&
-                communityDetail.reply.map((reply) => (
-                  <div key={reply.replyNo} style={{ width: '100%', gap: '8px' }}>
-                    <Icons src="/src/assets/icons/icon_작성자.png" alt="" />
-                    <div>{reply.userName}</div>
-                    <div>{reply.updateDate}</div>
-                    <div style={{ marginLeft: 'auto' }}>
-                      <Btn type="button" onClick={handleUpdateReply}>
-                        수정
-                      </Btn>
-                      <Btn type="button" style={{ margin: '0 10PX' }} onClick={handleUpdateClick}>
-                        취소
-                      </Btn>
-                    </div>
-                  </div>
-                ))}
-              {replyMode === 'create' && (
-                <div style={{ width: '100%', gap: '8px' }}>
+          {userRole === 'ADMIN' && replyMode === 'none' && (
+            <div>
+              {communityDetail.questionStatus === 'Y' ? (
+                <Btn type="button" onClick={handleUpdateClick}>
+                  수정
+                </Btn>
+              ) : (
+                <Btn type="button" onClick={handleCreateClick}>
+                  작성
+                </Btn>
+              )}
+            </div>
+          )}
+        </div>
+        {replyMode !== 'none' && (
+          <CommentSelect style={{ padding: '10px' }}>
+            {replyMode === 'update' &&
+              communityDetail.reply.map((reply) => (
+                <div key={reply.replyNo} style={{ width: '100%', gap: '8px' }}>
                   <Icons src="/src/assets/icons/icon_작성자.png" alt="" />
-                  <div>{userName}</div>
+                  <div>{reply.userName}</div>
+                  <div>{reply.updateDate}</div>
                   <div style={{ marginLeft: 'auto' }}>
-                    <Btn type="button" onClick={handleSaveReply}>
-                      작성
+                    <Btn type="button" onClick={handleUpdateReply}>
+                      수정
                     </Btn>
-                    <Btn type="button" style={{ margin: '0 10PX' }} onClick={handleCreateClick}>
+                    <Btn type="button" style={{ margin: '0 10PX' }} onClick={handleUpdateClick}>
                       취소
                     </Btn>
                   </div>
                 </div>
-              )}
-
-              <Textarea
-                style={{ marginTop: '10px' }}
-                as="textarea"
-                value={editedContent}
-                onChange={(e) => setEditedContent(e.target.value)}
-              />
-            </CommentSelect>
-          )}
-          {replyMode === 'none' &&
-            communityDetail.reply?.map((reply) => (
-              <CommentSelect key={reply.replyNo}>
-                <div style={{ width: '100%', gap: '8px' }}>
-                  <Icons src="/src/assets/icons/icon_작성자.png" alt="" />
-                  <div>{reply.userName}</div>
-                  <div>{reply.updateDate}</div>
+              ))}
+            {replyMode === 'create' && (
+              <div style={{ width: '100%', gap: '8px' }}>
+                <Icons src="/src/assets/icons/icon_작성자.png" alt="" />
+                <div>{userName}</div>
+                <div style={{ marginLeft: 'auto' }}>
+                  <Btn type="button" onClick={handleSaveReply}>
+                    작성
+                  </Btn>
+                  <Btn type="button" style={{ margin: '0 10PX' }} onClick={handleCreateClick}>
+                    취소
+                  </Btn>
                 </div>
-                <div style={{ textAlign: 'left', padding: '5px 10px 0' }}>{reply.replyContent}</div>
-              </CommentSelect>
-            ))}
-        </CommentSelectBox>
-      </PageInfo>
+              </div>
+            )}
+
+            <Textarea
+              style={{ marginTop: '10px' }}
+              as="textarea"
+              value={editedContent}
+              onChange={(e) => setEditedContent(e.target.value)}
+            />
+          </CommentSelect>
+        )}
+        {replyMode === 'none' &&
+          communityDetail.reply?.map((reply) => (
+            <CommentSelect key={reply.replyNo}>
+              <div style={{ width: '100%', gap: '8px' }}>
+                <Icons src="/src/assets/icons/icon_작성자.png" alt="" />
+                <div>{reply.userName}</div>
+                <div>{reply.updateDate}</div>
+              </div>
+              <div style={{ textAlign: 'left', padding: '5px 10px 0' }}>{reply.replyContent}</div>
+            </CommentSelect>
+          ))}
+      </CommentSelectBox>
     </Page>
   );
 };
+export const FileBox = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  background-color: ${({ theme }) => theme.colors.gray[5]};
+  border-radius: ${({ theme }) => theme.borderRadius.base};
+  padding: 10px;
+
+  * {
+    border-radius: ${({ theme }) => theme.borderRadius.base};
+  }
+  span {
+    font-size: ${({ theme }) => theme.fontSizes.sm};
+  }
+  > p {
+    font-size: ${({ theme }) => theme.fontSizes.base};
+    font-weight: ${({ theme }) => theme.fontWeights.semibold};
+    margin-right: auto;
+    padding: 0 10px 10px;
+  }
+  > div {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: ${({ theme }) => theme.colors.gray[6]};
+    padding: 10px;
+    > span {
+      color: ${({ theme }) => theme.colors.gray[3]};
+    }
+    > button {
+      font-size: ${({ theme }) => theme.fontSizes.sm};
+      color: ${({ theme }) => theme.colors.primary};
+      background: transparent;
+      border: 1px solid ${({ theme }) => theme.colors.primary};
+      cursor: pointer;
+      transition: all 0.2s;
+      padding: 8px 20px;
+
+      &:hover {
+        background: ${({ theme }) => theme.colors.primary};
+        color: ${({ theme }) => theme.colors.white};
+      }
+    }
+  }
+
+  > span {
+    width: 100%;
+    color: ${({ theme }) => theme.colors.gray[3]};
+    background-color: ${({ theme }) => theme.colors.gray[6]};
+    padding: 10px;
+  }
+`;
 const RightBtn = styled.button`
   width: 100px;
   border: 1px solid ${({ theme }) => theme.colors.gray[4]};
@@ -397,11 +429,6 @@ const CommentSelect = styled.div`
     align-items: center;
   }
 `;
-
-const FileListSection = styled.div`
-  margin-top: 2rem;
-`;
-
 const FileListTitle = styled.h3`
   font-size: 1.25rem;
   font-weight: 600;

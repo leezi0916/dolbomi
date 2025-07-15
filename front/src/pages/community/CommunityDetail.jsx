@@ -5,20 +5,9 @@ import { commuService } from '../../api/community';
 import { toast } from 'react-toastify';
 import { ClipLoader } from 'react-spinners';
 import { Btn, Page } from '../../styles/common/Board';
-import { PageInfo } from './style/CommunityList.styles';
 import theme from '../../styles/theme';
 import styled from 'styled-components';
-import {
-  BodyTop,
-  FileBox,
-  FileTitle,
-  Icons,
-  InputFile,
-  Left,
-  PageBody,
-  PageTitle,
-  PageTop,
-} from './style/Community.styles';
+import { BodyTop, FileBox, Icons, Left, PageBody, PageTitle } from './style/Community.styles';
 import { useForm } from 'react-hook-form';
 import profileImage from '../../assets/images/cargiver.png'; // 프로필 이미지 경로
 const CommunityDetail = () => {
@@ -172,160 +161,154 @@ const CommunityDetail = () => {
 
   return (
     <Page>
-      <PageInfo>
-        <PageTop>
-          {communityDetail.role === 'C' ? (
-            <PageTitle>간병 게시판 상세</PageTitle>
-          ) : (
-            <PageTitle>보호자 게시판 상세</PageTitle>
-          )}
-          <div>
-            <RightBtn type="button" onClick={() => navigate(-1)}>
-              뒤로가기
-            </RightBtn>
+      <PageTop>
+        {communityDetail.role === 'C' ? (
+          <PageTitle>간병 게시판 상세</PageTitle>
+        ) : (
+          <PageTitle>보호자 게시판 상세</PageTitle>
+        )}
+        <div>
+          <RightBtn type="button" onClick={() => navigate(-1)}>
+            뒤로가기
+          </RightBtn>
+        </div>
+      </PageTop>
+      <PageBody>
+        <Left style={{ fontSize: theme.fontSizes.lg, fontWeight: theme.fontWeights.medium, padding: '0 10px' }}>
+          {communityDetail.boardTitle}
+        </Left>
+        <BodyTop>
+          <Icons src="/src/assets/icons/icon_작성자.png" alt="" />
+          <Left style={{ fontSize: theme.fontSizes.sm }}>{communityDetail?.userName}</Left>
+          <Right>
+            <Icons src="/src/assets/icons/icon_조회수.png" alt="" />
+            <div style={{ paddingRight: '10px' }}>{communityDetail?.count}</div>
+            <Icons src="/src/assets/icons/icon_작성일자.png" alt="" />
+            <div style={{ paddingRight: '10px' }}>{communityDetail.createDate.split('.')[0].replace('T', ' / ')}</div>
+            {communityDetail.userNo === userNo ? (
+              <MenuBox>
+                <Icons src="/src/assets/icons/icon_설정메뉴.png" alt="" />
+                <ul>
+                  <li>
+                    <Icons src="/src/assets/icons/icon_수정.png" alt="" />
+                    <LinkLi to={`/community/update/${communityDetail.boardNo}`}>수정</LinkLi>
+                  </li>
+                  <li>
+                    <Icons src="/src/assets/icons/icon_삭제.png" alt="" />
+                    <button onClick={handleDeleteBoard}> 삭제</button>
+                  </li>
+                </ul>
+              </MenuBox>
+            ) : null}
+          </Right>
+        </BodyTop>
+        <BodyText>{communityDetail.boardContent}</BodyText>
+        {communityDetail.files && communityDetail.files.length > 0 && (
+          <FileBox>
+            <div>
+              <img src="/src/assets/icons/icon_사진.png" alt="" />
+              <div>사진</div>
+            </div>
+            <div>
+              {communityDetail.files?.map((file, index) => (
+                <div className="file-card" key={index}>
+                  <a href={getProfileImageUrl(file?.fileName)} target="_blank" rel="noopener noreferrer">
+                    <img src={getProfileImageUrl(file?.fileName)} alt="첨부 이미지" />
+                  </a>
+                </div>
+              ))}
+            </div>
+          </FileBox>
+        )}
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <CommentBox>
+            <CommentInput
+              type="text"
+              placeholder="댓글을 입력하세요"
+              {...register('replyContent')}
+              disabled={isSubmitting}
+            />
+            <CommentButton type="submit">댓글 작성</CommentButton>
+          </CommentBox>
+        </form>
+        <CommentEx>
+          <span>
+            • 개인정보를 공유 및 요청하거나, 명예 훼손, 무단 광고, 불법정보 유포 시 이에 대한 민형사상 책임은 작성자에게
+            있습니다
+          </span>
+          <span>• 개인정보가 포함되거나 부적절한 답변은 비노출 또는 해당 서비스 이용 불가 처리될 수 있습니다</span>
+        </CommentEx>
+      </PageBody>
+      <CommentSelectBox>
+        <div style={{ gap: '6px', paddingLeft: '10px' }}>
+          <div style={{ fontWeight: theme.fontWeights.bold }}>댓글</div>
+          <div style={{ color: theme.colors.primary, fontWeight: theme.fontWeights.bold }}>
+            {communityDetail.reply.length}
           </div>
-        </PageTop>
-        <PageBody>
-          <Left style={{ fontSize: theme.fontSizes.lg, fontWeight: theme.fontWeights.medium, padding: '0 10px' }}>
-            {communityDetail.boardTitle}
-          </Left>
-          <BodyTop>
-            <Icons src="/src/assets/icons/icon_작성자.png" alt="" />
-            <Left style={{ fontSize: theme.fontSizes.sm }}>{communityDetail?.userName}</Left>
-            <Right>
-              <Icons src="/src/assets/icons/icon_조회수.png" alt="" />
-              <div style={{ paddingRight: '10px' }}>{communityDetail?.count}</div>
-              <Icons src="/src/assets/icons/icon_작성일자.png" alt="" />
-              <div style={{ paddingRight: '10px' }}>{communityDetail?.createDate}</div>
-              {communityDetail.userNo === userNo ? (
-                <MenuBox>
+        </div>
+        {communityDetail.reply?.map((reply) => (
+          <CommentSelect key={reply.replyNo}>
+            <div style={{ width: '100%', gap: '8px' }}>
+              <img src="/src/assets/icons/icon_작성자.png" alt="" />
+              <div>{reply.userName}</div>
+              <div>{reply.updateDate}</div>
+              {communityDetail.userNo === userNo || reply.userNo === userNo ? (
+                <MenuBox style={{ marginLeft: 'auto' }}>
                   <img src="/src/assets/icons/icon_설정메뉴.png" alt="" />
                   <ul>
-                    <li>
-                      <img src="/src/assets/icons/icon_수정.png" alt="" />
-                      <LinkLi to={`/community/update/${communityDetail.boardNo}`}>수정</LinkLi>
-                    </li>
+                    {reply.userNo === userNo ? (
+                      <li>
+                        <img src="/src/assets/icons/icon_수정.png" alt="" />
+                        <button type="button" onClick={() => handleUpdateClick(reply.replyNo, reply.replyContent)}>
+                          수정
+                        </button>
+                      </li>
+                    ) : null}
                     <li>
                       <img src="/src/assets/icons/icon_삭제.png" alt="" />
-                      <button onClick={handleDeleteBoard}> 삭제</button>
+                      <button type="button" onClick={() => handleDeleteReply(reply.replyNo)}>
+                        {' '}
+                        삭제
+                      </button>
                     </li>
                   </ul>
                 </MenuBox>
               ) : null}
-            </Right>
-          </BodyTop>
-          <BodyText>{communityDetail.boardContent}</BodyText>
-          {communityDetail.files && communityDetail.files.length > 0 && (
-            <FileBox>
-              <FileTitle>
-                <Icons src="/src/assets/icons/icon_사진.png" alt="" />
-                <div>사진</div>
-              </FileTitle>
-              <InputFile>
-                {communityDetail.files?.map((file, index) => (
-                  <ImgBox key={index}>
-                    <a href={getProfileImageUrl(file?.fileName)} target="_blank" rel="noopener noreferrer">
-                      <img
-                        src={getProfileImageUrl(file?.fileName)}
-                        alt="첨부 이미지"
-                        style={{ width: '100%', aspectRatio: '4 / 3', borderRadius: '4px' }}
-                      />
-                    </a>
-                  </ImgBox>
-                ))}
-              </InputFile>
-            </FileBox>
-          )}
-          <form onSubmit={handleSubmit(onSubmit)}>
-            <CommentBox>
-              <CommentInput
-                type="text"
-                placeholder="댓글을 입력하세요"
-                {...register('replyContent')}
-                disabled={isSubmitting}
-              />
-              <CommentButton type="submit">댓글 작성</CommentButton>
-            </CommentBox>
-          </form>
-          <CommentEx>
-            <span>
-              • 개인정보를 공유 및 요청하거나, 명예 훼손, 무단 광고, 불법정보 유포 시 이에 대한 민형사상 책임은
-              작성자에게 있습니다
-            </span>
-            <span>• 개인정보가 포함되거나 부적절한 답변은 비노출 또는 해당 서비스 이용 불가 처리될 수 있습니다</span>
-          </CommentEx>
-        </PageBody>
-        <CommentSelectBox>
-          <div style={{ gap: '6px', paddingLeft: '10px' }}>
-            <div style={{ fontWeight: theme.fontWeights.bold }}>댓글</div>
-            <div style={{ color: theme.colors.primary, fontWeight: theme.fontWeights.bold }}>
-              {communityDetail.reply.length}
             </div>
-          </div>
-          {communityDetail.reply?.map((reply) => (
-            <CommentSelect key={reply.replyNo}>
-              <div style={{ width: '100%', gap: '8px' }}>
-                <Icons src="/src/assets/icons/icon_작성자.png" alt="" />
-                <div>{reply.userName}</div>
-                <div>{reply.updateDate}</div>
-                {communityDetail.userNo === userNo || reply.userNo === userNo ? (
-                  <MenuBox style={{ marginLeft: 'auto' }}>
-                    <img src="/src/assets/icons/icon_설정메뉴.png" alt="" />
-                    <ul>
-                      {reply.userNo === userNo ? (
-                        <li>
-                          <img src="/src/assets/icons/icon_수정.png" alt="" />
-                          <button type="button" onClick={() => handleUpdateClick(reply.replyNo, reply.replyContent)}>
-                            수정
-                          </button>
-                        </li>
-                      ) : null}
-                      <li>
-                        <img src="/src/assets/icons/icon_삭제.png" alt="" />
-                        <button type="button" onClick={() => handleDeleteReply(reply.replyNo)}>
-                          {' '}
-                          삭제
-                        </button>
-                      </li>
-                    </ul>
-                  </MenuBox>
-                ) : null}
-              </div>
-              {editingReplyNo === reply.replyNo ? (
-                <CommentUpdate style={{ display: 'flex', flexDirection: 'column', margin: '10px 10px 0' }}>
-                  <input value={editedContent} onChange={(e) => setEditedContent(e.target.value)} />
-                  <div>
-                    <Btn type="button" onClick={() => handleUpdateReply(reply.replyNo)}>
-                      수정
-                    </Btn>
-                    <Btn type="button" onClick={handleCancelEdit}>
-                      취소
-                    </Btn>
-                  </div>
-                </CommentUpdate>
-              ) : (
-                <div style={{ padding: '5px 10px 0' }}>{reply.replyContent}</div>
-              )}
-            </CommentSelect>
-          ))}
-        </CommentSelectBox>
-      </PageInfo>
+            {editingReplyNo === reply.replyNo ? (
+              <CommentUpdate style={{ display: 'flex', flexDirection: 'column', margin: '10px 10px 0' }}>
+                <input value={editedContent} onChange={(e) => setEditedContent(e.target.value)} />
+                <div>
+                  <Btn type="button" onClick={() => handleUpdateReply(reply.replyNo)}>
+                    수정
+                  </Btn>
+                  <Btn type="button" onClick={handleCancelEdit}>
+                    취소
+                  </Btn>
+                </div>
+              </CommentUpdate>
+            ) : (
+              <div style={{ padding: '5px 10px 0' }}>{reply.replyContent}</div>
+            )}
+          </CommentSelect>
+        ))}
+      </CommentSelectBox>
     </Page>
   );
 };
+
+const PageTop = styled.div`
+  display: flex;
+  > div {
+    padding: 10px;
+  }
+`;
 const RightBtn = styled.button`
   width: 100px;
   border: 1px solid ${({ theme }) => theme.colors.gray[4]};
   border-radius: 6px;
 `;
 
-const ImgBox = styled.div`
-  width: calc(100% / 4);
-  aspect-ratio: 4 / 3;
-  padding: 0 10px 10px 0px;
-  position: relative;
-  display: inline-block;
-`;
 const Right = styled.div`
   display: flex;
 `;

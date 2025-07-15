@@ -5,44 +5,143 @@ import { styled } from 'styled-components';
 // 단 기본적으로 맨위의 틀을가지고 가서 변경하는것을 추천하나, 많이 바뀔거같으면 아래와 같이 새로 하나 만들어서 사용하세요
 // 절대 다른 사람이 만든 컴포넌트 말없이 수정 ㄴㄴ 당신 책임
 export const Page = styled.div`
-  width: 100%;
-  min-width: 760px;
+  width: 70%;
+  min-width: 600px;
   display: flex;
+  flex-direction: column;
   justify-content: center;
-  margin-top: 70px;
-`;
-export const Input = styled.input`
-  border: 1px solid ${({ theme }) => theme.colors.gray[5]};
-  border-radius: 4px;
-  padding: 2px 4px;
+  margin: 60px auto;
 `;
 
-export const FlexGrow = styled.div`
-  flex-grow: 1;
-  align-self: center;
-  justify-items: center;
+export const MenuBox = styled.div`
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+  > * {
+    display: flex;
+    font-weight: ${({ theme }) => theme.fontWeights.bold};
+  }
+  > span {
+    font-size: ${({ theme }) => theme.fontSizes.xl};
+    padding-bottom: 10px;
+  }
+  > p {
+    font-size: ${({ theme }) => theme.fontSizes.xl};
+    color: ${({ theme }) => theme.colors.primary};
+    padding-bottom: 10px;
+  }
+  > div {
+    padding-top: 10px;
+    gap: 20px;
+    > div {
+      color: 1px solid ${({ theme }) => theme.colors.gray[5]};
+    }
+    a {
+      color: ${({ theme }) => theme.colors.gray[5]};
+      &:hover {
+        color: ${({ theme }) => theme.colors.gray[3]};
+      }
+    }
+  }
+`;
+
+export const SearchBoard = styled.div`
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  border-top: 1px solid ${({ theme }) => theme.colors.gray[3]};
+  border-bottom: 1px solid ${({ theme }) => theme.colors.gray[3]};
+  padding: 5px 20px;
+  > div {
+    align-self: center;
+  }
+  > form {
+    display: flex;
+    > * {
+      border-radius: ${({ theme }) => theme.borderRadius.md};
+      border: 1px solid ${({ theme }) => theme.colors.gray[3]};
+      margin-left: 5px;
+    }
+    > input {
+      padding: 4px;
+    }
+    > button {
+      align-content: center;
+      background-color: ${({ theme }) => theme.colors.gray[3]};
+      color: ${({ theme }) => theme.colors.white};
+      padding: 0 5px;
+    }
+    > a {
+      border: none;
+    }
+  }
+`;
+export const Board = styled.div`
+  > * {
+    display: grid;
+    padding: 5px 0;
+  }
+  > div {
+    border-bottom: 1px solid ${({ theme }) => theme.colors.gray[3]};
+    > div {
+      color: ${({ theme }) => theme.colors.gray[1]};
+      font-weight: ${({ theme }) => theme.fontWeights.medium};
+    }
+  }
+  > a {
+    border-bottom: 1px solid ${({ theme }) => theme.colors.gray[5]};
+    > div {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+  }
+`;
+export const Input = styled.input`
+  border: 1px solid ${({ theme }) => theme.colors.gray[3]};
+  border-radius: ${({ theme }) => theme.borderRadius.md};
+  padding: 4px;
 `;
 export const LinkBtn = styled(Link)`
   align-content: center;
   background-color: ${({ theme }) => theme.colors.primary};
   color: ${({ theme }) => theme.colors.white};
   border-radius: ${({ theme }) => theme.borderRadius.md};
-  padding: 0 10px;
+  padding: 0 5px;
+`;
+export const SearchBtn = styled.button`
+  align-content: center;
+
+  border-radius: ${({ theme }) => theme.borderRadius.md};
+  padding: 0 5px;
 `;
 export const Btn = styled.button`
   align-content: center;
   background-color: ${({ theme }) => theme.colors.primary};
   color: ${({ theme }) => theme.colors.white};
   border-radius: ${({ theme }) => theme.borderRadius.md};
-  padding: 0 10px;
 `;
 export const NullBox = styled.div`
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  padding: 10px;
+  padding: 20px 0;
+  border-bottom: 1px solid ${({ theme }) => theme.colors.gray[3]};
+  > * {
+    width: max-content;
+    margin: 0 auto;
+  }
+  > div {
+    margin-bottom: 5px;
+  }
 `;
+//
+
+export const FlexGrow = styled.div`
+  flex-grow: 1;
+  align-self: center;
+  justify-items: center;
+`;
+
 //
 export const CommuBoard = styled.div`
   width: 100%;
