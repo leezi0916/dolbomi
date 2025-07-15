@@ -333,16 +333,7 @@ const MyProfile = () => {
             <Label htmlFor="phone">전화번호</Label>
             <Input type="text" id="phone" value={formData.phone} onChange={handleChange} />
           </InputGroup>
-          <InputGroup>
-            <Label htmlFor="email">이메일</Label>
-            <Input
-              type="email"
-              id="email"
-              value={formData.email}
-              onChange={handleChange}
-              disabled={!!profile?.socialType}
-            />
-          </InputGroup>
+
           <InputGroup>
             <Label htmlFor="address">주소</Label>
             <Row>

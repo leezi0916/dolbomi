@@ -52,8 +52,6 @@ const signUpSchema = yup.object().shape({
     .required('주소를 입력해주세요.')
     .min(5, '주소는 최소 5자 이상이어야 합니다.')
     .max(100, '주소는 100자 이하로 입력해주세요.'),
-
-  email: yup.string().email('유효한 이메일 주소를 입력하세요.').required('이메일을 입력해주세요.'),
 });
 
 export const useSignUpForm = (socialType, socialId) => {

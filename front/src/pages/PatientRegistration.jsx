@@ -21,7 +21,7 @@ import styled from 'styled-components';
 import PostcodeSearch from '../components/PostcodeSearch';
 import { useRef } from 'react';
 import { HiMiniPencilSquare } from 'react-icons/hi2';
-
+import profileImage from '../assets/profileImg/img_환자소.png';
 const PatientRegistration = () => {
   const { user } = useUserStore();
   const navigate = useNavigate();
@@ -80,6 +80,10 @@ const PatientRegistration = () => {
     inputRef.current?.click(); // 파일 선택창 열기
   };
 
+  const getImageOrDefault = (url) => {
+    return url || profileImage;
+  };
+
   return (
     <>
       <AuthContainer>
@@ -90,7 +94,7 @@ const PatientRegistration = () => {
             <ProfileImageWrapper>
               <ProfileImage>
                 <img
-                  src={previewUrl}
+                  src={getImageOrDefault(previewUrl)}
                   alt="프로필 이미지"
                   style={{
                     width: '100%',

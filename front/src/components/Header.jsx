@@ -32,7 +32,8 @@ const Header = () => {
     sessionStorage.removeItem('token');
     localStorage.removeItem('user-storage'); // persist 저장소 삭제
     localStorage.removeItem('status-storage'); // persist 저장소 삭제
-    localStorage.removeItem('GoogleLoginToast'); // 로그아웃기 구글 로그인 토스트 삭제
+    localStorage.removeItem('socialLoginToast'); // 로그아웃시 구글 로그인 스토리지 삭제
+    localStorage.removeItem('normalLoginToast'); // 로그아웃시 일반 로그인 스토리지 삭제
 
     alert('로그아웃 되었습니다.');
     setUserStatus(true);
@@ -62,10 +63,13 @@ const Header = () => {
       setUserStatus(userStatus);
 
       // 최초 로그인시에만 토스트 띄우기 -> 일반 로그인과 다르게 리다이렉트를 받기때문에 이렇게 설계
-      const GoogleLoginToast = localStorage.getItem('GoogleLoginToast');
-      if (!GoogleLoginToast) {
+      // 최초 로그인시에만 토스트 띄우기 -> 일반 로그인과 다르게 리다이렉트를 받기때문에 이렇게 설계
+      const socialLoginToast = localStorage.getItem('socialLoginToast');
+      const normalLoginToast = localStorage.getItem('normalLoginToast');
+
+      if (!socialLoginToast && normalLoginToast === null) {
         toast.success('로그인 성공!');
-        localStorage.setItem('GoogleLoginToast', 'true');
+        localStorage.setItem('socialLoginToast', 'social');
       }
     } catch (error) {
       console.error('사용자 정보 조회 실패:', error);

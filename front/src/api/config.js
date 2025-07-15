@@ -74,7 +74,7 @@ export const API_ENDPOINTS = {
     DETAIL: (resumeNo) => `/resume/v1/detail/${resumeNo}`,
     MYRESUME: (currentPage, userNo) => `/resume/v1/user?page=${currentPage - 1}&userNo=${userNo}`,
     UPDATE: (resumeNo) => `/resume/v1/${resumeNo}`,
-    MYRESUMMODAL : (userNo) => `/resume/v1/user/all?userNo=${userNo}`,
+    MYRESUMMODAL: (userNo) => `/resume/v1/user/all?userNo=${userNo}`,
   },
 
   PATIENT: {
@@ -135,5 +135,10 @@ export const API_ENDPOINTS = {
     BASE: '/auth/email',
     SEND_EMAIL_CODE: '/auth/email/send',
     VERIFY_EMAIL_CODE: '/auth/email/verify',
+  },
+
+  AI: {
+    BASE: '/ai',
+    RESPONSE: (patNo) => `/ai?pat_no=${patNo}`,
   },
 };

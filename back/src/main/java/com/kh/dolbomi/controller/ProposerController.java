@@ -106,8 +106,8 @@ public class ProposerController {
 
     //
     @GetMapping("/hiring/{hiringNo}/owner")
-    public ResponseEntity<Long> getHiringOwner(@PathVariable Long hiringNo) {
-        Long ownerUserNo = proposerService.getHiringOwnerUserNo(hiringNo);
-        return ResponseEntity.ok(ownerUserNo);
+    public ResponseEntity<Map<String, Object>> getHiringOwnerInfo(@PathVariable Long hiringNo) {
+        Map<String, Object> result = proposerService.getHiringOwnerInfo(hiringNo);
+        return ResponseEntity.ok(result);
     }
 }
