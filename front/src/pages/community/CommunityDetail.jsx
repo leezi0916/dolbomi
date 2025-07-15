@@ -7,7 +7,7 @@ import { ClipLoader } from 'react-spinners';
 import { Btn, Page } from '../../styles/common/Board';
 import theme from '../../styles/theme';
 import styled from 'styled-components';
-import { BodyTop, FileBox, Left, PageBody } from './style/Community.styles';
+import { BodyTop, FileBox, Icons, Left, PageBody, PageTitle } from './style/Community.styles';
 import { useForm } from 'react-hook-form';
 import profileImage from '../../assets/images/cargiver.png'; // 프로필 이미지 경로
 const CommunityDetail = () => {
@@ -162,11 +162,15 @@ const CommunityDetail = () => {
   return (
     <Page>
       <PageTop>
-        {communityDetail.role === 'C' ? <p>간병 게시판 상세</p> : <p>보호자 게시판 상세</p>}
+        {communityDetail.role === 'C' ? (
+          <PageTitle>간병 게시판 상세</PageTitle>
+        ) : (
+          <PageTitle>보호자 게시판 상세</PageTitle>
+        )}
         <div>
-          <button type="button" onClick={() => navigate(-1)}>
+          <RightBtn type="button" onClick={() => navigate(-1)}>
             뒤로가기
-          </button>
+          </RightBtn>
         </div>
       </PageTop>
       <PageBody>
@@ -174,23 +178,23 @@ const CommunityDetail = () => {
           {communityDetail.boardTitle}
         </Left>
         <BodyTop>
-          <img src="/src/assets/icons/icon_작성자.png" alt="" />
+          <Icons src="/src/assets/icons/icon_작성자.png" alt="" />
           <Left style={{ fontSize: theme.fontSizes.sm }}>{communityDetail?.userName}</Left>
           <Right>
-            <img src="/src/assets/icons/icon_조회수.png" alt="" />
+            <Icons src="/src/assets/icons/icon_조회수.png" alt="" />
             <div style={{ paddingRight: '10px' }}>{communityDetail?.count}</div>
-            <img src="/src/assets/icons/icon_작성일자.png" alt="" />
+            <Icons src="/src/assets/icons/icon_작성일자.png" alt="" />
             <div style={{ paddingRight: '10px' }}>{communityDetail.createDate.split('.')[0].replace('T', ' / ')}</div>
             {communityDetail.userNo === userNo ? (
               <MenuBox>
-                <img src="/src/assets/icons/icon_설정메뉴.png" alt="" />
+                <Icons src="/src/assets/icons/icon_설정메뉴.png" alt="" />
                 <ul>
                   <li>
-                    <img src="/src/assets/icons/icon_수정.png" alt="" />
+                    <Icons src="/src/assets/icons/icon_수정.png" alt="" />
                     <LinkLi to={`/community/update/${communityDetail.boardNo}`}>수정</LinkLi>
                   </li>
                   <li>
-                    <img src="/src/assets/icons/icon_삭제.png" alt="" />
+                    <Icons src="/src/assets/icons/icon_삭제.png" alt="" />
                     <button onClick={handleDeleteBoard}> 삭제</button>
                   </li>
                 </ul>
@@ -205,13 +209,15 @@ const CommunityDetail = () => {
               <img src="/src/assets/icons/icon_사진.png" alt="" />
               <div>사진</div>
             </div>
-            {communityDetail.files?.map((file, index) => (
-              <div className="file-card" key={index}>
-                <a href={getProfileImageUrl(file?.fileName)} target="_blank" rel="noopener noreferrer">
-                  <img src={getProfileImageUrl(file?.fileName)} alt="첨부 이미지" />
-                </a>
-              </div>
-            ))}
+            <div>
+              {communityDetail.files?.map((file, index) => (
+                <div className="file-card" key={index}>
+                  <a href={getProfileImageUrl(file?.fileName)} target="_blank" rel="noopener noreferrer">
+                    <img src={getProfileImageUrl(file?.fileName)} alt="첨부 이미지" />
+                  </a>
+                </div>
+              ))}
+            </div>
           </FileBox>
         )}
         <form onSubmit={handleSubmit(onSubmit)}>
@@ -292,9 +298,9 @@ const CommunityDetail = () => {
 };
 
 const PageTop = styled.div`
-  padding: 10px;
+  display: flex;
   > div {
-    padding-bottom: 10px;
+    padding: 10px;
   }
 `;
 const RightBtn = styled.button`
@@ -303,13 +309,6 @@ const RightBtn = styled.button`
   border-radius: 6px;
 `;
 
-const ImgBox = styled.div`
-  width: calc(100% / 4);
-  aspect-ratio: 4 / 3;
-  padding: 0 10px 10px 0px;
-  position: relative;
-  display: inline-block;
-`;
 const Right = styled.div`
   display: flex;
 `;
