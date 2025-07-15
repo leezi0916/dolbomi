@@ -42,6 +42,8 @@ function ResumeDetail() {
 
   // **새로 추가: 구인글 작성자인지 체크하는 상태**
   const [isHiringOwner, setIsHiringOwner] = useState(false);
+  // 구인글 모집 상태 체크
+  const [isHiringClosed, setIsHiringClosed] = useState(false);
   const [loading, setLoading] = useState(true);
 
   /*이력서 정보를 갖고오는 (유저 정보 담아서) */
@@ -49,7 +51,7 @@ function ResumeDetail() {
     // 로그인하지 않은 경우 이전 페이지로 이동
     if (!user) {
       alert('로그인이 필요한 서비스입니다.');
-      navigate(-1);
+      navigate('/login');
       return;
     }
 
@@ -61,13 +63,19 @@ function ResumeDetail() {
 
         if (hiringNo) {
           // 2) 백엔드 API로 해당 hiringNo 구인글 작성자가 로그인 유저인지 체크
-          const hiringOwnerNo = await proposerService.getHiringOwnerUserNo(Number(hiringNo));
-          if (user?.userNo === hiringOwnerNo) {
+          const result = await proposerService.getHiringOwnerUserNo(Number(hiringNo));
+          console.log(result);
+          const { ownerUserNo, hiringStatus } = result;
+
+          if (user?.userNo === ownerUserNo) {
             setIsHiringOwner(true);
           } else {
             alert('권한이 없습니다.');
             navigate('/'); // 권한 없으면 이전 페이지로 이동
             return;
+          }
+          if (hiringStatus === 'N') {
+            setIsHiringClosed(true); // 모집 마감 상태로 체크
           }
         }
       } catch (error) {
@@ -145,6 +153,7 @@ function ResumeDetail() {
   if (loading) {
     return <div>로딩중...</div>;
   }
+
   return (
     <HireRegistSection>
       <HireContainer>
@@ -194,7 +203,7 @@ function ResumeDetail() {
         </ContentWrapper>
 
         <ContentWrapper2>
-          {resumeData?.licenses?.map((license, index) => (
+          {resumeData?.licenseList?.map((license, index) => (
             <>
               <LicenseCard key={index}>
                 <LicenseGroup>
@@ -299,8 +308,12 @@ function ResumeDetail() {
         <ButtonGroup>
           <BackButton onClick={() => navigate(-1)}>이전</BackButton>
           {hiringNo && (
-            <SubmitButton1 onClick={handleAcceptMatching} disabled={isMatched} $disabled={isMatched}>
-              {isMatched ? '매칭 완료' : '매칭 수락'}
+            <SubmitButton1
+              onClick={handleAcceptMatching}
+              disabled={isMatched || isHiringClosed}
+              $disabled={isMatched || isHiringClosed}
+            >
+              {isMatched ? '매칭 완료' : isHiringClosed ? '매칭 수락 불가 (모집 종료)' : '매칭 수락'}
             </SubmitButton1>
           )}
 
@@ -547,7 +560,10 @@ const LicenseGroup = styled.div`
   gap: ${({ theme }) => theme.spacing[1]};
 `;
 
-const LicenseInput = styled(Input)``;
+const LicenseInput = styled(Input)`
+  pointer-events: none; /* 클릭/포커스 불가 */
+  cursor: default; /* 마우스 커서를 기본 화살표로 변경 */
+`;
 
 //기존
 const ContentWrapper2 = styled.div`
