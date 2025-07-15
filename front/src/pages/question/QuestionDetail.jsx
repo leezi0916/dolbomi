@@ -197,7 +197,7 @@ const QuestionDetail = () => {
               <Icons src="/src/assets/icons/icon_조회수.png" alt="" />
               <div style={{ paddingRight: '10px' }}>{communityDetail?.count}</div>
               <Icons src="/src/assets/icons/icon_작성일자.png" alt="" />
-              <div style={{ paddingRight: '10px' }}>{communityDetail?.createDate}</div>
+              <div style={{ paddingRight: '10px' }}>{communityDetail?.createDate.slice(0, 10)}</div>
               {communityDetail.userNo === userNo ? (
                 <button style={{ padding: '0', color: 'gray' }} type="button" onClick={handleDeleteBoard}>
                   삭제

@@ -136,5 +136,22 @@ public class PatientDto {
 
     }
 
+    @Getter
+    @Setter
+    @AllArgsConstructor
+    @NoArgsConstructor
+    @Builder
+    public static class AiResponse {
 
+        private String pat_name;
+        private String response;
+        private String error;
+
+//        public static AiResponse toDto(String patName, String response){
+//            return  AiResponse.builder()
+//                    .pat_name(patName)
+//                    .response(response)
+//                    .build();
+//        }
+    }
 }
