@@ -22,14 +22,6 @@ import org.springframework.web.bind.annotation.RestController;
 @CrossOrigin(origins = "*")// 프론트와 백엔드 url이 다른것을 맞춰주기 위한 어노테이션
 public class AiController {
 
-    /*
-     * 환자정보에 대한 건강 팁 ai 답변가져오기
-     * 자신이 간병하게 된 환자목록 가져오기
-     * 환자선택하기
-     * dto에 담서 파라미터 전달하기
-     * 챗 모델에 전달하기
-     * 응답받아오기
-     * */
 
     private final PatientService patientService;
     private final ChatModel chatModel;

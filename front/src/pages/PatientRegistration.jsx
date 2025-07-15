@@ -129,7 +129,7 @@ const PatientRegistration = () => {
                 id="patAge"
                 min="0"
                 placeholder="나이를 입력해주세요"
-                onWheel={(e) => e.target.blur()}
+     
                 {...register('patAge')}
                 $error={errors.patAge}
               />
@@ -206,13 +206,13 @@ const PatientRegistration = () => {
               <Label htmlFor="weight">몸무게</Label>
 
               <HeightWegithDiv>
-                <Input type="number" step="0.01" id="patHeight" {...register('patHeight')} $error={errors.patHeight} />
+                <Input type="number" step="0.01" id="patHeight"   {...register('patHeight')} $error={errors.patHeight} />
 
                 <span>cm</span>
               </HeightWegithDiv>
 
               <HeightWegithDiv>
-                <Input type="number" step="0.01" id="patWeight" {...register('patWeight')} $error={errors.patWeight} />
+                <Input type="number" step="0.01" id="patWeight"   onWheel={(e) => e.target.blur()} {...register('patWeight')} $error={errors.patWeight} />
 
                 <span>kg</span>
               </HeightWegithDiv>

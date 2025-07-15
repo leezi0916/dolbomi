@@ -56,16 +56,17 @@ import FindPassword from './pages/find_password/FindPassword';
 import ResetPassword from './pages/find_password/ResetPassword';
 import UpdateCommuBoardForm from './pages/community/UpdateCommuBoardForm';
 import PatientCardGroup from './components/PatientCardGroup';
-<<<<<<< HEAD
 import AiModal from './components/AiModal';
-=======
 import MatchMainPage from './pages/MatchMainPage';
->>>>>>> f4b85b54495617ccfd2bae2ab20c8a81f7760af2
+import usePreventWheelOnNumberInput from './hooks/usePreventWheelOnNumberInput';
+
 
 function AppRoutes() {
   const navigate = useNavigate();
   const location = useLocation();
 
+  //input type = number인 기본이벤트인 onWheel를 막는 훅입니다.
+  usePreventWheelOnNumberInput();
   // useEffect(() => {
   //   if (location.pathname === '/') {
   //     navigate('/guardian');

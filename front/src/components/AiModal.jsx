@@ -97,30 +97,34 @@ const AiModal = () => {
 
         <Title> 서비스 준비중입니다.</Title>
         <Title> 환자를 선택하시며 환자의 질병에 맞는 예방법을 알려드립니다</Title>
+        <SelectSection>
+          <SelectBox
+            id="userPatients"
+            value={selectPatientNo ?? ''}
+            onChange={(e) => {
+              const patNo = Number(e.target.value);
+              setSelectPatientNo(patNo); // 이걸 먼저!
+              getPatient(patNo);
+            }}
+          >
+            <option value="">돌봄대상자를 선택해주세요</option>
+            {userPatients?.map((p) => (
+              <option key={p.patNo} value={p.patNo}>
+                {p.patName}
+              </option>
+            ))}
+          </SelectBox>
+          <SubmitButton onClick={() => getAiResponse(selectPatientNo)}>ai 요청하기</SubmitButton>
+        </SelectSection>
 
-        <SelectBox
-          id="userPatients"
-          value={selectPatientNo ?? ''}
-          onChange={(e) => {
-            const patNo = Number(e.target.value);
-            setSelectPatientNo(patNo); // 이걸 먼저!
-            getPatient(patNo);
-          }}
-        >
-          <option value="">돌봄대상자를 선택해주세요</option>
-          {userPatients?.map((p) => (
-            <option key={p.patNo} value={p.patNo}>
-              {p.patName}
-            </option>
-          ))}
-        </SelectBox>
         <Card>
-          <ProfileImage src={getProfileImageUrl(aiResponse.profileImage)} />
-          {patient?.patName}의 맟춤 예방법입니다. <br />
+          <NameBox>
+            <ProfileImage src={getProfileImageUrl(aiResponse.profileImage)} />
+            {patient?.patName}의 맟춤 예방법입니다. <br />
+          </NameBox>
+
           <Info>{aiResponse.response}</Info>
         </Card>
-
-        <SubmitButton onClick={() => getAiResponse(selectPatientNo)}>ai 요청하기</SubmitButton>
       </ModalContainer>
     </ModalOverlay>
   );
@@ -137,6 +141,7 @@ const ModalOverlay = styled.div`
 
 const ModalContainer = styled.div`
   width: 800px;
+  max-height: 80vh;  
   background: white;
   border-radius: 4px;
   padding: 40px 30px;
@@ -185,11 +190,43 @@ const Card = styled.div`
   padding: 20px;
   border-radius: 4px;
   display: flex;
+  flex-direction: column;
   align-items: center;
   gap: 15px;
   width: 100%;
   justify-content: flex-start;
   margin-bottom: 30px;
+`;
+
+const SelectSection = styled.div`
+  width: 100%;
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  align-items: center;
+  height: fit-content;
+ 
+`;
+
+const SelectBox = styled.select`
+  width: 70%;
+  height: inherit;
+  padding: 14px;
+  border-radius: ${({ theme }) => theme.borderRadius.md};
+  border: 1px solid ${({ theme }) => theme.colors.gray[5]};
+  font-size: 14px;
+  font-weight: ${({ theme }) => theme.fontWeights.md};
+`;
+
+const SubmitButton = styled.button`
+  width: 30%;
+  background-color: ${({ theme }) => theme.colors.primary};
+  color: white;
+  padding: 14px;
+  font-weight: bold;
+  border: none;
+  border-radius: ${({ theme }) => theme.borderRadius.md};
+  cursor: pointer;
 `;
 
 const ProfileImage = styled.img`
@@ -201,13 +238,19 @@ const ProfileImage = styled.img`
 
 const Info = styled.div`
   display: flex;
+  height: 100px;
   flex-direction: column;
   align-items: flex-start;
   text-align: left;
   white-space: pre-line;
+  overflow-y: auto;
 `;
 
-const Name = styled.div`
+const NameBox = styled.div`
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  align-items: center;
   font-weight: bold;
   font-size: 16px;
 `;
@@ -215,27 +258,6 @@ const Name = styled.div`
 const Age = styled.div`
   color: ${({ theme }) => theme.colors.gray[6]};
   font-size: 14px;
-`;
-
-const SelectBox = styled.select`
-  width: 100%;
-  padding: 12px;
-  border-radius: 4px;
-  border: 1px solid ${({ theme }) => theme.colors.gray[5]};
-  margin-bottom: 20px;
-  font-size: 14px;
-  font-weight: ${({ theme }) => theme.fontWeights.md};
-`;
-
-const SubmitButton = styled.button`
-  background-color: ${({ theme }) => theme.colors.primary};
-  color: white;
-  width: 100%;
-  padding: 14px;
-  font-weight: bold;
-  border: none;
-  border-radius: ${({ theme }) => theme.borderRadius.md};
-  cursor: pointer;
 `;
 
 export default AiModal;

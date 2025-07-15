@@ -5,6 +5,7 @@ import {MainMoveButton, MainSubmitButton} from './common/Button';
 export const FromWrap = styled.div`
   background-color: white;
   box-shadow: ${({ theme }) => theme.shadows.base};
+  
 `;
 export const GridForm = styled.form`
   display: grid;
