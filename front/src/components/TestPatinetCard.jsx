@@ -23,6 +23,24 @@ const TestPatientCard = ({ patient, getCareGiver, getEndedMatchingList, handleCl
   }
 
 
+const TestPatientCard
+ = ({ patient, getCareGiver, getEndedMatchingList,  handleClick, activeTab, isOpen, isMobile}) => {
+  if (!patient){
+    alert("선택된 환자가 없습니다.")
+  }  
+ 
+  const handlePatientClick = (patNo) => {
+    if (activeTab === 'matching') {
+      getCareGiver(patNo);
+  
+      return
+    }
+    if (activeTab === 'matched') {
+      getEndedMatchingList(patNo);
+      return
+    }
+  };
+
   const CLOUDFRONT_URL = 'https://d20jnum8mfke0j.cloudfront.net/';
   //이미지 경로 갖고오고 없다면 기본이미지
   const getProfileImageUrl = (path, type = 'caregiver') => {
