@@ -27,6 +27,7 @@ import PostcodeSearch from '../components/PostcodeSearch';
 import profileImg from '../assets/profileImg/img_환자소.png';
 import { getUploadUrl, uploadFileToS3, completeUpload } from '../api/fileApi';
 import { HiMiniPencilSquare } from 'react-icons/hi2';
+import { matchingService } from '../api/matching';
 
 const PatientUpdate = () => {
   const { user, userStatus } = useUserStore();
@@ -61,7 +62,7 @@ const PatientUpdate = () => {
   // 환자 정보 가져오기
   useEffect(() => {
     if (!user) {
-      alert('로그인 후 이용해주세요');
+      alert('로그인이 필요한 서비스입니다.');
       return;
     }
     const fetchPatient = async () => {
@@ -85,7 +86,7 @@ const PatientUpdate = () => {
       }
     };
     fetchPatient();
-  }, [user, userStatus, patNo, setValue]);
+  }, [userStatus, patNo, setValue]);
 
   // 주소가 바뀌면 form 값에도 반영
   useEffect(() => {
@@ -137,6 +138,11 @@ const PatientUpdate = () => {
     };
 
     try {
+      const careGiverList = await matchingService.getMatchginCargiver(patNo, 'Y');
+      if(careGiverList.length > 0){
+        alert("매칭중 상태에서는 환자를 삭제할 수 없습니다.")
+        return;
+      }
       await patientService.updatePatient(patNo, updatedPatient);
       toast.success('돌봄대상자 삭제완료!');
       navigate('/guardian/patient');
@@ -197,13 +203,7 @@ const PatientUpdate = () => {
               <Label htmlFor="patName">이름</Label>
               <Label htmlFor="patAge">나이</Label>
               <Input type="text" id="patName" {...register('patName')} $error={errors.patName} />
-              <Input
-                type="number"
-                id="patAge"
-        
-                {...register('patAge')}
-                $error={errors.patAge}
-              />
+              <Input type="number" id="patAge" {...register('patAge')} $error={errors.patAge} />
               {errors.patName && <ErrorMessage>{errors.patName.message}</ErrorMessage>}
               {errors.patAge && <ErrorMessage>{errors.patAge.message}</ErrorMessage>}
             </GridInerContainer>
@@ -276,24 +276,12 @@ const PatientUpdate = () => {
               <Label htmlFor="patHeight">키</Label>
               <Label htmlFor="patWeight">몸무게</Label>
               <HeightWegithDiv>
-                <Input
-                  type="number"
-                  id="patHeight"
-              
-                  {...register('patHeight')}
-                  $error={errors.patHeight}
-                />
+                <Input type="number" id="patHeight" {...register('patHeight')} $error={errors.patHeight} />
                 <span>cm</span>
               </HeightWegithDiv>
 
               <HeightWegithDiv>
-                <Input
-                  type="number"
-                  id="patWeight"
-            
-                  {...register('patWeight')}
-                  $error={errors.patWeight}
-                />
+                <Input type="number" id="patWeight" {...register('patWeight')} $error={errors.patWeight} />
                 <span>kg</span>
               </HeightWegithDiv>
 

@@ -88,7 +88,7 @@ function ResumeDetail() {
     };
 
     fetchData();
-  }, [resumeNo, hiringNo, user, navigate]);
+  }, [resumeNo, hiringNo, navigate]);
 
   /*작성자의  리뷰를 갖고오는 코드 */
   useEffect(() => {

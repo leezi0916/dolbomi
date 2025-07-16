@@ -13,7 +13,7 @@ import useUserStore from '../store/userStore';
 import { toast } from 'react-toastify';
 import { jobSeekingService } from '../api/jobSeeking';
 import { useNavigate } from 'react-router-dom';
-import {extractRegionFromEnd} from '../utils/formatData';
+import { extractRegionFromEnd } from '../utils/formatData';
 
 const ResumeRegistration = () => {
   const { user } = useUserStore();
@@ -24,7 +24,7 @@ const ResumeRegistration = () => {
   useEffect(() => {
     const fetchAll = async () => {
       if (!user) {
-        alert('로그인 후 이용해주세요');
+        alert('로그인이 필요한 서비스입니다.');
         navigate('/guardian');
       }
 
@@ -38,7 +38,7 @@ const ResumeRegistration = () => {
       }
     };
     fetchAll();
-  }, [user]);
+  }, []);
 
   const onSubmit = async (formData) => {
     const newData = {

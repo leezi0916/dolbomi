@@ -34,10 +34,10 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-security'
     implementation 'org.springframework.boot:spring-boot-starter-validation'
     implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
-
     implementation 'org.springframework.ai:spring-ai-advisors-vector-store'
     implementation 'org.springframework.ai:spring-ai-pdf-document-reader'
     implementation 'org.springframework.ai:spring-ai-starter-model-openai'
+
     //Spring Boot에서 메일 전송 기능을 간편하게 구현할 수 있도록
     implementation 'org.springframework.boot:spring-boot-starter-mail'
     //메일형식을 html로 쉽게 작성하기위한 템플릿엔진

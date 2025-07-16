@@ -193,14 +193,16 @@ const CaregiverList = () => {
                   {displayMode === 'region' && region.length > 0
                     ? region.map((region) => (
                         <RegionLabel key={region.cd}>
-                          <input
-                            type="radio"
-                            name="region"
-                            value={region.cd}
-                            checked={selectedCd === region.cd}
-                            onChange={() => handleRegionChange(region)}
-                          />
-                          {region.addrName}
+                          <RadioWrapper>
+                            <input
+                              type="radio"
+                              name="region"
+                              value={region.cd}
+                              checked={selectedCd === region.cd}
+                              onChange={() => handleRegionChange(region)}
+                            />
+                            <p> {region.addrName}</p>
+                          </RadioWrapper>
                         </RegionLabel>
                       ))
                     : displayMode === 'region' && <p>로딩중...</p>}
@@ -211,14 +213,16 @@ const CaregiverList = () => {
                   {displayMode === 'sgg' && sgg.length > 0
                     ? sgg.map((sgg) => (
                         <RegionLabel key={sgg.cd}>
-                          <input
-                            type="radio"
-                            name="sgg"
-                            value={sgg}
-                            // checked={}
-                            onChange={() => handleSggChange(sgg)}
-                          />
-                          {sgg.addrName}
+                          <RadioWrapper>
+                            <input
+                              type="radio"
+                              name="sgg"
+                              value={sgg}
+                              // checked={}
+                              onChange={() => handleSggChange(sgg)}
+                            />
+                            <p>{sgg.addrName}</p>
+                          </RadioWrapper>
                         </RegionLabel>
                       ))
                     : displayMode === 'sgg' &&
@@ -413,7 +417,11 @@ const Item = styled.div`
 const RegionDiv = styled.div`
   display: flex;
   flex-wrap: wrap;
+<<<<<<< HEAD
   justify-content: center;
+=======
+  align-items: center;
+>>>>>>> c20c21ed558b4b32187e3cb0167b23c76d238bc2
 `;
 
 const RegionLabel = styled.label`
@@ -537,7 +545,7 @@ const ACCOUNT = styled.input`
 const RadioWrapper = styled.div`
   display: flex;
   align-items: center;
-  /* gap: ${({ theme }) => theme.spacing[3]}; */
+  gap: ${({ theme }) => theme.spacing[2]};
 
   // 'checked' prop을 받아서 스타일을 동적으로 적용합니다.
   input[type='radio'] {
@@ -609,6 +617,14 @@ const CaregiverListCard = styled(Link)`
   border-radius: ${({ theme }) => theme.borderRadius.md};
   box-shadow: ${({ theme }) => theme.shadows.md};
   overflow: hidden; /* 내부 요소가 넘치지 않도록 */
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+
+  &:hover {
+    transform: translateY(-6px);
+    box-shadow: ${({ theme }) => theme.shadows.md};
+  }
 `;
 
 // --- 상단 영역 스타일 ---
