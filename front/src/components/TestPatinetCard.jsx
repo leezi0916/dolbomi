@@ -22,17 +22,14 @@ const TestPatientCard = ({ patient, getCareGiver, getEndedMatchingList, handleCl
     alert('선택된 환자가 없습니다.');
   }
 
-
-const TestPatientCard
- = ({ patient, getCareGiver, getEndedMatchingList,  handleClick, activeTab, isOpen, isMobile}) => {
+ 
   if (!patient){
     alert("선택된 환자가 없습니다.")
-  }  
+  }; 
  
   const handlePatientClick = (patNo) => {
     if (activeTab === 'matching') {
       getCareGiver(patNo);
-  
       return
     }
     if (activeTab === 'matched') {
@@ -57,7 +54,7 @@ const TestPatientCard
     <div>
       {patient && patient.length > 0 ? (
         patient.map((pat) => (
-          <ProfileCard type="patient">
+          <ProfileCard type="patient" key={pat.patNo}>
             <ProfileImage
               src={getProfileImageUrl(pat.profileImage, 'patient')}
               alt="환자"
@@ -73,11 +70,7 @@ const TestPatientCard
               </UserAge>
               <BtnSection>
                 <InfoButton onClick={() => navigate(`/report/${pat.patNo}`)}>간병일지 보기</InfoButton>
-           <OpenButton onClick={() => handleClick(pat.patNo)}>간병인 보기</OpenButton>
-
-                {/* <TestBtn type="button" onClick={() => handleClick(pat.patNo)}>
-                  간병인 보기
-                </TestBtn> */}
+               <OpenButton onClick={() => handleClick(pat.patNo)}>간병인 보기</OpenButton>
               </BtnSection>
             </ProfileInfo>
           </ProfileCard>
@@ -88,6 +81,9 @@ const TestPatientCard
     </div>
   );
 };
+
+export default TestPatientCard;
+
 
 const OpenButton = styled(InfoButton)`
   display: flex;
@@ -102,5 +98,3 @@ const OpenButton = styled(InfoButton)`
   padding: ${({ theme }) => `${theme.spacing[2]} ${theme.spacing[6]}`};
  `}
 `;
-
-export default TestPatientCard;
