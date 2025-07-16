@@ -60,9 +60,10 @@ export const TextWrap = styled.div`
 export const BtnSection = styled.div`
   display: flex;
   width: 100%;
+   gap: 10px;
 
   button {
-    margin: ${({ theme }) => theme.spacing[3]};
+   
     padding: ${({ theme }) => theme.spacing[3]};
 
     border-radius: ${({ theme }) => theme.borderRadius.base};
@@ -167,12 +168,12 @@ export const InfoButton = styled.button`
   cursor: pointer;
   margin: ${({ theme }) => theme.spacing[1]} 0;
 
-  ${media.md`  // 예: 768px 이하일 때
-  padding: ${({ theme }) => `${theme.spacing[2]} ${theme.spacing[8]}`};
- `}
+  /* ${media.md`  // 예: 768px 이하일 때
+  padding: ${({ theme }) => `${theme.spacing[2]} ${theme.spacing[2]}`};
+ `} */
 
   ${media.lg`  // 예: 768px 이하일 때
-  padding: ${({ theme }) => `${theme.spacing[2]} ${theme.spacing[6]}`};
+  padding: ${({ theme }) => `${theme.spacing[2]} ${theme.spacing[2]}`};
  `}
 `;
 

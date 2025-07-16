@@ -179,7 +179,7 @@ const CaregiverList = () => {
   return (
     <>
       <SearchSection>
-        <Title>돌봄대상자 모집</Title>
+        <Title>간병사 모집</Title>
 
         <SearchContainer2>
           <Search>
@@ -193,14 +193,16 @@ const CaregiverList = () => {
                   {displayMode === 'region' && region.length > 0
                     ? region.map((region) => (
                         <RegionLabel key={region.cd}>
-                          <input
-                            type="radio"
-                            name="region"
-                            value={region.cd}
-                            checked={selectedCd === region.cd}
-                            onChange={() => handleRegionChange(region)}
-                          />
-                          {region.addrName}
+                          <RadioWrapper>
+                            <input
+                              type="radio"
+                              name="region"
+                              value={region.cd}
+                              checked={selectedCd === region.cd}
+                              onChange={() => handleRegionChange(region)}
+                            />
+                            <p> {region.addrName}</p>
+                          </RadioWrapper>
                         </RegionLabel>
                       ))
                     : displayMode === 'region' && <p>로딩중...</p>}
@@ -211,37 +213,38 @@ const CaregiverList = () => {
                   {displayMode === 'sgg' && sgg.length > 0
                     ? sgg.map((sgg) => (
                         <RegionLabel key={sgg.cd}>
-                          <input
-                            type="radio"
-                            name="sgg"
-                            value={sgg}
-                            // checked={}
-                            onChange={() => handleSggChange(sgg)}
-                          />
-                          {sgg.addrName}
+                          <RadioWrapper>
+                            <input
+                              type="radio"
+                              name="sgg"
+                              value={sgg}
+                              // checked={}
+                              onChange={() => handleSggChange(sgg)}
+                            />
+                            <p>{sgg.addrName}</p>
+                          </RadioWrapper>
                         </RegionLabel>
                       ))
                     : displayMode === 'sgg' &&
                       selectedRegion && <p>{selectedRegion.addrName}에 해당하는 시군구가 없습니다.</p>}
                 </RegionDiv>
               </Item>
-              <Item>
-                <RegionBtn onClick={handleGetRegionClick}>지역 초기화</RegionBtn>
-                {selectedRegion && <p>지역 :{selectedSgg ? selectedSgg.fullAddr : selectedRegion.fullAddr}</p>}
-              </Item>
-
               <SearchSelect>
-                <Items>
-                  <Item>
+                <div>
+                  <RegionBtn onClick={handleGetRegionClick}>지역 초기화</RegionBtn>
+                  {selectedRegion && <p>지역 :{selectedSgg ? selectedSgg.fullAddr : selectedRegion.fullAddr}</p>}
+                </div>
+                <div>
+                  <div>
                     <SearchTitle>근무유형: </SearchTitle>
                     <SelectBox name="home" value={data.home} onChange={dataInfo}>
                       <option value="">전체</option>
                       <option value="Y">입주</option>
                       <option value="N">출퇴근</option>
                     </SelectBox>
-                  </Item>
-                  <Item>
-                    <SearchTitle>최대 시급: </SearchTitle>
+                  </div>
+                  <div>
+                    <SearchTitle>최대 시급:</SearchTitle>
                     <ACCOUNT
                       name="account"
                       type="number"
@@ -251,46 +254,46 @@ const CaregiverList = () => {
                       value={data.account}
                       onChange={dataInfo}
                     />
-                  </Item>
-                </Items>
-                <RadioGroup2>
-                  <SearchTitle>성별:</SearchTitle>
-                  <RadioWrapper>
-                    {/* checked prop 전달 */}
-                    <input
-                      type="radio"
-                      id="male"
-                      name="patGender"
-                      value="M"
-                      checked={data.patGender === 'M'}
-                      onChange={dataInfo}
-                    />
-                    <Label htmlFor="male">남성</Label>
-                  </RadioWrapper>
-                  <RadioWrapper>
-                    {/* checked prop 전달 */}
-                    <input
-                      type="radio"
-                      id="female"
-                      name="patGender"
-                      value="F"
-                      checked={data.patGender === 'F'}
-                      onChange={dataInfo}
-                    />
-                    <Label htmlFor="female">여성</Label>
-                  </RadioWrapper>
-                  <RadioWrapper>
-                    <input
-                      type="radio"
-                      id="anyGender"
-                      name="patGender"
-                      value="" // 성별 무관을 위해 빈 문자열로 설정
-                      checked={data.patGender === ''}
-                      onChange={dataInfo}
-                    />
-                    <Label2 htmlFor="anyGender">성별 무관</Label2>
-                  </RadioWrapper>
-                </RadioGroup2>
+                  </div>
+                  <div>
+                    <SearchTitle>성별:</SearchTitle>
+                    <RadioWrapper>
+                      {/* checked prop 전달 */}
+                      <input
+                        type="radio"
+                        id="male"
+                        name="patGender"
+                        value="M"
+                        checked={data.patGender === 'M'}
+                        onChange={dataInfo}
+                      />
+                      <Label htmlFor="male">남성</Label>
+                    </RadioWrapper>
+                    <RadioWrapper>
+                      {/* checked prop 전달 */}
+                      <input
+                        type="radio"
+                        id="female"
+                        name="patGender"
+                        value="F"
+                        checked={data.patGender === 'F'}
+                        onChange={dataInfo}
+                      />
+                      <Label htmlFor="female">여성</Label>
+                    </RadioWrapper>
+                    <RadioWrapper>
+                      <input
+                        type="radio"
+                        id="anyGender"
+                        name="patGender"
+                        value="" // 성별 무관을 위해 빈 문자열로 설정
+                        checked={data.patGender === ''}
+                        onChange={dataInfo}
+                      />
+                      <Label2 htmlFor="anyGender">성별 무관</Label2>
+                    </RadioWrapper>
+                  </div>
+                </div>
               </SearchSelect>
             </Detail>
           )}
@@ -346,14 +349,13 @@ const CaregiverList = () => {
                 <USERINFO1>
                   {resume.hasLicense && <GrayText>자격증 보유</GrayText>}
                   <AccommodationInfo>
-                  <GrayText>근무유형 </GrayText>
+                    <GrayText>근무유형 </GrayText>
                     {resume.careStatus ? (
                       <CareStatusTag>입주형 </CareStatusTag>
                     ) : (
                       <CareStatusTag>출퇴근형</CareStatusTag>
                     )}
                   </AccommodationInfo>
-
                 </USERINFO1>
               </CardFooter>
             </CaregiverListCard>
@@ -402,54 +404,110 @@ const DetailBtn = styled.p`
 `;
 
 const Detail = styled.div`
-  margin-top: 30px;
+  margin-top: 20px;
   user-select: none;
   display: ${({ $visible }) => ($visible ? 'flex' : 'none')};
   flex-direction: column;
-  gap: 10px;
 `;
 
 const Item = styled.div`
-  display: flex;
-  align-items: center;
+  margin: auto;
 `;
 
 const RegionDiv = styled.div`
   display: flex;
   flex-wrap: wrap;
+<<<<<<< HEAD
+  justify-content: center;
+=======
+  align-items: center;
+>>>>>>> c20c21ed558b4b32187e3cb0167b23c76d238bc2
 `;
 
 const RegionLabel = styled.label`
   display: flex;
   align-items: center;
   margin-bottom: 10px;
-  gap: 10px;
+  gap: 4px;
   padding-left: 10px;
+
+  // 'checked' prop을 받아서 스타일을 동적으로 적용합니다.
+  input[type='radio'] {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    outline: none;
+    cursor: pointer;
+    position: relative;
+    transition: all 0.2s ease-in-out;
+    background-color: white;
+    // RadioWrapper에서 전달받은 checked prop 사용
+    border: 1px solid ${({ theme, checked }) => (checked ? theme.colors.primary : theme.colors.gray[4])};
+  }
+
+  input[type='radio']::before {
+    content: '';
+    display: block;
+    width: 10px;
+    height: 10px;
+    background-color: ${({ theme }) => theme.colors.primary};
+    border-radius: 50%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0);
+    transition: transform 0.2s ease-in-out;
+  }
+
+  input[type='radio']:checked::before {
+    transform: translate(-50%, -50%) scale(1);
+  }
+
+  label {
+    font-size: ${({ theme }) => theme.fontSizes.base};
+    color: ${({ theme }) => theme.colors.gray[1]};
+    cursor: pointer;
+  }
 `;
 
 const RegionBtn = styled.button`
-  border: 1px solid ${({ theme }) => theme.colors.gray[3]};
   border-radius: ${({ theme }) => theme.borderRadius.full};
   background-color: ${({ theme }) => theme.colors.secondary};
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* 기본 그림자 */
-  margin: 0 100px 10px 0;
-
+  color: ${({ theme }) => theme.colors.white};
+  font-weight: ${({ theme }) => theme.fontWeights.semibold};
+  margin: 10px;
   &:hover {
     transform: scale(0.95); /* 5% 확대 */
   }
 `;
 
 const SearchSelect = styled.div`
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  grid-auto-rows: min-content;
-  row-gap: 20px;
+  margin: auto;
+  > div {
+    width: auto;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    > div {
+      display: grid;
+      margin-top: 10px;
+    }
+    > div:first-of-type,
+    div:nth-of-type(2) {
+      grid-template-columns: 90px 150px;
+    }
+    > div:nth-of-type(3) {
+      width: auto;
+      grid-template-columns: 90px repeat(2, 70px) 100px;
+    }
+  }
 `;
 
 const SearchTitle = styled.span`
-  text-align: end;
-  margin: 0 20px 0 5px;
   width: 80px;
+  text-align: right;
   font-weight: ${({ theme }) => theme.fontWeights.bold};
   color: ${({ theme }) => theme.colors.gray[1]};
 `;
@@ -484,18 +542,10 @@ const ACCOUNT = styled.input`
   font-size: ${({ theme }) => theme.spacing[4]};
 `;
 
-const RadioGroup2 = styled.div`
-  display: flex;
-  grid-column: span 1;
-  align-items: center;
-  gap: ${({ theme }) => theme.spacing[4]};
-`;
-
 const RadioWrapper = styled.div`
   display: flex;
-  gap: 0;
   align-items: center;
-  /* gap: ${({ theme }) => theme.spacing[3]}; */
+  gap: ${({ theme }) => theme.spacing[2]};
 
   // 'checked' prop을 받아서 스타일을 동적으로 적용합니다.
   input[type='radio'] {
@@ -539,13 +589,12 @@ const RadioWrapper = styled.div`
 `;
 
 const Label = styled.label`
-  padding-left: 10px;
   width: 40px;
   text-align: center;
 `;
 
 const Label2 = styled.label`
-  width: 70px;
+  width: 80px;
   text-align: center;
 `;
 
@@ -568,12 +617,20 @@ const CaregiverListCard = styled(Link)`
   border-radius: ${({ theme }) => theme.borderRadius.md};
   box-shadow: ${({ theme }) => theme.shadows.md};
   overflow: hidden; /* 내부 요소가 넘치지 않도록 */
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+
+  &:hover {
+    transform: translateY(-6px);
+    box-shadow: ${({ theme }) => theme.shadows.md};
+  }
 `;
 
 // --- 상단 영역 스타일 ---
 const CardHeader = styled.div`
   display: flex;
-  
+
   padding: ${({ theme }) => theme.spacing[4]}; /* 작은 화면용 패딩 */
   align-items: center; /* 세로 중앙 정렬 */
   border-bottom: 1px solid ${({ theme }) => theme.colors.gray[200]};
@@ -645,14 +702,13 @@ const UserAge = styled.span`
 const CareContent = styled.span`
   text-align: center; /* 작은 화면에서 중앙 정렬 */
   display: none;
-  
+
   ${media.md`
   display: block;
   color: ${({ theme }) => theme.colors.black1}; */
     font-size: ${({ theme }) => theme.fontSizes.lg}; /* sm 이상 폰트 크기 */
     text-align: left; /* sm 이상에서 왼쪽 정렬 */
   `}
- 
 `;
 
 // --- 하단 영역 스타일 ---
@@ -682,8 +738,7 @@ const LocationWage = styled.div`
   `}
 `;
 
-const LocationText = styled.span`
-`;
+const LocationText = styled.span``;
 
 const GrayText = styled.span`
   font-size: ${({ theme }) => theme.fontSizes.sm};
@@ -736,7 +791,6 @@ const AccuontText = styled.span`
   `}
 `;
 
-
 const AccommodationInfo = styled.span`
   font-size: ${({ theme }) => theme.fontSizes.sm}; /* 작은 화면 폰트 크기 */
   font-weight: ${({ theme }) => theme.fontWeights.semibold};
@@ -750,7 +804,7 @@ const AccommodationInfo = styled.span`
 
 const USERINFO1 = styled.div`
   display: flex;
-  flex-direction : column;
+  flex-direction: column;
   justify-content: center;
   align-items: flex-start;
   gap: ${({ theme }) => theme.spacing[2]};
@@ -760,7 +814,6 @@ const USERINFO1 = styled.div`
     flex-direction : row;
     gap: ${({ theme }) => theme.spacing[8]};
   `}
-
 `;
 
 const Divder = styled.div`

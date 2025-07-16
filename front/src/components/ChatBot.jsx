@@ -1,6 +1,8 @@
 // ChatBot.jsx
 import React, { useState } from 'react';
 import styled from 'styled-components';
+import { SITE_CONFIG } from '../config/site';
+import { TbMessageChatbot } from 'react-icons/tb';
 
 const ChatBot = () => {
   const [isOpen, setIsOpen] = useState();
@@ -46,12 +48,22 @@ const ChatBot = () => {
   };
   return (
     <>
-      <ToggleButton onClick={() => setIsOpen(!isOpen)}>{isOpen ? '닫기' : '열기'}</ToggleButton>
+      <ToggleButton onClick={() => setIsOpen(true)}></ToggleButton>
 
       <ChatBotContainer isOpen={isOpen}>
         <ChatMain>
+          <HeadDiv>
+            <LogDiv>
+              <LogoImg src="/logo.png" alt="로고" />
+              <p>{SITE_CONFIG.name}</p>
+            </LogDiv>
+
+            <button onClick={() => setIsOpen(false)}>
+              <img src="/public/Union.png" alt="" />
+            </button>
+          </HeadDiv>
+
           <MessageBox>
-            <LogoImg src="/logo.png" alt="로고" />
             <Content>
               {/* 답변과 에러 메시지 표시 */}
               {answer && <ResultBox dangerouslySetInnerHTML={{ __html: answer }} />}
@@ -77,6 +89,7 @@ const ChatBot = () => {
 export default ChatBot;
 
 // --- styled components ---
+
 const ChatBotContainer = styled.div`
   position: fixed;
   bottom: 40px;
@@ -124,6 +137,7 @@ const MessageBox = styled.div`
   background: #f8f9fa;
   background-color: ${({ theme }) => theme.colors.gray[6]};
 `;
+
 const Wrap = styled.div`
   overflow-y: auto;
 `;
@@ -172,6 +186,23 @@ const SendButton = styled.button`
   }
 `;
 
+const HeadDiv = styled.div`
+  display: flex;
+  justify-content: space-between;
+`;
+
+const LogDiv = styled.div`
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  align-items: center;
+  p {
+    margin-left: 10px;
+    font-size: ${({ theme }) => theme.fontSizes.xl};
+    font-weight: ${({ theme }) => theme.fontWeights.bold};
+    color: ${({ theme }) => theme.colors.primary};
+  }
+`;
 const LogoImg = styled.img`
   width: 40px;
   margin-bottom: ${({ theme }) => theme.spacing[3]};

@@ -117,14 +117,6 @@ const MatchCareGiverCard = ({
                 )}
               </CargiverButtonDiv>
             </CargiverWrap>
-
-            <PageWrapper>
-              <Paging
-                currentPage={endedCurrentPage}
-                totalPage={endedTotalPage}
-                chagneCurrentPage={handleEndedPageChange}
-              />
-            </PageWrapper>
           </>
         ))
       ) : selectedPatNo ? (
@@ -132,6 +124,9 @@ const MatchCareGiverCard = ({
       ) : (
         <EmptyMessage>환자를 선택해주세요</EmptyMessage>
       )}
+      <PageWrapper>
+        <Paging currentPage={endedCurrentPage} totalPage={endedTotalPage} chagneCurrentPage={handleEndedPageChange} />
+      </PageWrapper>
     </Div>
   );
 };

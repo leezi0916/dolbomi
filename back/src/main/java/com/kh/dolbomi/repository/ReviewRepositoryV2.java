@@ -19,4 +19,7 @@ public interface ReviewRepositoryV2 extends JpaRepository<Review, Long> {
                 )
             """)
     Double findAverageScoreByCaregiverNo(@Param("caregiverNo") Long caregiverNo);
+
+    // 번호로 리뷰 찾아오기
+    Review findByReviewNo(Long reviewNo);
 }
