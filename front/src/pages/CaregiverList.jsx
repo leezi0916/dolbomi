@@ -193,14 +193,16 @@ const CaregiverList = () => {
                   {displayMode === 'region' && region.length > 0
                     ? region.map((region) => (
                         <RegionLabel key={region.cd}>
-                          <input
-                            type="radio"
-                            name="region"
-                            value={region.cd}
-                            checked={selectedCd === region.cd}
-                            onChange={() => handleRegionChange(region)}
-                          />
-                          {region.addrName}
+                          <RadioWrapper>
+                            <input
+                              type="radio"
+                              name="region"
+                              value={region.cd}
+                              checked={selectedCd === region.cd}
+                              onChange={() => handleRegionChange(region)}
+                            />
+                            <p> {region.addrName}</p>
+                          </RadioWrapper>
                         </RegionLabel>
                       ))
                     : displayMode === 'region' && <p>로딩중...</p>}
@@ -211,14 +213,16 @@ const CaregiverList = () => {
                   {displayMode === 'sgg' && sgg.length > 0
                     ? sgg.map((sgg) => (
                         <RegionLabel key={sgg.cd}>
-                          <input
-                            type="radio"
-                            name="sgg"
-                            value={sgg}
-                            // checked={}
-                            onChange={() => handleSggChange(sgg)}
-                          />
-                          {sgg.addrName}
+                          <RadioWrapper>
+                            <input
+                              type="radio"
+                              name="sgg"
+                              value={sgg}
+                              // checked={}
+                              onChange={() => handleSggChange(sgg)}
+                            />
+                            <p>{sgg.addrName}</p>
+                          </RadioWrapper>
                         </RegionLabel>
                       ))
                     : displayMode === 'sgg' &&
@@ -346,14 +350,13 @@ const CaregiverList = () => {
                 <USERINFO1>
                   {resume.hasLicense && <GrayText>자격증 보유</GrayText>}
                   <AccommodationInfo>
-                  <GrayText>근무유형 </GrayText>
+                    <GrayText>근무유형 </GrayText>
                     {resume.careStatus ? (
                       <CareStatusTag>입주형 </CareStatusTag>
                     ) : (
                       <CareStatusTag>출퇴근형</CareStatusTag>
                     )}
                   </AccommodationInfo>
-
                 </USERINFO1>
               </CardFooter>
             </CaregiverListCard>
@@ -417,6 +420,7 @@ const Item = styled.div`
 const RegionDiv = styled.div`
   display: flex;
   flex-wrap: wrap;
+  align-items: center;
 `;
 
 const RegionLabel = styled.label`
@@ -493,9 +497,8 @@ const RadioGroup2 = styled.div`
 
 const RadioWrapper = styled.div`
   display: flex;
-  gap: 0;
   align-items: center;
-  /* gap: ${({ theme }) => theme.spacing[3]}; */
+  gap: ${({ theme }) => theme.spacing[2]};
 
   // 'checked' prop을 받아서 스타일을 동적으로 적용합니다.
   input[type='radio'] {
@@ -568,12 +571,20 @@ const CaregiverListCard = styled(Link)`
   border-radius: ${({ theme }) => theme.borderRadius.md};
   box-shadow: ${({ theme }) => theme.shadows.md};
   overflow: hidden; /* 내부 요소가 넘치지 않도록 */
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+
+  &:hover {
+    transform: translateY(-6px);
+    box-shadow: ${({ theme }) => theme.shadows.md};
+  }
 `;
 
 // --- 상단 영역 스타일 ---
 const CardHeader = styled.div`
   display: flex;
-  
+
   padding: ${({ theme }) => theme.spacing[4]}; /* 작은 화면용 패딩 */
   align-items: center; /* 세로 중앙 정렬 */
   border-bottom: 1px solid ${({ theme }) => theme.colors.gray[200]};
@@ -645,14 +656,13 @@ const UserAge = styled.span`
 const CareContent = styled.span`
   text-align: center; /* 작은 화면에서 중앙 정렬 */
   display: none;
-  
+
   ${media.md`
   display: block;
   color: ${({ theme }) => theme.colors.black1}; */
     font-size: ${({ theme }) => theme.fontSizes.lg}; /* sm 이상 폰트 크기 */
     text-align: left; /* sm 이상에서 왼쪽 정렬 */
   `}
- 
 `;
 
 // --- 하단 영역 스타일 ---
@@ -682,8 +692,7 @@ const LocationWage = styled.div`
   `}
 `;
 
-const LocationText = styled.span`
-`;
+const LocationText = styled.span``;
 
 const GrayText = styled.span`
   font-size: ${({ theme }) => theme.fontSizes.sm};
@@ -736,7 +745,6 @@ const AccuontText = styled.span`
   `}
 `;
 
-
 const AccommodationInfo = styled.span`
   font-size: ${({ theme }) => theme.fontSizes.sm}; /* 작은 화면 폰트 크기 */
   font-weight: ${({ theme }) => theme.fontWeights.semibold};
@@ -750,7 +758,7 @@ const AccommodationInfo = styled.span`
 
 const USERINFO1 = styled.div`
   display: flex;
-  flex-direction : column;
+  flex-direction: column;
   justify-content: center;
   align-items: flex-start;
   gap: ${({ theme }) => theme.spacing[2]};
@@ -760,7 +768,6 @@ const USERINFO1 = styled.div`
     flex-direction : row;
     gap: ${({ theme }) => theme.spacing[8]};
   `}
-
 `;
 
 const Divder = styled.div`

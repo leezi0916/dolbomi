@@ -69,7 +69,7 @@ const ReceivedReviews = () => {
       <TopSection>
         <LeftTitle>받은 리뷰</LeftTitle>
         <RightSummary>
-          <strong>{user.userName}님</strong>
+          <strong>{user.userName} 님</strong>
           <ScoreText>
             평점 <AverageScore>{averageScore}</AverageScore>
             <span>({reviews.receivedReview?.content?.length})</span>

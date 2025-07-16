@@ -1,9 +1,10 @@
 import { SITE_CONFIG } from '../config/site';
 import React from 'react';
 import styled from 'styled-components';
-import closeIcon from '../assets/icons/icon_닫기.png';
+import closeIcon from '/Union.png';
 import { Input, InputGroup } from '../styles/Auth.styles';
 import { usePasswordForm } from '../hooks/usePasswordForm';
+import { ModalCloseButton } from '../styles/common/Modal';
 
 const PasswordChange = ({ userNo, onClose, onSuccess }) => {
   const { register, handleSubmit, errors, isSubmitting, onSubmit } = usePasswordForm(userNo, onSuccess);
@@ -11,9 +12,9 @@ const PasswordChange = ({ userNo, onClose, onSuccess }) => {
   return (
     <ModalOverlay>
       <ModalContainer>
-        <CloseButton onClick={onClose}>
+        <ModalCloseButton onClick={onClose}>
           <img src={closeIcon} alt="닫기" />
-        </CloseButton>
+        </ModalCloseButton>
         <form onSubmit={handleSubmit(onSubmit)}>
           <Title>비밀번호 변경</Title>
           <TextGroup>
