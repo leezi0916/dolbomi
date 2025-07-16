@@ -359,7 +359,7 @@ const HireDetail = () => {
             <SubmitButton1 type="button" disabled $disabled>
               신청취소(모집마감)
             </SubmitButton1>
-          ) : applicationStatus.isMatched ? (
+          ) : applicationStatus.isMatched || applicationStatus.status === 'Y' ? (
             <SubmitButton1 type="button" disabled $disabled>
               매칭 완료
             </SubmitButton1>
