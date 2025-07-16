@@ -4,6 +4,7 @@ import Header from './Header';
 import Footer from './Footer';
 import ChatModal from './chat/ChatModal';
 import ChatHome from '../pages/chat/ChatHome';
+import ChatBot from './ChatBot';
 
 const Layout = ({ children }) => {
   // 채팅 모달의 열림/닫힘 상태를 Layout에서 관리합니다.
@@ -18,6 +19,7 @@ const Layout = ({ children }) => {
     <>
       <Header openChat={() => setIsChatOpen(true)} />
       <Content>{children}</Content>
+      <ChatBot></ChatBot>
       <Footer />
 
       {isChatOpen && (

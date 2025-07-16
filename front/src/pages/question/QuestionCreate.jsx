@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
-import { Btn, Input, Page } from '../../styles/common/Board';
-import { BoardMenu, MenuDiv, MenuLink, PageInfo, PageTitle, PageTop, Textarea } from './style/Question.styles';
+import { Btn, Input, MenuBox, Page } from '../../styles/common/Board';
 import styled from 'styled-components';
 import { toast } from 'react-toastify';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { commuService } from '../../api/community';
 import useUserStore from '../../store/userStore';
@@ -80,56 +79,51 @@ const QuestionCreate = () => {
 
   return (
     <Page>
-      <PageInfo>
-        <PageTop>
-          <PageTitle> 1:1 문의사항 </PageTitle>
-          <BoardMenu>
-            <MenuLink to="/question/full">전체</MenuLink>
-            <MenuLink to="/question/history">문의내역</MenuLink>
-            <MenuDiv>문의하기</MenuDiv>
-          </BoardMenu>
-        </PageTop>
-        <form onSubmit={handleSubmit(onSubmit)}>
-          <PageBody>
-            <div>
-              <div>유형</div>
-              <select {...register('category')}>
-                <option value="T">기술적 문제</option>
-                <option value="S">서비스 관련</option>
-                <option value="E">기타</option>
-              </select>
-            </div>
-
-            <div>
-              <div>제목</div>
-              <Input type="text" placeholder="제목을 입력하세요" {...register('boardTitle')} disabled={isSubmitting} />
-            </div>
-            <div>
-              <div>내용</div>
-              <Textarea as="textarea" {...register('boardContent')} disabled={isSubmitting} />
-            </div>
-            <div>
-              <div>파일 첨부</div>
-              <input type="file" multiple onChange={handleFileChange} />
-            </div>
-            <div>
-              <div></div>
-              <ul style={{ display: 'flex', flexDirection: 'column' }}>
-                {files.map((file, index) => (
-                  <li key={index} style={{ marginRight: 'auto' }}>
-                    {file.name}
-                  </li> // 파일 이름 출력
-                ))}
-              </ul>
-            </div>
-            <div>
-              <div></div>
-              <Button type="button">취소</Button>
-              <Button type="submit">등록</Button>
-            </div>
-          </PageBody>
-        </form>
-      </PageInfo>
+      <MenuBox>
+        <p> 1:1 문의사항 </p>
+        <div>
+          <Link to="/question/full">전체</Link>
+          <Link to="/question/history">문의내역</Link>
+          <div>문의하기</div>
+        </div>
+      </MenuBox>
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <PageBody>
+          <div>
+            <div>유형</div>
+            <select {...register('category')}>
+              <option value="T">기술적 문제</option>
+              <option value="S">서비스 관련</option>
+              <option value="E">기타</option>
+            </select>
+          </div>
+          <div>
+            <div>제목</div>
+            <Input type="text" placeholder="제목을 입력하세요" {...register('boardTitle')} disabled={isSubmitting} />
+          </div>
+          <div>
+            <div>내용</div>
+            <Textarea as="textarea" {...register('boardContent')} disabled={isSubmitting} />
+          </div>
+          <div>
+            <div>파일 첨부</div>
+            <input type="file" multiple onChange={handleFileChange} />
+          </div>
+          <div>
+            <div></div>
+            <ul>
+              {files.map((file, index) => (
+                <li key={index}>{file.name}</li> // 파일 이름 출력
+              ))}
+            </ul>
+          </div>
+          <div>
+            <div></div>
+            <Button type="button">취소</Button>
+            <Button type="submit">등록</Button>
+          </div>
+        </PageBody>
+      </form>
     </Page>
   );
 };
@@ -141,15 +135,30 @@ const PageBody = styled.div`
     display: flex;
     flex-direction: row;
     margin-bottom: 10px;
+
     > div {
       min-width: 80px;
       padding-right: 10px;
+      font-weight: ${({ theme }) => theme.fontWeights.semibold};
+    }
+    > select {
+      border-radius: ${({ theme }) => theme.borderRadius.md};
+      padding: 5px;
+    }
+    > ul {
+      display: flex;
+      flex-direction: column;
     }
   }
+`;
+export const Textarea = styled(Input)`
+  width: 100%;
+  min-height: 200px;
+  resize: none;
 `;
 
 const Button = styled(Btn)`
   margin-right: 10px;
-  padding: 10px 20px;
+  padding: 8px 20px;
 `;
 export default QuestionCreate;

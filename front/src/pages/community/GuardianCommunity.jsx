@@ -3,23 +3,10 @@ import useUserStore from '../../store/userStore';
 import { commuService } from '../../api/community';
 import { toast } from 'react-toastify';
 import { ClipLoader } from 'react-spinners';
-import { LinkBtn, NullBox, Page } from '../../styles/common/Board';
-import {
-  BoardItem,
-  BoardItemTop,
-  BoardMenu,
-  BoardTop,
-  BorderDiv,
-  Drop,
-  Form,
-  Input,
-  Left,
-  NowBoard,
-  PageInfo,
-  Right,
-  SearchBtn,
-} from './style/CommunityList.styles';
+import { LinkBtn, MenuBox, NullBox, Page, SearchBoard } from '../../styles/common/Board';
 import Paging from '../../components/Paging';
+import { Link } from 'react-router-dom';
+import { BoardBox } from './style/Community.styles';
 
 const GuardianCommunity = () => {
   const userNo = useUserStore((state) => state.user?.userNo);
@@ -87,89 +74,83 @@ const GuardianCommunity = () => {
   if (totalCount == 0) {
     return (
       <Page>
-        <PageInfo>
-          <BoardMenu>
-            <NowBoard> 보호자 게시판</NowBoard>
-          </BoardMenu>
-          <BoardTop>
-            <Left>총 0건</Left>
-            <Form onSubmit={handleSubmit}>
-              <Drop value={tempSortOption} onChange={(e) => setSortOption(e.target.value)}>
-                <option value="">작성일</option>
-                <option value="count">조회순</option>
-              </Drop>
-              <Input
-                type="text"
-                placeholder="검색어 입력"
-                value={tempkeyword}
-                onChange={(e) => setTempKeyword(e.target.value)}
-              />
-              <SearchBtn type="submit">검색</SearchBtn>
-            </Form>
-          </BoardTop>
-          <BoardItemTop>
-            <div>No</div>
-            <div style={{ flex: '3' }}>제목</div>
-            <div>작성자</div>
-            <div style={{ flex: '2' }}>작성 일자</div>
-            <div>조회수</div>
-          </BoardItemTop>
-          <NullBox>
-            <div style={{ marginBottom: '10px' }}>게시글이 없습니다.</div>
-            {userNo && (
-              <LinkBtn style={{ margin: 'auto' }} to="/community/create/G">
-                글쓰기
-              </LinkBtn>
-            )}
-          </NullBox>
-          <BorderDiv></BorderDiv>
-          <Paging totalPage={totalPage} currentPage={currentPage} chagneCurrentPage={chagneCurrentPage} />
-        </PageInfo>
-      </Page>
-    );
-  }
-  return (
-    <Page>
-      <PageInfo>
-        <BoardMenu>
-          <NowBoard> 보호자 게시판</NowBoard>
-        </BoardMenu>
-        <BoardTop>
-          <Left>총 {totalCount}건</Left>
-          <Form onSubmit={handleSubmit}>
-            <Drop value={tempSortOption} onChange={(e) => setTempSortOption(e.target.value)}>
+        <MenuBox>
+          <p> 보호자 게시판</p>
+        </MenuBox>
+        <SearchBoard>
+          <div>총 0건</div>
+          <form onSubmit={handleSubmit}>
+            <select value={tempSortOption} onChange={(e) => setSortOption(e.target.value)}>
               <option value="">작성일</option>
               <option value="count">조회순</option>
-            </Drop>
-            <Input
+            </select>
+            <input
               type="text"
               placeholder="검색어 입력"
               value={tempkeyword}
               onChange={(e) => setTempKeyword(e.target.value)}
             />
-            <SearchBtn type="submit">검색</SearchBtn>
-            {userNo && <LinkBtn to="/community/create/G">글쓰기</LinkBtn>}
-          </Form>
-        </BoardTop>
-        <BoardItemTop>
-          <div>No</div>
-          <div style={{ flex: '3' }}>제목</div>
-          <div>작성자</div>
-          <div style={{ flex: '2' }}>작성 일자</div>
-          <div>조회수</div>
-        </BoardItemTop>
-        {data.map((community) => (
-          <BoardItem key={community.boardNo} to={`/community/detail/${community.boardNo}`}>
-            <div>{community.boardNo}</div>
-            <div style={{ flex: '3' }}>{community.boardTitle}</div>
-            <div>{community.userName}</div>
-            <div style={{ flex: '2' }}>{community.createDate.slice(0, 10)}</div>
-            <div>{community.count}</div>
-          </BoardItem>
-        ))}
-        <BorderDiv></BorderDiv>
+            <button type="submit">검색</button>
+          </form>
+        </SearchBoard>
+        <BoardBox>
+          <div>
+            <div>No</div>
+            <div>제목</div>
+            <div>작성자</div>
+            <div>작성 일자</div>
+            <div>조회수</div>
+          </div>
+        </BoardBox>
+        <NullBox>
+          <div>게시글이 없습니다</div>
+          {userNo && <LinkBtn to="/community/create/G">글쓰기</LinkBtn>}
+        </NullBox>
         <Paging totalPage={totalPage} currentPage={currentPage} chagneCurrentPage={chagneCurrentPage} />
-      </PageInfo>
+      </Page>
+    );
+  }
+  return (
+    <Page>
+      <MenuBox>
+        <p> 보호자 게시판</p>
+      </MenuBox>
+      <SearchBoard>
+        <div>총 {totalCount}건</div>
+        <form onSubmit={handleSubmit}>
+          <select value={tempSortOption} onChange={(e) => setTempSortOption(e.target.value)}>
+            <option value="">작성일</option>
+            <option value="count">조회순</option>
+          </select>
+          <input
+            type="text"
+            placeholder="검색어 입력"
+            value={tempkeyword}
+            onChange={(e) => setTempKeyword(e.target.value)}
+          />
+          <button type="submit">검색</button>
+          {userNo && <LinkBtn to="/community/create/G">글쓰기</LinkBtn>}
+        </form>
+      </SearchBoard>
+      <BoardBox>
+        <div>
+          <div>No</div>
+          <div>제목</div>
+          <div>작성자</div>
+          <div>작성 일자</div>
+          <div>조회수</div>
+        </div>
+        {data.map((community) => (
+          <Link key={community.boardNo} to={`/community/detail/${community.boardNo}`}>
+            <div>{community.boardNo}</div>
+            <div>{community.boardTitle}</div>
+            <div>{community.userName}</div>
+            <div>{community.createDate.slice(0, 10)}</div>
+            <div>{community.count}</div>
+          </Link>
+        ))}
+      </BoardBox>
+      <Paging totalPage={totalPage} currentPage={currentPage} chagneCurrentPage={chagneCurrentPage} />
     </Page>
   );
 };

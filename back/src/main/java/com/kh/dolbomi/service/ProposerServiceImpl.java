@@ -23,7 +23,9 @@ import com.kh.dolbomi.repository.ProposerRepositoryV2;
 import com.kh.dolbomi.repository.ResumeRepositoryV2;
 import com.kh.dolbomi.repository.UserRepositoryV2;
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -194,16 +196,20 @@ public class ProposerServiceImpl implements ProposerService {
     }
 
     @Override
-    public Long getHiringOwnerUserNo(Long hiringNo) {
+    public Map<String, Object> getHiringOwnerInfo(Long hiringNo) {
         Hiring hiring = hiringRepositoryV2.findById(hiringNo)
                 .orElseThrow(() -> new HiringNotFoundException("구인글이 존재하지 않습니다."));
 
-        User owner = hiring.getUser(); // 작성자
+        User owner = hiring.getUser();
         if (owner == null) {
             throw new UserNotFoundException("구인글 작성자가 존재하지 않습니다.");
         }
 
-        return owner.getUserNo();
+        Map<String, Object> result = new HashMap<>();
+        result.put("ownerUserNo", owner.getUserNo());
+        result.put("hiringStatus", hiring.getHiringStatus());
+
+        return result;
     }
 
 }

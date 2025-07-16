@@ -56,12 +56,20 @@ import FindPassword from './pages/find_password/FindPassword';
 import ResetPassword from './pages/find_password/ResetPassword';
 import UpdateCommuBoardForm from './pages/community/UpdateCommuBoardForm';
 import PatientCardGroup from './components/PatientCardGroup';
+import AiModal from './components/AiModal';
 import MatchMainPage from './pages/MatchMainPage';
+
+import ChatHome from './pages/chat/ChatHome';
+import AiChat from './components/chat/AiChat';
+
+import usePreventWheelOnNumberInput from './hooks/usePreventWheelOnNumberInput';
 
 function AppRoutes() {
   const navigate = useNavigate();
   const location = useLocation();
 
+  //input type = number인 기본이벤트인 onWheel를 막는 훅입니다.
+  usePreventWheelOnNumberInput();
   // useEffect(() => {
   //   if (location.pathname === '/') {
   //     navigate('/guardian');
@@ -128,6 +136,9 @@ function AppRoutes() {
 
           {/* 테스트용 임시 */}
           <Route path="/file" element={<FileUpload />} />
+
+          <Route path="/test" element={<AiModal />}></Route>
+          <Route path="/chatbot" element={<AiChat />}></Route>
         </Routes>
       </Layout>
     </>

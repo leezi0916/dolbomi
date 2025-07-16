@@ -56,6 +56,7 @@ public class SecurityConfig {
                                 "/auth/email/send-code",
                                 "/auth/email/send-reset-link",
                                 "/auth/email/verify",
+                                "/rag/**",
                                 "/"
 
                         ).permitAll()

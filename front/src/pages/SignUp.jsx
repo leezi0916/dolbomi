@@ -17,6 +17,8 @@ import { useSignUpForm } from '../hooks/useSignUpForm';
 import { useLocation, useNavigate } from 'react-router-dom';
 import PostcodeSearch from '../components/PostcodeSearch';
 import Timer from '../components/Timer';
+import { userService } from '../api/users';
+import { toast } from 'react-toastify';
 // import { userService } from '../api/users';
 // import { toast } from 'react-toastify';
 
@@ -29,6 +31,25 @@ const SignUp = () => {
   const verifiedFromSocial = searchParams.get('verified') === 'true'; // "true"일때만 true
   const socialId = searchParams.get('openId');
   const isSocialSignup = !!socialType; // 소셜이면 true
+
+  // 소셜 회원가입시에 이메일 중복검사 -> 중복시에 이미 가입된 아이디 출력 및 로그인 페이지 이동
+  useEffect(() => {
+    if (email !== null) {
+      const checkId = async () => {
+        try {
+          const response = await userService.checkUserId(email);
+          if (response.available === false) {
+            toast.error('이미 해당 이메일로 가입된 아이디가 있습니다.');
+            navigate('/login');
+          }
+        } catch (error) {
+          toast.error(error.message);
+        }
+      };
+
+      checkId();
+    }
+  }, []);
 
   const [addressData, setAddressData] = useState({
     zonecode: '',
