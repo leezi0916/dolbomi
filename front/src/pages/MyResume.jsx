@@ -13,7 +13,7 @@ import { jobSeekingService } from '../api/jobSeeking';
 import { useState, useEffect } from 'react';
 import { toast } from 'react-toastify';
 import useUserStore from '../store/userStore';
-import {extractRegionFromEnd} from '../utils/formatData';
+import { extractRegionFromEnd } from '../utils/formatData';
 
 const MyResume = () => {
   const { user } = useUserStore();
@@ -26,7 +26,7 @@ const MyResume = () => {
   useEffect(() => {
     const fetchAll = async () => {
       if (!user) {
-        alert('로그인 후 이용해주세요');
+        alert('로그인이 필요한 서비스입니다.');
         navigate('/guardian');
       }
 

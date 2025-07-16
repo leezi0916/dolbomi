@@ -20,7 +20,7 @@ const AiModal = () => {
   useEffect(() => {
     const fetchAll = async () => {
       if (!user) {
-        alert('로그인 후 이용해주세요');
+        alert('로그인이 필요한 서비스입니다.');
         return;
       }
 
@@ -37,7 +37,7 @@ const AiModal = () => {
       }
     };
     fetchAll();
-  }, [user, patient]);
+  }, [patient]);
 
   const getPatient = async (patNo) => {
     // patNo가 빈값이면 patient도 초기화
@@ -141,7 +141,7 @@ const ModalOverlay = styled.div`
 
 const ModalContainer = styled.div`
   width: 800px;
-  max-height: 80vh;  
+  max-height: 80vh;
   background: white;
   border-radius: 4px;
   padding: 40px 30px;
@@ -205,7 +205,6 @@ const SelectSection = styled.div`
   justify-content: center;
   align-items: center;
   height: fit-content;
- 
 `;
 
 const SelectBox = styled.select`
