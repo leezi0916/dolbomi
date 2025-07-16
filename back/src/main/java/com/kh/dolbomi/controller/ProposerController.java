@@ -4,6 +4,7 @@ package com.kh.dolbomi.controller;
 import com.kh.dolbomi.dto.MatchingDto;
 import com.kh.dolbomi.dto.PageResponse;
 import com.kh.dolbomi.dto.ProposerDto;
+import com.kh.dolbomi.enums.StatusEnum;
 import com.kh.dolbomi.service.MatchingService;
 import com.kh.dolbomi.service.ProposerService;
 import java.util.HashMap;
@@ -41,16 +42,17 @@ public class ProposerController {
     }
 
     @GetMapping("/check")
-    public ResponseEntity<Map<String, Boolean>> checkProposerAndMatching(
+    public ResponseEntity<Map<String, Object>> checkProposerAndMatching(
             @RequestParam("hiring_no") Long hiringNo,
             @RequestParam("caregiver_no") Long caregiverNo
     ) {
-        boolean isProposed = proposerService.findProposerNo(hiringNo, caregiverNo);
+        StatusEnum.Status status = proposerService.findProposerStatus(hiringNo, caregiverNo);
         boolean isMatching = matchingService.isMatching(hiringNo, caregiverNo);
 
-        Map<String, Boolean> result = new HashMap<>();
-        result.put("isProposed", isProposed);
+        Map<String, Object> result = new HashMap<>();
+        result.put("isProposed", status != null);
         result.put("isMatched", isMatching);
+        result.put("status", status != null ? status.name() : null);
 
         return ResponseEntity.ok(result);
     }

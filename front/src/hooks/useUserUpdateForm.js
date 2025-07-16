@@ -48,8 +48,29 @@ const useUserUpdateForm = ({ profile }) => {
         return acc;
       }, {});
 
+      const normalizeDate = (date) => {
+        if (!date) return '';
+        return new Date(date).toISOString().split('T')[0]; // 'YYYY-MM-DD' 형태
+      };
+
+      const areLicensesEqual = (a = [], b = []) => {
+        if (a.length !== b.length) return false;
+        for (let i = 0; i < a.length; i++) {
+          const aItem = a[i];
+          const bItem = b[i];
+          if (
+            aItem.licenseName !== bItem.licenseName ||
+            aItem.licensePublisher !== bItem.licensePublisher ||
+            normalizeDate(aItem.licenseDate) !== normalizeDate(bItem.licenseDate)
+          ) {
+            return false;
+          }
+        }
+        return true;
+      };
+
       // 자격증도 변경되었는지 체크
-      const licensesChanged = JSON.stringify(profile.licenses || []) !== JSON.stringify(licenseList);
+      const licensesChanged = !areLicensesEqual(profile.licenses || [], licenseList);
 
       // 이미지가 선택되었는지 체크
       const imageChanged = !!profileImageFile;

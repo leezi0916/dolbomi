@@ -1,8 +1,10 @@
 package com.kh.dolbomi.repository;
 
 import com.kh.dolbomi.domain.Proposer;
+import com.kh.dolbomi.enums.StatusEnum;
 import com.kh.dolbomi.enums.StatusEnum.Status;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.NoResultException;
 import jakarta.persistence.PersistenceContext;
 import java.util.List;
 import java.util.Optional;
@@ -36,17 +38,19 @@ public class ProposerRepositoryImpl implements ProposerRepository {
     }
 
     @Override
-    public boolean existsByHiringNoAndCaregiverNo(Long hiringNo, Long caregiverNo) {
-        String jpql = "SELECT COUNT(p) FROM Proposer p " +
+    public StatusEnum.Status findStatusByHiringNoAndCaregiverNo(Long hiringNo, Long caregiverNo) {
+        String jpql = "SELECT p.status FROM Proposer p " +
                 "WHERE p.hiring.hiringNo = :hiringNo " +
-                "AND p.caregiver.userNo = :caregiverNo ";
+                "AND p.caregiver.userNo = :caregiverNo";
 
-        Long count = em.createQuery(jpql, Long.class)
-                .setParameter("hiringNo", hiringNo)
-                .setParameter("caregiverNo", caregiverNo)
-                .getSingleResult();
-
-        return count > 0;
+        try {
+            return em.createQuery(jpql, StatusEnum.Status.class)
+                    .setParameter("hiringNo", hiringNo)
+                    .setParameter("caregiverNo", caregiverNo)
+                    .getSingleResult();
+        } catch (NoResultException e) {
+            return null;
+        }
     }
 
     @Override

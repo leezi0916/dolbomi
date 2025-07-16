@@ -61,7 +61,7 @@ const PatientUpdate = () => {
   // 환자 정보 가져오기
   useEffect(() => {
     if (!user) {
-      alert('로그인 후 이용해주세요');
+      alert('로그인이 필요한 서비스입니다.');
       return;
     }
     const fetchPatient = async () => {
@@ -85,7 +85,7 @@ const PatientUpdate = () => {
       }
     };
     fetchPatient();
-  }, [user, userStatus, patNo, setValue]);
+  }, [userStatus, patNo, setValue]);
 
   // 주소가 바뀌면 form 값에도 반영
   useEffect(() => {
@@ -197,13 +197,7 @@ const PatientUpdate = () => {
               <Label htmlFor="patName">이름</Label>
               <Label htmlFor="patAge">나이</Label>
               <Input type="text" id="patName" {...register('patName')} $error={errors.patName} />
-              <Input
-                type="number"
-                id="patAge"
-        
-                {...register('patAge')}
-                $error={errors.patAge}
-              />
+              <Input type="number" id="patAge" {...register('patAge')} $error={errors.patAge} />
               {errors.patName && <ErrorMessage>{errors.patName.message}</ErrorMessage>}
               {errors.patAge && <ErrorMessage>{errors.patAge.message}</ErrorMessage>}
             </GridInerContainer>
@@ -276,24 +270,12 @@ const PatientUpdate = () => {
               <Label htmlFor="patHeight">키</Label>
               <Label htmlFor="patWeight">몸무게</Label>
               <HeightWegithDiv>
-                <Input
-                  type="number"
-                  id="patHeight"
-              
-                  {...register('patHeight')}
-                  $error={errors.patHeight}
-                />
+                <Input type="number" id="patHeight" {...register('patHeight')} $error={errors.patHeight} />
                 <span>cm</span>
               </HeightWegithDiv>
 
               <HeightWegithDiv>
-                <Input
-                  type="number"
-                  id="patWeight"
-            
-                  {...register('patWeight')}
-                  $error={errors.patWeight}
-                />
+                <Input type="number" id="patWeight" {...register('patWeight')} $error={errors.patWeight} />
                 <span>kg</span>
               </HeightWegithDiv>
 

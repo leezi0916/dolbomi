@@ -182,8 +182,7 @@ const MyProfile = () => {
 
   // 자격증 입력 관리
   const handleLicenseChange = (index, field, value) => {
-    const updatedList = [...licenseList];
-    updatedList[index][field] = value;
+    const updatedList = licenseList.map((item, i) => (i === index ? { ...item, [field]: value } : item));
     setLicenseList(updatedList);
   };
 

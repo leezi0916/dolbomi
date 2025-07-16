@@ -20,13 +20,14 @@ import {
   EndBtn,
 } from '../styles/MatchingCard';
 import { media } from '../styles/MediaQueries';
+import useUserStatusStore from '../store/userStatusStore';
 
 const MatchToPatient = () => {
   const [activeTab, setActiveTab] = useState('matching');
   const { user } = useUserStore();
   const [patientList, setPatientList] = useState();
   const navigate = useNavigate();
-
+  const { setUserStatus } = useUserStatusStore();
   // 진행중 매칭 관련
   const [caregiverList, setCareGiverList] = useState([]);
   const [userPatients, setUserpatients] = useState([]);
@@ -40,10 +41,12 @@ const MatchToPatient = () => {
   useEffect(() => {
     const fetchAll = async () => {
       if (!user) {
-        alert('로그인 후 이용해주세요');
+        alert('로그인이 필요한 서비스입니다.');
         return;
       }
+
       try {
+        setUserStatus(false);
         const patientsList = await patientService.getPatients(user.userNo);
         setUserpatients(patientsList);
       } catch (err) {
@@ -51,7 +54,7 @@ const MatchToPatient = () => {
       }
     };
     fetchAll();
-  }, [user]);
+  }, []);
 
   const handleTabChange = (tab) => {
     setActiveTab(tab);
@@ -59,11 +62,11 @@ const MatchToPatient = () => {
 
   useEffect(() => {
     fetchAll();
-  }, [user]);
+  }, []);
 
   const fetchAll = async () => {
     if (!user) {
-      alert('로그인 후 이용해주세요');
+      alert('로그인이 필요한 서비스입니다.');
       return;
     }
     try {
@@ -107,7 +110,7 @@ const MatchToPatient = () => {
     };
 
     fetchEndedMatching();
-  }, [user, activeTab, endedCurrentPage]);
+  }, [activeTab, endedCurrentPage]);
 
   const chagneCurrentPage = (value) => {
     setEndedCurrentPage(value);
