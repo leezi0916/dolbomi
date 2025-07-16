@@ -56,11 +56,10 @@ import FindPassword from './pages/find_password/FindPassword';
 import ResetPassword from './pages/find_password/ResetPassword';
 import UpdateCommuBoardForm from './pages/community/UpdateCommuBoardForm';
 import PatientCardGroup from './components/PatientCardGroup';
-<<<<<<< HEAD
 import AiModal from './components/AiModal';
-=======
 import MatchMainPage from './pages/MatchMainPage';
->>>>>>> f4b85b54495617ccfd2bae2ab20c8a81f7760af2
+import ChatHome from './pages/chat/ChatHome';
+import AiChat from './components/chat/AiChat';
 
 function AppRoutes() {
   const navigate = useNavigate();
@@ -134,7 +133,7 @@ function AppRoutes() {
           <Route path="/file" element={<FileUpload />} />
 
           <Route path="/test" element={<AiModal />}></Route>
-
+          <Route path="/chatbot" element={<AiChat />}></Route>
         </Routes>
       </Layout>
     </>

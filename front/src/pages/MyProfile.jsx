@@ -37,7 +37,6 @@ const MyProfile = () => {
     age: '',
     gender: '',
     phone: '',
-    email: '',
     address: '',
   });
 
@@ -88,7 +87,6 @@ const MyProfile = () => {
             age: userProfileData.age || '',
             gender: userProfileData.gender || '',
             phone: userProfileData.phone || '',
-            email: userProfileData.email || '',
             address: userProfileData.address || '',
           });
 
@@ -129,7 +127,6 @@ const MyProfile = () => {
         userName: 'userName',
         age: 'age',
         phone: 'phone',
-        email: 'email',
         address: 'address',
       }[id] || id; // 매핑되지 않으면 id 그대로 사용
 
