@@ -78,9 +78,22 @@ const MatchMainPage = () => {
   // 간병인보기 버튼
   const handleClick = (patNo) => {
     setSelectedPatNo(patNo);
-    getCareGiver(patNo);
-    setIsOpen(true);
-  
+    
+    if (activeTab === 'matching') {
+      getCareGiver(patNo);
+      if (isMobile) {
+        setIsOpen(true);
+      }
+      return;
+    }
+    if (activeTab === 'matched') {
+      getEndedMatchingList(patNo);
+      if (isMobile) {
+        setIsOpen(true);
+      }
+      return;
+    }
+
   };
   const handleClose = (patNo) => {
     setSelectedPatNo(patNo);
@@ -118,7 +131,6 @@ const MatchMainPage = () => {
     endedTotalPage,
   } = MatchForm();
 
-
   return (
     <>
       <HeadSection>
@@ -146,7 +158,7 @@ const MatchMainPage = () => {
         <RightLineDiv>
           {/* 공통 환자목록이 보임 */}
           {/* 특정간병인을 선택 */}
-          {isOpen || (
+          {!isOpen&& 
             <TestPatientCard
               key={userPatients.patNo}
               patient={userPatients}
@@ -158,8 +170,8 @@ const MatchMainPage = () => {
               setSelectedPatNo={setSelectedPatNo}
               isOpen={isOpen}
               isMobile={isMobile}
-            ></TestPatientCard>
-          )}
+            ></TestPatientCard>}
+        
         </RightLineDiv>
 
         {/* 모바일용 간병인 상세보기 */}

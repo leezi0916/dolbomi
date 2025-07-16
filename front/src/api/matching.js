@@ -23,6 +23,8 @@ export const matchingService = {
     try {
       const { data } = await api.get(API_ENDPOINTS.MATCHING.PATLIST(cargiverNo, status));
 
+      console.log(data)
+
       return snakeToCamel(data);
     } catch (error) {
       if (error.response) {

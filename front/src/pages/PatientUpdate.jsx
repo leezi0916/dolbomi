@@ -108,7 +108,7 @@ const PatientUpdate = () => {
         await uploadFileToS3(presignedUrl, selectedFile);
         imagePath = changeName;
       }
-      
+
       await patientService.updatePatient(patNo, {
         ...patient,
         ...data,
