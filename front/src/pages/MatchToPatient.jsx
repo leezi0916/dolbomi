@@ -239,7 +239,9 @@ const MatchToPatient = () => {
             </>
           )}
         </CardWrap>
-        <Paging currentPage={endedCurrentPage} totalPage={endedTotalPage} chagneCurrentPage={chagneCurrentPage} />
+        {activeTab === 'matched' && (
+          <Paging currentPage={endedCurrentPage} totalPage={endedTotalPage} chagneCurrentPage={chagneCurrentPage} />
+        )}
       </MatchSection>
     </>
   );
@@ -249,8 +251,7 @@ const HeadSection = styled(Section)`
   display: flex;
   height: auto;
   justify-content: space-between;
-  padding: ${({ theme }) => theme.spacing[4]} ${({ theme }) => theme.spacing[4]} ${({ theme }) => theme.spacing[2]}
-    ${({ theme }) => theme.spacing[4]};
+  padding: ${({ theme }) => theme.spacing[4]} ${({ theme }) => theme.spacing[4]} ${({ theme }) => theme.spacing[2]} ${({ theme }) => theme.spacing[4]};
   align-items: flex-start;
   ${media.md` /* 768px 이상 (태블릿/데스크톱) */
     padding: 40px 16px 10px 16px;

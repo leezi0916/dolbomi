@@ -38,6 +38,7 @@ public class RAGController {
     SpringAI의 vectorStore 인터페이스를 구현한 인메모리 벡터 스토어.
     문서를 백터로 변환하여 메모리에 저장하고, 유사도 검색을 수행
      */
+
     private VectorStore vectorStore;
 
     //    @PostConstruct : 빈이 생성되고 의존성주입이 끝난 후에 자동으로 실행되는 초기화 메서드
@@ -46,7 +47,7 @@ public class RAGController {
 
         try {
             // pdf문서를 백터데이터베이스에 임베딩
-            PagePdfDocumentReader pdfReader = new PagePdfDocumentReader(new ClassPathResource("hotel_guide.pdf"));
+            PagePdfDocumentReader pdfReader = new PagePdfDocumentReader(new ClassPathResource("dolbomi_guide.pdf"));
             List<Document> documents = pdfReader.get();
             this.vectorStore = SimpleVectorStore.builder(embeddingModel).build();
             vectorStore.add(documents);
@@ -98,7 +99,7 @@ public class RAGController {
                     문서에 없는 내용은 '해당정보는 1:1문의에 문의 부탁드립니다'라고 답변해줘.
                     \n
                     [문서내용]
-                    
+                                        
                     """ + context + "\n\n[질문]\n" + question;
 
             String answer = chatClient.prompt(prompt).call().content();
