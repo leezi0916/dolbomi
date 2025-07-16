@@ -135,6 +135,7 @@ export default MatchCareGiverCard;
 
 const EmptyMessage = styled.p`
   width: 100%;
+  height: 140px;
   text-align: center;
   color: ${({ theme }) => theme.colors.gray[3]};
   font-size: ${({ theme }) => theme.fontSizes.base};

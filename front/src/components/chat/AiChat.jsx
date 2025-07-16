@@ -197,7 +197,7 @@ const AiChat = () => {
               disabled={loading}
             />
             <SendButton type="submit" disabled={loading}>
-              {loading ? '전송 중...' : '전송'}
+              <Send>{loading ? '전송 중...' : '전송'}</Send>
             </SendButton>
           </InputContainer>
 

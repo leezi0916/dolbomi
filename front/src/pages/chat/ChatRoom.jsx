@@ -15,6 +15,7 @@ const Main = styled.div`
   gap: 10px;
   max-width: 1200px;
   padding: 10px 1rem;
+  overflow-y: auto;
 `;
 
 const MessageBox = styled(MainContainer)`

@@ -55,4 +55,5 @@ export const SubmitButton = styled.button`
 export const ButtonText = styled.p`
   color: ${({ theme }) => theme.colors.white};
   font-size: ${({ theme }) => theme.fontSizes.sm};
+  white-space: nowrap;
 `;

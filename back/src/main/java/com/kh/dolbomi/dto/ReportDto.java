@@ -46,6 +46,7 @@ public class ReportDto {
         private String user_name;
         private LocalDateTime create_date;
         private String report_content;
+        private Long care_giver_no;
 
     }
 

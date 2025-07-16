@@ -7,6 +7,7 @@ import TextareaAutosize from 'react-textarea-autosize';
 import { reportService } from '../api/report';
 import { toast } from 'react-toastify';
 import useUserStatusStore from '../store/userStatusStore';
+import useUserStore from '../store/userStore';
 
 /*
   매칭상태에 따라 버튼변경해야함
@@ -22,6 +23,7 @@ const ReportDetail = () => {
   const [state, setState] = useState(true);
   const [report, setReport] = useState(location.state.report);
   const [error, setError] = useState(null);
+  const { user } = useUserStore();
 
   const handleSubmit = async () => {
     try {
@@ -30,7 +32,7 @@ const ReportDetail = () => {
       navigate(-1);
     } catch (error) {
       console.error(error);
-      const errorMessage = '리뷰를 불러오는데 실패했습니다.';
+      const errorMessage = '일지를 불러오는데 실패했습니다.';
       setError(errorMessage);
       toast.error(errorMessage);
     }
@@ -47,7 +49,7 @@ const ReportDetail = () => {
       navigate(-1);
     } catch (error) {
       console.error(error);
-      const errorMessage = '리뷰를 삭제하는데 실패했습니다.';
+      const errorMessage = '일지를 삭제하는데 실패했습니다.';
       setError(errorMessage);
       toast.error(errorMessage);
     }
@@ -68,8 +70,8 @@ const ReportDetail = () => {
             2. {report.patNo && ( ... )} 걸어줘서 아래 수정 삭제 버튼 안보이게하기
             3. 매칭이 끝났으면 자기이름꺼만 가져오고 수정없애기
           */}
-
-          {userStatus || (
+          {/*  user.userNo === report.careGiverNo &&  */}
+          {!userStatus && report.careGiverNo === user.userNo && (
             <>
               <Btn onClick={handleDelete}>
                 <ButtonText>삭제</ButtonText>
@@ -79,7 +81,6 @@ const ReportDetail = () => {
               </Btn>
             </>
           )}
-
           <Btn onClick={() => window.history.back()}>
             <ButtonText>이전으로</ButtonText>
           </Btn>

@@ -14,7 +14,7 @@ public class ReportRepositoryImpl implements ReportRepository {
     @Override
     public List<Object[]> getList(Long patNo) {
         String query =
-                "SELECT r.reportNo, r.reportTitle, u.userName, r.createDate, r.reportContent "
+                "SELECT r.reportNo, r.reportTitle, u.userName, r.createDate, r.reportContent, r.user.userNo "
                         + "FROM Report r JOIN r.user u JOIN r.patient p " +
                         "WHERE r.status = 'Y' AND p.patNo = :patNo " +
                         "ORDER BY r.createDate DESC";
