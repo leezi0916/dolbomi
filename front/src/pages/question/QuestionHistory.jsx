@@ -43,7 +43,6 @@ const QuestionHistory = () => {
           currentPage - 1,
           ITEMS_PER_PAGE
         );
-        console.log(myHistory);
 
         setData(myHistory.content); // 게시글 목록 등
         setTotalPage(myHistory.totalPage); // 총 페이지 수
@@ -97,17 +96,13 @@ const QuestionHistory = () => {
               <option value="">작성일</option>
               <option value="count">조회순</option>
             </select>
-            <div>
-              <input
-                type="text"
-                placeholder="검색어 입력"
-                value={tempkeyword}
-                onChange={(e) => setTempKeyword(e.target.value)}
-              />
-              <button type="submit">
-                <img src="/src/assets/icons/icon_돋보기.png" alt="" />
-              </button>
-            </div>
+            <input
+              type="text"
+              placeholder="검색어 입력"
+              value={tempkeyword}
+              onChange={(e) => setTempKeyword(e.target.value)}
+            />
+            <button type="submit">검색</button>
           </form>
         </SearchBoard>
         <BoardBox>
@@ -147,17 +142,13 @@ const QuestionHistory = () => {
             <option value="">작성일</option>
             <option value="count">조회순</option>
           </select>
-          <div>
-            <input
-              type="text"
-              placeholder="검색어 입력"
-              value={tempkeyword}
-              onChange={(e) => setTempKeyword(e.target.value)}
-            />
-            <button type="submit">
-              <img src="/src/assets/icons/icon_돋보기.png" alt="" />
-            </button>
-          </div>
+          <input
+            type="text"
+            placeholder="검색어 입력"
+            value={tempkeyword}
+            onChange={(e) => setTempKeyword(e.target.value)}
+          />
+          <button type="submit">검색</button>
         </form>
       </SearchBoard>
       <BoardBox>

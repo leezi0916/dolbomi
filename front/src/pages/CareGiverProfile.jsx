@@ -102,7 +102,6 @@ const CareGiverProfile = () => {
     if (!confirmed) return;
 
     try {
-      console.log(matNo);
       await matchingService.getMatchingChangeStatus(Number(matNo), 'N');
       navigate('/guardian/matchpage');
     } catch (error) {

@@ -88,7 +88,6 @@ const HireRegistration = () => {
       // patientService.getPatientId는 비동기 함수로 가정
       const patient = await patientService.getPatientId(patNo);
 
-      console.log(patient);
 
       setPatient(patient);
     } catch (error) {
@@ -99,7 +98,7 @@ const HireRegistration = () => {
   const handleFileChange = (e) => {
     const file = e.target.files?.[0];
     if (file) {
-      console.log('선택된 파일:', file.name);
+
       const reader = new FileReader();
       reader.onloadend = () => {
         setPreviewUrl(reader.result); // base64 저장

@@ -60,10 +60,9 @@ export const TextWrap = styled.div`
 export const BtnSection = styled.div`
   display: flex;
   width: 100%;
-   gap: 10px;
+  gap: 10px;
 
   button {
-   
     padding: ${({ theme }) => theme.spacing[3]};
 
     border-radius: ${({ theme }) => theme.borderRadius.base};
