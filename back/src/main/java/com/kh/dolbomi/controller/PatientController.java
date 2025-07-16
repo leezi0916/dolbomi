@@ -48,6 +48,7 @@ public class PatientController {
             @PathVariable Long patNo,
 
             @RequestBody PatientDto.Update updatePatDto) {
+
         return ResponseEntity.ok(patientService.updatePatient(patNo, updatePatDto));
 
 

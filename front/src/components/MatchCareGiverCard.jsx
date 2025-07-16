@@ -146,9 +146,9 @@ const EmptyMessage = styled.p`
 `;
 
 const Div = styled.div`
-display: flex;
-flex-direction: column;
-
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
 `;
 
 const PageWrapper = styled.div`

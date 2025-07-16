@@ -23,10 +23,10 @@ export const MatchForm = () => {
     
     const getList = async () => {
       try {
-        const careGiverList = await matchingService.getMatchginCargiver(patNo, 'Y');
+        const res = await matchingService.getMatchginCargiver(patNo, 'Y');
         
         setSelectedPatNo(patNo);
-        careGiverList.length === 0 ? setCareGiverList([]) : setCareGiverList(careGiverList);
+        res.length === 0 ? setCareGiverList([]) : setCareGiverList(res);
 
       } catch (err) {
         console.error(err);
@@ -46,9 +46,11 @@ export const MatchForm = () => {
 
       EndMatchResultList(res);
       setSelectedPatNo(patNo);
-
+    
       setStartDate(null);
       setEndDate(null);
+
+
     } catch (err) {
       console.error(err);
     }
