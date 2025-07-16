@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-
+import { SITE_CONFIG } from '../config/site';
 import { TbMessageChatbot } from 'react-icons/tb';
 
 const ChatBot = () => {
@@ -50,21 +50,22 @@ const ChatBot = () => {
   };
   return (
     <>
-
-      <ToggleButton onClick={() => setIsOpen(true)} ></ToggleButton>
+      <ToggleButton onClick={() => setIsOpen(true)}></ToggleButton>
 
       <ChatBotContainer isOpen={isOpen}>
         <ChatMain>
-
           <HeadDiv>
-          <LogoImg src="/logo.png" alt="로고" />
-        <button onClick={() => setIsOpen(false)}>
-          <img src="/src/assets/icons/icon_닫기.png" alt="" />
-        </button>
+            <LogDiv>
+              <LogoImg src="/logo.png" alt="로고" />
+              <p>{SITE_CONFIG.name}</p>
+            </LogDiv>
+
+            <button onClick={() => setIsOpen(false)}>
+              <img src="/public/Union.png" alt="" />
+            </button>
           </HeadDiv>
 
           <MessageBox>
-            
             <InputContainer onSubmit={askRag}>
               <ChatInput
                 placeholder="메시지를 입력하세요"
@@ -111,17 +112,6 @@ const ToggleButton = styled.button`
   border-radius: 8px;
   cursor: pointer;
 `;
-const ButtonWrapper = styled.div`
-  display: flex;
-  gap: ${({ theme }) => theme.spacing[2]};
-  height: 30px;
-  align-items: center;
-`;
-
-const ChatBotIcon = styled(TbMessageChatbot)`
-  width: 25px;
-  height: 25px;
-`;
 
 const ChatMain = styled.div`
   display: flex;
@@ -144,12 +134,6 @@ const MessageBox = styled.div`
   border: 1px solid #ddd;
   border-radius: 8px;
   background: #f8f9fa;
-`;
-
-const MessageList = styled.ul`
-  list-style: none;
-  padding: 0;
-  margin: 0;
 `;
 
 const InputContainer = styled.form`
@@ -190,41 +174,21 @@ const SendButton = styled.button`
   }
 `;
 
-const Footer = styled.div`
-  display: flex;
-  justify-content: space-around;
-  padding-bottom: 30px;
-`;
-
-const ButtonGroup = styled.div`
-  display: flex;
-  gap: 1.5rem;
-  align-items: center;
-`;
-
 const HeadDiv = styled.div`
-display: flex;
-flex-direction: column;
+  display: flex;
+  justify-content: space-between;
 `;
 
-const LeaveButton = styled.button`
-  background: ${({ theme }) => theme.colors.primary || '#007bff'};
-  color: white;
-  border: none;
-  border-radius: 6px;
-  padding: 0.5rem 2rem;
-  font-size: 1.1rem;
-  cursor: pointer;
-  transition: background 0.2s;
-
-  &:hover {
-    background: ${({ theme }) => theme.colors.secondary || '#0056b3'};
-  }
-
-  &:disabled {
-    background: #e9ecef;
-    color: #6c757d;
-    cursor: not-allowed;
+const LogDiv = styled.div`
+display: flex;
+gap: 10px;
+justify-content: center;
+align-items: center;
+  p {
+    margin-left: 10px;
+    font-size: ${({ theme }) => theme.fontSizes.xl};
+    font-weight: ${({ theme }) => theme.fontWeights.bold};
+    color: ${({ theme }) => theme.colors.primary};
   }
 `;
 const LogoImg = styled.img`
