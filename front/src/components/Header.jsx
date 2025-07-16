@@ -65,10 +65,6 @@ const Header = ({ openChat }) => {
       setUserStatus(userStatus);
 
       // 최초 로그인시에만 토스트 띄우기 -> 일반 로그인과 다르게 리다이렉트를 받기때문에 이렇게 설계
-<<<<<<< HEAD
-=======
-      
->>>>>>> bd3367d459a2f2580d7ea2c1eefca6468049fe9b
       const socialLoginToast = localStorage.getItem('socialLoginToast');
       const normalLoginToast = localStorage.getItem('normalLoginToast');
 
