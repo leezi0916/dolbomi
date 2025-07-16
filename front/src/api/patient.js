@@ -45,7 +45,9 @@ export const patientService = {
   },
 
   updatePatient: async (patNo, data) => {
+    
     try {
+     
       await api.patch(API_ENDPOINTS.PATIENT.PATCH(Number(patNo)), camelToSnake(data));
     } catch (error) {
       console.error('돌봄대상자 수정 실패:', error);
