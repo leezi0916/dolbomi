@@ -176,7 +176,7 @@ const MyProfile = () => {
       // userNo 포함해서 넘기기
       await validateAndSubmit({ ...formData, userNo }, licenseList, selectedFile);
     } catch (err) {
-      toast.error('회원정보 수정 중 문제가 발생했습니다.');
+      toast.error('회원정보 수정 중 문제가 발생했습니다.', err);
     }
   };
 
@@ -416,6 +416,10 @@ const Button = styled(SubmitBtn)`
   font-size: ${({ theme }) => theme.fontSizes.md};
   border-radius: ${({ theme }) => theme.borderRadius.md};
   margin-bottom: 0px;
+  white-space: nowrap;
+  @media (max-width: 768px) {
+    font-size: ${({ theme }) => theme.fontSizes.sm};
+  }
 `;
 
 const PlustButton = styled(SubmitBtn)`

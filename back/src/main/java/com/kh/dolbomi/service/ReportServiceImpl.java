@@ -54,7 +54,8 @@ public class ReportServiceImpl implements ReportService {
                         (String) row[1],
                         (String) row[2],
                         (LocalDateTime) row[3],
-                        (String) row[4]
+                        (String) row[4],
+                        (Long) row[5]
                 ))
                 .collect(Collectors.toList());
     }
