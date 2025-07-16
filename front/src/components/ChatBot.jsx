@@ -3,6 +3,8 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
+import { TbMessageChatbot } from 'react-icons/tb';
+
 const ChatBot = () => {
   const [isOpen, setIsOpen] = useState();
 
@@ -48,14 +50,18 @@ const ChatBot = () => {
   };
   return (
     <>
-      <ToggleButton onClick={() => setIsOpen(!isOpen)}>{isOpen ? '닫기' : '열기'}</ToggleButton>
+      <ToggleButton onClick={() => setIsOpen(!isOpen)}>
+        <ButtonWrapper>
+          <ChatBotIcon />
+          {isOpen ? '닫기' : '이용안내 봇'}
+        </ButtonWrapper>
+      </ToggleButton>
 
       <ChatBotContainer isOpen={isOpen}>
         <ChatMain>
           <MessageBox>
-          <LogoImg src="/logo.png" alt="로고" />
+            <LogoImg src="/logo.png" alt="로고" />
             <InputContainer onSubmit={askRag}>
- 
               <ChatInput
                 placeholder="메시지를 입력하세요"
                 value={question}
@@ -78,6 +84,7 @@ const ChatBot = () => {
 export default ChatBot;
 
 // --- styled components ---
+
 const ChatBotContainer = styled.div`
   position: fixed;
   bottom: 40px;
@@ -97,6 +104,17 @@ const ToggleButton = styled.button`
   border: none;
   border-radius: 8px;
   cursor: pointer;
+`;
+const ButtonWrapper = styled.div`
+  display: flex;
+  gap: ${({ theme }) => theme.spacing[2]};
+  height: 30px;
+  align-items: center;
+`;
+
+const ChatBotIcon = styled(TbMessageChatbot)`
+  width: 25px;
+  height: 25px;
 `;
 
 const ChatMain = styled.div`
