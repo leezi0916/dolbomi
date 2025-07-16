@@ -19,6 +19,7 @@ const AiModal = () => {
 
   useEffect(() => {
     const fetchAll = async () => {
+
       if (!user) {
         alert('로그인이 필요한 서비스입니다.');
         return;

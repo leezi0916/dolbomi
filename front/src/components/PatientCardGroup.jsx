@@ -67,7 +67,7 @@ const PatientCardGroup = ({
   }
 
   const navigate = useNavigate();
-
+  
   return (
     <Div>
       <ProfileCard type="patient">

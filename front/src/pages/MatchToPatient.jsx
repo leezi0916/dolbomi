@@ -252,7 +252,6 @@ const HeadSection = styled(Section)`
   height: auto;
   justify-content: space-between;
   padding: ${({ theme }) => theme.spacing[4]} ${({ theme }) => theme.spacing[4]} ${({ theme }) => theme.spacing[2]};
-
   align-items: flex-start;
   ${media.md` /* 768px 이상 (태블릿/데스크톱) */
     padding: 40px 16px 10px 16px;

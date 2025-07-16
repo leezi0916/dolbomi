@@ -16,6 +16,7 @@ import { ProfileCard } from '../styles/MatchingCard';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import SearchDate from '../components/SearchDate';
+import Paging from './Paging';
 
 const MatchCareGiverCard = ({
   caregiverList,
@@ -29,6 +30,9 @@ const MatchCareGiverCard = ({
   handleEndDateChange,
   handleSearchClick,
   selectedPatNo,
+  endedCurrentPage,
+  endedTotalPage,
+  handleEndedPageChange,
 }) => {
   console.log('확인 no', selectedPatNo);
   let currentList;
@@ -52,7 +56,7 @@ const MatchCareGiverCard = ({
   const navigate = useNavigate();
 
   return (
-    <div>
+    <Div>
       {activeTab === 'matched' && (
         <SearchDate
           startDate={startDate}
@@ -65,60 +69,70 @@ const MatchCareGiverCard = ({
 
       {currentList && currentList.length > 0 ? (
         currentList.map((care, index) => (
-          <CargiverWrap key={index}>
-            <CaregiverDiv>
-              <CaregiverImg
-                src={getProfileImageUrl(care.caregiverProfileImage, 'caregiver')}
-                alt="간병인"
-                onError={(e) => {
-                  e.target.onerror = null;
-                  e.target.src = care_profileImage;
-                }}
-              />
-              <CaregiverTextDiv>
-                <ProfileTextGray>
-                  <ProfileTextStrong>{care.userName}</ProfileTextStrong> 님
-                </ProfileTextGray>
-                <ProfileTextGray>
-                  나이
-                  <ProfileTextStrong>
-                    {care.age} 세 ({care.gender === 'M' ? '남' : care.gender === 'F' ? '여' : '성별 정보 없음'})
-                  </ProfileTextStrong>
-                </ProfileTextGray>
-              </CaregiverTextDiv>
-            </CaregiverDiv>
-
-            <CargiverButtonDiv>
-              <CareLogButton
-                onClick={() =>
-                  navigate(`/caregiverProfile/${Number(care.caregiverNo)}`, {
-                    state: { matNo: care.matNo },
-                  })
-                }
-              >
-                간병인 정보
-              </CareLogButton>
-              {activeTab === 'matched' && (
-                <ReportButton
-                  style={{ visibility: care.reviewNo ? 'hidden' : 'visible' }}
-                  onClick={() => {
-                    console.log('selected care:', care);
-                    setSelectedCaregiver(care); // 선택한 매칭 정보 저장
-                    setShowReviewModal(true); // 모달 표시
+          <>
+            <CargiverWrap key={index}>
+              <CaregiverDiv>
+                <CaregiverImg
+                  src={getProfileImageUrl(care.caregiverProfileImage, 'caregiver')}
+                  alt="간병인"
+                  onError={(e) => {
+                    e.target.onerror = null;
+                    e.target.src = care_profileImage;
                   }}
+                />
+                <CaregiverTextDiv>
+                  <ProfileTextGray>
+                    <ProfileTextStrong>{care.userName}</ProfileTextStrong> 님
+                  </ProfileTextGray>
+                  <ProfileTextGray>
+                    나이
+                    <ProfileTextStrong>
+                      {care.age} 세 ({care.gender === 'M' ? '남' : care.gender === 'F' ? '여' : '성별 정보 없음'})
+                    </ProfileTextStrong>
+                  </ProfileTextGray>
+                </CaregiverTextDiv>
+              </CaregiverDiv>
+
+              <CargiverButtonDiv>
+                <CareLogButton
+                  onClick={() =>
+                    navigate(`/caregiverProfile/${Number(care.caregiverNo)}`, {
+                      state: { matNo: care.matNo },
+                    })
+                  }
                 >
-                  리뷰 작성
-                </ReportButton>
-              )}
-            </CargiverButtonDiv>
-          </CargiverWrap>
+                  간병인 정보
+                </CareLogButton>
+                {activeTab === 'matched' && (
+                  <ReportButton
+                    style={{ visibility: care.reviewNo ? 'hidden' : 'visible' }}
+                    onClick={() => {
+                      console.log('selected care:', care);
+                      setSelectedCaregiver(care); // 선택한 매칭 정보 저장
+                      setShowReviewModal(true); // 모달 표시
+                    }}
+                  >
+                    리뷰 작성
+                  </ReportButton>
+                )}
+              </CargiverButtonDiv>
+            </CargiverWrap>
+
+            <PageWrapper>
+              <Paging
+                currentPage={endedCurrentPage}
+                totalPage={endedTotalPage}
+                chagneCurrentPage={handleEndedPageChange}
+              />
+            </PageWrapper>
+          </>
         ))
       ) : selectedPatNo ? (
         <EmptyMessage>매칭된 간병이 없습니다.</EmptyMessage>
       ) : (
         <EmptyMessage>환자를 선택해주세요</EmptyMessage>
       )}
-    </div>
+    </Div>
   );
 };
 
@@ -131,4 +145,16 @@ const EmptyMessage = styled.p`
   color: ${({ theme }) => theme.colors.gray[3]};
   font-size: ${({ theme }) => theme.fontSizes.base};
   padding: ${({ theme }) => theme.spacing[8]} 0;
+`;
+
+const Div = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+
+const PageWrapper = styled.div`
+  width: inherit;
+  bottom: 0;
+  width: 100%;
+  padding-bottom: ${({ theme }) => theme.spacing[2]};
 `;

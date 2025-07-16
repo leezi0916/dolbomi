@@ -14,10 +14,12 @@ import {
 import { ProfileCard } from '../styles/MatchingCard';
 import { useNavigate } from 'react-router-dom';
 import { MatchForm } from '../hooks/matchFrom';
+import styled from 'styled-components';
+import { media } from '../styles/MediaQueries';
 
 
 const TestPatientCard
- = ({ patient, getCareGiver, getEndedMatchingList,  handleClick, activeTab}) => {
+ = ({ patient, getCareGiver, getEndedMatchingList,  handleClick, activeTab, isOpen, isMobile}) => {
   if (!patient){
     alert("선택된 환자가 없습니다.")
   }  
@@ -51,7 +53,7 @@ const TestPatientCard
     {patient && patient.length > 0 ? (
        patient.map((pat) => (
     
-    <ProfileCard type="patient" onClick={() => handlePatientClick(pat.patNo)}>
+    <ProfileCard type="patient" >
       <ProfileImage
         src={getProfileImageUrl(pat.profileImage, 'patient')}
         alt="환자"
@@ -67,6 +69,10 @@ const TestPatientCard
         </UserAge>
         <BtnSection>
           <InfoButton onClick={() => navigate(`/report/${pat.patNo}`)}>간병일지 보기</InfoButton>
+        {!isOpen&&
+        <OpenButton onClick={() => handlePatientClick(pat.patNo) }>간병인 보기</OpenButton>
+         } 
+          
           <TestBtn type="button" onClick={() => handleClick(pat.patNo)}>간병인 보기</TestBtn>
         </BtnSection>
       </ProfileInfo>
@@ -78,5 +84,20 @@ const TestPatientCard
   </div>
   );
 };
+
+const OpenButton = styled(InfoButton)`
+display: none;
+
+ ${media.md`  // 예: 768px 이하일 때
+  display: flex;
+  padding: ${({ theme }) => `${theme.spacing[2]} ${theme.spacing[8]}`};
+ `}
+
+  ${media.lg`  // 예: 768px 이하일 때
+    display: flex;
+  padding: ${({ theme }) => `${theme.spacing[2]} ${theme.spacing[6]}`};
+ `}
+`
+
 
 export default TestPatientCard;

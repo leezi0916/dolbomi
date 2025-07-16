@@ -9,12 +9,11 @@ import { useNavigate } from 'react-router-dom';
 import { patientService } from '../api/patient';
 import PatientCardGroup from '../components/PatientCardGroup';
 import TestPatientCard from '../components/TestPatinetCard';
-import { PageWrapper, ProfileCardPair, RightLineDiv } from '../styles/MatchingCard';
+import { ProfileCardPair, RightLineDiv } from '../styles/MatchingCard';
 import MatchCareGiverCard from '../components/MatchCareGiverCard';
 import SearchDate from '../components/SearchDate';
 import Paging from '../components/Paging';
 import ReviewModal from '../components/ReviewModal';
-import { isMatch } from 'date-fns';
 import useUserStatusStore from '../store/userStatusStore';
 
 const MatchMainPage = () => {
@@ -104,7 +103,6 @@ const MatchMainPage = () => {
     getCareGiver,
     getEndedMatchingList,
     handleEndedPageChange,
-    getSearchDateList,
     handleSearchClick,
     setSelectedPatNo,
     handleStartDateChange,
@@ -141,78 +139,74 @@ const MatchMainPage = () => {
           </TipDiv>
         </TitleDiv>
       </HeadSection>
-      <MatchSection>
-        <ProfileCardPair>
-          <RightLineDiv>
-            {/* 공통 환자목록이 보임 */}
-            {/* 특정간병인을 선택 */}
-            {isOpen || (
-              <TestPatientCard
-                key={userPatients.patNo}
-                patient={userPatients}
-                getCareGiver={getCareGiver}
-                getEndedMatchingList={getEndedMatchingList}
-                activeTab={activeTab}
-                handleClick={handleClick}
-                setSelectedPatNo={setSelectedPatNo}
-              ></TestPatientCard>
-            )}
-          </RightLineDiv>
-          {/* 모바일용 간병인 상세보기 */}
-          {isOpen ? (
-            <PatientCardGroup
-              patient={userPatients.find((p) => p.patNo === selectedPatNo)}
-              caregiverList={caregiverList}
-              endedCaregiverList={endedCaregiverList}
-              activeTab={activeTab}
-              onClose={() => handleClose}
-              endedCurrentPage={endedCurrentPage}
-              endedTotalPage={endedTotalPage}
-              startDate={startDate}
-              endDate={endDate}
-              handleStartDateChange={handleStartDateChange}
-              handleEndDateChange={handleEndDateChange}
-              handleSearchClick={handleSearchClick}
-              handleEndedPageChange={handleEndedPageChange}
-              handleSetShowReviewModal={handleSetShowReviewModal}
-              handleSetSelectedCargiver={handleSetSelectedCargiver}
-              selectedPatNo={selectedPatNo}
-              isOpen={isOpen}
-            />
-          ) : (
-            <Div>
-              {!isMobile && (
-                <>
-                  <MatchCareGiverCard
-                    caregiverList={caregiverList}
-                    endedCaregiverList={endedCaregiverList}
-                    activeTab={activeTab}
-                    getEndedMatchingList={getEndedMatchingList}
-                    handleSearchClick={handleSearchClick}
-                    setShowReviewModal={handleSetShowReviewModal}
-                    setSelectedCaregiver={handleSetSelectedCargiver}
-                    startDate={startDate}
-                    endDate={endDate}
-                    handleStartDateChange={handleStartDateChange}
-                    handleEndDateChange={handleEndDateChange}
-                    selectedPatNo={selectedPatNo}
-                  ></MatchCareGiverCard>
 
-                  {activeTab === 'matched' && (
-                    <PageWrapper>
-                      <Paging
-                        currentPage={endedCurrentPage}
-                        totalPage={endedTotalPage}
-                        chagneCurrentPage={handleEndedPageChange}
-                      />
-                    </PageWrapper>
-                  )}
-                </>
-              )}
-            </Div>
+      <ProfileCardPair>
+        <RightLineDiv>
+          {/* 공통 환자목록이 보임 */}
+          {/* 특정간병인을 선택 */}
+          {isOpen || (
+            <TestPatientCard
+              key={userPatients.patNo}
+              patient={userPatients}
+              getCareGiver={getCareGiver}
+              getEndedMatchingList={getEndedMatchingList}
+              activeTab={activeTab}
+              handleClick={handleClick}
+              setSelectedPatNo={setSelectedPatNo}
+              isOpen={isOpen}
+              isMobile={isMobile}
+            ></TestPatientCard>
           )}
-        </ProfileCardPair>
-      </MatchSection>
+        </RightLineDiv>
+
+        {/* 모바일용 간병인 상세보기 */}
+        {isOpen ? (
+          <PatientCardGroup
+            patient={userPatients.find((p) => p.patNo === selectedPatNo)}
+            caregiverList={caregiverList}
+            endedCaregiverList={endedCaregiverList}
+            activeTab={activeTab}
+            onClose={() => handleClose}
+            endedCurrentPage={endedCurrentPage}
+            endedTotalPage={endedTotalPage}
+            startDate={startDate}
+            endDate={endDate}
+            handleStartDateChange={handleStartDateChange}
+            handleEndDateChange={handleEndDateChange}
+            handleSearchClick={handleSearchClick}
+            handleEndedPageChange={handleEndedPageChange}
+            handleSetShowReviewModal={handleSetShowReviewModal}
+            handleSetSelectedCargiver={handleSetSelectedCargiver}
+            selectedPatNo={selectedPatNo}
+            isOpen={isOpen}
+          />
+        ) : (
+          <>
+            {!isMobile && (
+              <>
+                <MatchCareGiverCard
+                  caregiverList={caregiverList}
+                  endedCaregiverList={endedCaregiverList}
+                  activeTab={activeTab}
+                  getEndedMatchingList={getEndedMatchingList}
+                  handleSearchClick={handleSearchClick}
+                  setShowReviewModal={handleSetShowReviewModal}
+                  setSelectedCaregiver={handleSetSelectedCargiver}
+                  startDate={startDate}
+                  endDate={endDate}
+                  handleStartDateChange={handleStartDateChange}
+                  handleEndDateChange={handleEndDateChange}
+                  selectedPatNo={selectedPatNo}
+                  endedCurrentPage={endedCurrentPage}
+                  endedTotalPage={endedTotalPage}
+                  handleEndedPageChange={handleEndedPageChange}
+                ></MatchCareGiverCard>
+              </>
+            )}
+          </>
+        )}
+      </ProfileCardPair>
+
       {showReviewModal && (
         <>
           {console.log('ReviewModal에 전달된 matNo:', selectedCaregiver?.matNo)}
@@ -236,7 +230,6 @@ const HeadSection = styled(Section)`
   flex-direction: column;
   padding: ${({ theme }) => theme.spacing[4]} ${({ theme }) => theme.spacing[4]} ${({ theme }) => theme.spacing[2]};
   align-items: flex-start;
-
   ${media.md` /* 768px 이상 (태블릿/데스크톱) */
     padding: 40px 16px 10px 16px;
   `}
@@ -305,5 +298,14 @@ const MatchSection = styled(Section)`
 `;
 
 const Div = styled.div`
+  display: flex;
+  flex-direction: column;
   position: relative;
+`;
+
+const PageWrapper = styled.div`
+  width: inherit;
+  bottom: 0;
+  width: 100%;
+  padding: ${({ theme }) => theme.spacing[5]};
 `;
