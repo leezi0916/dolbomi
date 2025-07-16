@@ -22,4 +22,7 @@ public interface ReviewService {
 
     // 특정 간병인의 이력서 상세 -> 리뷰
     Page<ReviewDto.Detail> getReviewsByResumeDetailPage(Pageable pageable, Long resumeNo);
+
+    // 내가 쓴 리뷰 삭제하기
+    Long deleteReview(Long reviewNo);
 }

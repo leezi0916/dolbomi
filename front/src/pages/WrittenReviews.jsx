@@ -20,21 +20,30 @@ import { media } from '../styles/MediaQueries';
 import useUserStore from '../store/userStore';
 import { toast } from 'react-toastify';
 import profileImage from '../assets/profileImg/img_간병인.png';
+import { FaTimes } from 'react-icons/fa';
+
 const WrittenReviews = () => {
   const [reviews, setReviews] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
 
   const { user } = useUserStore();
 
+  const fetchReviews = async () => {
+    try {
+      const data = await reviewService.getMyWrittenReviews(currentPage, user.userNo);
+      setReviews(data);
+    } catch (error) {
+      toast.error('리뷰 로딩에 실패했습니다.');
+    }
+  };
+
   useEffect(() => {
-    const fetchReviews = async () => {
-      try {
-        const data = await reviewService.getMyWrittenReviews(currentPage, user.userNo);
-        setReviews(data);
-      } catch (error) {
-        toast.error('리뷰 로딩에 실패했습니다.');
-      }
-    };
+    // 로그인하지 않은 경우 이전 페이지로 이동
+    if (!user) {
+      alert('로그인이 필요한 서비스입니다.');
+      navigate(-1);
+      return;
+    }
     fetchReviews();
   }, [currentPage]);
 
@@ -50,6 +59,20 @@ const WrittenReviews = () => {
     return `${CLOUDFRONT_URL}${cleanPath}`;
   };
 
+  const handleDelete = async (reviewNo) => {
+    if (confirm('정말 리뷰를 삭제하시겠습니까?')) {
+      try {
+        const response = await reviewService.deleteReview(reviewNo);
+        if (response > 0) {
+          toast.success('리뷰가 삭제되었습니다.');
+          fetchReviews();
+        } else {
+          toast.error('삭제에 실패했습니다.');
+        }
+      } catch (error) {}
+    }
+  };
+
   return (
     <ReviewWrapper>
       <TopSection>
@@ -61,7 +84,11 @@ const WrittenReviews = () => {
           <EmptyMessage>작성한 리뷰가 없습니다.</EmptyMessage>
         ) : (
           reviews.myWrittenReview.content.map((review) => (
-            <Card key={review.reviewNo}>
+            <Card key={review.reviewNo} style={{ position: 'relative' }}>
+              <DeleteButton onClick={() => handleDelete(review.reviewNo)}>
+                <FaTimes />
+              </DeleteButton>
+
               <CardTopContent>
                 <CardImage src={getProfileImageUrl(review.profileImage)} />
                 <CardTextGroup>
@@ -149,4 +176,20 @@ const EmptyMessage = styled.div`
   font-size: ${({ theme }) => theme.fontSizes.base};
   color: ${({ theme }) => theme.colors.gray[3]};
   text-align: center;
+`;
+
+const DeleteButton = styled.button`
+  position: absolute;
+  top: ${({ theme }) => theme.spacing[2]}; // 8px
+  right: ${({ theme }) => theme.spacing[2]}; // 8px
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: ${({ theme }) => theme.colors.danger};
+  font-size: ${({ theme }) => theme.fontSizes.xl}; // 24px로 키움
+  z-index: ${({ theme }) => theme.zIndices.base};
+
+  &:hover {
+    color: ${({ theme }) => theme.colors.error};
+  }
 `;
