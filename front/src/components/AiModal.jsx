@@ -19,10 +19,10 @@ const AiModal = () => {
 
   useEffect(() => {
     const fetchAll = async () => {
-      if (!user) {
-        alert('로그인 후 이용해주세요');
-        return;
-      }
+      // if (!user ) {
+      //   alert('로그인 후 이용해주세요');
+      //   return;
+      // }
 
       try {
         const patientsList = await patientService.getPatients(user.userNo);
