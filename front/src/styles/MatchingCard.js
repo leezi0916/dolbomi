@@ -166,7 +166,7 @@ export const InfoButton = styled.button`
   color: ${({ theme }) => theme.colors.white};
   cursor: pointer;
   margin: ${({ theme }) => theme.spacing[1]} 0;
-
+  white-space: nowrap;
   /* ${media.md`  // 예: 768px 이하일 때
   padding: ${({ theme }) => `${theme.spacing[2]} ${theme.spacing[2]}`};
  `} */
