@@ -265,14 +265,16 @@ const HireList = () => {
                   {displayMode === 'region' && region.length > 0
                     ? region.map((region) => (
                         <RegionLabel key={region.cd}>
-                          <input
-                            type="radio"
-                            name="region"
-                            value={region.cd}
-                            checked={selectedCd === region.cd}
-                            onChange={() => handleRegionChange(region)}
-                          />
-                          {region.addrName}
+                          <RadioWrapper>
+                            <input
+                              type="radio"
+                              name="region"
+                              value={region.cd}
+                              checked={selectedCd === region.cd}
+                              onChange={() => handleRegionChange(region)}
+                            />
+                          </RadioWrapper>
+                          <p>{region.addrName}</p>
                         </RegionLabel>
                       ))
                     : displayMode === 'region' && <p>로딩중...</p>}
@@ -283,14 +285,17 @@ const HireList = () => {
                   {displayMode === 'sgg' && sgg.length > 0
                     ? sgg.map((sgg) => (
                         <RegionLabel key={sgg.cd}>
-                          <input
-                            type="radio"
-                            name="sgg"
-                            value={sgg}
-                            // checked={}
-                            onChange={() => handleSggChange(sgg)}
-                          />
-                          {sgg.addrName}
+                          <RadioWrapper>
+                            <input
+                              type="radio"
+                              name="sgg"
+                              value={sgg}
+                              // checked={}
+                              onChange={() => handleSggChange(sgg)}
+                            />
+                          </RadioWrapper>
+
+                          <p>{sgg.addrName}</p>
                         </RegionLabel>
                       ))
                     : displayMode === 'sgg' &&
@@ -601,10 +606,8 @@ const RadioGroup2 = styled.div`
 
 const RadioWrapper = styled.div`
   display: flex;
-  gap: 0;
   align-items: center;
-  /* gap: ${({ theme }) => theme.spacing[3]}; */
-
+  gap: 0;
   // 'checked' prop을 받아서 스타일을 동적으로 적용합니다.
   input[type='radio'] {
     appearance: none;
@@ -686,6 +689,14 @@ const HireListCard = styled(Link)`
   border-radius: ${({ theme }) => theme.borderRadius.md};
   box-shadow: ${({ theme }) => theme.shadows.md};
   overflow: hidden; /* 내부 요소가 넘치지 않도록 */
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+
+  &:hover {
+    transform: translateY(-6px);
+    box-shadow: ${({ theme }) => theme.shadows.md};
+  }
 `;
 
 // --- 상단 영역 스타일 ---

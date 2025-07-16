@@ -1,7 +1,7 @@
 // ChatBot.jsx
 import React, { useState } from 'react';
 import styled from 'styled-components';
-
+import { TbMessageChatbot } from 'react-icons/tb';
 const ChatBotContainer = styled.div`
   position: fixed;
   bottom: 40px;
@@ -24,7 +24,7 @@ const ChatBotBox = styled.div`
 
 const ChatBotHeader = styled.h4`
   margin: 0;
-  background: ${({theme}) => theme.colors.primary};
+  background: ${({ theme }) => theme.colors.primary};
   color: white;
   padding: 12px;
   font-size: 16px;
@@ -46,26 +46,40 @@ const ChatBotInput = styled.input`
   outline: none;
 `;
 
-
-
 const ToggleButton = styled.button`
   position: fixed;
   bottom: 40px;
   right: 40px;
   z-index: 10000;
   padding: 8px 16px;
-  background-color: ${({theme}) => theme.colors.primary};
+  background-color: ${({ theme }) => theme.colors.primary};
   color: white;
   border: none;
   border-radius: 8px;
   cursor: pointer;
+`;
+const ButtonWrapper = styled.div`
+  display: flex;
+  gap: ${({ theme }) => theme.spacing[2]};
+  height: 30px;
+  align-items: center;
+`;
+
+const ChatBotIcon = styled(TbMessageChatbot)`
+  width: 25px;
+  height: 25px;
 `;
 
 const ChatBot = () => {
   const [isOpen, setIsOpen] = useState();
   return (
     <>
-      <ToggleButton onClick={() => setIsOpen(!isOpen)}>{isOpen ? '닫기' : '열기'}</ToggleButton>
+      <ToggleButton onClick={() => setIsOpen(!isOpen)}>
+        <ButtonWrapper>
+          <ChatBotIcon />
+          {isOpen ? '닫기' : '돌보미 가이드'}
+        </ButtonWrapper>
+      </ToggleButton>
 
       <ChatBotContainer isOpen={isOpen}>
         <ChatBotBox>
