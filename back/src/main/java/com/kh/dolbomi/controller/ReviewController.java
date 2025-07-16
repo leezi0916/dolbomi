@@ -13,6 +13,7 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -60,6 +61,14 @@ public class ReviewController {
     public ResponseEntity<Long> createReview(@RequestBody ReviewDto.Create reviewDto) {
         System.out.println("요청 받은 리뷰 내용: " + reviewDto);
         Long reviewNo = reviewService.createReview(reviewDto);
+        return ResponseEntity.ok(reviewNo);
+    }
+
+    // 내가 쓴 리뷰 삭제하기
+    @PatchMapping("/delete")
+    public ResponseEntity<Long> deleteReview(@RequestParam Long reviewNo) {
+        reviewService.deleteReview(reviewNo);
+        
         return ResponseEntity.ok(reviewNo);
     }
 
