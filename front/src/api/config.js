@@ -55,6 +55,7 @@ export const API_ENDPOINTS = {
     SIMPLE_LIST: '/review/v1/simple-list',
     LIST: (currentPage, userNo) => `/review/v1/list?page=${currentPage - 1}&userNo=${userNo}`,
     DETAIL: (currentPage, resumeNo) => `/review/v1/detail?page=${currentPage - 1}&resumeNo=${resumeNo}`,
+    DELETE: (reviewNo) => `/review/v1/delete?reviewNo=${reviewNo}`,
   },
 
   HIRING: {

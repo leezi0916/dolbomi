@@ -73,4 +73,8 @@ public class Review {
     public void preUpdate() {
         this.updateDate = LocalDateTime.now();
     }
+
+    public void changeReviewStatus() {
+        this.status = StatusEnum.Status.N;
+    }
 }
