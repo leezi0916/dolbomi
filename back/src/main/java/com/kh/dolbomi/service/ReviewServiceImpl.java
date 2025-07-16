@@ -120,4 +120,17 @@ public class ReviewServiceImpl implements ReviewService {
     }
 
 
+    // 내가 쓴 리뷰 삭제하기
+    @Override
+    public Long deleteReview(Long reviewNo) {
+        Review review = reviewRepositoryV2.findByReviewNo(reviewNo);
+
+        if (review != null) {
+            review.changeReviewStatus();
+        }
+
+        return review.getReviewNo();
+    }
+
+
 }
