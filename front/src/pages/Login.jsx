@@ -34,13 +34,13 @@ const Login = () => {
         <LoginInputContainer>
           <LoginForm onSubmit={handleSubmit(onSubmit)}>
             <LoginInputGroup>
-              <LoginLabel htmlFor="userId">아이디</LoginLabel>
+              <LoginLabel htmlFor="userId">이메일</LoginLabel>
               <InputWrapper>
                 <Icon src="/src/assets/icons/icon_아이디.png" alt="" />
                 <LoginInput
                   id="userId"
                   type="text"
-                  placeholder="아이디를 입력해주세요"
+                  placeholder="이메일을 입력해주세요"
                   {...register('userId')}
                   $error={errors.userId}
                 />

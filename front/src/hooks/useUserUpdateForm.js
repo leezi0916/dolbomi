@@ -28,7 +28,6 @@ const updateSchema = yup.object().shape({
     .matches(/^010-\d{4}-\d{4}$/, '전화번호 형식은 010-0000-0000 이어야 합니다')
     .required('전화번호를 입력해주세요'),
 
-  email: yup.string().email('유효한 이메일 주소를 입력하세요.').required('이메일을 입력해주세요.'),
   address: yup
     .string()
     .required('주소를 입력해주세요.')
