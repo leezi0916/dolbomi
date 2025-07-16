@@ -97,7 +97,7 @@ const CaregiverList = () => {
       setError(null);
 
       const caregiverList = await jobSeekingService.getCaregiverList({ page: pageNumber, size: pageSize, searchData });
-      console.log('간병인 Response:', caregiverList);
+
       setCaregiverLists(caregiverList); // 이게 구조를 보여줌
       if (caregiverList.totalElements === 0) {
         setCaregiverLists([]);

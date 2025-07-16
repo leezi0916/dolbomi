@@ -92,6 +92,7 @@ const MyProposer = () => {
                           if (confirm('정말 내역을 삭제하시겠습니까?')) {
                             try {
                               const deleteHistory = await proposerService.deleteProposerHisotry(proposer.proposerNo);
+
                               if (deleteHistory) {
                                 toast.success('내역이 삭제되었습니다.');
                                 fetchPostList();

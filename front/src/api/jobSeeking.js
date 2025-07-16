@@ -23,13 +23,11 @@ export const jobSeekingService = {
   getCaregiverList: async ({ page = 0, size = 10, searchData }) => {
     try {
       const snake = camelToSnake(searchData);
-      console.log('검색조건: ', snake);
 
       // 쿼리 파라미터를 URL에 붙임
       const { data } = await api.get(API_ENDPOINTS.RESUME.LIST, {
         params: { page, size, ...snake },
       });
-      console.log('불러온 데이터 : ' + snakeToCamel(data));
       return snakeToCamel(data);
     } catch (error) {
       if (error.response) {
@@ -76,7 +74,7 @@ export const jobSeekingService = {
     }
   },
 
-  getMyResumeLists : async ( userNo) => {
+  getMyResumeLists: async (userNo) => {
     try {
       const { data } = await api.get(`${API_ENDPOINTS.RESUME.MYRESUMMODAL(userNo)}`);
       return snakeToCamel(data);
@@ -85,7 +83,6 @@ export const jobSeekingService = {
       throw new Error(message);
     }
   },
-
 
   // 특정 이력서 가져오기
   getResume: async (resumeNo) => {
