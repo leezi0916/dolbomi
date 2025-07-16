@@ -154,7 +154,9 @@ const ReportMain = () => {
 
         <BoardItemTitle>
           <div>No</div>
-          <div>제목</div>
+          <div>
+            <p>제목</p>
+          </div>
           <div>작성자</div>
           <div>작성 일자</div>
         </BoardItemTitle>
@@ -162,7 +164,9 @@ const ReportMain = () => {
           reportList.map((report, index) => (
             <BoardItem key={report.reportNo} to={`/report/detail/${report.reportNo}`} state={{ report }}>
               <div>{index + 1}</div>
-              <div>{report.reportTitle}</div>
+              <div>
+                <ReportTitle>{report.reportTitle}</ReportTitle>
+              </div>
               <div>{report.userName}</div>
               <div>{report.createDate.slice(0, 10)}</div>
             </BoardItem>
@@ -223,6 +227,7 @@ const BoardTitle = styled(BoardTop)`
 `;
 
 const BoardItemTitle = styled(BoardItemTop)`
+  width: 100%;
   height: ${({ theme }) => theme.spacing[10]};
   align-items: center;
   margin-top: 10px;
@@ -230,6 +235,10 @@ const BoardItemTitle = styled(BoardItemTop)`
   background-color: #feeee4;
   box-shadow: ${({ theme }) => theme.shadows.base};
   font-weight: ${({ theme }) => theme.fontWeights.bold};
+
+  :nth-of-type(1) {
+    width: 300px;
+  }
 `;
 const ListTitle = styled(Left)`
   font-size: ${({ theme }) => theme.fontSizes.xl};
@@ -256,13 +265,22 @@ const BoardItem = styled(Link)`
   margin: 5px 0;
   /* border-bottom: 1px solid ${({ theme }) => theme.colors.gray[5]}; */
   transition: all 0.2s ease-in-out;
+
   > div {
     flex: 1;
+    :nth-of-type(1) {
+      width: 300px;
+    }
   }
   &:hover {
     transform: translateY(-2px);
     box-shadow: ${({ theme }) => theme.shadows.md};
   }
+`;
+const ReportTitle = styled.p`
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 `;
 
 const Rights = styled(Right)`

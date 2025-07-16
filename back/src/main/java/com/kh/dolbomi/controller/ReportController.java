@@ -4,6 +4,7 @@ import com.kh.dolbomi.dto.ReportDto;
 import com.kh.dolbomi.service.ReportService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 
+@Slf4j
 @RestController
 @RequiredArgsConstructor
 @CrossOrigin(origins = "http://localhost:5173")
@@ -33,6 +35,7 @@ public class ReportController {
     //    진단일지 목록/상세 불러오기
     @GetMapping("/{patNo}")
     public ResponseEntity<List<ReportDto.Response>> getReports(@PathVariable Long patNo) {
+
         List<ReportDto.Response> reports = reportService.getList(patNo);
         return ResponseEntity.ok(reports);
     }
