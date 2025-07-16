@@ -111,28 +111,47 @@ export const SearchBoard = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  border-top: 1px solid ${({ theme }) => theme.colors.gray[3]};
+  border-top-left-radius: ${({ theme }) => theme.borderRadius.md};
+  border-top-right-radius: ${({ theme }) => theme.borderRadius.md};
+  background-color: ${({ theme }) => theme.colors.third};
   border-bottom: 1px solid ${({ theme }) => theme.colors.gray[3]};
-  padding: 5px 20px;
+  padding: 6px 6px 6px 20px;
   > div {
     align-self: center;
   }
   > form {
     display: flex;
     > * {
-      border-radius: ${({ theme }) => theme.borderRadius.md};
-      border: 1px solid ${({ theme }) => theme.colors.gray[3]};
       margin-left: 5px;
     }
-    > input {
-      padding: 4px;
+    select {
+      border-radius: ${({ theme }) => theme.borderRadius.md};
+      border: none;
     }
-    > button {
-      align-content: center;
-      background-color: ${({ theme }) => theme.colors.gray[3]};
-      color: ${({ theme }) => theme.colors.white};
-      padding: 0 5px;
+    > div {
+      display: flex;
+      > input {
+        padding: 4px;
+        font-size: small;
+        border-top-left-radius: ${({ theme }) => theme.borderRadius.md};
+        border-bottom-left-radius: ${({ theme }) => theme.borderRadius.md};
+        color: ${({ theme }) => theme.colors.gray[3]};
+      }
+      > button {
+        display: flex;
+        align-items: center;
+        border-top-right-radius: ${({ theme }) => theme.borderRadius.md};
+        border-bottom-right-radius: ${({ theme }) => theme.borderRadius.md};
+        background-color: ${({ theme }) => theme.colors.white};
+        padding: 0 5px;
+
+        > img {
+          width: 22px;
+          height: 22px;
+        }
+      }
     }
+
     > a {
       border: none;
     }
