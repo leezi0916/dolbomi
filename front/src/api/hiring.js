@@ -58,7 +58,6 @@ export const hiringService = {
   // 구인글 등록 (POST)
   postNewHiring: async (payload) => {
     try {
-      console.log('최종 보내는 데이터: ', payload);
       const { data } = await api.post(API_ENDPOINTS.HIRING.BASE, camelToSnake(payload));
       return data;
     } catch (error) {

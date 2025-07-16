@@ -22,7 +22,6 @@ import ResumeRegistration from './pages/ResumeRegistration';
 import ResumeDetail from './pages/ResumeDetail';
 import GuardianMainPage from './pages/GuardianMainPage';
 import CareGiverMainPage from './pages/CareGiverMainPage';
-import { useEffect } from 'react';
 
 import ReportMain from './pages/ReportMain';
 import ReviewModal from './components/ReviewModal';
@@ -58,10 +57,8 @@ import UpdateCommuBoardForm from './pages/community/UpdateCommuBoardForm';
 import PatientCardGroup from './components/PatientCardGroup';
 import AiModal from './components/AiModal';
 import MatchMainPage from './pages/MatchMainPage';
-
 import ChatHome from './pages/chat/ChatHome';
 import AiChat from './components/chat/AiChat';
-
 import usePreventWheelOnNumberInput from './hooks/usePreventWheelOnNumberInput';
 
 function AppRoutes() {

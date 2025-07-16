@@ -19,7 +19,6 @@ export const MatchForm = () => {
 
   // 현재 매칭정보 : 특정 환자의 간병인 목록 가져오기
   const getCareGiver = (patNo) => {
-    console.log('함수호출', patNo);
     setCareGiverList([]);
     
     const getList = async () => {

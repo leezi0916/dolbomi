@@ -25,7 +25,6 @@ const TestPatientCard
   }  
  
   const handlePatientClick = (patNo) => {
-    console.log(patNo)
     if (activeTab === 'matching') {
       getCareGiver(patNo);
   

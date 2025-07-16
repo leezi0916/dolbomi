@@ -65,7 +65,6 @@ export const jobSeekingService = {
 
   getMyResumeList: async (currentPage, userNo) => {
     try {
-      console.log('유저번호 : ', userNo);
       const { data } = await api.get(`${API_ENDPOINTS.RESUME.MYRESUME(currentPage, userNo)}`);
       return snakeToCamel(data);
     } catch (error) {
@@ -97,7 +96,6 @@ export const jobSeekingService = {
 
   updateResume: async (resumeNo, resumeData) => {
     try {
-      console.log(resumeNo, resumeData);
       await api.patch(API_ENDPOINTS.RESUME.UPDATE(resumeNo), camelToSnake(resumeData));
     } catch (error) {
       console.error(error);
