@@ -48,14 +48,20 @@ const ChatBot = () => {
   };
   return (
     <>
-      <ToggleButton onClick={() => setIsOpen(!isOpen)}>{isOpen ? '닫기' : '열기'}</ToggleButton>
+      <ToggleButton onClick={() => setIsOpen(true)} ></ToggleButton>
 
-      <ChatBotContainer isOpen={isOpen}>
+      <ChatBotContainer  isOpen={isOpen}>
         <ChatMain>
-          <MessageBox>
+          <HeadDiv>
           <LogoImg src="/logo.png" alt="로고" />
+        <button onClick={() => setIsOpen(false)}>
+          <img src="/src/assets/icons/icon_닫기.png" alt="" />
+        </button>
+          </HeadDiv>
+
+          <MessageBox>
+            
             <InputContainer onSubmit={askRag}>
- 
               <ChatInput
                 placeholder="메시지를 입력하세요"
                 value={question}
@@ -66,8 +72,10 @@ const ChatBot = () => {
             </InputContainer>
 
             {/* 답변과 에러 메시지 표시 */}
-            {answer && <ResultBox dangerouslySetInnerHTML={{ __html: answer }} />}
-            {error && <ErrorBox>{error}</ErrorBox>}
+            <pre>
+              {answer && <ResultBox dangerouslySetInnerHTML={{ __html: answer }} />}
+              {error && <ErrorBox>{error}</ErrorBox>}
+            </pre>
           </MessageBox>
         </ChatMain>
       </ChatBotContainer>
@@ -178,20 +186,9 @@ const ButtonGroup = styled.div`
   align-items: center;
 `;
 
-const MenuButton = styled.button`
-  background: ${({ theme }) => theme.colors.primary || '#007bff'};
-  color: white;
-  border: none;
-  border-radius: 6px;
-  padding: 0.5rem 2rem;
-  font-size: 1.1rem;
-  cursor: pointer;
-  transition: background 0.2s;
-  max-width: 320px;
-
-  &:hover {
-    background: ${({ theme }) => theme.colors.secondary || '#0056b3'};
-  }
+const HeadDiv = styled.div`
+display: flex;
+flex-direction: column;
 `;
 
 const LeaveButton = styled.button`
