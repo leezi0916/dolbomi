@@ -159,7 +159,7 @@ const HireDetail = () => {
       setproposerList(data.proposers);
     };
     getList();
-  }, [user, hiringNo, setValue]);
+  }, [hiringNo, setValue]);
 
   // jobOpening 데이터가 아직 로드되지 않았다면 로딩 상태를 표시
   if (!jobOpening) {
@@ -359,7 +359,7 @@ const HireDetail = () => {
             <SubmitButton1 type="button" disabled $disabled>
               신청취소(모집마감)
             </SubmitButton1>
-          ) : applicationStatus.isMatched ? (
+          ) : applicationStatus.isMatched || applicationStatus.status === 'Y' ? (
             <SubmitButton1 type="button" disabled $disabled>
               매칭 완료
             </SubmitButton1>
