@@ -3,7 +3,6 @@ import { Button, Title } from './Auth.styles';
 import { MainMoveButton, MainSubmitButton } from './common/Button';
 import { media } from '../styles/MediaQueries';
 
-
 export const CardWrap = styled.div`
   display: ${({ list }) => (list?.length > 0 ? 'grid' : 'flex')};
   width: 100%;
@@ -51,7 +50,6 @@ export const TextWrap = styled.div`
   align-items: center;
 
   img {
-   
     width: 18px;
     height: 18px;
   }
@@ -83,7 +81,6 @@ export const EndBtn = styled.button`
   width: 45%;
 `;
 
-
 //보호자 버전 styeled
 
 export const ProfileCardPair = styled.div`
@@ -109,22 +106,20 @@ export const ProfileCardPair = styled.div`
 /*====== 환자 스타일 =====*/
 export const ProfileCard = styled.div`
   display: ${({ isOpen }) => (isOpen ? 'none' : 'flex')};
-  
 
-align-items: center;
-padding: ${({ theme }) => theme.spacing[6]};
-background-color: ${({ theme }) => theme.colors.white};
-border-bottom: 1px solid ${({ theme }) => theme.colors.gray[5]};
+  align-items: center;
+  padding: ${({ theme }) => theme.spacing[6]};
+  background-color: ${({ theme }) => theme.colors.white};
+  border-bottom: 1px solid ${({ theme }) => theme.colors.gray[5]};
 
-gap: ${({ theme }) => theme.spacing[8]};
-width: 100%; /* ProfileCardPair 내에서 각 카드의 너비 (gap을 고려하여 50%보다 약간 작게) */
-box-sizing: border-box; /* 패딩과 보더가 너비에 포함되도록 */
+  gap: ${({ theme }) => theme.spacing[8]};
+  width: 100%; /* ProfileCardPair 내에서 각 카드의 너비 (gap을 고려하여 50%보다 약간 작게) */
+  box-sizing: border-box; /* 패딩과 보더가 너비에 포함되도록 */
 
-&:hover {
-  background-color: #fcfaf0;
-  box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
-}
-
+  &:hover {
+    background-color: #fcfaf0;
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+  }
 `;
 
 // 프로필 이미지 스타일
@@ -186,10 +181,10 @@ export const RightLineDiv = styled.div`
 `;
 
 export const TestBtn = styled(InfoButton)`
-margin: auto 5px;
-cursor: pointer;
+  margin: auto 5px;
+  cursor: pointer;
 
-${media.md`
+  ${media.md`
       display: none;
   `}
 `;
@@ -198,7 +193,7 @@ ${media.md`
 export const CargiverWrap = styled.div`
   display: none;
   justify-content: center;
-  flex-direction : column;
+  flex-direction: column;
   gap: ${({ theme }) => theme.spacing[5]};
   height: fit-content;
   align-items: center;
@@ -235,7 +230,6 @@ export const CaregiverDiv = styled.div`
   flex-direction: column;
   gap: ${({ theme }) => theme.spacing[8]};
 
-
   ${media.md`  // 예: 768px 이하일 때
     justify-content: center;
     flex-direction: row;
@@ -260,7 +254,7 @@ export const ProfileTextStrong = styled.strong`
 
 export const CargiverButtonDiv = styled.div`
   display: flex;
-  flex-direction : column;
+  flex-direction: column;
   gap: ${({ theme }) => theme.spacing[4]};
 
   ${media.md`  // 예: 768px 이하일 때

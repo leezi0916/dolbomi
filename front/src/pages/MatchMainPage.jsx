@@ -74,11 +74,10 @@ const MatchMainPage = () => {
   // 자식컴포넌트로 보내줌
   // 간병인보기 버튼
   const handleClick = (patNo) => {
-
     setSelectedPatNo(patNo);
     getCareGiver(patNo);
     setIsOpen(true);
-    console.log("확인:",selectedPatNo)
+    console.log('확인:', selectedPatNo);
   };
   const handleClose = (patNo) => {
     setSelectedPatNo(patNo);
@@ -156,7 +155,7 @@ const MatchMainPage = () => {
               ></TestPatientCard>
             )}
           </RightLineDiv>
-         {/* 모바일용 간병인 상세보기 */}
+          {/* 모바일용 간병인 상세보기 */}
           {isOpen ? (
             <PatientCardGroup
               patient={userPatients.find((p) => p.patNo === selectedPatNo)}
@@ -195,6 +194,7 @@ const MatchMainPage = () => {
                     handleEndDateChange={handleEndDateChange}
                     selectedPatNo={selectedPatNo}
                   ></MatchCareGiverCard>
+
                   {activeTab === 'matched' && (
                     <PageWrapper>
                       <Paging
@@ -231,8 +231,7 @@ const HeadSection = styled(Section)`
   height: auto;
   justify-content: space-between;
   flex-direction: column;
-  padding: ${({ theme }) => theme.spacing[4]} ${({ theme }) => theme.spacing[4]} ${({ theme }) => theme.spacing[2]}
-    ${({ theme }) => theme.spacing[4]};
+  padding: ${({ theme }) => theme.spacing[4]} ${({ theme }) => theme.spacing[4]} ${({ theme }) => theme.spacing[2]};
   align-items: flex-start;
 
   ${media.md` /* 768px 이상 (태블릿/데스크톱) */
@@ -298,7 +297,7 @@ const MatchSection = styled(Section)`
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: ${({ theme }) => theme.spacing[8]} ${({ theme }) => theme.spacing[2]};
+  padding: ${({ theme }) => theme.spacing[8]} ${({ theme }) => theme.spacing[2]} 0;
   border: 1px solid ${({ theme }) => theme.colors.gray[5]};
 `;
 

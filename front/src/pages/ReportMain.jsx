@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Section } from '../styles/common/Container';
 import styled from 'styled-components';
-import { BoardItemTop, BoardTop, BorderDiv, Button, Left, Right } from '../styles/common/Board';
+import { BoardItemTop, BoardTop, BorderDiv, Button, Left, Right, SearchBoard } from '../styles/common/Board';
 import { reportService } from '../api/report';
 import { toast } from 'react-toastify';
 import { Link, useNavigate, useParams } from 'react-router-dom';
@@ -92,6 +92,8 @@ const ReportMain = () => {
     return null;
   }
 
+  const path = userStatus ? 'guardian' : 'caregiver';
+
   return (
     <Wrap>
       <MainTitle>돌봄 대상자 정보</MainTitle>
@@ -106,11 +108,12 @@ const ReportMain = () => {
         <SubTitle>몸무게 : {pat.patWeight}</SubTitle>
         <br />
         <Title>건강 상태</Title>
+
         <SubTitle>{pat.patContent}</SubTitle>
       </Container>
       <br />
       <Board>
-        <BoardTop>
+        <BoardTitle>
           <ListTitle>진단 일지 목록</ListTitle>
           <Rights>
             <Filters>
@@ -134,7 +137,7 @@ const ReportMain = () => {
               </Fillter>
             </Filters>
             <Buttons>
-              <SubmitButton onClick={() => navigate(-1)}>
+              <SubmitButton onClick={() => navigate(`/${path}/matchpage`)}>
                 <ButtonText>목록으로</ButtonText>
               </SubmitButton>
 
@@ -147,17 +150,18 @@ const ReportMain = () => {
               )}
             </Buttons>
           </Rights>
-        </BoardTop>
-        <BoardItemTop>
+        </BoardTitle>
+
+        <BoardItemTitle>
           <div>No</div>
           <div>제목</div>
           <div>작성자</div>
           <div>작성 일자</div>
-        </BoardItemTop>
+        </BoardItemTitle>
         {reportList && reportList.length > 0 ? (
           reportList.map((report, index) => (
             <BoardItem key={report.reportNo} to={`/report/detail/${report.reportNo}`} state={{ report }}>
-              <div>{reportList.length - index}</div>
+              <div>{index + 1}</div>
               <div>{report.reportTitle}</div>
               <div>{report.userName}</div>
               <div>{report.createDate.slice(0, 10)}</div>
@@ -168,8 +172,6 @@ const ReportMain = () => {
             <div>진단일지가 없습니다.</div>
           </BoardItemTop>
         )}
-
-        <BorderDiv />
       </Board>
     </Wrap>
   );
@@ -216,9 +218,20 @@ const Board = styled.div`
   }
 `;
 
+const BoardTitle = styled(BoardTop)`
+  border-bottom: 0;
+`;
+
+const BoardItemTitle = styled(BoardItemTop)`
+  border-bottom: 0;
+  background-color: #feeee4;
+  box-shadow: ${({ theme }) => theme.shadows.base};
+  font-weight: ${({ theme }) => theme.fontWeights.bold};
+`;
 const ListTitle = styled(Left)`
   font-size: ${({ theme }) => theme.fontSizes.xl};
   font-weight: ${({ theme }) => theme.fontWeights.bold};
+  white-space: nowrap;
 `;
 
 const Fillter = styled.select`
@@ -235,11 +248,17 @@ const Option = styled.option``;
 const BoardItem = styled(Link)`
   width: 100%;
   display: flex;
-  padding-top: 2px;
-  padding-bottom: 2px;
-  border-bottom: 1px solid ${({ theme }) => theme.colors.gray[5]};
+  padding-top: 5px;
+  padding-bottom: 5px;
+  margin: 5px 0;
+  /* border-bottom: 1px solid ${({ theme }) => theme.colors.gray[5]}; */
+  transition: all 0.2s ease-in-out;
   > div {
     flex: 1;
+  }
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: ${({ theme }) => theme.shadows.md};
   }
 `;
 

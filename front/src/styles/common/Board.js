@@ -138,6 +138,7 @@ export const SearchBoard = styled.div`
     }
   }
 `;
+
 export const Board = styled.div`
   > * {
     display: grid;

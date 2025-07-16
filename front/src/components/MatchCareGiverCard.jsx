@@ -30,9 +30,7 @@ const MatchCareGiverCard = ({
   handleSearchClick,
   selectedPatNo,
 }) => {
-
-
-console.log("확인 no",selectedPatNo)
+  console.log('확인 no', selectedPatNo);
   let currentList;
 
   if (activeTab === 'matching') {
@@ -40,7 +38,6 @@ console.log("확인 no",selectedPatNo)
   } else if (activeTab === 'matched') {
     currentList = endedCaregiverList;
   }
-
 
   const CLOUDFRONT_URL = 'https://d20jnum8mfke0j.cloudfront.net/';
   //이미지 경로 갖고오고 없다면 기본이미지
@@ -67,7 +64,7 @@ console.log("확인 no",selectedPatNo)
       )}
 
       {currentList && currentList.length > 0 ? (
-        currentList.map((care,index) => (
+        currentList.map((care, index) => (
           <CargiverWrap key={index}>
             <CaregiverDiv>
               <CaregiverImg
@@ -102,25 +99,24 @@ console.log("확인 no",selectedPatNo)
                 간병인 정보
               </CareLogButton>
               {activeTab === 'matched' && (
-              <ReportButton
-                style={{ visibility: care.reviewNo ? 'hidden' : 'visible' }}
-                onClick={() => {
-                  console.log('selected care:', care);
-                  setSelectedCaregiver(care); // 선택한 매칭 정보 저장
-                  setShowReviewModal(true); // 모달 표시
-                }}
-              >
-                리뷰 작성
-              </ReportButton>
-                 )}
-
+                <ReportButton
+                  style={{ visibility: care.reviewNo ? 'hidden' : 'visible' }}
+                  onClick={() => {
+                    console.log('selected care:', care);
+                    setSelectedCaregiver(care); // 선택한 매칭 정보 저장
+                    setShowReviewModal(true); // 모달 표시
+                  }}
+                >
+                  리뷰 작성
+                </ReportButton>
+              )}
             </CargiverButtonDiv>
           </CargiverWrap>
         ))
-      ) : (
-        selectedPatNo?
+      ) : selectedPatNo ? (
         <EmptyMessage>매칭된 간병이 없습니다.</EmptyMessage>
-        : <EmptyMessage>환자를 선택해주세요</EmptyMessage>
+      ) : (
+        <EmptyMessage>환자를 선택해주세요</EmptyMessage>
       )}
     </div>
   );
@@ -130,6 +126,7 @@ export default MatchCareGiverCard;
 
 const EmptyMessage = styled.p`
   width: 100%;
+  height: 140px;
   text-align: center;
   color: ${({ theme }) => theme.colors.gray[3]};
   font-size: ${({ theme }) => theme.fontSizes.base};

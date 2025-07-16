@@ -30,7 +30,7 @@ const ReportDetail = () => {
       navigate(-1);
     } catch (error) {
       console.error(error);
-      const errorMessage = '리뷰를 불러오는데 실패했습니다.';
+      const errorMessage = '일지를 불러오는데 실패했습니다.';
       setError(errorMessage);
       toast.error(errorMessage);
     }
@@ -47,7 +47,7 @@ const ReportDetail = () => {
       navigate(-1);
     } catch (error) {
       console.error(error);
-      const errorMessage = '리뷰를 삭제하는데 실패했습니다.';
+      const errorMessage = '일지를 삭제하는데 실패했습니다.';
       setError(errorMessage);
       toast.error(errorMessage);
     }
