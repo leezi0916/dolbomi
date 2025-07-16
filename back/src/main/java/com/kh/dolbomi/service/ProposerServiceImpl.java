@@ -100,8 +100,8 @@ public class ProposerServiceImpl implements ProposerService {
 
     @Transactional(readOnly = true)
     @Override
-    public boolean findProposerNo(Long hiringNo, Long caregiverNo) {
-        return proposerRepository.existsByHiringNoAndCaregiverNo(hiringNo, caregiverNo);
+    public StatusEnum.Status findProposerStatus(Long hiringNo, Long caregiverNo) {
+        return proposerRepository.findStatusByHiringNoAndCaregiverNo(hiringNo, caregiverNo);
     }
 
     @Override

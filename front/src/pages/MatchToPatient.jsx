@@ -20,13 +20,14 @@ import {
   EndBtn,
 } from '../styles/MatchingCard';
 import { media } from '../styles/MediaQueries';
+import useUserStatusStore from '../store/userStatusStore';
 
 const MatchToPatient = () => {
   const [activeTab, setActiveTab] = useState('matching');
   const { user } = useUserStore();
   const [patientList, setPatientList] = useState();
   const navigate = useNavigate();
-
+  const { setUserStatus } = useUserStatusStore();
   // 진행중 매칭 관련
   const [caregiverList, setCareGiverList] = useState([]);
   const [userPatients, setUserpatients] = useState([]);
@@ -43,7 +44,9 @@ const MatchToPatient = () => {
         alert('로그인이 필요한 서비스입니다.');
         return;
       }
+
       try {
+        setUserStatus(false);
         const patientsList = await patientService.getPatients(user.userNo);
         setUserpatients(patientsList);
       } catch (err) {
@@ -236,7 +239,9 @@ const MatchToPatient = () => {
             </>
           )}
         </CardWrap>
-        <Paging currentPage={endedCurrentPage} totalPage={endedTotalPage} chagneCurrentPage={chagneCurrentPage} />
+        {activeTab === 'matched' && (
+          <Paging currentPage={endedCurrentPage} totalPage={endedTotalPage} chagneCurrentPage={chagneCurrentPage} />
+        )}
       </MatchSection>
     </>
   );
@@ -246,8 +251,12 @@ const HeadSection = styled(Section)`
   display: flex;
   height: auto;
   justify-content: space-between;
+<<<<<<< HEAD
   padding: ${({ theme }) => theme.spacing[4]} ${({ theme }) => theme.spacing[4]}
     ${({ theme }) => theme.spacing[2]}${({ theme }) => theme.spacing[4]};
+=======
+  padding: ${({ theme }) => theme.spacing[4]} ${({ theme }) => theme.spacing[4]} ${({ theme }) => theme.spacing[2]} ${({ theme }) => theme.spacing[4]};
+>>>>>>> c20c21ed558b4b32187e3cb0167b23c76d238bc2
   align-items: flex-start;
   ${media.md` /* 768px 이상 (태블릿/데스크톱) */
     padding: 40px 16px 10px 16px;
