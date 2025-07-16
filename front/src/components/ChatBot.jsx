@@ -205,7 +205,6 @@ const LogDiv = styled.div`
 `;
 const LogoImg = styled.img`
   width: 40px;
-  margin-bottom: ${({ theme }) => theme.spacing[3]};
 `;
 
 const ResultBox = styled.div`
