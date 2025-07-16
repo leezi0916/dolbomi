@@ -113,6 +113,7 @@ const PatientUpdate = () => {
       }
 
       console.log(imagePath);
+     
       await patientService.updatePatient(patNo, {
         ...patient,
         ...data,

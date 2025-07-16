@@ -144,6 +144,7 @@ const EmptyMessage = styled.p`
 
 const Div = styled.div`
   display: flex;
+  justify-content: space-between;
   flex-direction: column;
 `;
 

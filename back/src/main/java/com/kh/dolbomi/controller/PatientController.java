@@ -48,6 +48,14 @@ public class PatientController {
             @PathVariable Long patNo,
 
             @RequestBody PatientDto.Update updatePatDto) {
+
+        List<String> tags = updatePatDto.getDisease_tags();
+        if (tags != null) {
+            for (String tag : tags) {
+                System.out.println(" - " + tag);
+            }
+        }
+
         return ResponseEntity.ok(patientService.updatePatient(patNo, updatePatDto));
 
 

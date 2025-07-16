@@ -63,6 +63,7 @@ import ChatHome from './pages/chat/ChatHome';
 import AiChat from './components/chat/AiChat';
 
 import usePreventWheelOnNumberInput from './hooks/usePreventWheelOnNumberInput';
+import MatchToCareGiver from './pages/MatchToCareGiver';
 
 function AppRoutes() {
   const navigate = useNavigate();
@@ -136,8 +137,8 @@ function AppRoutes() {
 
           {/* 테스트용 임시 */}
           <Route path="/file" element={<FileUpload />} />
-
-          <Route path="/test" element={<AiModal />}></Route>
+<Route path='/test/test' element={<MatchToCareGiver></MatchToCareGiver>}></Route>
+          <Route path="/test" element={<AiModal/> } />
           <Route path="/chatbot" element={<AiChat />}></Route>
         </Routes>
       </Layout>
