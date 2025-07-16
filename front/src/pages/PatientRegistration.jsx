@@ -43,10 +43,10 @@ const PatientRegistration = () => {
   useEffect(() => {
     // 일단 접근가능하게 로그인 구현 되면 user -> !user 바꿀것
     if (!user) {
-      alert('로그인 후 이용해주세요');
+      alert('로그인이 필요한 서비스입니다.');
       navigate('/guardian');
     }
-  }, [user]);
+  }, []);
 
   // 'gender' 필드의 현재 값을 watch하여 라디오 버튼의 checked 상태를 제어합니다.
   const currentGender = watch('patGender');
@@ -129,7 +129,6 @@ const PatientRegistration = () => {
                 id="patAge"
                 min="0"
                 placeholder="나이를 입력해주세요"
-     
                 {...register('patAge')}
                 $error={errors.patAge}
               />
@@ -206,13 +205,20 @@ const PatientRegistration = () => {
               <Label htmlFor="weight">몸무게</Label>
 
               <HeightWegithDiv>
-                <Input type="number" step="0.01" id="patHeight"   {...register('patHeight')} $error={errors.patHeight} />
+                <Input type="number" step="0.01" id="patHeight" {...register('patHeight')} $error={errors.patHeight} />
 
                 <span>cm</span>
               </HeightWegithDiv>
 
               <HeightWegithDiv>
-                <Input type="number" step="0.01" id="patWeight"   onWheel={(e) => e.target.blur()} {...register('patWeight')} $error={errors.patWeight} />
+                <Input
+                  type="number"
+                  step="0.01"
+                  id="patWeight"
+                  onWheel={(e) => e.target.blur()}
+                  {...register('patWeight')}
+                  $error={errors.patWeight}
+                />
 
                 <span>kg</span>
               </HeightWegithDiv>

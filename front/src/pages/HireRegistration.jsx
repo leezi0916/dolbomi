@@ -43,7 +43,7 @@ const HireRegistration = () => {
   useEffect(() => {
     const fetchAll = async () => {
       if (!user) {
-        alert('로그인 후 이용해주세요');
+        alert('로그인이 필요한 서비스입니다.');
         navigate('/login');
         return;
       }

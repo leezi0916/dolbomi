@@ -22,7 +22,7 @@ const ResumeManagement = () => {
   useEffect(() => {
     const fetchAll = async () => {
       if (!user) {
-        alert('로그인 후 이용해주세요');
+        alert('로그인이 필요한 서비스입니다.');
         navigate('/');
         return;
       }
@@ -56,12 +56,11 @@ const ResumeManagement = () => {
 
     try {
       await jobSeekingService.updateResume(resumeNo, { status: newStatus });
-      if(newStatus === "Y"){
+      if (newStatus === 'Y') {
         toast.success('이력서가 게시되었습니다.');
-      }else{
+      } else {
         toast.success('이력서가 회수되었습니다.');
       }
-    
 
       setResumeLists((prev) =>
         prev.map((resume) => (resume.resumeNo === resumeNo ? { ...resume, status: newStatus } : resume))
