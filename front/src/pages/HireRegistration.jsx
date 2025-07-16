@@ -61,7 +61,7 @@ const HireRegistration = () => {
       }
     };
     fetchAll();
-  }, [user]);
+  }, []);
 
   const getPatient = async (patNo) => {
     // patNo가 빈값이면 patient도 초기화
