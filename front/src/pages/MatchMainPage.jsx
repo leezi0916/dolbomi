@@ -9,13 +9,12 @@ import { useNavigate } from 'react-router-dom';
 import { patientService } from '../api/patient';
 import PatientCardGroup from '../components/PatientCardGroup';
 import TestPatientCard from '../components/TestPatinetCard';
-import {  ProfileCardPair, RightLineDiv } from '../styles/MatchingCard';
+import { ProfileCardPair, RightLineDiv } from '../styles/MatchingCard';
 import MatchCareGiverCard from '../components/MatchCareGiverCard';
 import SearchDate from '../components/SearchDate';
 import Paging from '../components/Paging';
 import ReviewModal from '../components/ReviewModal';
 import useUserStatusStore from '../store/userStatusStore';
-
 
 const MatchMainPage = () => {
   const { user } = useUserStore();
@@ -104,7 +103,6 @@ const MatchMainPage = () => {
     getCareGiver,
     getEndedMatchingList,
     handleEndedPageChange,
-    getSearchDateList,
     handleSearchClick,
     setSelectedPatNo,
     handleStartDateChange,
@@ -142,7 +140,6 @@ const MatchMainPage = () => {
         </TitleDiv>
       </HeadSection>
 
-
       <ProfileCardPair>
         <RightLineDiv>
           {/* 공통 환자목록이 보임 */}
@@ -153,7 +150,6 @@ const MatchMainPage = () => {
               patient={userPatients}
               getCareGiver={getCareGiver}
               getEndedMatchingList={getEndedMatchingList}
-
               activeTab={activeTab}
               handleClick={handleClick}
               setSelectedPatNo={setSelectedPatNo}
@@ -205,7 +201,6 @@ const MatchMainPage = () => {
                   endedTotalPage={endedTotalPage}
                   handleEndedPageChange={handleEndedPageChange}
                 ></MatchCareGiverCard>
-              
               </>
             )}
           </>
@@ -298,7 +293,7 @@ const MatchSection = styled(Section)`
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: ${({ theme }) => theme.spacing[8]} ${({ theme }) => theme.spacing[2]};
+  padding: ${({ theme }) => theme.spacing[8]} ${({ theme }) => theme.spacing[2]} 0;
   border: 1px solid ${({ theme }) => theme.colors.gray[5]};
 `;
 

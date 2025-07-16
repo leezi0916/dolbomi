@@ -65,7 +65,6 @@ const Header = ({ openChat }) => {
       setUserStatus(userStatus);
 
       // 최초 로그인시에만 토스트 띄우기 -> 일반 로그인과 다르게 리다이렉트를 받기때문에 이렇게 설계
-
       const socialLoginToast = localStorage.getItem('socialLoginToast');
       const normalLoginToast = localStorage.getItem('normalLoginToast');
 
@@ -123,7 +122,7 @@ const Header = ({ openChat }) => {
       <HeaderWrapper>
         <Logo to={userStatus ? '/' : '/caregiver'}>
           <img src="/src/assets/mainImg/logo.png" />
-          {SITE_CONFIG.name}
+          <LogoName>{SITE_CONFIG.name}</LogoName>
         </Logo>
 
         {/* 모바일환경에서의 nav */}
@@ -537,6 +536,7 @@ const ToggleItem = styled.div`
   color: ${({ $userStatus, theme }) => ($userStatus ? theme.colors.white : theme.colors.gray[3])};
   background: ${({ $userStatus, theme }) => ($userStatus ? theme.colors.primary : 'transparent')};
   cursor: pointer;
+  user-select: none;
 
   ${media.lg`
     font-size:${({ theme }) => theme.fontSizes.base};
@@ -701,5 +701,10 @@ const MobileIcon = styled.img`
   width: 24px;
   height: 24px;
   margin: 0 auto;
+`;
+
+const LogoName = styled.div`
+  white-space: nowrap;
+  margin-right: 20px;
 `;
 export default Header;

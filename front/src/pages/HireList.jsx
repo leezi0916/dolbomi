@@ -259,7 +259,7 @@ const HireList = () => {
           </Search>
           {visible && (
             <Detail $visible={visible}>
-              <Item>
+              <Box0>
                 <RegionDiv>
                   {displayMode === 'region' && region.length > 0
                     ? region.map((region) => (
@@ -278,8 +278,6 @@ const HireList = () => {
                       ))
                     : displayMode === 'region' && <p>로딩중...</p>}
                 </RegionDiv>
-              </Item>
-              <Item>
                 <RegionDiv>
                   {displayMode === 'sgg' && sgg.length > 0
                     ? sgg.map((sgg) => (
@@ -300,15 +298,15 @@ const HireList = () => {
                     : displayMode === 'sgg' &&
                       selectedRegion && <p>{selectedRegion.addrName}에 해당하는 시군구가 없습니다.</p>}
                 </RegionDiv>
-              </Item>
-              <Item>
-                <RegionBtn onClick={handleGetRegionClick}>지역 초기화</RegionBtn>
-                {selectedRegion && <p>지역 :{selectedSgg ? selectedSgg.fullAddr : selectedRegion.fullAddr}</p>}
-              </Item>
+              </Box0>
 
-              <SearchSelect>
-                <DateBox>
-                  <DateContentBox>
+              <Box1>
+                <div>
+                  <RegionBtn onClick={handleGetRegionClick}>지역 초기화</RegionBtn>
+                  {selectedRegion && <p>지역 :{selectedSgg ? selectedSgg.fullAddr : selectedRegion.fullAddr}</p>}
+                </div>
+                <div>
+                  <div>
                     <SearchTitle> 시작일: </SearchTitle>
                     <DateInput
                       selected={internalStartDate}
@@ -318,8 +316,8 @@ const HireList = () => {
                       placeholderText="시작일 선택"
                       isClearable
                     />
-                  </DateContentBox>
-                  <DateContentBox>
+                  </div>
+                  <div>
                     <SearchTitle> 종료일: </SearchTitle>
                     <DateInput
                       selected={internalEndDate} // Date 객체를 받음
@@ -329,19 +327,18 @@ const HireList = () => {
                       placeholderText="종료일 선택"
                       isClearable // x 버튼으로 날짜 지우기 허용
                     />
-                  </DateContentBox>
-                </DateBox>
-
-                <Items>
-                  <Item>
+                  </div>
+                </div>
+                <div>
+                  <div>
                     <SearchTitle>근무유형: </SearchTitle>
                     <SelectBox name="home" value={data.home} onChange={dataInfo}>
                       <option value="">전체</option>
                       <option value="Y">입주</option>
                       <option value="N">출퇴근</option>
                     </SelectBox>
-                  </Item>
-                  <Item>
+                  </div>
+                  <div>
                     <SearchTitle>최소 시급: </SearchTitle>
                     <ACCOUNT
                       name="account"
@@ -352,9 +349,11 @@ const HireList = () => {
                       value={data.account}
                       onChange={dataInfo}
                     />
-                  </Item>
-                </Items>
-                <RadioGroup2>
+                  </div>
+                </div>
+              </Box1>
+              <Box2>
+                <div>
                   <SearchTitle>성별:</SearchTitle>
                   <RadioWrapper>
                     {/* checked prop 전달 */}
@@ -391,8 +390,8 @@ const HireList = () => {
                     />
                     <Label2 htmlFor="anyGender">성별 무관</Label2>
                   </RadioWrapper>
-                </RadioGroup2>
-              </SearchSelect>
+                </div>
+              </Box2>
             </Detail>
           )}
         </SearchContainer2>
@@ -440,7 +439,6 @@ const HireList = () => {
                   </AccuontText>
                 </LocationWage>
                 <AccommodationInfo>
-                  {' '}
                   근무유형
                   {hire.careStatus ? <CareStatusTag>입주형 </CareStatusTag> : <CareStatusTag>출퇴근형</CareStatusTag>}
                 </AccommodationInfo>
@@ -490,11 +488,10 @@ const DetailBtn = styled.p`
 `;
 
 const Detail = styled.div`
-  margin-top: 30px;
+  margin-top: 20px;
   user-select: none;
   display: ${({ $visible }) => ($visible ? 'flex' : 'none')};
   flex-direction: column;
-  gap: 10px;
 `;
 
 const Item = styled.div`
@@ -505,53 +502,108 @@ const Item = styled.div`
 const RegionDiv = styled.div`
   display: flex;
   flex-wrap: wrap;
+  justify-content: center;
 `;
-
 const RegionLabel = styled.label`
   display: flex;
   align-items: center;
   margin-bottom: 10px;
   gap: 10px;
   padding-left: 10px;
+
+  // 'checked' prop을 받아서 스타일을 동적으로 적용합니다.
+  input[type='radio'] {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    outline: none;
+    cursor: pointer;
+    position: relative;
+    transition: all 0.2s ease-in-out;
+    background-color: white;
+    // RadioWrapper에서 전달받은 checked prop 사용
+    border: 1px solid ${({ theme, checked }) => (checked ? theme.colors.primary : theme.colors.gray[4])};
+  }
+
+  input[type='radio']::before {
+    content: '';
+    display: block;
+    width: 10px;
+    height: 10px;
+    background-color: ${({ theme }) => theme.colors.primary};
+    border-radius: 50%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0);
+    transition: transform 0.2s ease-in-out;
+  }
+
+  input[type='radio']:checked::before {
+    transform: translate(-50%, -50%) scale(1);
+  }
+
+  label {
+    font-size: ${({ theme }) => theme.fontSizes.base};
+    color: ${({ theme }) => theme.colors.gray[1]};
+    cursor: pointer;
+  }
 `;
 
 const RegionBtn = styled.button`
-  border: 1px solid ${({ theme }) => theme.colors.gray[3]};
   border-radius: ${({ theme }) => theme.borderRadius.full};
   background-color: ${({ theme }) => theme.colors.secondary};
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* 기본 그림자 */
-  margin: 0 100px 10px 0;
-
+  color: ${({ theme }) => theme.colors.white};
+  font-weight: ${({ theme }) => theme.fontWeights.semibold};
+  margin: 10px 20px;
   &:hover {
     transform: scale(0.95); /* 5% 확대 */
   }
 `;
-
-const SearchSelect = styled.div`
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  grid-auto-rows: min-content;
-  row-gap: 20px;
+const Box0 = styled.div`
+  margin: auto;
 `;
-
-const DateBox = styled.div`
-  margin-top: 20px;
-  display: flex;
-  grid-column: span 4;
-  width: 100%;
-  gap: 20px;
+const Box1 = styled.div`
+  margin: auto;
+  > div {
+    width: auto;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    > div {
+      display: grid;
+      grid-template-columns: 80px 240px;
+      margin-top: 10px;
+      > span {
+        margin-right: 10px;
+      }
+    }
+    @media (max-width: 768px) {
+      width: 320px;
+    }
+  }
 `;
+const Box2 = styled.div`
+  margin: auto;
+  > div {
+    width: 640px;
+    display: grid;
+    grid-template-columns: 80px repeat(2, 70px) 100px;
+    margin-top: 10px;
 
-const DateContentBox = styled.div`
-  display: flex;
-  align-items: center;
-  width: 100%;
+    > * {
+      margin-right: 10px;
+    }
+    @media (max-width: 773px) {
+      width: auto;
+    }
+  }
 `;
 
 const SearchTitle = styled.span`
   text-align: end;
-  margin: 0 20px 0 5px;
-  width: 80px;
   font-weight: ${({ theme }) => theme.fontWeights.bold};
   color: ${({ theme }) => theme.colors.gray[1]};
 `;
@@ -606,7 +658,11 @@ const RadioGroup2 = styled.div`
 const RadioWrapper = styled.div`
   display: flex;
   align-items: center;
+<<<<<<< HEAD
+
+=======
   gap: 0;
+>>>>>>> c20c21ed558b4b32187e3cb0167b23c76d238bc2
   // 'checked' prop을 받아서 스타일을 동적으로 적용합니다.
   input[type='radio'] {
     appearance: none;
@@ -649,7 +705,7 @@ const RadioWrapper = styled.div`
 `;
 
 const Label = styled.label`
-  padding-left: 10px;
+  padding-left: 4px;
   width: 40px;
   text-align: center;
 `;

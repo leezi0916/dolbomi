@@ -4,6 +4,7 @@ import jakarta.annotation.PostConstruct;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import lombok.RequiredArgsConstructor;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.model.ChatModel;
 import org.springframework.ai.document.Document;
@@ -23,6 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/rag")
 @CrossOrigin(origins = "http://localhost:5173")
+@RequiredArgsConstructor
 public class RAGController {
 
     @Autowired
@@ -38,6 +40,7 @@ public class RAGController {
     SpringAI의 vectorStore 인터페이스를 구현한 인메모리 벡터 스토어.
     문서를 백터로 변환하여 메모리에 저장하고, 유사도 검색을 수행
      */
+
 
     private VectorStore vectorStore;
 

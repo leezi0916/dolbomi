@@ -136,7 +136,7 @@ const HireDetail = () => {
         }
 
         setRecruitmentClosed(data.hiringStatus === 'N');
-        setValue('hiringStatus', data.hiringStatus);
+        setValue('hiringStatus', data.hiringStatus );
         setValue('hiringTitle', data.hiringTitle);
         setValue('hiringContent', data.hiringContent);
         setValue('account', data.account);
