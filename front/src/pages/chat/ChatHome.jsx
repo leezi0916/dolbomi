@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { getMyChatRooms } from '../../api/chatApi';
 import Draggable from 'react-draggable';
 import ChatRoom from './ChatRoom';
+import useUserStore from '../../store/userStore';
 
 const Container = styled.div`
   width: 400px;
@@ -127,6 +128,7 @@ const ChatHome = ({ onClose }) => {
   const [chatList, setChatList] = useState([]);
   // 현재 선택된 채팅방 ID를 관리. null이면 목록, 값이 있으면 해당 채팅방을 표시
   const [currentRoomId, setCurrentRoomId] = useState(null);
+
 
   const nodeRef = useRef(null);
 
