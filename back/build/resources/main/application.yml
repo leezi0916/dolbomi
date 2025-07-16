@@ -11,7 +11,7 @@ spring:
       on-profile: dev
 
   datasource:
-    url: jdbc:mysql://localhost:3306/tdb?useSSL=false&serverTimezone=Asia/Seoul&characterEncoding=UTF-8
+    url: jdbc:mysql://localhost:3306/final?useSSL=false&serverTimezone=Asia/Seoul&characterEncoding=UTF-8
     driver-class-name: com.mysql.cj.jdbc.Driver
     username: user01
     password: pass01
@@ -51,7 +51,7 @@ spring:
     host: smtp.gmail.com
     port: 587
     username: tmdghks605@gmail.com
-    password: "yorx vpgz lbgt fcep"
+    password: yorx vpgz lbgt fcep
     properties:
       mail:
         smtp:
@@ -73,6 +73,7 @@ jwt:
   secret: JaOmRTrD8ApXk2p/E5i04AxX6HdV3QCF0HntfC8Xmf3YW76APVb9xgTOffrCOC44Khjjb2/WZB3IxTRshBATbw==
   expiration: 3000
 
+#통계청 Devleoper OpenAPI
 sgis:
   consumer:
     key: c99f4eacee1f4cb78217
