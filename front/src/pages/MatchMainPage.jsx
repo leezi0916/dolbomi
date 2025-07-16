@@ -78,8 +78,7 @@ const MatchMainPage = () => {
   // 간병인보기 버튼
   const handleClick = (patNo) => {
     setSelectedPatNo(patNo);
-<<<<<<< HEAD
-
+    
     if (activeTab === 'matching') {
       getCareGiver(patNo);
       if (isMobile) {
