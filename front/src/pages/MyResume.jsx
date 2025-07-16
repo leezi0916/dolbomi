@@ -40,7 +40,7 @@ const MyResume = () => {
       }
     };
     fetchAll();
-  }, [user]);
+  }, []);
 
   useEffect(() => {
     if (careGiverResum) {

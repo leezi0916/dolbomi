@@ -3,6 +3,7 @@ package com.kh.dolbomi.service;
 import com.kh.dolbomi.dto.ProposerDto;
 import com.kh.dolbomi.dto.ProposerDto.Create;
 import com.kh.dolbomi.dto.ProposerDto.Response;
+import com.kh.dolbomi.enums.StatusEnum;
 import java.util.Map;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -13,7 +14,7 @@ public interface ProposerService {
     Long createProposer(Create createProposerDto);
 
 
-    boolean findProposerNo(Long hiringNo, Long caregiverNo);
+    StatusEnum.Status findProposerStatus(Long hiringNo, Long caregiverNo);
 
 
     void cancel(Long hiringNo, Long caregiverNo);

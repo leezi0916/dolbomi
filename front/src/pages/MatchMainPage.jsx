@@ -15,11 +15,12 @@ import SearchDate from '../components/SearchDate';
 import Paging from '../components/Paging';
 import ReviewModal from '../components/ReviewModal';
 import { isMatch } from 'date-fns';
+import useUserStatusStore from '../store/userStatusStore';
 
 const MatchMainPage = () => {
   const { user } = useUserStore();
   const navigate = useNavigate();
-
+  const { setUserStatus } = useUserStatusStore();
   // 매칭 / 매칭종료 상태 구분
   const [activeTab, setActiveTab] = useState('matching');
   const handleTabChange = (tab) => {
@@ -35,7 +36,9 @@ const MatchMainPage = () => {
         alert('로그인이 필요한 서비스입니다.');
         return;
       }
+
       try {
+        setUserStatus(true);
         const patientsList = await patientService.getPatients(user.userNo);
         setUserpatients(patientsList);
       } catch (err) {
