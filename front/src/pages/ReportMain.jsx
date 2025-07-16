@@ -223,6 +223,9 @@ const BoardTitle = styled(BoardTop)`
 `;
 
 const BoardItemTitle = styled(BoardItemTop)`
+  height: ${({ theme }) => theme.spacing[10]};
+  align-items: center;
+  margin-top: 10px;
   border-bottom: 0;
   background-color: #feeee4;
   box-shadow: ${({ theme }) => theme.shadows.base};
