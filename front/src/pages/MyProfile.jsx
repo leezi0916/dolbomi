@@ -37,7 +37,6 @@ const MyProfile = () => {
     age: '',
     gender: '',
     phone: '',
-    email: '',
     address: '',
   });
 
@@ -88,7 +87,6 @@ const MyProfile = () => {
             age: userProfileData.age || '',
             gender: userProfileData.gender || '',
             phone: userProfileData.phone || '',
-            email: userProfileData.email || '',
             address: userProfileData.address || '',
           });
 
@@ -129,7 +127,6 @@ const MyProfile = () => {
         userName: 'userName',
         age: 'age',
         phone: 'phone',
-        email: 'email',
         address: 'address',
       }[id] || id; // 매핑되지 않으면 id 그대로 사용
 
@@ -333,16 +330,7 @@ const MyProfile = () => {
             <Label htmlFor="phone">전화번호</Label>
             <Input type="text" id="phone" value={formData.phone} onChange={handleChange} />
           </InputGroup>
-          <InputGroup>
-            <Label htmlFor="email">이메일</Label>
-            <Input
-              type="email"
-              id="email"
-              value={formData.email}
-              onChange={handleChange}
-              disabled={!!profile?.socialType}
-            />
-          </InputGroup>
+
           <InputGroup>
             <Label htmlFor="address">주소</Label>
             <Row>

@@ -13,6 +13,7 @@ import {
   Img,
   BackBtn,
   BtnWrap,
+  NewTitle,
 } from '../styles/PatientRegistration';
 import { Label, Input, InputGroup, ErrorMessage } from '../styles/Auth.styles';
 import { usepatientRegistrationForm } from '../hooks/usePatientRegistrationForm';
@@ -25,6 +26,7 @@ import styled from 'styled-components';
 import PostcodeSearch from '../components/PostcodeSearch';
 import profileImg from '../assets/profileImg/img_환자소.png';
 import { getUploadUrl, uploadFileToS3, completeUpload } from '../api/fileApi';
+import { HiMiniPencilSquare } from 'react-icons/hi2';
 
 const PatientUpdate = () => {
   const { user, userStatus } = useUserStore();
@@ -59,7 +61,7 @@ const PatientUpdate = () => {
   // 환자 정보 가져오기
   useEffect(() => {
     if (!user) {
-      alert('로그인 후 이용해주세요');
+      alert('로그인이 필요한 서비스입니다.');
       return;
     }
     const fetchPatient = async () => {
@@ -83,7 +85,7 @@ const PatientUpdate = () => {
       }
     };
     fetchPatient();
-  }, [user, userStatus, patNo, setValue]);
+  }, [userStatus, patNo, setValue]);
 
   // 주소가 바뀌면 form 값에도 반영
   useEffect(() => {
@@ -172,19 +174,23 @@ const PatientUpdate = () => {
     <>
       <AuthContainer>
         <FromWrap>
-          <Title>돌봄 대상자 목록</Title>
-          <Img
-            src={getProfileImageUrl()}
-            alt="프로필 이미지"
-            onClick={handleImageClick}
-            style={{
-              width: '200px',
-              height: '200px',
-              objectFit: 'cover',
-              borderRadius: '50%',
-              cursor: 'pointer',
-            }}
-          />
+          <NewTitle>돌봄 대상자 상세</NewTitle>
+          <ProfileImageWrapper>
+            <ProfileImage>
+              <img
+                src={getProfileImageUrl(previewUrl)}
+                alt="프로필 이미지"
+                style={{
+                  width: '100%',
+                  height: '100%',
+                  objectFit: 'cover',
+                }}
+              />
+            </ProfileImage>
+            <EditIcon onClick={handleImageClick}>
+              <HiMiniPencilSquare size={30} />
+            </EditIcon>
+          </ProfileImageWrapper>
           <input type="file" ref={inputRef} style={{ display: 'none' }} accept="image/*" onChange={handleFileChange} />
           <GridForm onSubmit={handleSubmit(onSubmit)}>
             <GridInerContainer>
@@ -314,6 +320,27 @@ const PatientUpdate = () => {
   );
 };
 
+const ProfileImageWrapper = styled.div`
+  position: relative;
+  width: 200px; /* 원하는 크기로 조절 */
+  height: 200px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto;
+  margin-bottom: 40px;
+`;
+
+const ProfileImage = styled.div`
+  width: 200px;
+  height: 200px;
+  background-color: ${({ theme }) => theme.colors.gray[5]};
+  border-radius: 50%;
+
+  overflow: hidden;
+  cursor: pointer;
+`;
+
 const Row = styled.div`
   display: flex;
   align-items: center;
@@ -322,6 +349,19 @@ const Row = styled.div`
 
 const AddressInput = styled(Input)`
   width: 100%;
+`;
+
+const EditIcon = styled.div`
+  position: absolute;
+  bottom: 5px;
+  right: 1px;
+  background: white;
+  border-radius: 50%;
+  padding: 5px;
+  display: flex;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+  padding: 10px;
+  cursor: pointer;
 `;
 
 export default PatientUpdate;

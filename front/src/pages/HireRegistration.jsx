@@ -43,7 +43,8 @@ const HireRegistration = () => {
   useEffect(() => {
     const fetchAll = async () => {
       if (!user) {
-        alert('로그인 후 이용해주세요');
+        alert('로그인이 필요한 서비스입니다.');
+        navigate('/login');
         return;
       }
 
@@ -60,7 +61,7 @@ const HireRegistration = () => {
       }
     };
     fetchAll();
-  }, [user]);
+  }, []);
 
   const getPatient = async (patNo) => {
     // patNo가 빈값이면 patient도 초기화

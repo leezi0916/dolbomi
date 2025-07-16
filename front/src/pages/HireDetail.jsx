@@ -77,6 +77,7 @@ const HireDetail = () => {
 
   //신청된 글인지 확인하는 기능
   useEffect(() => {
+    if (!user || !user.userNo || !hiringNo) return; // user 존재 여부 먼저 확인
     const checkProposer = async () => {
       try {
         const result = await proposerService.getProposerStatus({
@@ -91,7 +92,7 @@ const HireDetail = () => {
     };
 
     checkProposer();
-  }, [user.userNo, hiringNo]); // 의존성 배열
+  }, [user, hiringNo]); // 의존성 배열
 
   //지원 현황 관련
   const [proposerList, setproposerList] = useState([]);
@@ -121,7 +122,7 @@ const HireDetail = () => {
     // 로그인하지 않은 경우 이전 페이지로 이동
     if (!user) {
       alert('로그인이 필요한 서비스입니다.');
-      navigate(-1);
+      navigate('/login');
       return;
     }
 
@@ -130,7 +131,6 @@ const HireDetail = () => {
         const data = await hiringService.getHirngById(Number(hiringNo), user?.userNo);
         console.log(data);
         setJobOpening(data);
-
         if (data.applied && typeof data.applied === 'object') {
           setApplicationStatus(data.applied); // { isMatched: true, isProposed: true }
         }
@@ -159,7 +159,7 @@ const HireDetail = () => {
       setproposerList(data.proposers);
     };
     getList();
-  }, [user, hiringNo, setValue]);
+  }, [hiringNo, setValue]);
 
   // jobOpening 데이터가 아직 로드되지 않았다면 로딩 상태를 표시
   if (!jobOpening) {
@@ -173,9 +173,9 @@ const HireDetail = () => {
 
   const CLOUDFRONT_URL = 'https://d20jnum8mfke0j.cloudfront.net/';
   //이미지 경로 갖고오고 없다면 기본이미지
-  const getProfileImageUrl = (path) => {
-    if (!path) return profileImage; // 기본 이미지
-    const cleanPath = path.replace(/^\//, ''); // 앞에 / 있으면 제거
+  const getProfileImageUrl = (path, defaultImage) => {
+    if (!path) return defaultImage;
+    const cleanPath = path.replace(/^\//, '');
     return `${CLOUDFRONT_URL}${cleanPath}`;
   };
 
@@ -187,7 +187,7 @@ const HireDetail = () => {
             {proposerList.slice(0, 3).map((list, index) => (
               <ProfileImg
                 key={index}
-                src={getProfileImageUrl(list.profileImage)} // 기본 이미지로 대체
+                src={getProfileImageUrl(list.profileImage, caregiverImage)}
                 style={{ left: `${index * 20}px`, zIndex: proposerList.length - index }}
               />
             ))}
@@ -209,7 +209,7 @@ const HireDetail = () => {
           <ContentWrapper>
             <div>
               <ProfilImageWrapper>
-                <img src={getProfileImageUrl(jobOpening.profileImage)} alt="프로필" />
+                <img src={getProfileImageUrl(jobOpening.profileImage, profileImage)} alt="프로필" />
               </ProfilImageWrapper>
               <ChatButton>
                 <img src={chatImage} alt="프로필 이미지" />1 : 1 채팅하기

@@ -32,7 +32,7 @@ const MatchMainPage = () => {
   useEffect(() => {
     const fetchAll = async () => {
       if (!user) {
-        alert('로그인 후 이용해주세요');
+        alert('로그인이 필요한 서비스입니다.');
         return;
       }
       try {
@@ -43,7 +43,7 @@ const MatchMainPage = () => {
       }
     };
     fetchAll();
-  }, [user]);
+  }, []);
 
   // 반응형 브레이크 포인트 잡기
   const [isOpen, setIsOpen] = useState(false);
@@ -74,11 +74,10 @@ const MatchMainPage = () => {
   // 자식컴포넌트로 보내줌
   // 간병인보기 버튼
   const handleClick = (patNo) => {
-
     setSelectedPatNo(patNo);
     getCareGiver(patNo);
     setIsOpen(true);
-    console.log("확인:",selectedPatNo)
+    console.log('확인:', selectedPatNo);
   };
   const handleClose = (patNo) => {
     setSelectedPatNo(patNo);
@@ -156,7 +155,7 @@ const MatchMainPage = () => {
               ></TestPatientCard>
             )}
           </RightLineDiv>
-         {/* 모바일용 간병인 상세보기 */}
+          {/* 모바일용 간병인 상세보기 */}
           {isOpen ? (
             <PatientCardGroup
               patient={userPatients.find((p) => p.patNo === selectedPatNo)}

@@ -21,7 +21,7 @@ import styled from 'styled-components';
 import PostcodeSearch from '../components/PostcodeSearch';
 import { useRef } from 'react';
 import { HiMiniPencilSquare } from 'react-icons/hi2';
-
+import profileImage from '../assets/profileImg/img_환자소.png';
 const PatientRegistration = () => {
   const { user } = useUserStore();
   const navigate = useNavigate();
@@ -43,10 +43,10 @@ const PatientRegistration = () => {
   useEffect(() => {
     // 일단 접근가능하게 로그인 구현 되면 user -> !user 바꿀것
     if (!user) {
-      alert('로그인 후 이용해주세요');
+      alert('로그인이 필요한 서비스입니다.');
       navigate('/guardian');
     }
-  }, [user]);
+  }, []);
 
   // 'gender' 필드의 현재 값을 watch하여 라디오 버튼의 checked 상태를 제어합니다.
   const currentGender = watch('patGender');
@@ -80,6 +80,10 @@ const PatientRegistration = () => {
     inputRef.current?.click(); // 파일 선택창 열기
   };
 
+  const getImageOrDefault = (url) => {
+    return url || profileImage;
+  };
+
   return (
     <>
       <AuthContainer>
@@ -90,7 +94,7 @@ const PatientRegistration = () => {
             <ProfileImageWrapper>
               <ProfileImage>
                 <img
-                  src={previewUrl}
+                  src={getImageOrDefault(previewUrl)}
                   alt="프로필 이미지"
                   style={{
                     width: '100%',
@@ -125,7 +129,6 @@ const PatientRegistration = () => {
                 id="patAge"
                 min="0"
                 placeholder="나이를 입력해주세요"
-                onWheel={(e) => e.target.blur()}
                 {...register('patAge')}
                 $error={errors.patAge}
               />
@@ -208,7 +211,14 @@ const PatientRegistration = () => {
               </HeightWegithDiv>
 
               <HeightWegithDiv>
-                <Input type="number" step="0.01" id="patWeight" {...register('patWeight')} $error={errors.patWeight} />
+                <Input
+                  type="number"
+                  step="0.01"
+                  id="patWeight"
+                  onWheel={(e) => e.target.blur()}
+                  {...register('patWeight')}
+                  $error={errors.patWeight}
+                />
 
                 <span>kg</span>
               </HeightWegithDiv>
