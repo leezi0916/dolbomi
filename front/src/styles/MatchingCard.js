@@ -25,6 +25,7 @@ export const CardInnerWrap = styled.div`
   border: 1px solid ${({ theme }) => theme.colors.gray[5]};
   border-radius: 4px;
   box-shadow: ${({ theme }) => theme.shadows.md};
+
 `;
 export const ProfileSection = styled.div`
   display: flex;
@@ -95,6 +96,7 @@ export const ProfileCardPair = styled.div`
   width: 100%; /* 부모 컨테이너의 너비 전체 사용 */
   margin-bottom: ${({ theme }) => theme.spacing[8]}; /* 각 카드 쌍 아래쪽 간격 */
   overflow: auto;
+
   ${media.md`  
     display : grid;
     grid-template-columns: 1fr 1fr;
@@ -114,16 +116,12 @@ export const ProfileCard = styled.div`
 align-items: center;
 padding: ${({ theme }) => theme.spacing[6]};
 background-color: ${({ theme }) => theme.colors.white};
-border-bottom: 1px solid ${({ theme }) => theme.colors.gray[5]};
+border-top: 1px solid ${({ theme }) => theme.colors.gray[5]};
 
 gap: ${({ theme }) => theme.spacing[8]};
 width: 100%; /* ProfileCardPair 내에서 각 카드의 너비 (gap을 고려하여 50%보다 약간 작게) */
 box-sizing: border-box; /* 패딩과 보더가 너비에 포함되도록 */
 
-&:hover {
-  background-color: #fcfaf0;
-  box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
-}
 
 `;
 
@@ -202,7 +200,7 @@ export const CargiverWrap = styled.div`
   gap: ${({ theme }) => theme.spacing[5]};
   height: fit-content;
   align-items: center;
-  margin: ${({ theme }) => theme.spacing[4]} 0;
+  margin: ${({ theme }) => theme.spacing[4]} ;
   padding: ${({ theme }) => theme.spacing[2]};
   justify-content: space-around;
 
