@@ -94,6 +94,7 @@ export const usepatientRegistrationForm = (user) => {
 
       // 이미지가 선택되었는지 체크
       const imageChanged = !!selectedFile;
+      let uploadedImageName = "";
 
       // 프로필 이미지가 변경된 경우
       if (imageChanged) {
@@ -105,10 +106,12 @@ export const usepatientRegistrationForm = (user) => {
         );
 
         console.log('Presigned URL 응답:', { presignedUrl, changeName });
-
+        
         // 2. S3 직접 업로드
         await uploadFileToS3(presignedUrl, selectedFile);
 
+        uploadedImageName= changeName;
+      }
         await patientService.postNewPatient({
           guardianNo: user.userNo,
           patName: formData.patName,
@@ -120,11 +123,11 @@ export const usepatientRegistrationForm = (user) => {
           patWeight: formData.patWeight,
           patContent: formData.patContent,
           diseaseTags: formData.tags,
-          profileImage: changeName,
+          profileImage: uploadedImageName,
         });
 
         navigate('/modal');
-      }
+   
     } catch (error) {
       console.error('돌봄대상자 등록 에러 : ', error);
     }
