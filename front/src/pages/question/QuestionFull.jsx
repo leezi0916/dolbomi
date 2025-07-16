@@ -89,13 +89,17 @@ const QuestionFull = () => {
               <option value="">작성일</option>
               <option value="count">조회순</option>
             </select>
-            <input
-              type="text"
-              placeholder="검색어 입력"
-              value={tempkeyword}
-              onChange={(e) => setTempKeyword(e.target.value)}
-            />
-            <button type="submit">검색</button>
+            <div>
+              <input
+                type="text"
+                placeholder="검색어 입력"
+                value={tempkeyword}
+                onChange={(e) => setTempKeyword(e.target.value)}
+              />
+              <button type="submit">
+                <img src="/src/assets/icons/icon_돋보기.png" alt="" />
+              </button>
+            </div>
           </form>
         </SearchBoard>
         <BoardBox>
@@ -134,13 +138,17 @@ const QuestionFull = () => {
             <option value="">작성일</option>
             <option value="count">조회순</option>
           </select>
-          <input
-            type="text"
-            placeholder="검색어 입력"
-            value={tempkeyword}
-            onChange={(e) => setTempKeyword(e.target.value)}
-          />
-          <button type="submit">검색</button>
+          <div>
+            <input
+              type="text"
+              placeholder="검색어 입력"
+              value={tempkeyword}
+              onChange={(e) => setTempKeyword(e.target.value)}
+            />
+            <button type="submit">
+              <img src="/src/assets/icons/icon_돋보기.png" alt="" />
+            </button>
+          </div>
         </form>
       </SearchBoard>
       <BoardBox>
