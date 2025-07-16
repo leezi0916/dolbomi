@@ -20,7 +20,18 @@ const HireRegistration = () => {
   const { user } = useUserStore();
 
   const [userPatients, setUserpatients] = useState();
-  const [patient, setPatient] = useState();
+
+  const initialPatient = {
+    patName: '',
+    patAge: '',
+    patGender: '',
+    patAddress: '',
+    patHeight: '',
+    patWeight: '',
+    profileImage: '',
+    diseaseTags: [],
+  };
+  const [patient, setPatient] = useState(initialPatient);
   const [selectPatientNo, setSelectPatientNo] = useState(undefined);
   const [careStatus, setCareStatus] = useState('');
   const navigate = useNavigate();
@@ -64,9 +75,10 @@ const HireRegistration = () => {
   }, []);
 
   const getPatient = async (patNo) => {
+    setSelectPatientNo(patNo); // ← 먼저 무조건 상태 업데이트
     // patNo가 빈값이면 patient도 초기화
     if (!patNo) {
-      setPatient({});
+      setPatient(initialPatient);
       return;
     }
 
@@ -150,13 +162,13 @@ const HireRegistration = () => {
         <HireHead>
           <HireHeadTitle>구인 등록</HireHeadTitle>
           <SelectDiv>
-            {selectPatientNo === undefined && (
+            {selectPatientNo === undefined || selectPatientNo === '' ? (
               <p style={{ textAlign: 'left', color: '#EF7A46', display: 'flex', alignItems: 'center' }}>
                 &nbsp;
-                <BsFillExclamationCircleFill color="'#EF7A46'"></BsFillExclamationCircleFill>&nbsp;&nbsp;필수
-                선택사항입니다.
+                <BsFillExclamationCircleFill color="'#EF7A46'" />
+                &nbsp;&nbsp;필수 선택사항입니다.
               </p>
-            )}
+            ) : null}
 
             <SelectBox id="userPatients" value={selectPatientNo} onChange={(e) => getPatient(e.target.value)}>
               <option value="">돌봄대상자를 선택해주세요</option>
@@ -307,10 +319,11 @@ const HireRegistration = () => {
                     $error={errors.careStatus}
                   />
                   <label htmlFor="N">숙식 불가능</label>
-                  {errors.careStatus && <ErrorMessage>{errors.careStatus.message}</ErrorMessage>}
                 </RadioWrapper>
               </RadioGroup>
-
+              <RadioErrorWrap>
+                {errors.careStatus && <ErrorMessage>{errors.careStatus.message}</ErrorMessage>}
+              </RadioErrorWrap>
               {careStatus === 'Y' && (
                 <InputGroup>
                   <Label>숙소 정보</Label>
@@ -647,5 +660,9 @@ export const TagsUl = styled.ul`
     background: ${({ theme }) => theme.colors.primary};
     gap: ${({ theme }) => theme.spacing[2]};
   }
+`;
+
+const RadioErrorWrap = styled.div`
+  display: flex;
 `;
 export default HireRegistration;

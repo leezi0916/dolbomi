@@ -110,7 +110,6 @@ const HireList = () => {
       setLoading(true);
       setError(null);
       const res = await hiringService.getHiringList({ page: pageNumber, size: pageSize, searchData });
-      console.log('돌봄대상자 Response:', res); // 여기서 totalPages, content 등 확인
       if (res.totalElements === 0) {
         setHireLists([]);
         setError('등록된 돌봄 대상자 모집 글이 없습니다.');

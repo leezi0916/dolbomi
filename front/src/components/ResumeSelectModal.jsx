@@ -37,7 +37,7 @@ const ResumeSelectModal = ({ onClose, hiringNo, onSuccess }) => {
         <Card>
           <ProfileImage src={getProfileImageUrl(selectedResume?.profileImage)} alt="프로필" />
           <Info>
-            <Name>{selectedResume ? selectedResume?.resumeTitle : '지원합니다!'}</Name>
+            <Name>{selectedResume ? selectedResume?.resumeTitle : '이력서를 선택해주세요!'}</Name>
           </Info>
         </Card>
 
