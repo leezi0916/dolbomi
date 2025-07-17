@@ -164,9 +164,6 @@ const MatchToCareGiver = () => {
                 </ProfileInfo>
               </ProfileCard>
 
-
-
-
                 {activeTab === 'matched' && (
                   <SearchDate
                     startDate={startDate}
