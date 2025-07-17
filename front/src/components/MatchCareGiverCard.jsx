@@ -32,9 +32,8 @@ const MatchCareGiverCard = ({
   selectedPatNo,
   endedCurrentPage,
   endedTotalPage,
-  handleEndedPageChange
+  handleEndedPageChange,
 }) => {
- 
   let currentList;
 
   if (activeTab === 'matching') {
@@ -116,14 +115,6 @@ const MatchCareGiverCard = ({
                 )}
               </CargiverButtonDiv>
             </CargiverWrap>
-
-            <PageWrapper>
-              <Paging
-                currentPage={endedCurrentPage}
-                totalPage={endedTotalPage}
-                chagneCurrentPage={handleEndedPageChange}
-              />
-            </PageWrapper>
           </>
         ))
       ) : selectedPatNo ? (
@@ -131,6 +122,9 @@ const MatchCareGiverCard = ({
       ) : (
         <EmptyMessage>환자를 선택해주세요</EmptyMessage>
       )}
+      <PageWrapper>
+        <Paging currentPage={endedCurrentPage} totalPage={endedTotalPage} chagneCurrentPage={handleEndedPageChange} />
+      </PageWrapper>
     </Div>
   );
 };
@@ -155,5 +149,5 @@ const PageWrapper = styled.div`
   width: inherit;
   bottom: 0;
   width: 100%;
-  padding-bottom: ${({ theme }) => theme.spacing[2]} ;
+  padding-bottom: ${({ theme }) => theme.spacing[2]};
 `;
