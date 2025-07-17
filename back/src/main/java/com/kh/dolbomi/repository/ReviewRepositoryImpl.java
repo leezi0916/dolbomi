@@ -20,7 +20,6 @@ public class ReviewRepositoryImpl implements ReviewRepository {
     // 메인(보호자 메인) 리뷰 조회
     @Override
     public List<Review> getMainReviewList(StatusEnum.Status status) {
-        // String query = "SELECT DISTINCT r FROM Review r JOIN r.writer u WHERE r.status = :status ORDER BY r.updateDate DESC";
         String query = """
                   SELECT r 
                   FROM Review r
