@@ -84,7 +84,7 @@ const HireDetail = () => {
           caregiverNo: Number(user.userNo),
           hiringNo: Number(hiringNo),
         });
-    
+
         setApplicationStatus(result);
       } catch (error) {
         console.error(error + ': 신청확인실패 ');
@@ -211,7 +211,8 @@ const HireDetail = () => {
               <ProfilImageWrapper>
                 <img src={getProfileImageUrl(jobOpening.profileImage, profileImage)} alt="프로필" />
               </ProfilImageWrapper>
-              <ChatButton onClick={()=> alert("서비스 구현중비니다.")}>
+
+              <ChatButton onClick={() => alert('서비스 구현중입니다')}>
                 <img src={chatImage} alt="프로필 이미지" />1 : 1 채팅하기
               </ChatButton>
             </div>

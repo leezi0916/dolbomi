@@ -164,7 +164,8 @@ function ResumeDetail() {
             <ProfilImageWrapper>
               <img src={getProfileImageUrl(resumeData?.profileImage)} alt="프로필" />
             </ProfilImageWrapper>
-            <ChatButton onClick={() => alert('서비스 구현중비니다.')}>
+
+            <ChatButton onClick={() => alert('서비스 구현중입니다')}>
               <img src={chatImage} alt="프로필 이미지" />1 : 1 채팅하기
             </ChatButton>
           </div>
