@@ -84,7 +84,7 @@ const HireDetail = () => {
           caregiverNo: Number(user.userNo),
           hiringNo: Number(hiringNo),
         });
-    
+
         setApplicationStatus(result);
       } catch (error) {
         console.error(error + ': 신청확인실패 ');
