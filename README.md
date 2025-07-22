@@ -6,7 +6,7 @@ React와 Spring Boot를 활용한 프리랜서 간병인 매칭 플랫폼 입니
 - 서비스 링크: [https://dolbomi.store)
 - 본 프로젝트의 구조를 더 자세히 알고 싶다면?
   - [백엔드 README](./back.md)
-  - [프론트엔드 README](./front.md)
+  - [프론트엔드 README](./front/README.md)
 
 ## 기술 스택
 
