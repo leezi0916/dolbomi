@@ -35,9 +35,9 @@ cd back
 
 ## API 명세
 
+### USERS (회원)
 | 메서드 | 엔드포인트        | 설명           |
 | ------ | ---------------- | -------------- |
-USERS (회원)
 | POST | /users/v1 | 회원가입 (등록) |
 | POST | /users/v1/login | 로그인 |
 | GET | /users/v1/me | 내 정보 조회 |
@@ -50,7 +50,10 @@ USERS (회원)
 | POST | /users/v1/reset_password | 비밀번호 초기화 이메일 발송|
 | PATCH | /users/v1/{userNo}/change-password | 비밀번호 변경 |
 | GET | /users/v1?user_no={userNo} | 간병인 프로필 조회 |
-COMMUNITY (게시판)
+
+### COMMUNITY (게시판)
+| 메서드 | 엔드포인트        | 설명           |
+| ------ | ---------------- | -------------- |
 | GET | /community/v1/caregiver | 간병인 게시판 리스트 조회 (option, keyword, page, size) |
 | GET | /community/v1/guardian | 보호자 게시판 리스트 조회 (option, keyword, page, size) |
 | GET | /community/v1/detail?board_no={boardNo} | 게시글 상세 조회 |
@@ -63,36 +66,56 @@ COMMUNITY (게시판)
 | DELETE | /community/v1/reply_delete?replyNo={replyNo} | 댓글 삭제 |
 | PATCH | /community/v1/update | 게시글 수정 |
 | PATCH | /community/v1/update_reply | 댓글 수정 |
-REVIEWS (리뷰)
+
+### REVIEWS (리뷰)
+| 메서드 | 엔드포인트        | 설명           |
+| ------ | ---------------- | -------------- |
 | GET | /review/v1/simple-list | 간단 리뷰 리스트 조회 |
 | GET | /review/v1/list?page={page}&userNo={userNo} | 리뷰 리스트 조회 |
 | GET | /review/v1/detail?page={page}&resumeNo={resumeNo} | 리뷰 상세 조회 |
 | DELETE | /review/v1/delete?reviewNo={reviewNo} | 리뷰 삭제 |
-HIRING (구인 공고)
+
+### HIRING (구인 공고)
+| 메서드 | 엔드포인트        | 설명           |
+| ------ | ---------------- | -------------- |
 | GET | /hiring/v1/simple-list | 간단 구인 리스트 조회 |
 | GET | /hiring/v1/list | 구인 리스트 조회 |
 | GET | /hiring/v1/my-list?page={page}&userNo={userNo} | 내 구인 리스트 조회 |
 | GET | /hiring/v1/{hiringNo} | 구인 상세 조회 |
 | GET | /hiring/v1/{hiringNo}/status | 구인 상태 조회 |
 | PATCH | /hiring/v1/{hiringNo} | 구인 글 삭제 혹은 상태 변경 |
-RESUME (이력서)
+
+### RESUME (이력서)
+| 메서드 | 엔드포인트        | 설명           |
+| ------ | ---------------- | -------------- |
 | GET | /resume/v1/simple-list | 간단 이력서 리스트 조회 |
 | GET | /resume/v1/list | 이력서 리스트 조회 |
 | GET | /resume/v1/detail/{resumeNo} | 이력서 상세 조회 |
 | GET | /resume/v1/user?page={page}&userNo={userNo} | 내 이력서 리스트 조회 |
 | GET | /resume/v1/user/all?userNo={userNo} | 내 이력서 모두 조회 (모달용)|
 | PATCH | /resume/v1/{resumeNo} | 이력서 수정 |
-PATIENT (환자)
+
+### PATIENT (환자)
+| 메서드 | 엔드포인트        | 설명           |
+| ------ | ---------------- | -------------- |
 | GET | /patient/v1?guardian_no={guardianNo} | 환자 리스트 조회 (보호자 기준) |
 | GET | /patient/v1/{patNo} | 환자 상세 조회 |
 | PATCH | /patient/v1/{patNo} | 환자 정보 수정 |
-DISEASE (질병)
+
+### DISEASE (질병)
+| 메서드 | 엔드포인트        | 설명           |
+| ------ | ---------------- | -------------- |
 | GET | /disease/v1 | 질병 리스트 조회 |
 | GET | /patients/v1?disNo={disNo} | 특정 질병 상세 조회 |
-REPORT (보고서)
+
+### REPORT (보고서)
+| 메서드 | 엔드포인트        | 설명           |
+| ------ | ---------------- | -------------- |
 | GET | /report/v1/{patNo} | 환자 보고서 리스트 조회 |
 | GET | /report/v1/detail/{reportNo} | 보고서 상세 조회 |
-PROPOSER (신청자)
+### PROPOSER (신청자)
+| 메서드 | 엔드포인트        | 설명           |
+| ------ | ---------------- | -------------- |
 | GET | /proposer/v1?hiring_no={hiringNo} | 공고별 신청자 리스트 조회 |
 | GET | /proposer/v1/my-list?page={page}&userNo={userNo} | 내 신청 리스트 조회 |
 | GET | /proposer/v1/check?hiring_no={hiringNo}&caregiver_no={caregiverNo} | 신청 상태 확인 |
@@ -101,7 +124,10 @@ PROPOSER (신청자)
 | GET | /proposer/v1/accept/check?hiring_no={hiringNo}&resume_no={resumeNo} | 수락 여부 확인 |
 | DELETE | /proposer/v1/{proposerNo} | 신청 기록 삭제 |
 | GET | /proposer/v1/hiring/{hiringNo}/owner | 구인 공고 주인 조회 |
-MATCHING (매칭)
+
+### MATCHING (매칭)
+| 메서드 | 엔드포인트        | 설명           |
+| ------ | ---------------- | -------------- |
 | GET | /matching/v1?pat_no={patNo}&status={status} | 환자 매칭 리스트 조회 |
 | PATCH | /matching/v1?mat_no={matNo}&status={status} | 매칭 상태 변경 |
 | GET | /matching/v1/matched?pat_no={patNo}&status={status} | 완료된 매칭 리스트 조회 |
@@ -109,20 +135,32 @@ MATCHING (매칭)
 | GET | /matching/v1/caregiver/matched?caregiver_no={caregiverNo}&status={status} | 완료된 간병인 매칭 리스트 조회 |
 | GET | /matching/v1/matched/check | 매칭 상태 체크 |
 | GET | /matching/v1/matched/date | 매칭 날짜 리스트 조회 |
-NOTIFICATIONS (알림)
+
+### NOTIFICATIONS (알림)
+| 메서드 | 엔드포인트        | 설명           |
+| ------ | ---------------- | -------------- |
 | GET | /notifications/v1/list?user_no={userNo} | 사용자 알림 리스트 조회 |
 | GET | /notifications/v1/unread-count?user_no={userNo} | 안 읽은 알림 개수 조회 |
 | PATCH | /notifications/v1/mark-read?user_no={userNo} | 알림 읽음 처리 |
 | DELETE | /notifications/v1/delete-all?user_no={userNo} | 전체 알림 삭제 |
 | DELETE | /notifications/v1/{notificationNo} | 특정 알림 삭제 |
-API (주소)
+
+### API (주소)
+| 메서드 | 엔드포인트        | 설명           |
+| ------ | ---------------- | -------------- |
 | GET | /api/address/region?cd={cd} | 시/도/구 등 행정구역 조회 |
 | GET | /api/address/region | 시/도 리스트 조회 |
-EMAIL (이메일 인증)
+
+### EMAIL (이메일 인증)
+| 메서드 | 엔드포인트        | 설명           |
+| ------ | ---------------- | -------------- |
 | POST | /auth/email/send-reset-link | 비밀번호 초기화 링크 이메일 발송 |
 | POST | /auth/email/send-code | 이메일 인증 코드 발송 |
 | POST | /auth/email/verify | 이메일 인증 코드 검증 |
-AI
+
+### AI
+| 메서드 | 엔드포인트        | 설명           |
+| ------ | ---------------- | -------------- |
 | GET | /ai?pat_no={patNo} | AI 연동 환자 정보 요청 |
 
 ## 환경 변수
