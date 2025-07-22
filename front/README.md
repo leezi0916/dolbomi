@@ -27,9 +27,11 @@ JWT 토큰을 활용한 인증 처리
 - js-cookie
 
 ## 실행 방법
+```
 npm start
 npm install
 npm dev run
+```
 
 ## 주요 페이지
 로그인 및 회원가입 페이지
