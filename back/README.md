@@ -166,7 +166,7 @@ cd back
 ## 환경 변수
 | 변수 경로                          | 설명                                 | 예시 또는 값 예시                                                                 |
 |-----------------------------------|--------------------------------------|-----------------------------------------------------------------------------------|
-| spring.datasource.url             | 데이터베이스 연결 URL                 | jdbc:mysql://localhost:3306/final?useSSL=false&serverTimezone=Asia/Seoul&characterEncoding=UTF-8 |
+| spring.datasource.url             | 데이터베이스 연결 URL                 | jdbc:mysql://localhost:#/dolbomi?useSSL=false&serverTimezone=Asia/Seoul&characterEncoding=UTF-8 |
 | spring.datasource.username        | DB 사용자명                          | user01                                                                            |
 | spring.datasource.password        | DB 비밀번호                          | pass01                                                                            |
 | spring.datasource.driver-class-name | DB 드라이버 클래스명                | com.mysql.cj.jdbc.Driver                                                          |
@@ -175,9 +175,10 @@ cd back
 | jwt.expiration                    | JWT 토큰 만료 시간 (분 단위)         | 3000 (예: 3000분)                                                                 |
 | spring.mail.host                  | SMTP 메일 서버 호스트                | smtp.gmail.com                                                                    |
 | spring.mail.port                  | SMTP 메일 서버 포트                  | 587                                                                               |
-| spring.mail.username              | SMTP 로그인 사용자명                 | 이메일 주소 (예: leezi0916@gmail.com)                                             |
+| spring.mail.username              | SMTP 로그인 사용자명                 | 이메일 주소 (예: dolbomi@gmail.com)                                             |
 | spring.mail.password              | SMTP 로그인 비밀번호                 | 이메일 비밀번호 또는 앱 비밀번호                                                 |
 | aws.region                        | AWS 리전                             | ap-northeast-2                                                                    |
 | aws.credentials.access-key        | AWS 접근 키                          | AWS Access Key                                                                    |
 | aws.credentials.secret-key        | AWS 비밀 키                          | AWS Secret Key                                                                    |
+| ai.openai.api-key                 | OpenAI GPT API 키                    | sk-proj-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx                         |
 
