@@ -40,42 +40,75 @@ React와 Spring Boot를 활용한 프리랜서 간병인 매칭 플랫폼 입니
 
 
 ## 사용 라이브러리및 API
--
--
--
--
--
+`Front-End`
+- react
+- zustant
+- react-router-dom
+- react-hook-form
+- yup
+- axios
+- styled-component
+- @mui/material
+- @emotion/react / @emotion/styled
+- date-fns
+- dayjs
+- react-draggable
+- react-datepicker
+- react-textarea-autosize
+- react-icons
+- react-spinners
+- react-js-pagination
+- react-toastify
+- dotenv
+- js-cookie
+
+`Back-End`
+- spring boot  
+- spring security  
+- jjwt (io.jsonwebtoken)  
+- spring data jpa  
+- mysql connector  
+- spring boot devtools  
+- spring validation  
+- thymeleaf  
+- spring mail  
+- spring boot oauth2  
+- amazon aws sdk (s3)  
+- spring ai  
 
 ## 설치 및 실행 방법
 ```bash
-git clone https://github.com/myuser/mytodoapp.git
-cd mytodoapp
+git clone https://github.com/UHa11/KH_Final_Project.git
 
 # 프론트
 cd frontend
 npm install
-npm start
+npm dev run
 
 # 백엔드
 cd backend
 ./gradlew bootRun
 
 ## 주요 기능
-- 회원가입 및 로그인 (JWT 기반)
-- 할일관리
-- 일정관리
+- 회원가입(Email 인증)
+- 로그인 (JWT 기반)
+- 매칭기능
+- 건강관리기능
+- 구인/구직 기능
+- 소통기능(채팅/게시판)
 
 ## 부가 기능
-- 소셜 로그인 (카카오)
+- 소셜 로그인 (구글)
+- 비밀번호 찾기
 - 반응형 웹UI
-- 전역 style 정의하여 라이트/다크 모드 구현
+- AI 웹 사용가이드
 
 ## 팀원 소개
 
 | 이름 | 포지션 | Contact |
 | --- | --- | --- |
-| 최지원 | AI | a1@gmail.com |
-| 최지투 | BE | a1@gmail.com |
-| 최지삼 | FE | a1@gmail.com |
-| 최지사 | FE | a1@gmail.com |
-| 최지오 | FE | a1@gmail.com |
+| 백승환 | Team Leader | tmdghks605@gmail.com |
+| 이지묵 | Database Manager | leezi0916@gmail.com |
+| 김진석 | Issue Manager | wlstjr2015@gmail.com |
+| 김유하 | Configuration Manager | extramin93@gmail.com |
+| 이인혜 | Schedule Manager | ashes999@gmail.com |
