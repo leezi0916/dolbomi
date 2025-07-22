@@ -39,7 +39,7 @@ Communication / IDE
 <img src="https://img.shields.io/badge/IntelliJ%20IDEA-000000?style=flat-square&logo=intellijidea&logoColor=white"/>
 
 ## 사용 라이브러리및 API
-Front-End
+### Front-End
 - react
 - zustant
 - react-router-dom
@@ -61,7 +61,7 @@ Front-End
 - dotenv
 - js-cookie
 
-Back-End
+### Back-End
 - spring boot  
 - spring security  
 - jjwt (io.jsonwebtoken)  
