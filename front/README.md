@@ -5,9 +5,9 @@
 - assets : 이미지, 아이콘 등 정적 파일
 - components : 재사용 가능한 공통 UI 컴포넌트 (버튼, 모달 등)
 - config : 환경 설정 파일 (예: API Base URL, 토큰 설정 등)
-- hooks:  커스텀 훅(Custom Hook) 정의 
-- store: 상태 관리 관련 코드
-- styles :전역 스타일 및 공통 CSS, SCSS 파일
+- hooks :  커스텀 훅(Custom Hook) 정의 
+- store : 상태 관리 관련 코드
+- styles : 전역 스타일 및 공통 CSS, SCSS 파일
 - utils : 유틸 함수 모음 (예: 변수명 변환 등)
 
 
