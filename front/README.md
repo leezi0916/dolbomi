@@ -5,26 +5,26 @@ React 기반 SPA
 JWT 토큰을 활용한 인증 처리
 
 ## 주요 라이브러리
-react
-zustant
-react-router-dom
-react-hook-form
-yup
-axios
-styled-component
-@mui/material
-@emotion/react / @emotion/styled
-date-fns
-dayjs
-react-draggable
-react-datepicker
-react-textarea-autosize
-react-icons
-react-spinners
-react-js-pagination
-react-toastify
-dotenv
-js-cookie
+- react
+- zustant
+- react-router-dom
+- react-hook-form
+- yup
+- axios
+- styled-component
+- @mui/material
+- @emotion/react / @emotion/styled
+- date-fns
+- dayjs
+- react-draggable
+- react-datepicker
+- react-textarea-autosize
+- react-icons
+- react-spinners
+- react-js-pagination
+- react-toastify
+- dotenv
+- js-cookie
 
 ## 실행 방법
 npm start
