@@ -1,32 +1,36 @@
-# MyTodoApp
-React와 Spring Boot를 활용한 간단한 할 일 관리 앱입니다.
+# Dolbomi
+React와 Spring Boot를 활용한 프리랜서 간병인 매칭 플랫폼 입니다.
 
 ## 프로젝트 개요
-- 개발 기간: 2023-00-00 ~ 2023-00-00
-- 서비스 링크: [https://mytodoapp.vercel.app](https://mytodoapp.vercel.app)
+- 개발 기간: 2025-05-26 ~ 2025-07-18
+- 서비스 링크: [https://dolbomi.store)
 - 본 프로젝트의 구조를 더 자세히 알고 싶다면?
   - [백엔드 README](./BACK.md)
   - [프론트엔드 README](./FRONT.md)
 
 ## 기술 스택
-`Front-End` 
-<img src="https://img.shields.io/badge/Next.js-000000?style=flat-square&logo=Next.js&logoColor=white"/>
-<img src="https://img.shields.io/badge/Typescript-3178C6?style=flat-square&logo=Typescript&logoColor=white"/>
-<img src="https://img.shields.io/badge/ReactQuery-FF4154?style=flat-square&logo=ReactQuery&logoColor=white"/>
-<img src="https://img.shields.io/badge/Recoil-black?style=flat-square&logo=Recoil&logoColor=white"/>
-<img src="https://img.shields.io/badge/styledcomponents-DB7093?style=flat-square&logo=styled-components&logoColor=white"/>
-<img src="https://img.shields.io/badge/Axios-5A29E4?style=flat-square&logo=Axios&logoColor=white"/>
-<img src="https://img.shields.io/badge/ReactHookForm-EC5990?style=flat-square&logo=ReactHookForm&logoColor=white"/>
+`Front-End`  
+<img src="https://img.shields.io/badge/React-61DAFB?style=flat-square&logo=react&logoColor=white"/>
+<img src="https://img.shields.io/badge/Next.js-000000?style=flat-square&logo=nextdotjs&logoColor=white"/>
+<img src="https://img.shields.io/badge/Typescript-3178C6?style=flat-square&logo=typescript&logoColor=white"/>
 
+`Back-End`  
+<img src="https://img.shields.io/badge/Java-007396?style=flat-square&logo=openjdk&logoColor=white"/>
+<img src="https://img.shields.io/badge/Spring-6DB33F?style=flat-square&logo=spring&logoColor=white"/>
+<img src="https://img.shields.io/badge/Spring Boot-6DB33F?style=flat-square&logo=springboot&logoColor=white"/>
+<img src="https://img.shields.io/badge/JPA-007396?style=flat-square&logo=hibernate&logoColor=white"/>
+<img src="https://img.shields.io/badge/Querydsl-00BFFF?style=flat-square&logoColor=white"/>
+<img src="https://img.shields.io/badge/MySQL-4479A1?style=flat-square&logo=mysql&logoColor=white"/>
 
-`Back-end`
-<img src="https://img.shields.io/badge/Nest.js-E0234E?style=flat-square&logo=Nestjs&logoColor=white">
-<img src="https://img.shields.io/badge/Typescript-3178C6?style=flat-square&logo=Typescript&logoColor=white"/>
-<img src="https://img.shields.io/badge/mysql-4479A1?style=flat-square&logo=mysql&logoColor=white">
+`DevOps & Infra`  
+<img src="https://img.shields.io/badge/Amazon EC2-FF9900?style=flat-square&logo=amazonec2&logoColor=white"/>
+<img src="https://img.shields.io/badge/Amazon S3-569A31?style=flat-square&logo=amazons3&logoColor=white"/>
+<img src="https://img.shields.io/badge/Nginx-009639?style=flat-square&logo=nginx&logoColor=white"/>
+<img src="https://img.shields.io/badge/Docker-2496ED?style=flat-square&logo=docker&logoColor=white"/>
+<img src="https://img.shields.io/badge/Jenkins-D24939?style=flat-square&logo=jenkins&logoColor=white"/>
 
-`Communication`
-<img src="https://img.shields.io/badge/notion-000000?style=flat-square&logo=notion&logoColor=white">
-<img src="https://img.shields.io/badge/github-181717?style=flat-square&logo=github&logoColor=white">
+`Communication & Collaboration`  
+<img src="https://img.shields.io/badge/GitHub-181717?style=flat-square&logo=github&logoColor=white"/>
 
 ## 사용 라이브러리및 API
 -
