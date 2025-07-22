@@ -104,7 +104,6 @@ cd backend
 - AI 웹 사용가이드
 
 ## 팀원 소개
-
 | 이름 | 포지션 | Contact |
 | --- | --- | --- |
 | 백승환 | Team Leader | tmdghks605@gmail.com |
