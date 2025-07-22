@@ -1,8 +1,15 @@
 # ⭐️ 돌보미 프론트엔트 ⭐️
 
 ## 프로젝트 구조
-- React 기반 SPA
-- JWT 토큰을 활용한 인증 처리
+- api : 외부 API 호출 관련 모듈 (예: 구글 로그인, 카카오맵 등)
+- assets : 이미지, 아이콘 등 정적 파일
+- components : 재사용 가능한 공통 UI 컴포넌트 (버튼, 모달 등)
+- config : 환경 설정 파일 (예: API Base URL, 토큰 설정 등)
+- hooks:  커스텀 훅(Custom Hook) 정의 
+- store: 상태 관리 관련 코드
+- styles :전역 스타일 및 공통 CSS, SCSS 파일
+- utils : 유틸 함수 모음 (예: 변수명 변환 등)
+
 
 ## 주요 라이브러리
 - react
