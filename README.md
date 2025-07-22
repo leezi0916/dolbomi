@@ -88,7 +88,7 @@ npm dev run
 # 백엔드
 cd backend
 ./gradlew bootRun
-
+```
 ## 주요 기능
 - 회원가입(Email 인증)
 - 로그인 (JWT 기반)
