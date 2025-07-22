@@ -1,15 +1,15 @@
 # ⭐️ 백엔드 (Spring Boot) ⭐️
 
 ## 프로젝트 구조
-- controller      // REST API 요청을 처리하는 웹 레이어
-- service         // 비즈니스 로직을 담당하는 서비스 레이어
-- repository      // 데이터베이스 접근 및 쿼리 수행
-- domain          // JPA 엔티티 클래스 및 도메인 모델
-- dto             // 데이터 전송 객체 (Request/Response)
-- auth            // 인증 및 인가 관련 코드 (JWT 토큰 처리 등)
-- aspect          // AOP 관련 코드 (로깅 등 공통 관심사 분리)
-- config          // 스프링 및 보안 설정 클래스
-- exception       // 사용자 정의 예외 처리
+- controller : REST API 요청을 처리하는 웹 레이어
+- service : 비즈니스 로직을 담당하는 서비스 레이어
+- repository : 데이터베이스 접근 및 쿼리 수행
+- domain : JPA 엔티티 클래스 및 도메인 모델
+- dto : 데이터 전송 객체 (Request/Response)
+- auth : 인증 및 인가 관련 코드 (JWT 토큰 처리 등)
+- aspect : AOP 관련 코드 (로깅 등 공통 관심사 분리)
+- config : 스프링 및 보안 설정 클래스
+- exception : 사용자 정의 예외 처리
 
 
 ## 주요 라이브러리
