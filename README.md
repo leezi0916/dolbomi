@@ -76,7 +76,10 @@ Communication / IDE
 - spring ai
 
 ### API
-
+- Google Oauth 2.0 API : 소셜 로그인 인증
+- Sgis Open API : 지역명 조회
+- Kakao map API : 주소 검색
+- OpenAI GPT-4 API : 돌보미 AI 가이드 자연어 대화 처리
 
 ## 설치 및 실행 방법
 ```
