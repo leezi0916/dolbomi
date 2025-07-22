@@ -75,7 +75,7 @@ Back-End
 - amazon aws sdk (s3)  
 - spring ai  
 
-## 설치 및 실행 방법
+## 설치 및 실행 방법```
 git clone https://github.com/UHa11/KH_Final_Project.git
 
 # 프론트
@@ -86,7 +86,7 @@ npm dev run
 # 백엔드
 cd backend
 ./gradlew bootRun
-
+```
 ## 주요 기능
 - 회원가입(Email 인증)
 - 로그인 (JWT 기반)
