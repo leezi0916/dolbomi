@@ -1,7 +1,6 @@
 # ⭐️ 백엔드 (Spring Boot) ⭐️
 
 ## 프로젝트 구조
-com.kh.dolbomi
 - controller      // REST API 요청을 처리하는 웹 레이어
 - service         // 비즈니스 로직을 담당하는 서비스 레이어
 - repository      // 데이터베이스 접근 및 쿼리 수행
