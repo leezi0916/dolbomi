@@ -73,7 +73,10 @@ Communication / IDE
 - spring mail  
 - spring boot oauth2  
 - amazon aws sdk (s3)  
-- spring ai  
+- spring ai
+
+### API
+
 
 ## 설치 및 실행 방법
 ```
