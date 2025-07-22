@@ -14,10 +14,18 @@ com.kh.dolbomi
 
 
 ## 주요 라이브러리
-- Spring Boot
-- Spring Security
-- jjwt
-- H2 Database
+- spring boot
+- spring security
+- jjwt (io.jsonwebtoken)
+- spring data jpa
+- mysql connector
+- spring boot devtools
+- spring validation
+- thymeleaf
+- spring mail
+- spring boot oauth2
+- amazon aws sdk (s3)
+- spring ai
 
 ## 실행 방법
 
